@@ -1,0 +1,80 @@
+#' @description Initializes OptimObject
+#' @return Initialized OptimObject, which is a list containing input data farem with time resolved data ('data'),
+#' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
+#' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
+#' if log10 is applied to bounds ('takeLog10'), the parameters having no
+#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
+#' modus ('modus'), and a list of values of fitted parameters ('fitted')
+#' @param data Data frame containing columns named 't_prime' (time) and 'y' (quantitative value)
+#' @param modus String indicating if modus 'RetardedTransientDynamics' or
+#' 'ImmediateResponseFunction' should be used
+#' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
+#' @export initializeOptimObject
+#' @examples
+#' data <- getExampleDf()
+#' data <- scaleTimeCol(data)
+#' optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+
+initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
+  for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
+
+  # Define Lower and Upper bounds, and Default initial guess
+  lb.vec <- c(tau_1=min(diff(unique(t_prime)))/2, # minimal sampling interval
+              tau_2=min(diff(unique(t_prime)))/2, # minimal sampling interval
+              A_sus=0,
+              A_trans=0,
+              p_0=min(y),
+              T_shift=-(max(t_prime)-min(t_prime))/5,
+              sigma = max(1e-8,diff(range(y))/(10^4)))
+
+  ub.vec <- c(tau_1=2*(max(t_prime)-min(t_prime)),
+              tau_2=2*(max(t_prime)-min(t_prime)),
+              A_sus=2*(max(y)-min(y)),
+              A_trans=2*(max(y)-min(y)),
+              p_0=max(y),
+              T_shift=(max(t_prime)-min(t_prime))/2,
+              sigma = sd(y, na.rm =TRUE))
+
+  initialGuess.vec <- c(tau_1=0.5*lb.vec[["tau_1"]] + 0.5*ub.vec[["tau_1"]],
+                        tau_2=0.5*lb.vec[["tau_2"]] + 0.5*ub.vec[["tau_2"]],
+                        A_sus=0.1*lb.vec[["A_sus"]] + 0.9*ub.vec[["A_sus"]],
+                        A_trans=0.1*lb.vec[["A_trans"]] + 0.9*ub.vec[["A_trans"]],
+                        p_0=0.5*lb.vec[["p_0"]] + 0.5*ub.vec[["p_0"]],
+                        T_shift=-(max(t_prime)-min(t_prime))/10,
+                        sigma = max(lb.vec["sigma"], 0.1*diff(range(y))))
+
+  if ("sdExp" %in% colnames(data)){
+    lb.vec <- lb.vec[names(lb.vec) != "sigma"]
+    ub.vec <- ub.vec[names(ub.vec) != "sigma"]
+    initialGuess.vec <- initialGuess.vec[names(initialGuess.vec) != "sigma"]
+  }
+
+  optimObject.orig <- list(data = data,
+                           initialGuess.vec = initialGuess.vec,
+                           lb.vec = lb.vec,
+                           ub.vec = ub.vec,
+                           fixed = c(signum_TF = NA,
+                                     tau_1 = NA,
+                                     tau_2 = NA,
+                                     A_sus = NA,
+                                     A_trans = NA,
+                                     p_0 = NA,
+                                     T_shift = NA,
+                                     sigma = NA),
+                           takeLog10 = takeLog10,
+                           positive.par.names = NULL,
+                           modus = modus,
+                           fitted = list()
+  )
+
+  if (takeLog10){
+    positive.par.names <- getPositiveParNames(
+      lb.vec = optimObject.orig$lb.vec,
+      ub.vec = optimObject.orig$ub.vec,
+      initialGuess.vec = optimObject.orig$initialGuess.vec)
+    positive.par.names <- setdiff(positive.par.names, "sigma")
+    optimObject.orig$positive.par.names <- positive.par.names
+    optimObject.orig <- takeLog10OfBounds(optimObject.orig)
+  }
+  optimObject.orig
+}
