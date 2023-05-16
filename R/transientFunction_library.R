@@ -1,19 +1,3 @@
-#' dimarAssignPattern
-#'
-#' @description Assigns patterns of MVs to reference data set with a logistic regression model
-#' @return Reference dataset with applied pattern
-#' @param ref Reference dataset
-#' @param coef Logistic regression coefficients of missing value pattern
-#' @param mtx Quantitative matrix
-#' @param npat Number of patterns
-#' @export dimarAssignPattern
-#' @examples
-#' mtx <- matrix(rnorm(1000),nrow=100)
-#' mtx[sample(c(1:1000),100)] <- NA
-#' coef <- dimarLearnPattern(mtx)
-#' ref <- dimarConstructReferenceData(mtx)
-#' sim <- dimarAssignPattern(ref, coef, mtx)
-
 library(ggplot2)
 library(reshape2)
 library(readxl)

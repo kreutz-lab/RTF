@@ -1,0 +1,98 @@
+#' @description Run optimization using stats::optim with method = "L-BFGS-B"
+#' @return List of with optimization results and plots to each fit ('res.lst')
+#' and optimization result and plot to best fit ('final')
+#' @param initialGuess.vec.lst List of default initial guess for each model parameter
+#' a defined number of further initial guesses lying in between the lower and
+#' upper bound of each model parameter
+#' @param optimObject optimObject, which is a list containing input data frame with time resolved data ('data'),
+#' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
+#' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
+#' if log10 is applied to bounds ('takeLog10'), the parameters having no
+#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
+#' modus ('modus'), and a list of values of fitted parameters ('fitted').
+#' optimObject$fixed[["signum_TF"]] has to be set to 1 or -1
+#' @param objFunct Name of the objective function
+#' @export runOptimization
+#' @examples
+#' data <- getExampleDf()
+#' data <- scaleTimeCol(data)
+#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' signum_TF <- 1
+#' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
+#' nInitialGuesses <- 50
+#' initialGuess.vec.lst <- getInitialGuessVec(
+#'                             initialGuess.vec = optimObject.orig$initialGuess.vec,
+#'                             lb.vec = optimObject.orig$lb.vec,
+#'                             ub.vec = optimObject.orig$ub.vec,
+#'                             nInitialGuesses = nInitialGuesses
+#'  )
+#'  res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
+
+runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
+
+  currentBestRes <- NULL
+  currentBestResValue <- NULL
+  res.lst <- list()
+  optimObject.tmp <- optimObject
+
+  pars.tmp <- c()
+  # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
+  for (el in c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")){
+    if (!is.na(optimObject.tmp$fixed[[el]])){
+      nam <- names(pars.tmp)
+      pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
+      names(pars.tmp) <- c(nam, el)
+      optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[-which(names(optimObject.tmp$lb.vec) == el)]
+      optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[-which(names(optimObject.tmp$ub.vec) == el)]
+
+      # remove from each sublist in initialGuess.vec.lst
+      initialGuess.vec.lst <- lapply(initialGuess.vec.lst, function(x) x[-which(names(x) == el)])
+    }
+  }
+
+  for (vec in initialGuess.vec.lst){
+    print(vec)
+
+    optimResTmp <- stats::optim(par = vec,
+                                fn = objFunct,
+                                method = "L-BFGS-B",
+                                lower = optimObject.tmp$lb.vec,
+                                upper = optimObject.tmp$ub.vec,
+                                data = optimObject.tmp$data,
+                                optimObject = optimObject.tmp,
+                                #positive.par.names = optimObject$positive.par.names,
+                                control = list(trace = 2, maxit = 1000, factr=1.0e-20))
+    if (optimObject$takeLog10) {
+      optimResTmp$par[optimObject$positive.par.names] <- 10^optimResTmp$par[optimObject$positive.par.names]
+    }
+
+    optimResTmp$par <- pars <- c(pars.tmp, optimResTmp$par)
+    value <- optimResTmp$value
+
+    title <- paste0("OptimValue: ", round(value, 2),
+                    "; signum_TF: ", optimObject$fixed[["signum_TF"]], ", ",
+                    paste(names(pars), round(pars, 4), sep = ": ", collapse = ", "))
+
+    gg <- plotModelComponents(pars = pars,
+                              data = optimObject$data,
+                              signum_TF = optimObject$fixed[["signum_TF"]], title = title)
+
+    lst <- list(append(list(optimResTmp), list(gg)))
+    names(lst[[1]]) <- c("optimRes", "gg")
+    res.lst <- append(res.lst, lst)
+
+    if (is.null(currentBestResValue)){
+      currentBestResValue <- value
+      optimRes <- optimResTmp
+    }
+
+    if (value < currentBestResValue) {
+      currentBestResValue <- value
+      optimRes <- optimResTmp
+    }
+  }
+
+  res.lst <- sortListByValue(res.lst)
+
+  list(res.lst = res.lst, bestOptimRes = optimRes)
+}

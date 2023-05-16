@@ -1,5 +1,6 @@
 #' @description Initializes OptimObject
-#' @return Initialized OptimObject, which is a list containing input data farem with time resolved data ('data'),
+#' @return Initialized OptimObject, which is a list containing input data frame
+#'  with time resolved data ('data'),
 #' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 #' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
