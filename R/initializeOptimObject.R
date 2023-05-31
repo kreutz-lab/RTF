@@ -6,7 +6,8 @@
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
 #' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
-#' @param data Data frame containing columns named 't_prime' (time) and 'y' (quantitative value)
+#' @param data Data frame containing columns named 't_prime' (time) and 'y'
+#' (quantitative value)
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be applied

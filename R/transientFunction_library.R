@@ -76,7 +76,9 @@ getData <- function(file="", tCol="", quantCols=c(), sdExpCol = ""){
       data <- readxl::read_excel(file)
     }
 
-    if (nchar(tCol)>0 & length(quantCols) > 0){
+    if (nchar(tCol) > 0 & length(quantCols) > 0 & nchar(sdExpCol) > 0){
+      data <- data[, c(tCol, quantCols, sdExpCol)]
+    } else     if (nchar(tCol) > 0 & length(quantCols) > 0){
       data <- data[, c(tCol, quantCols)]
     }
 
@@ -380,7 +382,9 @@ initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
   optimObject.orig
 }
 
-getTransientFunctionResult <- function(par, data, fixed, t_prime=NULL,
+getTransientFunctionResult <- function(par,
+                                       t_prime,
+                                       fixed,
                                        modus = "RetardedTransientDynamics") {
 
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
@@ -390,7 +394,7 @@ getTransientFunctionResult <- function(par, data, fixed, t_prime=NULL,
     if (!is.na(fixed[[v]])) assign(names(fixed)[v], fixed[[v]])
   }
 
-  if (is.null(t_prime)) t_prime <- data$t_prime
+  # if (is.null(t_prime)) t_prime <- data$t_prime
   nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
 
   if (modus == "ImmediateResponseFunction"){
@@ -412,7 +416,8 @@ objFunct <- function(par, data, optimObject) {
   if (optimObject$takeLog10) par[optimObject$positive.par.names] <- 10^par[optimObject$positive.par.names]
 
   res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                             data = data,
+                                             # data = data,
+                                             t_prime = data$t_prime,
                                              fixed = optimObject$fixed)
 
   if (("sdExp" %in% colnames(data))){
