@@ -37,7 +37,7 @@ plotModelComponents <- function(pars, data, signum_TF, title = "") {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
   gg1 <- plotTvsTprime(t = t, t_prime = t_prime)
-  gg2 <- plotLinearTransformation(p_0 = p_0, T_shift = T_shift,
+  gg2 <- plotNonLinearTransformation(p_0 = p_0, T_shift = T_shift,
                                   y = y, t_prime = t_prime)
   gg3 <- plotSignalSus(tau_1 = tau_1, A_sus = A_sus, p_0 = p_0,
                        T_shift = T_shift, signum_TF = signum_TF,

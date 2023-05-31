@@ -143,7 +143,7 @@ getSignalTransPlusOffset <- function(
   signum_TF * Signal_trans + p_0
 }
 
-getNonLinTransformationPlusOffset <- function(T_shift, p_0, t_prime) {
+getNonLinTransformationPlusOffset <- function(p_0, T_shift, t_prime) {
   nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
   nonLinTransformation + p_0
 }
@@ -174,7 +174,7 @@ plotTvsTprime <- function(t, t_prime) {
 }
 
 # t_prime vs. nonLinearTransformation
-plotLinearTransformation <- function(p_0, T_shift, y, t_prime) {
+plotNonLinearTransformation <- function(p_0, T_shift, y, t_prime) {
   xi <- seq(0, max(t_prime), length.out = 1000)
 
   ggplot(data.frame(t_prime = t_prime, y = y), aes(x=t_prime, y=y)) +
@@ -183,8 +183,8 @@ plotLinearTransformation <- function(p_0, T_shift, y, t_prime) {
     geom_line(data=data.frame(x = xi,
                               y = getNonLinTransformationPlusOffset(
                                 t_prime = xi,
-                                p_0 = p_0,
-                                T_shift = T_shift)), aes(x=x,y=y)) +
+                                T_shift = T_shift,
+                                p_0 = p_0)), aes(x=x,y=y)) +
     theme_bw()
 }
 
@@ -295,7 +295,7 @@ plotModelComponents <- function(pars, data, signum_TF, title = "") {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
   gg1 <- plotTvsTprime(t = t, t_prime = t_prime)
-  gg2 <- plotLinearTransformation(p_0 = p_0, T_shift = T_shift,
+  gg2 <- plotNonLinearTransformation(p_0 = p_0, T_shift = T_shift,
                                   y = y, t_prime = t_prime)
   gg3 <- plotSignalSus(tau_1 = tau_1, A_sus = A_sus, p_0 = p_0,
                        T_shift = T_shift, signum_TF = signum_TF,

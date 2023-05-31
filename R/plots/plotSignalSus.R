@@ -1,0 +1,38 @@
+#' @description Plot sum of the sustained part of the RTF and offset p_0
+#' together with experimental data points y.
+#' @return ggplot object showing sustained part of the RTF and offset p_0
+#' together with experimental data points y.
+#' @param tau_1 tau_1
+#' @param tau_2 tau_2
+#' @param A_sus A_sus
+#' @param p_0 p_0
+#' @param T_shift T_shift
+#' @param signum_TF signum_TF
+#' @param y Experimental outcome for time points (corresponds to y column in
+#' experimental data frame)
+#' @param t_prime timepoints
+#' @export plotSignalSus
+#' @examples
+#' gg <- plotSignalSus(
+#'        tau_1 = 1.00, tau_2 = 1.00,
+#'        A_sus = 1.05,
+#'        p_0 = -0.28, T_shift = -1, signum_TF = 1,
+#'        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
+#'        t_prime = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+
+plotSignalSus <- function(tau_1, A_sus, p_0, T_shift, signum_TF, y, t_prime) {
+  xi <- seq(0, max(t_prime), length.out = 1000)
+
+  ggplot(data.frame(t_prime = t_prime, y = y), aes(x=t_prime, y=y)) +
+    geom_point(alpha=0.5) +
+    ggtitle("SignalSus + p_0") +
+    geom_line(data=data.frame(x = xi,
+                              y = getSignalSusPlusOffset(
+                                t_prime = xi,
+                                tau_1 = tau_1,
+                                A_sus = A_sus,
+                                p_0 = p_0,
+                                T_shift = T_shift,
+                                signum_TF = signum_TF)), aes(x=x,y=y)) +
+    theme_bw()
+}
