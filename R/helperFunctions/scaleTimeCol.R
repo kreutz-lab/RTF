@@ -16,6 +16,7 @@ scaleTimeCol <- function(data, scaleTime = TRUE) {
   y <- data$y
 
   if (scaleTime){
+    t <- t - min(t)
     t_range <- max(t)-min(t)
     t_prime <- 10*t/t_range
   } else {

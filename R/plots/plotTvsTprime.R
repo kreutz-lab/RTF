@@ -6,6 +6,7 @@
 #' @export plotTvsTprime
 #' @examples
 #' t <- c(0.4, 4.5, 5.8, 7.9, 10.02, 15.6, 21.0, 44.8)
+#' t <- t-min(t)
 #' t_range <- max(t)-min(t)
 #' t_prime <- 10*t/t_range
 #' gg <- plotTvsTprime(t, t_prime)
