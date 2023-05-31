@@ -13,6 +13,6 @@
 #'         t_prime = 0.6)
 
 getNonLinTransformationPlusOffset <- function(p_0, T_shift, t_prime) {
-  nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
+  nonLinTransformation <- log10(10^t_prime + 10^T_shift) - log10(1 + 10^T_shift)
   nonLinTransformation + p_0
 }

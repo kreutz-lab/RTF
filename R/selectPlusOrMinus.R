@@ -20,12 +20,14 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data=data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
-#' res.all.plusMinus <- getFittingResult(optimObject.orig, plot = FALSE, titlePrefixPrefix = "fullModel_")
+#' optimObject.orig <- initializeOptimObject(
+#'                                   data, modus = 'RetardedTransientDynamics')
+#' res.all.plusMinus <- getFittingResult(
+#'             optimObject.orig, plot = FALSE, titlePrefixPrefix = "fullModel_")
 #' res <- selectPlusOrMinus(res.all.plusMinus)
 
 selectPlusOrMinus <- function(res) {
-  if (res$plus1$value < res$minus1$value){
+  if (res$plus1$value < res$minus1$value) {
     res <- res[["plus1"]]
   } else {
     res <- res[["minus1"]]

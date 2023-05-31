@@ -27,7 +27,8 @@
 
 fittingHelper <- function(optimObject, plot = TRUE, titlePrefix = "") {
   nInitialGuesses <- 50
-  res.lst.wFinal <- getInitialGuessResults(optimObject, objFunct, nInitialGuesses, plot = plot)
+  res.lst.wFinal <- getInitialGuessResults(
+    optimObject, objFunct, nInitialGuesses, plot = plot)
   final <- res.lst.wFinal$final
 
   bestFit.plot <- NA
@@ -43,7 +44,7 @@ fittingHelper <- function(optimObject, plot = TRUE, titlePrefix = "") {
     for (i in seq(length(res.lst.gg))) {
       #print(i)
       gg <- res.lst.gg[[i]]
-      library(patchwork)
+      #library(patchwork)
       gg.wWaterfall <-  gg + plotWaterfallPlot(waterfallPlotData, i)
       print(gg.wWaterfall)
       #gg
@@ -51,8 +52,8 @@ fittingHelper <- function(optimObject, plot = TRUE, titlePrefix = "") {
     dev.off()
 
     bestFit.plot <- final$gg + final$gg.waterfall +
-      final$gg.paramDistr + plot_layout(ncol = 2)
-    ggsave(filename = paste0(titlePrefix, "bestFit.pdf"),
+      final$gg.paramDistr + patchwork::plot_layout(ncol = 2)
+    ggplot2::ggsave(filename = paste0(titlePrefix, "bestFit.pdf"),
            bestFit.plot, width = 12, height = 13)
   }
 

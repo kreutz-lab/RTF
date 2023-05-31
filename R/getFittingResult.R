@@ -12,15 +12,20 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
-#' res.all.plusMinus <- getFittingResult(optimObject.orig, plot = TRUE, titlePrefixPrefix = "fullModel_")
+#' optimObject.orig <- initializeOptimObject(
+#'             data, modus = 'RetardedTransientDynamics')
+#' res.all.plusMinus <- getFittingResult(
+#'             optimObject.orig, plot = TRUE, titlePrefixPrefix = "fullModel_")
 
 getFittingResult <- function(optimObject, plot = TRUE, titlePrefixPrefix = "") {
-  for(pname in names(optimObject$initialGuess.vec)){
+  for (pname in names(optimObject$initialGuess.vec)) {
     # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
     # is fixed but is ot listed in lb.vec, ub.vec, and initialGuess.vec
     if (!is.na(optimObject$fixed[pname]))
-      optimObject$initialGuess.vec[pname] <- optimObject$lb.vec[pname] <- optimObject$ub.vec[pname] <- optimObject$fixed[pname]
+      optimObject$initialGuess.vec[pname] <-
+        optimObject$lb.vec[pname] <-
+        optimObject$ub.vec[pname] <-
+        optimObject$fixed[pname]
   }
   optimObject.orig <- optimObject
   optim.res.plus1 <- getFittingResults_fixedSignumTF(

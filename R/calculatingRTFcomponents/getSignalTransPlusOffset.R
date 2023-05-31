@@ -19,7 +19,10 @@
 
 getSignalTransPlusOffset <- function(
     tau_1, tau_2, A_trans, p_0, T_shift, signum_TF, t_prime) {
-  nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
-  Signal_trans <- A_trans * (1-exp(- nonLinTransformation /tau_1))* exp(- nonLinTransformation /tau_2)
+  nonLinTransformation <-
+    log10(10^t_prime + 10^T_shift) - log10(1 + 10^T_shift)
+  Signal_trans <-
+    A_trans * (1 - exp(-nonLinTransformation / tau_1)) *
+    exp(-nonLinTransformation / tau_2)
   signum_TF * Signal_trans + p_0
 }

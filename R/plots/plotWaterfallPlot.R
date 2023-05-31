@@ -36,13 +36,14 @@ plotWaterfallPlot <- function(optimResTmpLstValuesAll, idxCurrentFit = NULL) {
     df$col <- "#000000" # "black"
   }
 
-  gg <- ggplot(data = df, aes(x = idx, y = value, color = col)) +
-    geom_point() +
+  gg <- ggplot2::ggplot(data = df,
+                        ggplot2::aes(x = idx, y = value, color = col)) +
+    ggplot2::geom_point() +
     # geom_line() +
-    labs(x='Index') +
-    scale_colour_manual(values=c("#000000",  "#FF0000")) +
-    theme_bw() +
-    theme(legend.position="none")
+    ggplot2::labs(x = 'Index') +
+    ggplot2::scale_colour_manual(values = c("#000000",  "#FF0000")) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "none")
 
   gg
 }

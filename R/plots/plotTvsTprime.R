@@ -12,7 +12,7 @@
 #' gg <- plotTvsTprime(t, t_prime)
 
 plotTvsTprime <- function(t, t_prime) {
-  ggplot(data, aes(x = t, y = t_prime)) +
-    geom_point(size = 1, alpha = 0.5) +
-    theme_bw()
+  ggplot2::ggplot(data, ggplot2::aes(x = t, y = t_prime)) +
+    ggplot2::geom_point(size = 1, alpha = 0.5) +
+    ggplot2::theme_bw()
 }

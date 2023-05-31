@@ -35,16 +35,20 @@ getTransientFunctionResult <- function(par,
   }
 
   # if (is.null(t_prime)) t_prime <- data$t_prime
-  nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
+  nonLinTransformation <- log10(10^t_prime + 10^T_shift) - log10(1 + 10^T_shift)
 
-  if (modus == "ImmediateResponseFunction"){
-    Signal_sus <- A_sus * (1-exp(- t_prime/tau_1))
-    Signal_trans <- A_trans * (1-exp(- t_prime/tau_1))*exp(- t_prime/tau_2)
-    transientFunctionRes <-  signum_TF * Signal_sus + signum_TF * Signal_trans + p_0
-  } else if (modus == "RetardedTransientDynamics"){
-    Signal_sus <- A_sus * (1-exp(- nonLinTransformation /tau_1))
-    Signal_trans <- A_trans * (1-exp(- nonLinTransformation /tau_1))* exp(- nonLinTransformation /tau_2)
-    transientFunctionRes <- signum_TF * Signal_sus + signum_TF * Signal_trans + p_0
+  if (modus == "ImmediateResponseFunction") {
+    Signal_sus <- A_sus * (1-exp(-t_prime / tau_1))
+    Signal_trans <- A_trans * (1 - exp(-t_prime / tau_1)) *
+      exp(-t_prime / tau_2)
+    transientFunctionRes <- signum_TF * Signal_sus +
+      signum_TF * Signal_trans + p_0
+  } else if (modus == "RetardedTransientDynamics") {
+    Signal_sus <- A_sus * (1 - exp(-nonLinTransformation / tau_1))
+    Signal_trans <- A_trans * (1 - exp(-nonLinTransformation / tau_1)) *
+      exp(-nonLinTransformation / tau_2)
+    transientFunctionRes <- signum_TF * Signal_sus +
+      signum_TF * Signal_trans + p_0
   }
   transientFunctionRes
 }

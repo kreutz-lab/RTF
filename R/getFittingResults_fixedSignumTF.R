@@ -13,13 +13,17 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
-#' res.all.plus <- getFittingResults_fixedSignumTF(optimObject.orig, signum_TF = 1, plot = TRUE, titlePrefixPrefix = "fullModel_plus_")
+#' optimObject.orig <- initializeOptimObject(data,
+#'                                          modus = 'RetardedTransientDynamics')
+#' res.all.plus <- getFittingResults_fixedSignumTF(
+#'         optimObject.orig, signum_TF = 1, plot = TRUE,
+#'         titlePrefixPrefix = "fullModel_plus_")
 
 getFittingResults_fixedSignumTF <- function(
     optimObject, signum_TF, plot, titlePrefix = "") {
   optimObject$fixed[["signum_TF"]] <- signum_TF
-  optim.res <- fittingHelper(optimObject, plot = plot, titlePrefix = titlePrefix)
+  optim.res <- fittingHelper(
+    optimObject, plot = plot, titlePrefix = titlePrefix)
   res.pars <- optim.res$res.pars
   value <- optim.res$value
   optimObject$fitted <- c(res.pars, signum_TF = signum_TF)

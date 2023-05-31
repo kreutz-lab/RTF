@@ -16,12 +16,14 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data,
+#'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
 #' initialGuess.vec.lst <- getInitialGuessVec(
-#'                             initialGuess.vec = optimObject.orig$initialGuess.vec,
+#'                             initialGuess.vec =
+#'                                           optimObject.orig$initialGuess.vec,
 #'                             lb.vec = optimObject.orig$lb.vec,
 #'                             ub.vec = optimObject.orig$ub.vec,
 #'                             nInitialGuesses = nInitialGuesses
@@ -29,28 +31,31 @@
 #'  res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
 runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
-
-  currentBestRes <- NULL
+  # currentBestRes <- NULL
   currentBestResValue <- NULL
   res.lst <- list()
   optimObject.tmp <- optimObject
 
   pars.tmp <- c()
   # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
-  for (el in c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")){
-    if (!is.na(optimObject.tmp$fixed[[el]])){
+  for (el in
+       c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")) {
+    if (!is.na(optimObject.tmp$fixed[[el]])) {
       nam <- names(pars.tmp)
       pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
       names(pars.tmp) <- c(nam, el)
-      optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[-which(names(optimObject.tmp$lb.vec) == el)]
-      optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[-which(names(optimObject.tmp$ub.vec) == el)]
+      optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[
+        -which(names(optimObject.tmp$lb.vec) == el)]
+      optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[
+        -which(names(optimObject.tmp$ub.vec) == el)]
 
       # remove from each sublist in initialGuess.vec.lst
-      initialGuess.vec.lst <- lapply(initialGuess.vec.lst, function(x) x[-which(names(x) == el)])
+      initialGuess.vec.lst <- lapply(initialGuess.vec.lst,
+                                     function(x) x[-which(names(x) == el)])
     }
   }
 
-  for (vec in initialGuess.vec.lst){
+  for (vec in initialGuess.vec.lst) {
     print(vec)
 
     optimResTmp <- stats::optim(par = vec,
@@ -60,10 +65,11 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 upper = optimObject.tmp$ub.vec,
                                 data = optimObject.tmp$data,
                                 optimObject = optimObject.tmp,
-                                #positive.par.names = optimObject$positive.par.names,
-                                control = list(trace = 2, maxit = 1000, factr=1.0e-20))
+                                control = list(trace = 2, maxit = 1000,
+                                               factr = 1.0e-20))
     if (optimObject$takeLog10) {
-      optimResTmp$par[optimObject$positive.par.names] <- 10^optimResTmp$par[optimObject$positive.par.names]
+      optimResTmp$par[optimObject$positive.par.names] <-
+        10^optimResTmp$par[optimObject$positive.par.names]
     }
 
     optimResTmp$par <- pars <- c(pars.tmp, optimResTmp$par)
@@ -71,17 +77,19 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
     title <- paste0("OptimValue: ", round(value, 2),
                     "; signum_TF: ", optimObject$fixed[["signum_TF"]], ", ",
-                    paste(names(pars), round(pars, 4), sep = ": ", collapse = ", "))
+                    paste(names(pars),
+                          round(pars, 4), sep = ": ", collapse = ", "))
 
     gg <- plotModelComponents(pars = pars,
                               data = optimObject$data,
-                              signum_TF = optimObject$fixed[["signum_TF"]], title = title)
+                              signum_TF =
+                                optimObject$fixed[["signum_TF"]], title = title)
 
     lst <- list(append(list(optimResTmp), list(gg)))
     names(lst[[1]]) <- c("optimRes", "gg")
     res.lst <- append(res.lst, lst)
 
-    if (is.null(currentBestResValue)){
+    if (is.null(currentBestResValue)) {
       currentBestResValue <- value
       optimRes <- optimResTmp
     }

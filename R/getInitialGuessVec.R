@@ -13,12 +13,14 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data,
+#'                                          modus = 'RetardedTransientDynamics')
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 #' lb.vec <- optimObject.orig[["lb.vec"]]
 #' ub.vec <- optimObject.orig[["ub.vec"]]
 #' nInitialGuesses <- 50
-#' initialGuess.vec.lst <- getInitialGuessVec(initialGuess.vec, lb.vec, ub.vec, nInitialGuesses)
+#' initialGuess.vec.lst <- getInitialGuessVec(
+#'                           initialGuess.vec, lb.vec, ub.vec, nInitialGuesses)
 
 getInitialGuessVec <- function(initialGuess.vec,
                                lb.vec,

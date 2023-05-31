@@ -21,11 +21,16 @@
 getTransientFunctionExampleData <- function(
     tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, t_prime) {
 
-  nonLinTransformation <- log10(10^t_prime+10^T_shift)-log10(1+10^T_shift)
+  nonLinTransformation <-
+    log10(10^t_prime + 10^T_shift) - log10(1 + 10^T_shift)
 
-  Signal_sus <- A_sus * (1-exp(- nonLinTransformation /tau_1))  # Warum tau_2? Taucht in Paperformel nicht auf
-  Signal_trans <- A_trans * (1-exp(- nonLinTransformation /tau_1))* exp(- nonLinTransformation /tau_2)
-  transientFunctionRes <- signum_TF * Signal_sus + signum_TF * Signal_trans + p_0
+  Signal_sus <-
+    A_sus * (1 - exp(-nonLinTransformation / tau_1))
+  Signal_trans <-
+    A_trans * (1 - exp(-nonLinTransformation / tau_1)) *
+    exp(-nonLinTransformation / tau_2)
+  transientFunctionRes <-
+    signum_TF * Signal_sus + signum_TF * Signal_trans + p_0
 
   transientFunctionRes
 }

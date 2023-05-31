@@ -23,16 +23,18 @@
 plotSignalSus <- function(tau_1, A_sus, p_0, T_shift, signum_TF, y, t_prime) {
   xi <- seq(0, max(t_prime), length.out = 1000)
 
-  ggplot(data.frame(t_prime = t_prime, y = y), aes(x=t_prime, y=y)) +
-    geom_point(alpha=0.5) +
-    ggtitle("SignalSus + p_0") +
-    geom_line(data=data.frame(x = xi,
+  ggplot2::ggplot(data.frame(t_prime = t_prime, y = y),
+                  ggplot2::aes(x = t_prime, y = y)) +
+    ggplot2::geom_point(alpha = 0.5) +
+    ggplot2::ggtitle("SignalSus + p_0") +
+    ggplot2::geom_line(data = data.frame(x = xi,
                               y = getSignalSusPlusOffset(
                                 t_prime = xi,
                                 tau_1 = tau_1,
                                 A_sus = A_sus,
                                 p_0 = p_0,
                                 T_shift = T_shift,
-                                signum_TF = signum_TF)), aes(x=x,y=y)) +
-    theme_bw()
+                                signum_TF = signum_TF)),
+                       ggplot2::aes(x = x, y = y)) +
+    ggplot2::theme_bw()
 }

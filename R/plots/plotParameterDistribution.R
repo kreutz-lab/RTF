@@ -18,16 +18,16 @@
 #'  values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
 #' }
 #' df.parameterValues.long <- data.frame(variable = rep(parameters, each = nFits), value = values)
-#' gg.paramDistr <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
+#' gg.paramDistr <- plotParameterDistribution(df.parameterValues.long)
 
 plotParameterDistribution <- function(df.parameterValues.long) {
-  ggplot2::ggplot(optimResTmpLstParsAll.df.long, aes(x=value)) +
-    ggplot2::geom_histogram(alpha=0.6) +
+  ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
+    ggplot2::geom_histogram(alpha = 0.6) +
     ggplot2::theme_bw() +
     ggplot2::theme(
-      legend.position="none",
-      panel.spacing = unit(0.1, "lines"),
-      strip.text.x = element_text(size = 8)
+      legend.position = "none",
+      panel.spacing = ggplot2::unit(0.1, "lines"),
+      strip.text.x = ggplot2::element_text(size = 8)
     ) +
     ggplot2::facet_wrap(~variable, scales = "free")
 }

@@ -21,29 +21,34 @@ initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
   # Define Lower and Upper bounds, and Default initial guess
-  lb.vec <- c(tau_1=min(diff(unique(t_prime)))/2, # minimal sampling interval
-              tau_2=min(diff(unique(t_prime)))/2, # minimal sampling interval
-              A_sus=0,
-              A_trans=0,
+  lb.vec <- c(tau_1 = min(diff(unique(t_prime))) / 2, # minimal sampling interval
+              tau_2 = min(diff(unique(t_prime))) / 2, # minimal sampling interval
+              A_sus = 0,
+              A_trans = 0,
               p_0=min(y),
-              T_shift=-(max(t_prime)-min(t_prime))/5,
-              sigma = max(1e-8,diff(range(y))/(10^4)))
+              T_shift = -(max(t_prime) - min(t_prime)) / 5,
+              sigma = max(1e-8, diff(range(y)) / (10^4)))
 
-  ub.vec <- c(tau_1=2*(max(t_prime)-min(t_prime)),
-              tau_2=2*(max(t_prime)-min(t_prime)),
-              A_sus=2*(max(y)-min(y)),
-              A_trans=2*(max(y)-min(y)),
-              p_0=max(y),
-              T_shift=(max(t_prime)-min(t_prime))/2,
-              sigma = sd(y, na.rm =TRUE))
+  ub.vec <- c(tau_1 = 2 * (max(t_prime) - min(t_prime)),
+              tau_2 = 2 * (max(t_prime) - min(t_prime)),
+              A_sus = 2 * (max(y) - min(y)),
+              A_trans = 2 * (max(y) - min(y)),
+              p_0 = max(y),
+              T_shift = (max(t_prime) - min(t_prime)) / 2,
+              sigma = sd(y, na.rm = TRUE))
 
-  initialGuess.vec <- c(tau_1=0.5*lb.vec[["tau_1"]] + 0.5*ub.vec[["tau_1"]],
-                        tau_2=0.5*lb.vec[["tau_2"]] + 0.5*ub.vec[["tau_2"]],
-                        A_sus=0.1*lb.vec[["A_sus"]] + 0.9*ub.vec[["A_sus"]],
-                        A_trans=0.1*lb.vec[["A_trans"]] + 0.9*ub.vec[["A_trans"]],
-                        p_0=0.5*lb.vec[["p_0"]] + 0.5*ub.vec[["p_0"]],
-                        T_shift=-(max(t_prime)-min(t_prime))/10,
-                        sigma = max(lb.vec["sigma"], 0.1*diff(range(y))))
+  initialGuess.vec <- c(tau_1 = 0.5 * lb.vec[["tau_1"]] +
+                          0.5 * ub.vec[["tau_1"]],
+                        tau_2 = 0.5 * lb.vec[["tau_2"]] +
+                          0.5 * ub.vec[["tau_2"]],
+                        A_sus = 0.1 * lb.vec[["A_sus"]] +
+                          0.9 * ub.vec[["A_sus"]],
+                        A_trans = 0.1*lb.vec[["A_trans"]] +
+                          0.9 * ub.vec[["A_trans"]],
+                        p_0 = 0.5 * lb.vec[["p_0"]] +
+                          0.5 * ub.vec[["p_0"]],
+                        T_shift = -(max(t_prime) - min(t_prime)) / 10,
+                        sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
 
   if ("sdExp" %in% colnames(data)){
     lb.vec <- lb.vec[names(lb.vec) != "sigma"]
@@ -69,7 +74,7 @@ initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
                            fitted = list()
   )
 
-  if (takeLog10){
+  if (takeLog10) {
     positive.par.names <- getPositiveParNames(
       lb.vec = optimObject.orig$lb.vec,
       ub.vec = optimObject.orig$ub.vec,

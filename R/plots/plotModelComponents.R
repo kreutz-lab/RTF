@@ -14,7 +14,8 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data,
+#'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
@@ -23,7 +24,8 @@
 #'   lb.vec = optimObject.orig$lb.vec,
 #'   ub.vec = optimObject.orig$ub.vec,
 #'   nInitialGuesses = nInitialGuesses)
-#' initialGuessResults <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
+#' initialGuessResults <- runOptimization(initialGuess.vec.lst,
+#'                                       optimObject.orig, objFunct)
 #' res.lst <- initialGuessResults[["res.lst"]]
 #' bestOptimRes <- initialGuessResults[["bestOptimRes"]]
 #' gg.final <- plotModelComponents(
@@ -51,9 +53,9 @@ plotModelComponents <- function(pars, data, signum_TF, title = "") {
                  signum_TF = signum_TF,
                  y = y, t_prime = t_prime)
 
-  library(patchwork)
-  patchwork <- gg1 + gg2 + gg3 + gg4 + gg5 + plot_layout(ncol = 2)
-  patchwork + plot_annotation(
+  # library(patchwork)
+  patchwork <- gg1 + gg2 + gg3 + gg4 + gg5 + patchwork::plot_layout(ncol = 2)
+  patchwork + patchwork::plot_annotation(
     title = title
   )
 }

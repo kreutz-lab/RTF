@@ -22,27 +22,31 @@
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(
+#'                 data, modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
-#' optim.res <- getInitialGuessResults(optimObject.orig, objFunct, nInitialGuesses, plot = TRUE)
+#' optim.res <- getInitialGuessResults(
+#'                 optimObject.orig, objFunct, nInitialGuesses, plot = TRUE)
 
-getInitialGuessResults <- function(optimObject, objFunct, nInitialGuesses, plot = TRUE) {
+getInitialGuessResults <- function(
+    optimObject, objFunct, nInitialGuesses, plot = TRUE) {
   initialGuess.vec.lst <- getInitialGuessVec(
     initialGuess.vec = optimObject$initialGuess.vec,
     lb.vec = optimObject$lb.vec,
     ub.vec = optimObject$ub.vec,
     nInitialGuesses = nInitialGuesses)
 
-  initialGuessResults <- runOptimization(initialGuess.vec.lst, optimObject, objFunct)
+  initialGuessResults <-
+    runOptimization(initialGuess.vec.lst, optimObject, objFunct)
 
   res.lst <- initialGuessResults[["res.lst"]]
   bestOptimRes <- initialGuessResults[["bestOptimRes"]]
 
   gg.final <- gg.waterfall <- gg.paramDistr <- NA
 
-  if (plot){
+  if (plot) {
     res.lst.optimRes <- lapply(res.lst, function(x) {
       tmp <- unlist(x[grep("optimRes", names(x))], recursive = FALSE)
       names(tmp) <- sub("optimRes.", "", names(tmp))
@@ -60,14 +64,16 @@ getInitialGuessResults <- function(optimObject, objFunct, nInitialGuesses, plot 
 
     gg.waterfall <- plotWaterfallPlot(optimResTmpLstValuesAll)
 
-    optimResTmpLstParsAll.df <- data.frame(do.call(rbind, optimResTmpLstParsAll))
+    optimResTmpLstParsAll.df <- data.frame(
+      do.call(rbind, optimResTmpLstParsAll))
     optimResTmpLstParsAll.df.long <- reshape2::melt(optimResTmpLstParsAll.df)
     gg.paramDistr <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
 
     title <- paste0("OptimValue: ", round(bestOptimRes$value, 2),
                     "; signum_TF: ", optimObject$fixed[["signum_TF"]], ", ",
                     paste(names(bestOptimRes$par),
-                          round(bestOptimRes$par, 4), sep = ": ", collapse = ", "))
+                          round(bestOptimRes$par, 4),
+                          sep = ": ", collapse = ", "))
     gg.final <- plotModelComponents(
       pars = bestOptimRes$par,
       data = optimObject$data,

@@ -20,19 +20,26 @@
 #' modus <- "RetardedTransientDynamics"
 #' plot <- FALSE
 #' optimObject.orig <- initializeOptimObject(data, modus = modus)
-#' res.all.plusMinus <- getFittingResult(optimObject.orig, plot = plot, titlePrefixPrefix = "fullModel_")
+#' res.all.plusMinus <- getFittingResult(
+#'             optimObject.orig, plot = plot, titlePrefixPrefix = "fullModel_")
 #' res.all <- selectPlusOrMinus(res.all.plusMinus)
 #' optimObjectTmp <- optimObject.orig
-#' optimObjectTmp$positive.par.names <- setdiff(optimObjectTmp$positive.par.names, "T_shift")  # because lb.vec[["T_shift"]] corresponds to -2
+#' optimObjectTmp$positive.par.names <-
+#'                       setdiff(optimObjectTmp$positive.par.names, "T_shift")
 #' optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-#' res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp, plot = plot, titlePrefixPrefix = "TshiftFixed_")
+#' res.T_shiftLB.plusMinus <- getFittingResult(
+#'             optimObjectTmp, plot = plot, titlePrefixPrefix = "TshiftFixed_")
 #' res.T_shiftLB <- selectPlusOrMinus(res.T_shiftLB.plusMinus)
 #' res <- selectSmallerModelIfDiffIsSmall(res.all, res.T_shiftLB)
 
 selectSmallerModelIfDiffIsSmall <- function(res, res.smallerModel) {
-  # allg: chi2cdf(m2LLworseSmaller-m2LLdetterLarger, df=WievieleGefixt_NpLarge-NpSmall, x=0.95)
+  # allg:
+  # chi2cdf(m2LLworseSmaller-m2LLdetterLarger,
+  #         df=WievieleGefixt_NpLarge-NpSmall, x=0.95)
   difference <-  res.smallerModel$value - res$value
-  df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.smallerModel[["fixed"]])) # number of fitted in large model - number of fitted in small model
-  if (pchisq(difference, df = df, lower.tail = FALSE) >= 0.05) res <- res.smallerModel
+  # number of fitted in large model - number of fitted in small model
+  df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.smallerModel[["fixed"]]))
+  if (stats::pchisq(difference, df = df, lower.tail = FALSE) >= 0.05)
+    res <- res.smallerModel
   res
 }

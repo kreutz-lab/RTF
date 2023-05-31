@@ -17,13 +17,14 @@
 plotNonLinearTransformation <- function(p_0, T_shift, y, t_prime) {
   xi <- seq(0, max(t_prime), length.out = 1000)
 
-  ggplot(data.frame(t_prime = t_prime, y = y), aes(x=t_prime, y=y)) +
-    geom_point(alpha=0.5) +
-    ggtitle("NonLinTransformation + p_0") +
-    geom_line(data=data.frame(x = xi,
+  ggplot2::ggplot(data.frame(t_prime = t_prime, y = y),
+                  ggplot2::aes(x = t_prime, y = y)) +
+    ggplot2::geom_point(alpha = 0.5) +
+    ggplot2::ggtitle("NonLinTransformation + p_0") +
+    ggplot2::geom_line(data = data.frame(x = xi,
                               y = getNonLinTransformationPlusOffset(
                                 t_prime = xi,
                                 T_shift = T_shift,
-                                p_0 = p_0)), aes(x=x,y=y)) +
-    theme_bw()
+                                p_0 = p_0)), ggplot2::aes(x = x, y = y)) +
+    ggplot2::theme_bw()
 }

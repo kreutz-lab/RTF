@@ -10,7 +10,8 @@
 #' lb.vec <- rnorm(len)
 #' ub.vec <- lb.vec + runif(len, 0, 2)
 #' initialGuess.vec <- runif(len, lb.vec, ub.vec)
-#' df <- data.frame(lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec)
+#' df <- data.frame(
+#'        lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec)
 #' row.names(df) <- paste0("param", 1:len)
 #' lst <- getNamedVectorsFromDf(df)
 #' lst
