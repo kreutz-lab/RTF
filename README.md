@@ -2,7 +2,7 @@
 
 This package is based on the Retarded Transient Function (RTF) introduced in the publication 
 
-Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70. doi: 10.3389/fphy.2020.00070
+[Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70.](https://doi.org/10.3389/fphy.2020.00070)
 
 ## Installation
 ```
