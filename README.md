@@ -1,5 +1,16 @@
-# RTF
+# Retarded Transient Function (RTF)
 
+This package is based on the Retarded Transient Function (RTF) introduced in the publication 
+
+Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70. doi: 10.3389/fphy.2020.00070
+
+## Installation
+```
+install.packages("devtools")
+devtools::install_github("kreutz-lab/RTF")
+```
+
+## Examples
 ```
 library(RTF)
 
