@@ -24,7 +24,7 @@ optimization measure the fit reached. For the best fit the components of
 
 \item{nInitialGuesses}{Number of initial guesses}
 
-\item{titlePrefixPrefix}{Prefix of file names of plots, if plot  was set to TRUE}
+\item{titlePrefix}{Prefix of file names of plots, if plot  was set to TRUE}
 }
 \value{
 List with the parameters of the best fit ('res.pars'),

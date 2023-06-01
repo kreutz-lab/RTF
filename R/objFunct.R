@@ -50,7 +50,7 @@
 #'                             data = optimObject.tmp$data,
 #'                             optimObject = optimObject.tmp,
 #'                             control = list(
-#'                                     trace = 2, maxit = 1000, factr=1.0e-20))
+#'                                     trace = 1, maxit = 1000, factr=1.0e-20))
 
 objFunct <- function(par, data, optimObject) {
   # par <- optimObject$initialGuess.vec
@@ -59,14 +59,14 @@ objFunct <- function(par, data, optimObject) {
       10^par[optimObject$positive.par.names]
 
   res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                             data = data,
+                                             t_prime = data$t_prime,
                                              fixed = optimObject$fixed)
 
   if (("sdExp" %in% colnames(data))) {
     sdVec <- data$sdExp
-    loglik <- sum(log(dnorm(res, 0, sdVec)))
+    loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
   } else {
-    loglik <- sum(log(dnorm(res, 0, par["sigma"])))
+    loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
   }
 
   retval <- -2 * loglik

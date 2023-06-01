@@ -55,9 +55,8 @@ plotModelComponents <- function(pars, data, signum_TF, title = "") {
                  signum_TF = signum_TF,
                  y = y, t_prime = t_prime)
 
-  # library(patchwork)
-  patchwork <- gg1 + gg2 + gg3 + gg4 + gg5 + patchwork::plot_layout(ncol = 2)
-  patchwork + patchwork::plot_annotation(
+  patchworkObj <- patchwork::wrap_plots(gg1, gg2, gg3, gg4, gg5, ncol = 2)
+  patchworkObj + patchwork::plot_annotation(
     title = title
   )
 }

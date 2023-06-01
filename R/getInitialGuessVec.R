@@ -33,7 +33,7 @@ getInitialGuessVec <- function(initialGuess.vec,
   initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- initialGuess.vec
 
   for (i in 1:nInitialGuesses){
-    randomPortions <- runif(length(initialGuess.vec))
+    randomPortions <- stats::runif(length(initialGuess.vec))
     randomInitialGuess.vec <- (randomPortions*lb.vec) + ((1-randomPortions)*ub.vec)
     initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- randomInitialGuess.vec
   }

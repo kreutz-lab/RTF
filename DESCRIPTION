@@ -9,14 +9,12 @@ Authors@R:
   comment = c(ORCID = "0000-0002-8796-5766"))
   person("Eva","Brombacher",
   email = "eva.brombacher@uniklinik-freiburg.de",
-  role = c("aut","ctb"), 
+  role = c("aut","ctb","cre"), 
   comment = c(ORCID = "0000-0002-5488-0985"))
-Author: Eva Brombacher
-Maintainer: Eva Brombacher <eva.brombacher@uniklinik-freiburg.de>
-Description: Fitting of retarded transient function to time resolved data
+Description: Fitting of retarded transient function to time resolved data.
 Imports: 
-    stats, ggplot2, reshape2, readxl, patchwork
-License: GPL-3
+    stats, ggplot2, reshape2, readxl, patchwork, methods
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr

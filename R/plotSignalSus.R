@@ -6,7 +6,6 @@
 #' @return ggplot object showing sustained part of the RTF and offset p_0
 #' together with experimental data points y.
 #' @param tau_1 tau_1
-#' @param tau_2 tau_2
 #' @param A_sus A_sus
 #' @param p_0 p_0
 #' @param T_shift T_shift
@@ -17,7 +16,7 @@
 #' @export plotSignalSus
 #' @examples
 #' gg <- plotSignalSus(
-#'        tau_1 = 1.00, tau_2 = 1.00,
+#'        tau_1 = 1.00,
 #'        A_sus = 1.05,
 #'        p_0 = -0.28, T_shift = -1, signum_TF = 1,
 #'        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),

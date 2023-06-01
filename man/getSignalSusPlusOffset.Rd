@@ -18,8 +18,6 @@ getSignalSusPlusOffset(tau_1, A_sus, p_0, T_shift, signum_TF, t_prime)
 \item{signum_TF}{signum_TF}
 
 \item{t_prime}{timepoint}
-
-\item{tau_2}{tau_2}
 }
 \value{
 Sum of the sustained part of the RTF and offset p_0 for a defined
@@ -31,7 +29,7 @@ for a defined time point.
 }
 \examples{
 getSignalSusPlusOffset(
-        tau_1 = 1.00, tau_2 = 1.00,
+        tau_1 = 1.00,
         A_sus = 1.05,
         p_0 = -0.28, T_shift = -1, signum_TF = 1,
         t_prime = 0.6)

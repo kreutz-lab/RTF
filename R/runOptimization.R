@@ -67,7 +67,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 upper = optimObject.tmp$ub.vec,
                                 data = optimObject.tmp$data,
                                 optimObject = optimObject.tmp,
-                                control = list(trace = 2, maxit = 1000,
+                                control = list(trace = 1, maxit = 1000,
                                                factr = 1.0e-20))
     if (optimObject$takeLog10) {
       optimResTmp$par[optimObject$positive.par.names] <-

@@ -22,8 +22,6 @@ plotSignalSus(tau_1, A_sus, p_0, T_shift, signum_TF, y, t_prime)
 experimental data frame)}
 
 \item{t_prime}{timepoints}
-
-\item{tau_2}{tau_2}
 }
 \value{
 ggplot object showing sustained part of the RTF and offset p_0
@@ -35,7 +33,7 @@ together with experimental data points y.
 }
 \examples{
 gg <- plotSignalSus(
-       tau_1 = 1.00, tau_2 = 1.00,
+       tau_1 = 1.00,
        A_sus = 1.05,
        p_0 = -0.28, T_shift = -1, signum_TF = 1,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),

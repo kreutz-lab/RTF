@@ -31,6 +31,7 @@ value of the optimization measure is not significant for Chi-square
 significance test.
 }
 \examples{
+data <- getExampleDf()
 data <- scaleTimeCol(data=data)
 modus <- "RetardedTransientDynamics"
 plot <- FALSE

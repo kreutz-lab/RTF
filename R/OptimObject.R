@@ -23,7 +23,7 @@
 #'   modus = 'RetardedTransientDynamics',
 #'   fitted = c(par1 = 4, par2 = 2)
 #'  )
-setClass(
+methods::setClass(
     Class = "OptimObject",
     slots = c(data = "data.frame",
               initialGuess.vec = "numeric",

@@ -37,7 +37,7 @@ initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
               A_trans = 2 * (max(y) - min(y)),
               p_0 = max(y),
               T_shift = (max(t_prime) - min(t_prime)) / 2,
-              sigma = sd(y, na.rm = TRUE))
+              sigma = stats::sd(y, na.rm = TRUE))
 
   initialGuess.vec <- c(tau_1 = 0.5 * lb.vec[["tau_1"]] +
                           0.5 * ub.vec[["tau_1"]],

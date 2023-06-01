@@ -19,6 +19,7 @@
 #' fitting.
 #' @export selectSmallerModelIfDiffIsSmall
 #' @examples
+#' data <- getExampleDf()
 #' data <- scaleTimeCol(data=data)
 #' modus <- "RetardedTransientDynamics"
 #' plot <- FALSE

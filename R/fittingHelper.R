@@ -18,7 +18,8 @@
 #'  the transient function are plotted as well as the parameter distribution
 #'  over all fits and a water fall plot of all fits.
 #' @param nInitialGuesses Number of initial guesses
-#' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set to TRUE
+#' @param titlePrefix Prefix of file names of plots, if plot  was set to TRUE
+#' @importFrom patchwork plot_layout
 #' @export fittingHelper
 #' @examples
 #' data <- getExampleDf()
@@ -37,14 +38,12 @@ fittingHelper <- function(optimObject, plot = TRUE, nInitialGuesses = 50, titleP
 
   bestFit.plot <- NA
   if (plot) {
-    library(patchwork)
-
     waterfallPlotData <- final$gg.waterfall$data
 
     res.lst <- res.lst.wFinal$res.lst
     res.lst.gg <- lapply(res.lst, function(x) x[["gg"]])
 
-    pdf(file = paste0(titlePrefix, "allFits.pdf"), width = 12, height = 10)
+    grDevices::pdf(file = paste0(titlePrefix, "allFits.pdf"), width = 12, height = 10)
     for (i in seq(length(res.lst.gg))) {
       #print(i)
       gg <- res.lst.gg[[i]]
@@ -53,10 +52,10 @@ fittingHelper <- function(optimObject, plot = TRUE, nInitialGuesses = 50, titleP
       print(gg.wWaterfall)
       #gg
     }
-    dev.off()
+    grDevices::dev.off()
 
-    bestFit.plot <- final$gg + final$gg.waterfall +
-      final$gg.paramDistr + patchwork::plot_layout(ncol = 2)
+    bestFit.plot <- patchwork::wrap_plots(final$gg, final$gg.waterfall,
+      final$gg.paramDistr, ncol = 2)
     ggplot2::ggsave(filename = paste0(titlePrefix, "bestFit.pdf"),
            bestFit.plot, width = 12, height = 13)
   }

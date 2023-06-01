@@ -29,13 +29,13 @@ getData <- function(file="", tCol="", quantCols=c(), sdExpCol = ""){
     # Simulate data
     nrows <- 20
     signal <- function(x) {x*(x-.9)^2}
-    t <- runif(nrows, 0, 1)
-    y <- signal(t) + rnorm(length(t), 0, 0.025)
-    sdExp <- abs(runif(nrows, 0, 0.002)*y)
+    t <- stats::runif(nrows, 0, 1)
+    y <- signal(t) + stats::rnorm(length(t), 0, 0.025)
+    sdExp <- abs(stats::runif(nrows, 0, 0.002)*y)
     data <- data.frame(t = t, y = y)
   } else {
     if (grepl("\\.csv$", file)){
-      data <- read.csv(file)
+      data <- utils::read.csv(file)
     } else if (grepl("\\.xls$", file) | grepl("\\.xlsx$", file)){
       data <- readxl::read_excel(file)
     }

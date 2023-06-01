@@ -5,7 +5,6 @@
 #' @return Sum of the sustained part of the RTF and offset p_0 for a defined
 #' time point t_prime.
 #' @param tau_1 tau_1
-#' @param tau_2 tau_2
 #' @param A_sus A_sus
 #' @param p_0 p_0
 #' @param T_shift T_shift
@@ -14,7 +13,7 @@
 #' @export getSignalSusPlusOffset
 #' @examples
 #' getSignalSusPlusOffset(
-#'         tau_1 = 1.00, tau_2 = 1.00,
+#'         tau_1 = 1.00,
 #'         A_sus = 1.05,
 #'         p_0 = -0.28, T_shift = -1, signum_TF = 1,
 #'         t_prime = 0.6)

@@ -18,8 +18,6 @@ parameters ('fixed'), if log10 is applied to bounds ('takeLog10'),
 the parameters having no negative values in initialGuess.vec, lb.vec,
 and ub.vec ('positive.par.names'),
 modus ('modus'), and a list of values of fitted parameters ('fitted').}
-
-\item{nInitialGuesses}{Integer corresponding to number of initial guesses}
 }
 \value{
 Sublist which contains with the smallest value of the

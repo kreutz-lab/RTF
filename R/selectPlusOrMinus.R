@@ -6,7 +6,6 @@
 #' use the result for the negative sign.
 #' @return Sublist which contains with the smallest value of the
 #' optimization measure.
-#' @param nInitialGuesses Integer corresponding to number of initial guesses
 #' @param res List of two sublists for a retardad transient function
 #' with positive (plus1) and negative sign (minus1). Sach containing information
 #' of an optimObject as well as the value of the optimization measure

@@ -4,16 +4,16 @@
 \alias{plotWaterfallPlot}
 \title{Generate waterfall plot of all fits}
 \usage{
-plotWaterfallPlot(optimResTmpLstValuesAll, idxCurrentFit = NULL)
+plotWaterfallPlot(waterfallDf, idxCurrentFit = NULL)
 }
 \arguments{
-\item{idxCurrentFit}{Index indicating the position of the fit in the
-waterfall plot that should be highlighted.}
-
-\item{optimObject}{Dataframe with columns indicating for each fit
+\item{waterfallDf}{Dataframe with columns indicating for each fit
 "value" (optimization measure), "idx" (position of a fit in the sequence
 of ordered values), "col" (HEX values for color that should be given to each
  fit)}
+
+\item{idxCurrentFit}{Index indicating the position of the fit in the
+waterfall plot that should be highlighted.}
 }
 \value{
 ggplot object of the waterfall plot

@@ -10,7 +10,7 @@
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
 #' @param t_prime timepoints
-#' @export plotSignalSus
+#' @export plotNonLinearTransformation
 #' @examples
 #' gg <- plotNonLinearTransformation(
 #'        p_0 = -0.28, T_shift = -1,

@@ -14,7 +14,8 @@
 #' gg <- plotTvsTprime(t, t_prime)
 
 plotTvsTprime <- function(t, t_prime) {
-  ggplot2::ggplot(data, ggplot2::aes(x = t, y = t_prime)) +
+  ggplot2::ggplot(data.frame(t = t, t_prime = t_prime),
+                  ggplot2::aes(x = t, y = t_prime)) +
     ggplot2::geom_point(size = 1, alpha = 0.5) +
     ggplot2::theme_bw()
 }
