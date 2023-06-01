@@ -1,3 +1,5 @@
+#' get named vector from data frame of parameters
+#'
 #' @description Transforms data frame of lower bounds, upper bounds,
 #' and initial guesses for each model parameter to list of named vectors.
 #' @return List of named vectors of lower bounds, upper bounds, and initial guesses for each model parameter

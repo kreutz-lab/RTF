@@ -1,3 +1,5 @@
+#' Sort sublists by optimization measure value
+#'
 #' @description Sorts a list of sublists in ascending order according to
 #' parameter 'value' in the first element of each sublist.
 #' @return List sorted according to the parameter 'value' in the first element

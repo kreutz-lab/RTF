@@ -1,3 +1,5 @@
+#' Run RTF
+#'
 #' @description Run RTF
 #' @return List of the final RTF model (finalModel), the optimized parameters
 #' (finalParams), the plot of the final model (finalPlot), as well as the

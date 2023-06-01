@@ -1,3 +1,5 @@
+#' Plot unscaled time plotted against scaled time
+#'
 #' @description Plot unscaled time plotted against scaled time.
 #' @return ggplot object showing unscaled time plotted against scaled time
 #' @param t Vector of unscaled time points

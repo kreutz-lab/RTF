@@ -1,3 +1,5 @@
+#' Generate data frame for RTF
+#'
 #' @description Generate data frame containing all columns needed for RTF
 #' @return Data frame containing columns named 't' (time) and
 #' 'y' (quantitative value). If .csv, .xlsx, or .xls file name is provided for

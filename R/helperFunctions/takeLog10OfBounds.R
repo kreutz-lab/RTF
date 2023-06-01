@@ -1,3 +1,5 @@
+#' Log10-transform parameters
+#'
 #' @description Replace the parameter values of vector of initial guesses
 #' ('initialGuess.vec'), of lower bounds ('lb.vec'),
 #' of upper bounds ('ub.vec') of OptimObject with the log10 transformed values.

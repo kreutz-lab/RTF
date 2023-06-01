@@ -1,3 +1,5 @@
+#' Initializes OptimObject
+#'
 #' @description Initializes OptimObject
 #' @return Initialized OptimObject, which is a list containing input data frame
 #'  with time resolved data ('data'),

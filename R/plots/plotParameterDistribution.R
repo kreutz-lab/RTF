@@ -1,6 +1,6 @@
-#' @description Get fits for defined number of initial guesses and add optional
-#' plots (incl. for best fit ('final') waterfall plot and for all parameters
-#' histograms of the parameter values across all fits)
+#' Plot histograms of fitted parameters
+#'
+#' @description Plot histograms of fitted parameters
 #' @return ggplot object of the histograms of the all parameters resulting
 #' from each fit
 #' @param df.parameterValues.long Data frame of the parameter values which

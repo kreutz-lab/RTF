@@ -1,3 +1,5 @@
+#'  Get fits for defined number of initial guesses
+#'
 #' @description Get fits for defined number of initial guesses and add optional
 #' plots (incl. for best fit ('final') waterfall plot and for all parameters
 #' histograms of the parameter values across all fits)

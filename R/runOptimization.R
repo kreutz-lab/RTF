@@ -1,3 +1,5 @@
+#' Run optimization
+#'
 #' @description Run optimization using stats::optim with method = "L-BFGS-B"
 #' @return List of with optimization results and plots to each fit ('res.lst')
 #' and optimization result and plot to best fit ('final')

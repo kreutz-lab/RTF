@@ -1,3 +1,5 @@
+#' Calculate RTF results for multiple time points
+#'
 #' @description Apply RTF with defined parameters for defined time points
 #' @return Vector of predicted quantitative values resulting from applying RTF
 #' with the specified parameters to time points given in t_prime.

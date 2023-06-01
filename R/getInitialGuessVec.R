@@ -1,4 +1,6 @@
-#' @description Get list of default initial guess for each model parameter
+#' Get list of initial guesses
+#'
+#' @description Get list of default initial guess for each model parameter and
 #' a defined number of further initial guesses lying in between the lower and
 #' upper bound of each model parameter
 #' @return List of default initial guess for each model parameter

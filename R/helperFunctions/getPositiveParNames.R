@@ -1,4 +1,6 @@
-#' @description Returns the names of paramaters having no negative values in
+#' Get names if parameters having no negative values
+#'
+#' @description Returns the names of parameters having no negative values in
 #' initialGuess.vec, lb.vec, and ub.vec
 #' @return Vector of parameters having no negative values in
 #' initialGuess.vec, lb.vec, and ub.vec

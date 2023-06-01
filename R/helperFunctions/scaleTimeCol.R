@@ -1,3 +1,5 @@
+#' Add new column with data points scaled to lie between 0 and 10
+#'
 #' @description Adds column 't_prime' to input data frame, which scaleTime is
 #' set to TRUE corresponds to 't' scaled to interval [0, 10],
 #' otherwise 't_prime' corresponds to 't'

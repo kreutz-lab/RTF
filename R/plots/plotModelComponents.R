@@ -1,3 +1,5 @@
+#' Plot t_prime against the components of the RTF
+#'
 #' @description Plot t_prime against the components of the retarded transient
 #' function (RTF)
 #' @return Combined plot of scatter plot of t plotted vs. t_prime, and t_prime vs.

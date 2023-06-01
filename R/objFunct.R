@@ -1,4 +1,6 @@
-#' @description Optimization function, Chi square
+#' Chi square optimization function
+#'
+#' @description Chi square optimization function
 #' @return List of best set of parameters, optimization value, etc.
 #' See stats::optim for more details.
 #' @param par Initial values for the parameters to be optimized over.
@@ -61,7 +63,6 @@ objFunct <- function(par, data, optimObject) {
                                              fixed = optimObject$fixed)
 
   if (("sdExp" %in% colnames(data))) {
-
     sdVec <- data$sdExp
     loglik <- sum(log(dnorm(res, 0, sdVec)))
   } else {

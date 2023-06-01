@@ -1,3 +1,5 @@
+#' Calculate sum of the sustained part of the RTF and offset p_0
+#'
 #' @description Calculate sum of the sustained part of the RTF and offset p_0
 #' for a defined time point.
 #' @return Sum of the sustained part of the RTF and offset p_0 for a defined

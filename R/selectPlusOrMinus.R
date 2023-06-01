@@ -1,7 +1,9 @@
+#' Select best fit from fit with positive and fit with negative sign of RTF
+#'
 #' @description Select the best fit when using the positive sign for
 #' the retarded transient function if the value for the
 #' optimization measure is smaller than the one for the negative sign, otherwise
-#' use teh result for the negative sign.
+#' use the result for the negative sign.
 #' @return Sublist which contains with the smallest value of the
 #' optimization measure.
 #' @param nInitialGuesses Integer corresponding to number of initial guesses

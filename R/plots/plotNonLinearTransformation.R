@@ -1,3 +1,6 @@
+#' Plot sum of nonlinear transformation and offset p_0 together with
+#' experimental data points
+#'
 #' @description Plot sum of nonlinear transformation and offset p_0
 #' together with experimental data points y.
 #' @return ggplot object showing sum of nonlinear transformation and offset p_0

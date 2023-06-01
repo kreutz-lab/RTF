@@ -1,3 +1,6 @@
+#' Plot sum of the sustained part of the RTF and offset p_0 together with
+#' experimental data points
+#'
 #' @description Plot sum of the sustained part of the RTF and offset p_0
 #' together with experimental data points y.
 #' @return ggplot object showing sustained part of the RTF and offset p_0

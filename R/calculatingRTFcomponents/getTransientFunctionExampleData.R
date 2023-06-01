@@ -1,3 +1,5 @@
+#' Calculate RTF
+#'
 #' @description Calculate RTF result for a defined time point with defined
 #' parameters
 #' @return Quantitative values resulting from applying RTF

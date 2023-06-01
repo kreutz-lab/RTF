@@ -1,13 +1,23 @@
-#' @description Fits function for positive and negative sign (signum_TF)
-#' @return List of fitting results for positive ('plus1') and negative sign ('minus1') of function (signum_TF)
-#' @param optimObject optimObject, which is a list containing input data frame with time resolved data ('data'),
-#' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
+#' Fit function for positive AND negative sign
+#'
+#' @description Fits function for positive AND negative sign (signum_TF)
+#' @return List of two optimObjects for a positive and a negative signum_TF
+#' ('plus1' and 'minus1'). Each including fitting result of the best
+#' fit ('fitted'), optimization measure value of this fit ('value'), and, if
+#' plot=TRUE, the plot to this fit ('bestFit.plot') has been added.
+#' @param optimObject optimObject, which is a list containing input data frame
+#' with time resolved data ('data'),
+#' the vector of initial guesses ('initialGuess.vec'), of lower bounds
+#' ('lb.vec'),
 #' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
-#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
+#' negative values in initialGuess.vec, lb.vec, and ub.vec
+#' ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
-#' @param plot Boolean value indicating if fitting results should be plotted and saved as file
-#' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set to TRUE
+#' @param plot Boolean value indicating if fitting results should be plotted
+#' and saved as file
+#' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set
+#' to TRUE
 #' @export getFittingResult
 #' @examples
 #' data <- getExampleDf()
@@ -34,7 +44,6 @@ getFittingResult <- function(optimObject, plot = TRUE, titlePrefixPrefix = "") {
   optim.res.minus1 <- getFittingResults_fixedSignumTF(
     optimObject.orig, signum_TF = -1, plot = plot,
     titlePrefix = paste0(titlePrefixPrefix, "signum_TFMinus1_"))
-
 
   list(plus1 = optim.res.plus1, minus1 = optim.res.minus1)
   # if (optim.res.plus1$value < optim.res.minus1$value){

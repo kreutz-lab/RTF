@@ -1,5 +1,8 @@
-#' @description Select smaller model if the difference in the value of the
-#' optimization measure is not significant for Chi-square significance test.
+#' Select smaller model if there is no significant difference to bigger model
+#'
+#' @description Model reduction: Select smaller model if the difference in the
+#' value of the optimization measure is not significant for Chi-square
+#' significance test.
 #' @return optimObject of the smaller model if for the bigger and smaller model
 #' there is no significance difference in the values of the optimization
 #' measure achieved through fitting.

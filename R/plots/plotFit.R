@@ -1,3 +1,5 @@
+#' Plot RTF together with experimental data points
+#'
 #' @description Plot RTF together with experimental data points
 #' @return ggplot object showing RTF together with experimental data points
 #' @param tau_1 tau_1

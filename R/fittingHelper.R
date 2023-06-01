@@ -1,4 +1,6 @@
-#' @description Get best fit for 50 initial guesses
+#' Get best fit for initial guesses
+#'
+#' @description Get best fit for predefined number of initial guesses
 #' @return List with the parameters of the best fit ('res.pars'),
 #' the optimization measure value of the best fit ('value'),
 #' and the ggplot object of the plot of the best fit ('bestFit.plot')
@@ -15,18 +17,20 @@
 #' optimization measure the fit reached. For the best fit the components of
 #'  the transient function are plotted as well as the parameter distribution
 #'  over all fits and a water fall plot of all fits.
+#' @param nInitialGuesses Number of initial guesses
 #' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set to TRUE
 #' @export fittingHelper
 #' @examples
 #' data <- getExampleDf()
 #' data <- scaleTimeCol(data)
-#' optimObject.orig <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data,
+#'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-#' optim.res <- fittingHelper(optimObject.orig, plot = TRUE, titlePrefix = "fullModel_plus_")
+#' optim.res <- fittingHelper(optimObject.orig, plot = TRUE,
+#'                             titlePrefix = "fullModel_plus_")
 
-fittingHelper <- function(optimObject, plot = TRUE, titlePrefix = "") {
-  nInitialGuesses <- 50
+fittingHelper <- function(optimObject, plot = TRUE, nInitialGuesses = 50, titlePrefix = "") {
   res.lst.wFinal <- getInitialGuessResults(
     optimObject, objFunct, nInitialGuesses, plot = plot)
   final <- res.lst.wFinal$final

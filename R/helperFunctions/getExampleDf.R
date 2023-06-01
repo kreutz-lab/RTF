@@ -1,3 +1,5 @@
+#' Generate example data frame for defined RTF parameters
+#'
 #' @description Generates an example dataframe with data following an RTF with
 #' predefined parameters plus some added noise.
 #' @return Dataframe with data following an RTF with predefined parameters plus

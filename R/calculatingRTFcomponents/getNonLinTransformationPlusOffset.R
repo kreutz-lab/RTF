@@ -1,3 +1,5 @@
+#' Calculate sum of nonlinear transformation and offset p_0
+#'
 #' @description Calculate sum of nonlinear transformation and offset p_0
 #' for a defined time point.
 #' @return Sum of nonlinear transformation and offset p_0 for a defined

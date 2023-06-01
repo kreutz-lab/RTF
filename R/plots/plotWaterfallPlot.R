@@ -1,3 +1,5 @@
+#' Generate waterfall plot of all fits
+#'
 #' @description Generate waterfall plot of all fits. Optionally a specific fit
 #' can be highlighted using the argument 'idxCurrentFit'.
 #' @return ggplot object of the waterfall plot
