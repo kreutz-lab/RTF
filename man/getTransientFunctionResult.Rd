@@ -4,17 +4,12 @@
 \alias{getTransientFunctionResult}
 \title{Calculate RTF results for multiple time points}
 \usage{
-getTransientFunctionResult(
-  par,
-  t_prime,
-  fixed,
-  modus = "RetardedTransientDynamics"
-)
+getTransientFunctionResult(par, t, fixed, modus = "RetardedTransientDynamics")
 }
 \arguments{
 \item{par}{Named vector of the parameter values used for RTF.}
 
-\item{t_prime}{Vector of t_prime}
+\item{t}{Vector of time points}
 
 \item{fixed}{Vector of fixed parameters, which are used to overwrite values
 in par, if they are non-NAs}
@@ -24,7 +19,7 @@ in par, if they are non-NAs}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
-with the specified parameters to time points given in t_prime.
+with the specified parameters to time points given in t.
 }
 \description{
 Apply RTF with defined parameters for defined time points
@@ -32,14 +27,14 @@ Apply RTF with defined parameters for defined time points
 \examples{
 par <- c(tau_1 = 1.00, tau_2 = 1.00, A_sus = 1.05,
          A_trans = 3.05, p_0 = -0.28, T_shift = -1)
-t_prime <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
+t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
 fixed <- c(signum_TF = 1, tau_1 = NA, tau_2 = 2.5, A_sus = NA, A_trans = NA,
            p_0 = NA, T_shift = NA)
 modus <- "RetardedTransientDynamics"
 y <- getTransientFunctionResult(par = par,
-                           t_prime = t_prime,
+                           t = t,
                            fixed = fixed,
                            modus = modus)
-plot(t_prime, y)
+plot(t, y)
 }

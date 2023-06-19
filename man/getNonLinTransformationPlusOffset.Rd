@@ -4,18 +4,18 @@
 \alias{getNonLinTransformationPlusOffset}
 \title{Calculate sum of nonlinear transformation and offset p_0}
 \usage{
-getNonLinTransformationPlusOffset(p_0, T_shift, t_prime)
+getNonLinTransformationPlusOffset(p_0, T_shift, t)
 }
 \arguments{
 \item{p_0}{p_0}
 
 \item{T_shift}{T_shift}
 
-\item{t_prime}{timepoint}
+\item{t}{Time point}
 }
 \value{
 Sum of nonlinear transformation and offset p_0 for a defined
-time point t_prime.
+time point t.
 }
 \description{
 Calculate sum of nonlinear transformation and offset p_0
@@ -25,5 +25,5 @@ for a defined time point.
 getNonLinTransformationPlusOffset(
         p_0 = -0.28,
         T_shift = -1,
-        t_prime = 0.6)
+        t = 0.6)
 }

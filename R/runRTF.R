@@ -4,7 +4,7 @@
 #' @return List of the final RTF model (finalModel), the optimized parameters
 #' (finalParams), the plot of the final model (finalPlot), as well as the
 #' intermediate results (intermediateResults).
-#' @param data Data frame containing columns named 't_prime' (time) and
+#' @param data Data frame containing columns named 't' (time) and
 #' 'y' (quantitative value)
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
@@ -19,11 +19,10 @@
 #' res <- runRTF(data, modus = modus, plot = plot)
 
 runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
-  data <- scaleTimeCol(data = data)
   optimObject.orig <- initializeOptimObject(data, modus = modus)
   res.all.plusMinus <- getFittingResult(optimObject.orig, plot = plot,
                                         titlePrefixPrefix = "fullModel_")
-  res <- selectPlusOrMinus(res.all.plusMinus)
+  res <- selectBest(res.all.plusMinus)
 
   #  MODEL REDUCTION
   # 1. Testing whether there is time retardation,
@@ -38,7 +37,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
     optimObjectTmp,
     plot = plot,
     titlePrefixPrefix = "TshiftFixed_")
-  res.T_shiftLB <- selectPlusOrMinus(res.T_shiftLB.plusMinus)
+  res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
 
   # 2. Testing whether the model is in agreement with a constant.
@@ -49,7 +48,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
   optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
   res.constant.plusMinus <- getFittingResult(
     optimObjectTmp2, plot = plot, titlePrefixPrefix = "Constant_")
-  res.constant <- selectPlusOrMinus(res.constant.plusMinus)
+  res.constant <- selectBest(res.constant.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
 
   # 3. Testing whether the offset p0 is significantly different from zero.
@@ -60,7 +59,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
   optimObjectTmp3$A_sus <- optimObjectTmp3$p_0  <- 0
   res.p_0Zero.plusMinus <- getFittingResult(
     optimObjectTmp3, plot = plot, titlePrefixPrefix = "p0Zero_")
-  res.p_0Zero <- selectPlusOrMinus(res.p_0Zero.plusMinus)
+  res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
 
   finalModel <- res

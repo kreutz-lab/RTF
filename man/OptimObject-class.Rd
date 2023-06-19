@@ -11,7 +11,7 @@ Description for OptimObject
 
 \describe{
 \item{\code{data}}{Data frame with time resolved data, containing at least the
-numeric columns 'y' ( measured outcome) and 't_prime' (time)}
+numeric columns 'y' ( measured outcome) and 't' (time)}
 
 \item{\code{initialGuess.vec}}{Named vector of initial guesses}
 
@@ -33,7 +33,7 @@ above 0 in initialGuess.vec, lb.vec, and ub.vec}
 
 \examples{
 OptimObject1 <- new("OptimObject",
-  data = data.frame(y=c(0.5, 4, 73), t_prime = c(2, 5, 7)),
+  data = data.frame(y=c(0.5, 4, 73), t = c(2, 5, 7)),
   initialGuess.vec = c(par1 = 2, par2 = 54),
   lb.vec = c(par1 = 0, par2 = 0),
   ub.vec = c(par1 = 50, par2 = 50),

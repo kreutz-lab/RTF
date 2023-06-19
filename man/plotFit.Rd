@@ -4,7 +4,7 @@
 \alias{plotFit}
 \title{Plot RTF together with experimental data points}
 \usage{
-plotFit(tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t_prime)
+plotFit(tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t)
 }
 \arguments{
 \item{tau_1}{tau_1}
@@ -24,7 +24,7 @@ plotFit(tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t_prime)
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
 
-\item{t_prime}{timepoints}
+\item{t}{Time points}
 }
 \value{
 ggplot object showing RTF together with experimental data points
@@ -38,5 +38,5 @@ gg <- plotFit(
        A_sus = 1.05, A_trans = 3.05,
        p_0 = -0.28, T_shift = -1, signum_TF = 1,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
-       t_prime = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+       t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 }

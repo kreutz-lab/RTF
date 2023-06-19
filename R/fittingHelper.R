@@ -23,7 +23,6 @@
 #' @export fittingHelper
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
@@ -32,7 +31,7 @@
 #'                             titlePrefix = "fullModel_plus_")
 
 fittingHelper <- function(optimObject, plot = TRUE, nInitialGuesses = 50, titlePrefix = "") {
-  res.lst.wFinal <- getInitialGuessResults(
+  res.lst.wFinal <- getMultiStartResults(
     optimObject, objFunct, nInitialGuesses, plot = plot)
   final <- res.lst.wFinal$final
 

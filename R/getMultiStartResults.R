@@ -20,19 +20,18 @@
 #' optimization measure the fit reached. For the best fit the components of
 #'  the transient function are plotted as well as the parameter distribution
 #'  over all fits and a water fall plot of all fits.
-#' @export getInitialGuessResults
+#' @export getMultiStartResults
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(
 #'                 data, modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
-#' optim.res <- getInitialGuessResults(
+#' optim.res <- getMultiStartResults(
 #'                 optimObject.orig, objFunct, nInitialGuesses, plot = TRUE)
 
-getInitialGuessResults <- function(
+getMultiStartResults <- function(
     optimObject, objFunct, nInitialGuesses, plot = TRUE) {
   initialGuess.vec.lst <- getInitialGuessVec(
     initialGuess.vec = optimObject$initialGuess.vec,
@@ -76,7 +75,7 @@ getInitialGuessResults <- function(
                     paste(names(bestOptimRes$par),
                           round(bestOptimRes$par, 4),
                           sep = ": ", collapse = ", "))
-    gg.final <- plotModelComponents(
+    gg.final <- plotRTFComponents(
       pars = bestOptimRes$par,
       data = optimObject$data,
       signum_TF = optimObject$fixed[["signum_TF"]], title = title

@@ -7,7 +7,7 @@
 runRTF(data, modus = "RetardedTransientDynamics", plot = TRUE)
 }
 \arguments{
-\item{data}{Data frame containing columns named 't_prime' (time) and
+\item{data}{Data frame containing columns named 't' (time) and
 'y' (quantitative value)}
 
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or

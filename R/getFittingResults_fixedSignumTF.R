@@ -21,7 +21,6 @@
 #' @export getFittingResults_fixedSignumTF
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'RetardedTransientDynamics')
 #' res.all.plus <- getFittingResults_fixedSignumTF(

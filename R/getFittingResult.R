@@ -21,7 +21,6 @@
 #' @export getFittingResult
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(
 #'             data, modus = 'RetardedTransientDynamics')
 #' res.all.plusMinus <- getFittingResult(

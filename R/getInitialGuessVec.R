@@ -14,7 +14,6 @@
 #' @export getInitialGuessVec
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'RetardedTransientDynamics')
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]

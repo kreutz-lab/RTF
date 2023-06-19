@@ -12,7 +12,7 @@ getTransientFunctionExampleData(
   p_0,
   T_shift,
   signum_TF,
-  t_prime
+  t
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ getTransientFunctionExampleData(
 
 \item{signum_TF}{signum_TF}
 
-\item{t_prime}{timepoint}
+\item{t}{Time point}
 }
 \value{
 Quantitative values resulting from applying RTF
@@ -45,5 +45,5 @@ getTransientFunctionExampleData(
         tau_1 = 1.00, tau_2 = 1.00,
         A_sus = 1.05, A_trans = 3.05,
         p_0 = -0.28, T_shift = -1, signum_TF = 1,
-        t_prime = 0.6)
+        t = 0.6)
 }

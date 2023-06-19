@@ -30,7 +30,6 @@ Run optimization using stats::optim with method = "L-BFGS-B"
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
 signum_TF <- 1

@@ -23,7 +23,6 @@ Chi square optimization function
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject.orig <- initializeOptimObject(data,
                         modus = 'RetardedTransientDynamics')
 optimObject.orig$fixed[["signum_TF"]] <- 1

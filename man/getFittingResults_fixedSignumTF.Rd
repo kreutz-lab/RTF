@@ -35,7 +35,6 @@ Fits function for positive OR negative sign (signum_TF)
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
 res.all.plus <- getFittingResults_fixedSignumTF(

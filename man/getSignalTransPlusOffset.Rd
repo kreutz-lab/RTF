@@ -4,15 +4,7 @@
 \alias{getSignalTransPlusOffset}
 \title{Calculate sum of the transient part of the RTF and offset p_0}
 \usage{
-getSignalTransPlusOffset(
-  tau_1,
-  tau_2,
-  A_trans,
-  p_0,
-  T_shift,
-  signum_TF,
-  t_prime
-)
+getSignalTransPlusOffset(tau_1, tau_2, A_trans, p_0, T_shift, signum_TF, t)
 }
 \arguments{
 \item{tau_1}{tau_1}
@@ -27,11 +19,11 @@ getSignalTransPlusOffset(
 
 \item{signum_TF}{signum_TF}
 
-\item{t_prime}{timepoint}
+\item{t}{Time point}
 }
 \value{
 Sum of the transient part of the RTF and offset p_0 for a defined
-time point t_prime.
+time point t.
 }
 \description{
 Calculate sum of the transient part of the RTF and offset p_0
@@ -42,5 +34,5 @@ getSignalTransPlusOffset(
         tau_1 = 1.00, tau_2 = 1.00,
         A_trans = 3.05,
         p_0 = -0.28, T_shift = -1, signum_TF = 1,
-        t_prime = 0.6)
+        t = 0.6)
 }

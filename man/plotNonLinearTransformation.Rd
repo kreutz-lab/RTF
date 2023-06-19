@@ -5,7 +5,7 @@
 \title{Plot sum of nonlinear transformation and offset p_0 together with
 experimental data points}
 \usage{
-plotNonLinearTransformation(p_0, T_shift, y, t_prime)
+plotNonLinearTransformation(p_0, T_shift, y, t)
 }
 \arguments{
 \item{p_0}{p_0}
@@ -15,7 +15,7 @@ plotNonLinearTransformation(p_0, T_shift, y, t_prime)
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
 
-\item{t_prime}{timepoints}
+\item{t}{Time points}
 }
 \value{
 ggplot object showing sum of nonlinear transformation and offset p_0
@@ -29,5 +29,5 @@ together with experimental data points y.
 gg <- plotNonLinearTransformation(
        p_0 = -0.28, T_shift = -1,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
-       t_prime = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+       t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 }

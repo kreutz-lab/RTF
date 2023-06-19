@@ -19,7 +19,6 @@
 #' @export takeLog10OfBounds
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject <- initializeOptimObject(data,
 #'                                     modus = 'RetardedTransientDynamics',
 #'                                     takeLog10=FALSE)

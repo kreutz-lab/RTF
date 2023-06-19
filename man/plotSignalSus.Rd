@@ -5,7 +5,7 @@
 \title{Plot sum of the sustained part of the RTF and offset p_0 together with
 experimental data points}
 \usage{
-plotSignalSus(tau_1, A_sus, p_0, T_shift, signum_TF, y, t_prime)
+plotSignalSus(tau_1, A_sus, p_0, T_shift, signum_TF, y, t)
 }
 \arguments{
 \item{tau_1}{tau_1}
@@ -21,7 +21,7 @@ plotSignalSus(tau_1, A_sus, p_0, T_shift, signum_TF, y, t_prime)
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
 
-\item{t_prime}{timepoints}
+\item{t}{Time points}
 }
 \value{
 ggplot object showing sustained part of the RTF and offset p_0
@@ -37,5 +37,5 @@ gg <- plotSignalSus(
        A_sus = 1.05,
        p_0 = -0.28, T_shift = -1, signum_TF = 1,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
-       t_prime = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+       t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 }

@@ -9,9 +9,9 @@
 #' getExampleDf()
 
 getExampleDf <- function(){
-  t <- seq(0, 10, 0.7)
+  t <- seq(3, 17, 0.7)
   y <- getTransientFunctionExampleData(
-    tau_1=0.4, tau_2=2, A_sus=0.25, A_trans=0.5, p_0=0.3,
-    T_shift=2.5, signum_TF=1, t_prime=t)
+    tau_1=1, tau_2=2, A_sus=1, A_trans=1.5, p_0=0.3,
+    T_shift=2, signum_TF=1, t=t)
   data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.03))
 }

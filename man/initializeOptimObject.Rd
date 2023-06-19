@@ -7,7 +7,7 @@
 initializeOptimObject(data, modus, takeLog10 = TRUE)
 }
 \arguments{
-\item{data}{Data frame containing columns named 't_prime' (time) and 'y'
+\item{data}{Data frame containing columns named 't' (time) and 'y'
 (quantitative value)}
 
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or
@@ -29,6 +29,5 @@ Initializes OptimObject
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
 }

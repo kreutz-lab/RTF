@@ -17,7 +17,6 @@
 #' @export runOptimization
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
@@ -82,7 +81,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                     paste(names(pars),
                           round(pars, 4), sep = ": ", collapse = ", "))
 
-    gg <- plotModelComponents(pars = pars,
+    gg <- plotRTFComponents(pars = pars,
                               data = optimObject$data,
                               signum_TF =
                                 optimObject$fixed[["signum_TF"]], title = title)

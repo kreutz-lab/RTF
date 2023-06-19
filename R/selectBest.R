@@ -17,17 +17,16 @@
 #' the parameters having no negative values in initialGuess.vec, lb.vec,
 #' and ub.vec ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted').
-#' @export selectPlusOrMinus
+#' @export selectBest
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data=data)
 #' optimObject.orig <- initializeOptimObject(
 #'                                   data, modus = 'RetardedTransientDynamics')
 #' res.all.plusMinus <- getFittingResult(
 #'             optimObject.orig, plot = FALSE, titlePrefixPrefix = "fullModel_")
-#' res <- selectPlusOrMinus(res.all.plusMinus)
+#' res <- selectBest(res.all.plusMinus)
 
-selectPlusOrMinus <- function(res) {
+selectBest <- function(res) {
   if (res$plus1$value < res$minus1$value) {
     res <- res[["plus1"]]
   } else {

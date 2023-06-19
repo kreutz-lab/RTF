@@ -12,13 +12,12 @@
 #' @export plotWaterfallPlot
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(
 #'                         data, modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
-#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, objFunct,
+#' res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
 #'                     nInitialGuesses, plot = TRUE)
 #' final <- res.lst.wFinal$final
 #' waterfallPlotData <- final$gg.waterfall$data

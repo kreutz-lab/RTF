@@ -36,7 +36,6 @@ Get best fit for predefined number of initial guesses
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
 signum_TF <- 1

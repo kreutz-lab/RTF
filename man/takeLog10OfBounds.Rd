@@ -30,7 +30,6 @@ name being included in the vector 'positive.par.names' of the OptimObject.
 }
 \examples{
 data <- getExampleDf()
-data <- scaleTimeCol(data)
 optimObject <- initializeOptimObject(data,
                                     modus = 'RetardedTransientDynamics',
                                     takeLog10=FALSE)

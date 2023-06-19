@@ -11,7 +11,7 @@
 #' @param signum_TF signum_TF
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
-#' @param t_prime timepoints
+#' @param t Time points
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
@@ -19,19 +19,19 @@
 #'        A_sus = 1.05, A_trans = 3.05,
 #'        p_0 = -0.28, T_shift = -1, signum_TF = 1,
 #'        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
-#'        t_prime = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+#'        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 
 plotFit <- function(
-    tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t_prime) {
-  xi <- seq(0, max(t_prime), length.out = 1000)
+    tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t) {
+  xi <- seq(0, max(t), length.out = 1000)
 
-  ggplot2::ggplot(data.frame(t_prime = t_prime, y = y),
-                  ggplot2::aes(x = t_prime, y = y)) +
+  ggplot2::ggplot(data.frame(t = t, y = y),
+                  ggplot2::aes(x = t, y = y)) +
     ggplot2::geom_point(alpha = 0.5) +
     ggplot2::ggtitle("RTF =  SignalSus + SignalTrans + p_0") +
     ggplot2::geom_line(data = data.frame(x = xi,
                               y = getTransientFunctionExampleData(
-                                t_prime = xi,
+                                t = xi,
                                 tau_1 = tau_1,
                                 tau_2 = tau_2,
                                 A_sus = A_sus,

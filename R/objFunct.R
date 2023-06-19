@@ -10,7 +10,6 @@
 #' @export objFunct
 #' @examples
 #' data <- getExampleDf()
-#' data <- scaleTimeCol(data)
 #' optimObject.orig <- initializeOptimObject(data,
 #'                         modus = 'RetardedTransientDynamics')
 #' optimObject.orig$fixed[["signum_TF"]] <- 1
@@ -59,7 +58,7 @@ objFunct <- function(par, data, optimObject) {
       10^par[optimObject$positive.par.names]
 
   res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                             t_prime = data$t_prime,
+                                             t = data$t,
                                              fixed = optimObject$fixed)
 
   if (("sdExp" %in% colnames(data))) {
