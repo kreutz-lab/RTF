@@ -52,34 +52,37 @@
 #'                                     trace = 1, maxit = 1000, factr=1.0e-20))
 
 objFunct <- function(par, data, optimObject) {
+  retval <- NULL
   # par <- optimObject$initialGuess.vec
 
   # if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
   #    10^par[optimObject$positive.par.names]
 
-  par[names(which(optimObject[["takeLog10"]]))] <-
-    10^par[names(which(optimObject[["takeLog10"]]))]
-
-  res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                             t = data$t,
-                                             fixed = optimObject$fixed)
-
-  if (("sdExp" %in% colnames(data))) {
-    sdVec <- data$sdExp
-    loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
-  } else {
-    loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
-  }
-
-  retval <- -2 * loglik
-
-  # if(is.infinite(retval)){
-  if (retval == Inf) {
-    print(par)
-    retval <- 10^10
-    warning(paste0("objective function is infinite."))
-  } else if (retval == -Inf) {
-    retval <- -10^10
+  if (optimObject$optimFunction == "chiSquare") {
+    par[names(which(optimObject[["takeLog10"]]))] <-
+      10^par[names(which(optimObject[["takeLog10"]]))]
+  
+    res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
+                                               t = data$t,
+                                               fixed = optimObject$fixed)
+  
+    if (("sdExp" %in% colnames(data))) {
+      sdVec <- data$sdExp
+      loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
+    } else {
+      loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
+    }
+  
+    retval <- -2 * loglik
+  
+    # if(is.infinite(retval)){
+    if (retval == Inf) {
+      print(par)
+      retval <- 10^10
+      warning(paste0("objective function is infinite."))
+    } else if (retval == -Inf) {
+      retval <- -10^10
+    }
   }
   return(retval)
 }

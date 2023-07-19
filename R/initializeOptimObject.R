@@ -18,7 +18,7 @@
 #' data <- getExampleDf()
 #' optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
 
-initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
+initializeOptimObject <- function(data, modus, optimFunction = "chiSquare", takeLog10=TRUE) {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
   # Define Lower and Upper bounds, and Default initial guess
@@ -79,6 +79,7 @@ initializeOptimObject <- function(data, modus, takeLog10=TRUE) {
                                          sigma = FALSE),
                            positive.par.names = NULL,
                            modus = modus,
+                           optimFunction = optimFunction,
                            fitted = list()
   )
 
