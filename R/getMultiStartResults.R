@@ -82,7 +82,8 @@ getMultiStartResults <- function(
     gg.final <- plotRTFComponents(
       pars = bestOptimRes$par,
       data = optimObject$data,
-      signum_TF = optimObject$fixed[[paramsToNotBeFitted]], title = title
+      signum_TF = optimObject$fixed[[paramsToNotBeFitted]],
+      title = title
     )
   }
 

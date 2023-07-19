@@ -53,8 +53,15 @@ fittingHelper <- function(optimObject, plot = TRUE, nInitialGuesses = 50, titleP
     }
     grDevices::dev.off()
 
-    bestFit.plot <- patchwork::wrap_plots(final$gg, final$gg.waterfall,
-      final$gg.paramDistr, ncol = 1)
+    bestFit.plot <- patchwork::wrap_plots(
+      final$gg,
+      final$gg.waterfall,
+      final$gg.paramDistr,
+      ncol = 1)
+
+    bestFit.plot <- bestFit.plot + patchwork::plot_annotation(
+      title = final$gg$patches$annotation$title
+    )
     ggplot2::ggsave(filename = paste0(titlePrefix, "bestFit.pdf"),
            bestFit.plot, width = 12, height = 13)
   }

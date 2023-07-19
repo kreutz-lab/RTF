@@ -91,7 +91,8 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     gg <- plotRTFComponents(pars = pars,
                               data = optimObject$data,
                               signum_TF =
-                                optimObject$fixed[[paramsToNotBeFitted]], title = title)
+                                optimObject$fixed[[paramsToNotBeFitted]],
+                            title = title)
 
     lst <- list(append(list(optimResTmp), list(gg)))
     names(lst[[1]]) <- c("optimRes", "gg")
