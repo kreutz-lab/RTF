@@ -54,8 +54,11 @@
 objFunct <- function(par, data, optimObject) {
   # par <- optimObject$initialGuess.vec
 
-  if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
-      10^par[optimObject$positive.par.names]
+  # if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
+  #    10^par[optimObject$positive.par.names]
+
+  par[names(which(optimObject[["takeLog10"]]))] <-
+    10^par[names(which(optimObject[["takeLog10"]]))]
 
   res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
                                              t = data$t,

@@ -41,7 +41,7 @@ methods::setClass(
       lb.vec = structure(numeric(), names = character()),
       ub.vec = structure(numeric(), names = character()),
       fixed = structure(numeric(), names = character()),
-      takeLog10 = logical(),
+      takeLog10 = structure(logical(), names = character()),
       positive.par.names = character(),
       modus = character(),
       fitted = numeric()

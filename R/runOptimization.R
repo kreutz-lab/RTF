@@ -37,10 +37,11 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   res.lst <- list()
   optimObject.tmp <- optimObject
 
+  paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
   pars.tmp <- c()
   # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
-  for (el in
-       c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")) {
+  for (el in paramsToBeFitted) {
+#       c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")) {
     if (!is.na(optimObject.tmp$fixed[[el]])) {
       nam <- names(pars.tmp)
       pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
@@ -68,23 +69,29 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 optimObject = optimObject.tmp,
                                 control = list(trace = 1, maxit = 1000,
                                                factr = 1.0e-20))
-    if (optimObject$takeLog10) {
-      optimResTmp$par[optimObject$positive.par.names] <-
-        10^optimResTmp$par[optimObject$positive.par.names]
-    }
+    # if (optimObject$takeLog10) {
+    #   optimResTmp$par[optimObject$positive.par.names] <-
+    #     10^optimResTmp$par[optimObject$positive.par.names]
+    # }
+
+    optimResTmp$par[names(which(optimObject[["takeLog10"]]))] <-
+      10^optimResTmp$par[names(which(optimObject[["takeLog10"]]))]
 
     optimResTmp$par <- pars <- c(pars.tmp, optimResTmp$par)
     value <- optimResTmp$value
 
+
+    paramsToNotBeFitted <- setdiff(names(optimObject$fixed), paramsToBeFitted)
+
     title <- paste0("OptimValue: ", round(value, 2),
-                    "; signum_TF: ", optimObject$fixed[["signum_TF"]], ", ",
+                    "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
                     paste(names(pars),
                           round(pars, 4), sep = ": ", collapse = ", "))
 
     gg <- plotRTFComponents(pars = pars,
                               data = optimObject$data,
                               signum_TF =
-                                optimObject$fixed[["signum_TF"]], title = title)
+                                optimObject$fixed[[paramsToNotBeFitted]], title = title)
 
     lst <- list(append(list(optimResTmp), list(gg)))
     names(lst[[1]]) <- c("optimRes", "gg")

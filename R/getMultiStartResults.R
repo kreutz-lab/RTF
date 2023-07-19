@@ -39,6 +39,8 @@ getMultiStartResults <- function(
     ub.vec = optimObject$ub.vec,
     nInitialGuesses = nInitialGuesses)
 
+  paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
+
   initialGuessResults <-
     runOptimization(initialGuess.vec.lst, optimObject, objFunct)
 
@@ -70,15 +72,17 @@ getMultiStartResults <- function(
     optimResTmpLstParsAll.df.long <- reshape2::melt(optimResTmpLstParsAll.df)
     gg.paramDistr <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
 
+    paramsToNotBeFitted <- setdiff(names(optimObject$fixed), paramsToBeFitted)
+
     title <- paste0("OptimValue: ", round(bestOptimRes$value, 2),
-                    "; signum_TF: ", optimObject$fixed[["signum_TF"]], ", ",
+                    "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
                     paste(names(bestOptimRes$par),
                           round(bestOptimRes$par, 4),
                           sep = ": ", collapse = ", "))
     gg.final <- plotRTFComponents(
       pars = bestOptimRes$par,
       data = optimObject$data,
-      signum_TF = optimObject$fixed[["signum_TF"]], title = title
+      signum_TF = optimObject$fixed[[paramsToNotBeFitted]], title = title
     )
   }
 

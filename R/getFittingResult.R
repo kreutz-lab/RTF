@@ -37,18 +37,27 @@ getFittingResult <- function(optimObject, plot = TRUE, titlePrefixPrefix = "") {
         optimObject$fixed[pname]
   }
   optimObject.orig <- optimObject
-  optim.res.plus1 <- getFittingResults_fixedSignumTF(
-    optimObject, signum_TF = 1, plot = plot,
-    titlePrefix = paste0(titlePrefixPrefix, "signum_TFPlus1_"))
-  optim.res.minus1 <- getFittingResults_fixedSignumTF(
-    optimObject.orig, signum_TF = -1, plot = plot,
-    titlePrefix = paste0(titlePrefixPrefix, "signum_TFMinus1_"))
 
-  list(plus1 = optim.res.plus1, minus1 = optim.res.minus1)
-  # if (optim.res.plus1$value < optim.res.minus1$value){
-  #   res <- optim.res.plus1
-  # } else {
-  #   res <- optim.res.minus1
-  # }
-  # res
+  parStr <- "signum_TF"
+  parVals <- c(-1, 1)
+  res.lst <- list()
+  for (parVal in parVals) {
+    optim.res <- NULL
+    optim.res <- getBestFittingResult(
+      optimObject, parStr = parStr, parVal = parVal, plot = plot,
+      titlePrefix = paste0(titlePrefixPrefix, parStr, parVal, "_"))
+    res.lst <- append(res.lst, list(optim.res))
+  }
+
+  names(res.lst) <- parVals
+  res.lst
+
+  # optim.res.plus1 <- getBestFittingResult(
+  #   optimObject, signum_TF = 1, plot = plot,
+  #   titlePrefix = paste0(titlePrefixPrefix, "signum_TFPlus1_"))
+  # optim.res.minus1 <- getBestFittingResult(
+  #   optimObject.orig, signum_TF = -1, plot = plot,
+  #   titlePrefix = paste0(titlePrefixPrefix, "signum_TFMinus1_"))
+  #
+  # list(plus1 = optim.res.plus1, minus1 = optim.res.minus1)
 }

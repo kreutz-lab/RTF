@@ -35,8 +35,10 @@ takeLog10OfBounds <- function(optimObject) {
                                  ub.vec = optimObject$ub.vec,
                                  initialGuess.vec =
                                    optimObject$initialGuess.vec)
-  boundsDefault.df[optimObject$positive.par.names,] <-
-    log10(boundsDefault.df[optimObject$positive.par.names,])
+  positive.par.names <- optimObject$positive.par.names
+  optimObject[["takeLog10"]][positive.par.names] <- TRUE
+  boundsDefault.df[positive.par.names,] <-
+    log10(boundsDefault.df[positive.par.names,])
   vecs <- getNamedVectorsFromDf(boundsDefault.df)
   optimObject$lb.vec <- vecs$lb.vec
   optimObject$ub.vec <- vecs$ub.vec
