@@ -2,8 +2,7 @@
 #'
 #' @description Fits function for positive OR negative sign (signum_TF)
 #' @return optimObject, to which fitting result of the best fit ('fitted'),
-#' optimization measure value of this fit ('value'), and, if plot=TRUE, the
-#' plot to this fit ('bestFit.plot') has been added.
+#' optimization measure value of this fit ('value').
 #' @param optimObject optimObject, which is a list containing input data frame
 #' with time resolved data ('data'),
 #' the vector of initial guesses ('initialGuess.vec'), of
@@ -13,11 +12,8 @@
 #' negative values in initialGuess.vec, lb.vec, and
 #' ub.vec ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted').
-#' @param parString String of variable based on which comparison is conducted (Default: "signum_TF")
+#' @param parStr String of variable based on which comparison is conducted (Default: "signum_TF")
 #' @param parVal Value of variable defined in parString  (Default: 1)
-#' @param plot Boolean value indicating if fitting results should be plotted
-#' and saved as file
-#' @param titlePrefix Prefix of file names of plots, if plot  was set
 #' to TRUE
 #' @export getBestFittingResult
 #' @examples
@@ -25,20 +21,32 @@
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'RetardedTransientDynamics')
 #' res.all.plus <- getBestFittingResult(
-#'         optimObject.orig, parStr = "signum_TF", parVal = 1, plot = TRUE,
-#'         titlePrefix = "fullModel_plus_")
+#'         optimObject.orig, parStr = "signum_TF", parVal = 1)
 
 getBestFittingResult <- function(
 #    optimObject, signum_TF, plot, titlePrefix = "") {
-  optimObject, parStr = "signum_TF", parVal = 1, plot, titlePrefix = "") {
+  optimObject, parStr = "signum_TF", parVal = 1) {
   optimObject$fixed[[parStr]] <- parVal
-  optim.res <- fittingHelper(
-    optimObject, plot = plot, nInitialGuesses = 50, titlePrefix = titlePrefix)
-  res.pars <- optim.res$res.pars
-  value <- optim.res$value
+  
+  
+  # optim.res <- fittingHelper(
+  #  optimObject, plot = plot, nInitialGuesses = 50, titlePrefix = titlePrefix)
+  
+  optimObject.woptimRes <- getMultiStartResults(
+    optimObject, objFunct, nInitialGuesses = 50)
+  
+  list(res.pars = optimObject.woptimRes$bestOptimResult$par,
+       value = optimObject.woptimRes$bestOptimResult$value
+  )
+  
+  res.pars <- optimObject.woptimRes$bestOptimResult$par
+  value <- optimObject.woptimRes$bestOptimResult$value
   optimObject$fitted <- c(res.pars, parVal)
   names(optimObject$fitted) <- c(names(res.pars), parStr)
   optimObject$value <- value
-  optimObject$bestFit.plot <- optim.res$bestFit.plot
+  #optimObject$bestFit.plot <- optim.res$bestFit.plot
+  
+  optimObject$optimResults <- optimObject.woptimRes$optimResults
+  optimObject$bestOptimResult <- optimObject.woptimRes$bestOptimResult
   optimObject
 }

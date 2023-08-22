@@ -3,8 +3,8 @@
 #' @description Get fits for defined number of initial guesses and add optional
 #' plots (incl. for best fit ('final') waterfall plot and for all parameters
 #' histograms of the parameter values across all fits)
-#' @return List of with optimization results and plots to each fit ('res.lst')
-#' and optimization result and plot to best fit ('final'), both with optional plots
+#' @return optimObject supplemented by all optimization results ('optimResults') and
+#' the ebst optimization result ('bestOptimResult')
 #' @param optimObject optimObject, which is a list containing input data frame with time resolved data ('data'),
 #' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 #' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
@@ -14,12 +14,6 @@
 #' optimObject$fixed[["signum_TF"]] has to be set to 1 or -1
 #' @param objFunct Name of the objective function
 #' @param nInitialGuesses Integer corresponding to number of initial guesses
-#' @param plot Boolean value indicating if fitting results should be plotted and saved as file.
-#' Plots include for each fit plot of the components of the transient function
-#' and the position of the fit in the waterfall plot based on the value of the
-#' optimization measure the fit reached. For the best fit the components of
-#'  the transient function are plotted as well as the parameter distribution
-#'  over all fits and a water fall plot of all fits.
 #' @export getMultiStartResults
 #' @examples
 #' data <- getExampleDf()
@@ -29,69 +23,25 @@
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 50
 #' optim.res <- getMultiStartResults(
-#'                 optimObject.orig, objFunct, nInitialGuesses, plot = TRUE)
+#'                 optimObject.orig, objFunct, nInitialGuesses)
 
 getMultiStartResults <- function(
-    optimObject, objFunct, nInitialGuesses, plot = TRUE) {
+    optimObject, objFunct, nInitialGuesses) {
   initialGuess.vec.lst <- getInitialGuessVec(
     initialGuess.vec = optimObject$initialGuess.vec,
     lb.vec = optimObject$lb.vec,
     ub.vec = optimObject$ub.vec,
     nInitialGuesses = nInitialGuesses)
 
-  paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
+  # paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
 
   initialGuessResults <-
     runOptimization(initialGuess.vec.lst, optimObject, objFunct)
 
-  res.lst <- initialGuessResults[["res.lst"]]
-  bestOptimRes <- initialGuessResults[["bestOptimRes"]]
+  optimObject$optimResults <- initialGuessResults[["optimResults"]]
+  optimObject$bestOptimResult <- initialGuessResults[["bestOptimResult"]]
 
-  gg.final <- gg.waterfall <- gg.paramDistr <- NA
-
-  if (plot) {
-    res.lst.optimRes <- lapply(res.lst, function(x) {
-      tmp <- unlist(x[grep("optimRes", names(x))], recursive = FALSE)
-      names(tmp) <- sub("optimRes.", "", names(tmp))
-      tmp
-    })
-
-    optimResTmpLstParsAll <- lapply(res.lst.optimRes, function(x) {
-      tmp <- unlist(x[grep("par",names(x))])
-      names(tmp) <- sub("par.", "", names(tmp))
-      tmp
-    })
-
-    optimResTmpLstValuesAll <- unlist(
-      lapply(res.lst.optimRes, function(x) unlist(x[grep("value",names(x))])))
-
-    gg.waterfall <- plotWaterfallPlot(optimResTmpLstValuesAll)
-
-    optimResTmpLstParsAll.df <- data.frame(
-      do.call(rbind, optimResTmpLstParsAll))
-    optimResTmpLstParsAll.df.long <- reshape2::melt(optimResTmpLstParsAll.df)
-    gg.paramDistr <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
-
-    paramsToNotBeFitted <- setdiff(names(optimObject$fixed), paramsToBeFitted)
-
-    title <- paste0("OptimValue: ", round(bestOptimRes$value, 2),
-                    "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
-                    paste(names(bestOptimRes$par),
-                          round(bestOptimRes$par, 4),
-                          sep = ": ", collapse = ", "))
-    gg.final <- plotRTFComponents(
-      pars = bestOptimRes$par,
-      data = optimObject$data,
-      signum_TF = optimObject$fixed[[paramsToNotBeFitted]],
-      title = title
-    )
-  }
-
-  final <- list(optimRes = bestOptimRes,
-                gg = gg.final,
-                gg.waterfall = gg.waterfall,
-                gg.paramDistr = gg.paramDistr)
-
-  res.lst.wFinal <- list(res.lst = res.lst, final = final)
-  res.lst.wFinal
+  # optimResults.wFinal <- list(optimResults = optimResults, optimRes = bestOptimResult)
+  # optimResults.wFinal
+  optimObject
 }

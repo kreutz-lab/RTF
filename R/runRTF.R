@@ -20,7 +20,7 @@
 
 runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
   optimObject.orig <- initializeOptimObject(data, modus = modus)
-  res.all.plusMinus <- getFittingResult(optimObject.orig, plot = plot,
+  res.all.plusMinus <- getFittingResult(optimObject.orig,
                                         titlePrefixPrefix = "fullModel_")
   res <- selectBest(res.all.plusMinus)
 
@@ -35,7 +35,6 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
   optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
   res.T_shiftLB.plusMinus <- getFittingResult(
     optimObjectTmp,
-    plot = plot,
     titlePrefixPrefix = "TshiftFixed_")
   res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
@@ -47,7 +46,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
     setdiff(optimObjectTmp2$positive.par.names, c("A_sus", "A_trans"))  # because lb.vec[["T_shift"]] corresponds to -2
   optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
   res.constant.plusMinus <- getFittingResult(
-    optimObjectTmp2, plot = plot, titlePrefixPrefix = "Constant_")
+    optimObjectTmp2, titlePrefixPrefix = "Constant_")
   res.constant <- selectBest(res.constant.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
 
@@ -58,25 +57,27 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
     setdiff(optimObjectTmp3$positive.par.names, "p_0")  # because lb.vec[["T_shift"]] corresponds to -2
   optimObjectTmp3$A_sus <- optimObjectTmp3$p_0  <- 0
   res.p_0Zero.plusMinus <- getFittingResult(
-    optimObjectTmp3, plot = plot, titlePrefixPrefix = "p0Zero_")
+    optimObjectTmp3, titlePrefixPrefix = "p0Zero_")
   res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
   res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
 
   finalModel <- res
   finalParams <- res$fitted
-  finalPlot <- res$bestFit.plot
-
-  if (plot) {
-    ggplot2::ggsave(filename = "finalModel.pdf", finalPlot, width = 12, height = 13)
-  }
+  # finalPlot <- res$bestFit.plot
+  # 
+  # if (plot) {
+  #   ggplot2::ggsave(filename = "finalModel.pdf", finalPlot, width = 12, height = 13)
+  # }
 
   print("The parameters of the best fit are:")
   print(paste(names(finalParams), round(finalParams, 4),
               sep = ": ", collapse = ", "))
 
+  # plotMultiStartPlots(optimObject = finalModel, titlePrefix = "_finalModel", plotAllFits = TRUE)
+  
   return(list(finalModel = res,
               finalParams = res$fitted,
-              finalPlot = finalPlot,
+              # finalPlot = finalPlot,
               intermediateResults = list(fullModel = res.all.plusMinus,
                                          TshiftFixed = res.T_shiftLB.plusMinus,
                                          Constant = res.constant.plusMinus,

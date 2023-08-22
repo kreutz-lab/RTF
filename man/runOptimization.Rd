@@ -22,8 +22,8 @@ optimObject$fixed[["signum_TF"]] has to be set to 1 or -1}
 \item{objFunct}{Name of the objective function}
 }
 \value{
-List of with optimization results and plots to each fit ('res.lst')
-and optimization result and plot to best fit ('final')
+List of with optimization results('optimResults')
+and best optimization result ('bestOptimResult')
 }
 \description{
 Run optimization using stats::optim with method = "L-BFGS-B"

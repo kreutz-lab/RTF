@@ -4,13 +4,7 @@
 \alias{getBestFittingResult}
 \title{Fit function for positive OR negative sign}
 \usage{
-getBestFittingResult(
-  optimObject,
-  parStr = "signum_TF",
-  parVal = 1,
-  plot,
-  titlePrefix = ""
-)
+getBestFittingResult(optimObject, parStr = "signum_TF", parVal = 1)
 }
 \arguments{
 \item{optimObject}{optimObject, which is a list containing input data frame
@@ -23,20 +17,14 @@ negative values in initialGuess.vec, lb.vec, and
 ub.vec ('positive.par.names'),
 modus ('modus'), and a list of values of fitted parameters ('fitted').}
 
-\item{parVal}{Value of variable defined in parString  (Default: 1)}
+\item{parStr}{String of variable based on which comparison is conducted (Default: "signum_TF")}
 
-\item{plot}{Boolean value indicating if fitting results should be plotted
-and saved as file}
-
-\item{titlePrefix}{Prefix of file names of plots, if plot  was set
+\item{parVal}{Value of variable defined in parString  (Default: 1)
 to TRUE}
-
-\item{parString}{String of variable based on which comparison is conducted (Default: "signum_TF")}
 }
 \value{
 optimObject, to which fitting result of the best fit ('fitted'),
-optimization measure value of this fit ('value'), and, if plot=TRUE, the
-plot to this fit ('bestFit.plot') has been added.
+optimization measure value of this fit ('value').
 }
 \description{
 Fits function for positive OR negative sign (signum_TF)
@@ -46,6 +34,5 @@ data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
 res.all.plus <- getBestFittingResult(
-        optimObject.orig, parStr = "signum_TF", parVal = 1, plot = TRUE,
-        titlePrefix = "fullModel_plus_")
+        optimObject.orig, parStr = "signum_TF", parVal = 1)
 }

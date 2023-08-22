@@ -1,8 +1,8 @@
 #' Run optimization
 #'
 #' @description Run optimization using stats::optim with method = "L-BFGS-B"
-#' @return List of with optimization results and plots to each fit ('res.lst')
-#' and optimization result and plot to best fit ('final')
+#' @return List of with optimization results('optimResults')
+#' and best optimization result ('bestOptimResult')
 #' @param initialGuess.vec.lst List of default initial guess for each model parameter
 #' a defined number of further initial guesses lying in between the lower and
 #' upper bound of each model parameter
@@ -111,5 +111,5 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
   res.lst <- sortListByValue(res.lst)
 
-  list(res.lst = res.lst, bestOptimRes = optimRes)
+  list(optimResults = res.lst, bestOptimResult = optimRes)
 }

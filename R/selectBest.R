@@ -9,7 +9,7 @@
 #' @param res List of two sublists for a retardad transient function
 #' with positive (plus1) and negative sign (minus1). Sach containing information
 #' of an optimObject as well as the value of the optimization measure
-#' ('value') and the plots to the best fit ('bestFit.plot').
+#' ('value').
 #' A optimObject is a list containing input data frame with time resolved
 #' data ('data'), the vector of initial guesses ('initialGuess.vec'),
 #' of lower bounds ('lb.vec'), of upper bounds ('ub.vec'), vector of fixed
@@ -23,7 +23,7 @@
 #' optimObject.orig <- initializeOptimObject(
 #'                                   data, modus = 'RetardedTransientDynamics')
 #' res.all.plusMinus <- getFittingResult(
-#'             optimObject.orig, plot = FALSE, titlePrefixPrefix = "fullModel_")
+#'             optimObject.orig, titlePrefixPrefix = "fullModel_")
 #' res <- selectBest(res.all.plusMinus)
 
 selectBest <- function(res) {

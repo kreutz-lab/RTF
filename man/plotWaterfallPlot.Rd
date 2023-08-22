@@ -4,11 +4,12 @@
 \alias{plotWaterfallPlot}
 \title{Generate waterfall plot of all fits}
 \usage{
-plotWaterfallPlot(waterfallDf, idxCurrentFit = NULL)
+plotWaterfallPlot(waterfallValues, idxCurrentFit = NULL)
 }
 \arguments{
-\item{waterfallDf}{Dataframe with columns indicating for each fit
-"value" (optimization measure), "idx" (position of a fit in the sequence
+\item{waterfallValues}{List of optimization measures or, if idxCurrentFit is
+ given, Dataframe with columns indicating for each fit "value" 
+ (optimization measure), "idx" (position of a fit in the sequence
 of ordered values), "col" (HEX values for color that should be given to each
  fit)}
 
@@ -30,8 +31,17 @@ signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 nInitialGuesses <- 50
 res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
-                    nInitialGuesses, plot = TRUE)
-final <- res.lst.wFinal$final
-waterfallPlotData <- final$gg.waterfall$data
-plotWaterfallPlot(waterfallPlotData, idxCurrentFit = 4)
+                    nInitialGuesses)
+
+optimResults <- res.lst.wFinal$optimResults
+
+optimResults.optimRes <- lapply(optimResults, function(x) {
+  tmp <- unlist(x[grep("optimRes", names(x))], recursive = FALSE)
+  names(tmp) <- sub("optimRes.", "", names(tmp))
+  tmp
+})
+
+optimResTmpLstValuesAll <- unlist(
+  lapply(optimResults.optimRes, function(x) unlist(x[grep("value",names(x))])))
+gg <- plotWaterfallPlot(optimResTmpLstValuesAll)
 }

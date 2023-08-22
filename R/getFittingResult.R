@@ -3,8 +3,7 @@
 #' @description Fits function for positive AND negative sign (signum_TF)
 #' @return List of two optimObjects for a positive and a negative signum_TF
 #' ('plus1' and 'minus1'). Each including fitting result of the best
-#' fit ('fitted'), optimization measure value of this fit ('value'), and, if
-#' plot=TRUE, the plot to this fit ('bestFit.plot') has been added.
+#' fit ('fitted'), optimization measure value of this fit ('value').
 #' @param optimObject optimObject, which is a list containing input data frame
 #' with time resolved data ('data'),
 #' the vector of initial guesses ('initialGuess.vec'), of lower bounds
@@ -14,8 +13,10 @@
 #' negative values in initialGuess.vec, lb.vec, and ub.vec
 #' ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
-#' @param plot Boolean value indicating if fitting results should be plotted
-#' and saved as file
+#' @param parStr Parameter for which different parameter values
+#' parVals are used for the fitting (Default: "signum_TF") 
+#' @param parVals Vector of different values of parameter parStr used for
+#' fitting (Default: c(-1, 1))
 #' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set
 #' to TRUE
 #' @export getFittingResult
@@ -24,9 +25,12 @@
 #' optimObject.orig <- initializeOptimObject(
 #'             data, modus = 'RetardedTransientDynamics')
 #' res.all.plusMinus <- getFittingResult(
-#'             optimObject.orig, plot = TRUE, titlePrefixPrefix = "fullModel_")
+#'             optimObject.orig, 
+#'             parStr = "signum_TF", parVals = c(-1, 1),
+#'             titlePrefixPrefix = "fullModel_")
 
-getFittingResult <- function(optimObject, plot = TRUE, titlePrefixPrefix = "") {
+getFittingResult <- function(optimObject, parStr = "signum_TF", 
+                             parVals = c(-1, 1), titlePrefixPrefix = "") {
   for (pname in names(optimObject$initialGuess.vec)) {
     # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
     # is fixed but is ot listed in lb.vec, ub.vec, and initialGuess.vec
@@ -36,16 +40,15 @@ getFittingResult <- function(optimObject, plot = TRUE, titlePrefixPrefix = "") {
         optimObject$ub.vec[pname] <-
         optimObject$fixed[pname]
   }
-  optimObject.orig <- optimObject
+  # optimObject.orig <- optimObject
 
-  parStr <- "signum_TF"
-  parVals <- c(-1, 1)
+  # parStr <- "signum_TF"
+  # parVals <- c(-1, 1)
   res.lst <- list()
   for (parVal in parVals) {
     optim.res <- NULL
     optim.res <- getBestFittingResult(
-      optimObject, parStr = parStr, parVal = parVal, plot = plot,
-      titlePrefix = paste0(titlePrefixPrefix, parStr, parVal, "_"))
+      optimObject, parStr = parStr, parVal = parVal)
     res.lst <- append(res.lst, list(optim.res))
   }
 

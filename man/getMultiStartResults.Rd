@@ -4,7 +4,7 @@
 \alias{getMultiStartResults}
 \title{Get fits for defined number of initial guesses}
 \usage{
-getMultiStartResults(optimObject, objFunct, nInitialGuesses, plot = TRUE)
+getMultiStartResults(optimObject, objFunct, nInitialGuesses)
 }
 \arguments{
 \item{optimObject}{optimObject, which is a list containing input data frame with time resolved data ('data'),
@@ -18,17 +18,10 @@ optimObject$fixed[["signum_TF"]] has to be set to 1 or -1}
 \item{objFunct}{Name of the objective function}
 
 \item{nInitialGuesses}{Integer corresponding to number of initial guesses}
-
-\item{plot}{Boolean value indicating if fitting results should be plotted and saved as file.
-Plots include for each fit plot of the components of the transient function
-and the position of the fit in the waterfall plot based on the value of the
-optimization measure the fit reached. For the best fit the components of
- the transient function are plotted as well as the parameter distribution
- over all fits and a water fall plot of all fits.}
 }
 \value{
-List of with optimization results and plots to each fit ('res.lst')
-and optimization result and plot to best fit ('final'), both with optional plots
+optimObject supplemented by all optimization results ('optimResults') and
+the ebst optimization result ('bestOptimResult')
 }
 \description{
 Get fits for defined number of initial guesses and add optional
@@ -43,5 +36,5 @@ signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 nInitialGuesses <- 50
 optim.res <- getMultiStartResults(
-                optimObject.orig, objFunct, nInitialGuesses, plot = TRUE)
+                optimObject.orig, objFunct, nInitialGuesses)
 }

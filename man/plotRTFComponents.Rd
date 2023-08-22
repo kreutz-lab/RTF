@@ -42,7 +42,7 @@ initialGuess.vec.lst <- getInitialGuessVec(
 initialGuessResults <- runOptimization(initialGuess.vec.lst,
                                       optimObject.orig, objFunct)
 res.lst <- initialGuessResults[["res.lst"]]
-bestOptimRes <- initialGuessResults[["bestOptimRes"]]
+bestOptimRes <- initialGuessResults[["bestOptimResult"]]
 gg.final <- plotRTFComponents(
   pars = bestOptimRes$par,
   data = optimObject.orig$data,

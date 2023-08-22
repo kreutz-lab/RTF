@@ -4,7 +4,12 @@
 \alias{initializeOptimObject}
 \title{Initializes OptimObject}
 \usage{
-initializeOptimObject(data, modus, takeLog10 = TRUE)
+initializeOptimObject(
+  data,
+  modus,
+  optimFunction = "chiSquare",
+  takeLog10 = TRUE
+)
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and 'y'
