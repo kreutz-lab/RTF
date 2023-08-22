@@ -8,18 +8,23 @@
 #' 'y' (quantitative value)
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
-#' @param plot Boolean value indicating if fitting results should be plotted
-#' and saved as file
+#' @param optimFunction String indicating the optimization function which 
+#' should be used (Default: "chiSquare")
+#' @param control List of control arguments passed to the function stats::optim 
+#' (Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))
 #' @export runRTF
 #' @examples
 #' modus <- "RetardedTransientDynamics"
-#' plot <- TRUE
 #' data <- getExampleDf()
 #' plot(data)
-#' res <- runRTF(data, modus = modus, plot = plot)
+#' res <- runRTF(data, modus = modus)
 
-runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
-  optimObject.orig <- initializeOptimObject(data, modus = modus)
+runRTF <- function(data, modus = "RetardedTransientDynamics", 
+                   optimFunction = "chiSquare", 
+                   control = list(trace = 1, maxit = 1000,
+                                  factr = 1.0e-20)) {
+  optimObject.orig <- initializeOptimObject(data, modus = modus, 
+                                            optimFunction = optimFunction)
   res.all.plusMinus <- getFittingResult(optimObject.orig,
                                         titlePrefixPrefix = "fullModel_")
   res <- selectBest(res.all.plusMinus)
@@ -63,21 +68,13 @@ runRTF <- function(data, modus = "RetardedTransientDynamics", plot = TRUE) {
 
   finalModel <- res
   finalParams <- res$fitted
-  # finalPlot <- res$bestFit.plot
-  # 
-  # if (plot) {
-  #   ggplot2::ggsave(filename = "finalModel.pdf", finalPlot, width = 12, height = 13)
-  # }
 
   print("The parameters of the best fit are:")
   print(paste(names(finalParams), round(finalParams, 4),
               sep = ": ", collapse = ", "))
-
-  # plotMultiStartPlots(optimObject = finalModel, titlePrefix = "_finalModel", plotAllFits = TRUE)
   
   return(list(finalModel = res,
               finalParams = res$fitted,
-              # finalPlot = finalPlot,
               intermediateResults = list(fullModel = res.all.plusMinus,
                                          TshiftFixed = res.T_shiftLB.plusMinus,
                                          Constant = res.constant.plusMinus,

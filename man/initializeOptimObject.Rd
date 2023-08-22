@@ -8,6 +8,7 @@ initializeOptimObject(
   data,
   modus,
   optimFunction = "chiSquare",
+  control = list(trace = 1, maxit = 1000, factr = 1e-20),
   takeLog10 = TRUE
 )
 }
@@ -17,6 +18,12 @@ initializeOptimObject(
 
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or
 'ImmediateResponseFunction' should be used}
+
+\item{optimFunction}{String indicating the optimization function which 
+should be used (Default: "chiSquare")}
+
+\item{control}{List of control arguments passed to the function stats::optim 
+(Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))}
 
 \item{takeLog10}{Boolean value indicating if log10 of bounds should be applied}
 }

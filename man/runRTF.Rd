@@ -4,7 +4,12 @@
 \alias{runRTF}
 \title{Run RTF}
 \usage{
-runRTF(data, modus = "RetardedTransientDynamics", plot = TRUE)
+runRTF(
+  data,
+  modus = "RetardedTransientDynamics",
+  optimFunction = "chiSquare",
+  control = list(trace = 1, maxit = 1000, factr = 1e-20)
+)
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and
@@ -13,8 +18,11 @@ runRTF(data, modus = "RetardedTransientDynamics", plot = TRUE)
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or
 'ImmediateResponseFunction' should be used}
 
-\item{plot}{Boolean value indicating if fitting results should be plotted
-and saved as file}
+\item{optimFunction}{String indicating the optimization function which 
+should be used (Default: "chiSquare")}
+
+\item{control}{List of control arguments passed to the function stats::optim 
+(Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))}
 }
 \value{
 List of the final RTF model (finalModel), the optimized parameters
@@ -26,8 +34,7 @@ Run RTF
 }
 \examples{
 modus <- "RetardedTransientDynamics"
-plot <- TRUE
 data <- getExampleDf()
 plot(data)
-res <- runRTF(data, modus = modus, plot = plot)
+res <- runRTF(data, modus = modus)
 }

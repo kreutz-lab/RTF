@@ -12,13 +12,20 @@
 #' (quantitative value)
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
+#' @param optimFunction String indicating the optimization function which 
+#' should be used (Default: "chiSquare")
+#' @param control List of control arguments passed to the function stats::optim 
+#' (Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
 #' @export initializeOptimObject
 #' @examples
 #' data <- getExampleDf()
 #' optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
 
-initializeOptimObject <- function(data, modus, optimFunction = "chiSquare", takeLog10=TRUE) {
+initializeOptimObject <- function(data, modus, optimFunction = "chiSquare", 
+                                  control = list(trace = 1, maxit = 1000,
+                                                 factr = 1.0e-20), 
+                                  takeLog10 = TRUE) {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
   # Define Lower and Upper bounds, and Default initial guess
@@ -80,6 +87,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare", take
                            positive.par.names = NULL,
                            modus = modus,
                            optimFunction = optimFunction,
+                           control = control,
                            fitted = list()
   )
 

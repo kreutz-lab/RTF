@@ -61,6 +61,5 @@ optimResTmp <- stats::optim(par = vec,
                             upper = optimObject.tmp$ub.vec,
                             data = optimObject.tmp$data,
                             optimObject = optimObject.tmp,
-                            control = list(
-                                    trace = -1, maxit = 1000, factr=1.0e-20))
+                            control = optimObject.tmp$control)
 }
