@@ -4,14 +4,16 @@
 \alias{plotMultiStartPlots}
 \title{Plot multi start plots}
 \usage{
-plotMultiStartPlots(optimObject, titlePrefix = "", plotAllFits = TRUE)
+plotMultiStartPlots(optimObject, fileNamePrefix = "", plotAllFits = TRUE)
 }
 \arguments{
 \item{optimObject}{optimObject, which contains optimResults and bestOptimResult}
 
-\item{titlePrefix}{File prefix}
+\item{fileNamePrefix}{File name prefix. If length>0 plots will be written to
+file, otherwise they will be plotted directly.}
 
-\item{plotAllFits}{Boolean indicating if all fits should be plotted}
+\item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
+if fileNamePrefix is given.}
 }
 \value{
 ggplot object
@@ -33,5 +35,5 @@ optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 nInitialGuesses <- 50
 optim.res <- getMultiStartResults(
                 optimObject.orig, objFunct, nInitialGuesses)
-pl <- plotMultiStartPlots(optim.res, titlePrefix = "ExamplePlot")
+pl <- plotMultiStartPlots(optim.res, fileNamePrefix = "ExamplePlot")
 }

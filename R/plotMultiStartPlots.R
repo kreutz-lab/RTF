@@ -8,10 +8,12 @@
 #' over all fits and a water fall plot of all fits.
 #' @return ggplot object
 #' @param optimObject optimObject, which contains optimResults and bestOptimResult
-#' @param titlePrefix File prefix
-#' @param plotAllFits Boolean indicating if all fits should be plotted
+#' @param fileNamePrefix File name prefix. If length>0 plots will be written to
+#' file, otherwise they will be plotted directly.
+#' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
+#' if fileNamePrefix is given.
 #' @export plotMultiStartPlots
-#' @import patchwork 
+#' @import patchwork
 #' @examples
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(
@@ -21,9 +23,12 @@
 #' nInitialGuesses <- 50
 #' optim.res <- getMultiStartResults(
 #'                 optimObject.orig, objFunct, nInitialGuesses)
-#' pl <- plotMultiStartPlots(optim.res, titlePrefix = "ExamplePlot")
+#' pl <- plotMultiStartPlots(optim.res, fileNamePrefix = "ExamplePlot")
 
-plotMultiStartPlots <- function(optimObject, titlePrefix = "", plotAllFits = TRUE) {
+plotMultiStartPlots <- function(optimObject, fileNamePrefix = "", 
+                                plotAllFits = TRUE) {
+  
+  saveToFile <- nchar(fileNamePrefix) > 0
   
   optimResults <- optimObject$optimResults
   bestOptimResult <- optimObject$bestOptimResult
@@ -74,22 +79,26 @@ plotMultiStartPlots <- function(optimObject, titlePrefix = "", plotAllFits = TRU
   waterfallPlotData <- gg.waterfall$data
   
   if (plotAllFits) {
-    pdf(file = paste0(titlePrefix, "_allFits.pdf"), width = 12, height = 10)
-    for (i in seq(length(optimResults.gg))) {
-      #print(i)
-      gg <- optimResults.gg[[i]]
-      library(patchwork)
-      gg.wWaterfall <-  gg + plotWaterfallPlot(waterfallPlotData, i)
-      print(gg.wWaterfall)
-      #gg
+    if(saveToFile) {
+      grDevices::pdf(file = paste0(fileNamePrefix, "_allFits.pdf"), width = 12, height = 10)
+      for (i in seq(length(optimResults.gg))) {
+        gg <- optimResults.gg[[i]]
+        gg.wWaterfall <-  gg + plotWaterfallPlot(waterfallPlotData, i)
+        print(gg.wWaterfall)
+      }
+      grDevices::dev.off()
+    } else {
+      message("Please enter a file name to save all fits to file.")
     }
-    dev.off()
   }
 
-  
   bestFit.plot <- gg.final + gg.waterfall +
     gg.paramDistr + plot_layout(ncol = 2)
   
-  ggplot2::ggsave(filename = paste0(titlePrefix, "_bestFit.pdf"),
-         bestFit.plot, width = 12, height = 13)
+  if (saveToFile){
+    ggplot2::ggsave(filename = paste0(fileNamePrefix, "_bestFit.pdf"),
+                    bestFit.plot, width = 12, height = 13)
+  } else {
+    bestFit.plot
+  }
 }

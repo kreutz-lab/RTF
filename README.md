@@ -22,7 +22,7 @@ plot <- TRUE
 
 data <- getExampleDf()
 plot(data)
-res <- runRTF(data, modus = modus, plot = plot)
+res <- runRTF(data, modus = modus)
 
-plotMultiStartPlots(optimObject = res$finalModel, titlePrefix = "finalModel", plotAllFits = TRUE)
+plotMultiStartPlots(optimObject = res$finalModel, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 ```

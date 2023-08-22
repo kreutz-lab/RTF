@@ -13,6 +13,7 @@
 #' @param signum_TF Sign of transient function. Positive (1) or negative (-1) sign
 #' @param title String of the title of the plot
 #' @export plotRTFComponents
+#' @import patchwork
 #' @examples
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
