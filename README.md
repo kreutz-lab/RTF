@@ -15,9 +15,8 @@ devtools::install_github("kreutz-lab/RTF")
 library(RTF)
 
 modus <- "RetardedTransientDynamics"
-plot <- TRUE
 
-# data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3")) # "LDH_WT.xlsx" , "ExampleData.xls"
+# data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
 data <- getExampleDf()
