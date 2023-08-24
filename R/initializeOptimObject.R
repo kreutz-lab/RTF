@@ -28,35 +28,108 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                                   takeLog10 = TRUE) {
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
-  # Define Lower and Upper bounds, and Default initial guess
-  lb.vec <- c(tau_1 = min(diff(unique(t))) / 2, # minimal sampling interval
-              tau_2 = min(diff(unique(t))) / 2, # minimal sampling interval
-              A_sus = 0,
-              A_trans = 0,
-              p_0=min(y),
-              T_shift = -(max(t) - min(t)) / 5,
-              sigma = max(1e-8, diff(range(y)) / (10^4)))
-
-  ub.vec <- c(tau_1 = 2 * (max(t) - min(t)),
-              tau_2 = 2 * (max(t) - min(t)),
-              A_sus = 2 * (max(y) - min(y)),
-              A_trans = 2 * (max(y) - min(y)),
-              p_0 = max(y),
-              T_shift = (max(t) - min(t)) / 2,
-              sigma = stats::sd(y, na.rm = TRUE))
-
-  initialGuess.vec <- c(tau_1 = 0.5 * lb.vec[["tau_1"]] +
-                          0.5 * ub.vec[["tau_1"]],
-                        tau_2 = 0.5 * lb.vec[["tau_2"]] +
-                          0.5 * ub.vec[["tau_2"]],
-                        A_sus = 0.1 * lb.vec[["A_sus"]] +
-                          0.9 * ub.vec[["A_sus"]],
-                        A_trans = 0.1*lb.vec[["A_trans"]] +
-                          0.9 * ub.vec[["A_trans"]],
-                        p_0 = 0.5 * lb.vec[["p_0"]] +
-                          0.5 * ub.vec[["p_0"]],
-                        T_shift = -(max(t) - min(t)) / 10,
-                        sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
+  # New variables: 
+  # d, M_Asus, h_Asus, K_Asus, M_Atrans, h_Atrans, K_Atrans, M_tau1, h_tau1, K_tau1, M_tau2, h_tau2, K_tau2, M_Tshift, h_Tshift, K_Tshift
+  
+  # d Dose
+  # M Maximum value
+  # h Hill coefficient
+  # K Half-maximum quantity
+  # A_sus <- hillEquation(d = d, M = M_Asus, h = h_Asus, K = K_Asus)
+  # A_trans <- hillEquation(d = d, M = M_Atrans, h = h_Atrans, K = K_Atrans)
+  # tau_1 <- hillEquationReciprocal(d = d, M = M_tau1, 
+  #                                 h = h_tau1, K = K_tau1)
+  # tau_2 <- hillEquationReciprocal(d = d, M = M_tau2, 
+  #                                 h = h_tau2, K = K_tau2)
+  # T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
+  #                                   h = h_Tshift, K = K_Tshift)
+  
+  # if (modus == "DoseDependentRetardedTransientDynamics") {
+  #   lb.vec <- c(M_tau1 = ,
+  #               h_tau1 = ,
+  #               K_tau1 = ,
+  #               M_tau2 = ,
+  #               h_tau2 = ,
+  #               K_tau2 = ,
+  #               M_Asus = ,
+  #               h_Asus = ,
+  #               K_Asus = ,
+  #               M_Atrans = ,
+  #               h_Atrans = ,
+  #               K_Atrans = ,
+  #               M_Tshift = ,
+  #               h_Tshift = ,
+  #               K_Tshift = ,
+  #               p_0 = ,
+  #               sigma = )
+  #   
+  #   ub.vec <- c(M_tau1 = ,
+  #               h_tau1 = ,
+  #               K_tau1 = ,
+  #               M_tau2 = ,
+  #               h_tau2 = ,
+  #               K_tau2 = ,
+  #               M_Asus = ,
+  #               h_Asus = ,
+  #               K_Asus = ,
+  #               M_Atrans = ,
+  #               h_Atrans = ,
+  #               K_Atrans = ,
+  #               M_Tshift = ,
+  #               h_Tshift = ,
+  #               K_Tshift = ,
+  #               p_0 = ,
+  #               sigma = )
+  #   
+  #   initialGuess.vec <- c(M_tau1 = ,
+  #                         h_tau1 = ,
+  #                         K_tau1 = ,
+  #                         M_tau2 = ,
+  #                         h_tau2 = ,
+  #                         K_tau2 = ,
+  #                         M_Asus = ,
+  #                         h_Asus = ,
+  #                         K_Asus = ,
+  #                         M_Atrans = ,
+  #                         h_Atrans = ,
+  #                         K_Atrans = ,
+  #                         M_Tshift = ,
+  #                         h_Tshift = ,
+  #                         K_Tshift = ,
+  #                         p_0 = ,
+  #                         sigma = )
+  # } else {
+    # Define Lower and Upper bounds, and Default initial guess
+    lb.vec <- c(tau_1 = min(diff(unique(t))) / 2, # minimal sampling interval
+                tau_2 = min(diff(unique(t))) / 2, # minimal sampling interval
+                A_sus = 0,
+                A_trans = 0,
+                p_0 = min(y),
+                T_shift = -(max(t) - min(t)) / 5,
+                sigma = max(1e-8, diff(range(y)) / (10^4)))
+    
+    ub.vec <- c(tau_1 = 2 * (max(t) - min(t)),
+                tau_2 = 2 * (max(t) - min(t)),
+                A_sus = 2 * (max(y) - min(y)),
+                A_trans = 2 * (max(y) - min(y)),
+                p_0 = max(y),
+                T_shift = (max(t) - min(t)) / 2,
+                sigma = stats::sd(y, na.rm = TRUE))
+    
+    initialGuess.vec <- c(tau_1 = 0.5 * lb.vec[["tau_1"]] +
+                            0.5 * ub.vec[["tau_1"]],
+                          tau_2 = 0.5 * lb.vec[["tau_2"]] +
+                            0.5 * ub.vec[["tau_2"]],
+                          A_sus = 0.1 * lb.vec[["A_sus"]] +
+                            0.9 * ub.vec[["A_sus"]],
+                          A_trans = 0.1*lb.vec[["A_trans"]] +
+                            0.9 * ub.vec[["A_trans"]],
+                          p_0 = 0.5 * lb.vec[["p_0"]] +
+                            0.5 * ub.vec[["p_0"]],
+                          T_shift = -(max(t) - min(t)) / 10,
+                          sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
+    
+  # }
 
   if ("sdExp" %in% colnames(data)){
     lb.vec <- lb.vec[names(lb.vec) != "sigma"]
@@ -68,22 +141,10 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                            initialGuess.vec = initialGuess.vec,
                            lb.vec = lb.vec,
                            ub.vec = ub.vec,
-                           fixed = c(signum_TF = NA,
-                                     tau_1 = NA,
-                                     tau_2 = NA,
-                                     A_sus = NA,
-                                     A_trans = NA,
-                                     p_0 = NA,
-                                     T_shift = NA,
-                                     sigma = NA),
-                           takeLog10 = c(signum_TF = FALSE,
-                                         tau_1 = FALSE,
-                                         tau_2 = FALSE,
-                                         A_sus = FALSE,
-                                         A_trans = FALSE,
-                                         p_0 = FALSE,
-                                         T_shift = FALSE,
-                                         sigma = FALSE),
+                           fixed = setNames(
+                             rep(NA, length(lb.vec)), names(lb.vec)),
+                           takeLog10 = setNames(
+                             rep(FALSE, length(lb.vec)), names(lb.vec)),
                            positive.par.names = NULL,
                            modus = modus,
                            optimFunction = optimFunction,

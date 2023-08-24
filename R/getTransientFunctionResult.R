@@ -39,6 +39,21 @@ getTransientFunctionResult <- function(par,
   scaleRes <- scaleTimeParameter(timeParam=t, maxVal = max(t))
   t_prime <- scaleRes$timeParam
   maxVal <- scaleRes$maxVal
+  
+  if (modus == "DoseDependentRetardedTransientDynamics") {
+    A_sus <- hillEquation(d = d, M = M_Asus, h = h_Asus, K = K_Asus)
+    A_trans <- hillEquation(d = d, M = M_Atrans, h = h_Atrans, K = K_Atrans)
+    # rec_tau_1_d <-  hillEquation(d = d, M = M_rec_tau_1, 
+    #                                       h = h_rec_tau_1, K = K_rec_tau_1)
+    # rec_tau_2_d <-  hillEquation(d = d, M = M_rec_tau_2, 
+    #                                       h = h_rec_tau_2, K = K_rec_tau_2)
+    tau_1 <- hillEquationReciprocal(d = d, M = M_tau1, 
+                                      h = h_tau1, K = K_tau1)
+    tau_2 <- hillEquationReciprocal(d = d, M = M_tau2, 
+                                      h = h_tau2, K = K_tau2)
+    T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
+                                        h = h_Tshift, K = K_Tshift)
+  }
 
   # scaling everything with time as phys. unit
   T_shift <- scaleTimeParameter(timeParam = T_shift, maxVal = maxVal)$timeParam
@@ -53,13 +68,14 @@ getTransientFunctionResult <- function(par,
       exp(-t_prime / tau_2)
     transientFunctionRes <- signum_TF * Signal_sus +
       signum_TF * Signal_trans + p_0
-  } else if (modus == "RetardedTransientDynamics") {
+  } else if (modus %in% c("RetardedTransientDynamics", 
+                          "DoseDependentRetardedTransientDynamics")) {
     Signal_sus <- A_sus * (1 - exp(-nonLinTransformation / tau_1))
     Signal_trans <- A_trans * (1 - exp(-nonLinTransformation / tau_1)) *
       exp(-nonLinTransformation / tau_2)
     transientFunctionRes <- signum_TF * Signal_sus +
       signum_TF * Signal_trans + p_0
-  }
+  } 
   if(sum(is.infinite(transientFunctionRes))>0)
     print(transientFunctionRes)
   transientFunctionRes

@@ -68,34 +68,14 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 data = optimObject.tmp$data,
                                 optimObject = optimObject.tmp,
                                 control = optimObject.tmp$control)
-    # if (optimObject$takeLog10) {
-    #   optimResTmp$par[optimObject$positive.par.names] <-
-    #     10^optimResTmp$par[optimObject$positive.par.names]
-    # }
 
     optimResTmp$par[names(which(optimObject[["takeLog10"]]))] <-
       10^optimResTmp$par[names(which(optimObject[["takeLog10"]]))]
 
-    optimResTmp$par <- pars <- c(pars.tmp, optimResTmp$par)
+    optimResTmp$par <- c(pars.tmp, optimResTmp$par)
     value <- optimResTmp$value
 
-
-    paramsToNotBeFitted <- setdiff(names(optimObject$fixed), paramsToBeFitted)
-
-    title <- paste0("OptimValue: ", round(value, 2),
-                    "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
-                    paste(names(pars),
-                          round(pars, 4), sep = ": ", collapse = ", "))
-
-    gg <- plotRTFComponents(pars = pars,
-                              data = optimObject$data,
-                              signum_TF =
-                                optimObject$fixed[[paramsToNotBeFitted]],
-                            title = title)
-
-    lst <- list(append(list(optimResTmp), list(gg)))
-    names(lst[[1]]) <- c("optimRes", "gg")
-    res.lst <- append(res.lst, lst)
+    res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
 
     if (is.null(currentBestResValue)) {
       currentBestResValue <- value
