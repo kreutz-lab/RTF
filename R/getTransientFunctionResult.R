@@ -26,6 +26,7 @@
 
 getTransientFunctionResult <- function(par,
                                        t,
+                                       d = NULL,
                                        fixed,
                                        modus = "RetardedTransientDynamics") {
 

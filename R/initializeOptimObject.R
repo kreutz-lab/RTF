@@ -44,61 +44,84 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
   # T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
   #                                   h = h_Tshift, K = K_Tshift)
   
-  # if (modus == "DoseDependentRetardedTransientDynamics") {
-  #   lb.vec <- c(M_tau1 = ,
-  #               h_tau1 = ,
-  #               K_tau1 = ,
-  #               M_tau2 = ,
-  #               h_tau2 = ,
-  #               K_tau2 = ,
-  #               M_Asus = ,
-  #               h_Asus = ,
-  #               K_Asus = ,
-  #               M_Atrans = ,
-  #               h_Atrans = ,
-  #               K_Atrans = ,
-  #               M_Tshift = ,
-  #               h_Tshift = ,
-  #               K_Tshift = ,
-  #               p_0 = ,
-  #               sigma = )
-  #   
-  #   ub.vec <- c(M_tau1 = ,
-  #               h_tau1 = ,
-  #               K_tau1 = ,
-  #               M_tau2 = ,
-  #               h_tau2 = ,
-  #               K_tau2 = ,
-  #               M_Asus = ,
-  #               h_Asus = ,
-  #               K_Asus = ,
-  #               M_Atrans = ,
-  #               h_Atrans = ,
-  #               K_Atrans = ,
-  #               M_Tshift = ,
-  #               h_Tshift = ,
-  #               K_Tshift = ,
-  #               p_0 = ,
-  #               sigma = )
-  #   
-  #   initialGuess.vec <- c(M_tau1 = ,
-  #                         h_tau1 = ,
-  #                         K_tau1 = ,
-  #                         M_tau2 = ,
-  #                         h_tau2 = ,
-  #                         K_tau2 = ,
-  #                         M_Asus = ,
-  #                         h_Asus = ,
-  #                         K_Asus = ,
-  #                         M_Atrans = ,
-  #                         h_Atrans = ,
-  #                         K_Atrans = ,
-  #                         M_Tshift = ,
-  #                         h_Tshift = ,
-  #                         K_Tshift = ,
-  #                         p_0 = ,
-  #                         sigma = )
-  # } else {
+  if (modus == "DoseDependentRetardedTransientDynamics") {
+    if (!("d" %in% names(data))) {
+      stop("Please provide data frame with data column d.")
+    }
+
+    hillCoef.lb <- 1
+    hillCoef.ub <- 10
+    K.lb <- min(d[d > 0]) / 10
+    K.ub <- max(d) / 10
+    lb.vec <- c(M_tau1 = min(diff(unique(t))) / 2,
+                h_tau1 = hillCoef.lb,
+                K_tau1 = K.lb,
+                M_tau2 = min(diff(unique(t))) / 2,
+                h_tau2 = hillCoef.lb,
+                K_tau2 = K.lb,
+                M_Asus = 0,
+                h_Asus = hillCoef.lb,
+                K_Asus = K.lb,
+                M_Atrans = 0,
+                h_Atrans = hillCoef.lb,
+                K_Atrans = K.lb,
+                M_Tshift = -(max(t) - min(t)) / 5,
+                h_Tshift = hillCoef.lb,
+                K_Tshift = K.lb,
+                p_0 = min(y),
+                sigma = max(1e-8, diff(range(y)) / (10^4)))
+
+    ub.vec <- c(M_tau1 = 2 * (max(t) - min(t)),
+                h_tau1 = hillCoef.ub,
+                K_tau1 = K.ub,
+                M_tau2 = 2 * (max(t) - min(t)),
+                h_tau2 = hillCoef.ub,
+                K_tau2 = K.ub,
+                M_Asus = 2 * (max(y) - min(y)),
+                h_Asus = hillCoef.ub,
+                K_Asus = K.ub,
+                M_Atrans = 2 * (max(y) - min(y)),
+                h_Atrans = hillCoef.ub,
+                K_Atrans = K.ub,
+                M_Tshift = (max(t) - min(t)) / 2,
+                h_Tshift = hillCoef.ub,
+                K_Tshift = K.ub,
+                p_0 = max(y),
+                sigma = stats::sd(y, na.rm = TRUE))
+
+    initialGuess.vec <- c(M_tau1 =  0.5 * lb.vec[["M_tau1"]] +
+  0.5 * ub.vec[["M_tau1"]],
+                          h_tau1 = 0.5 * lb.vec[["h_tau1"]] +
+    0.5 * ub.vec[["h_tau1"]],
+                          K_tau1 =  0.5 * lb.vec[["K_tau1"]] +
+    0.5 * ub.vec[["K_tau1"]],
+                          M_tau2 = 0.5 * lb.vec[["M_tau2"]] +
+  0.5 * ub.vec[["M_tau2"]],
+                          h_tau2 = 0.5 * lb.vec[["h_tau2"]] +
+    0.5 * ub.vec[["h_tau2"]],
+                          K_tau2 = 0.5 * lb.vec[["K_tau2"]] +
+    0.5 * ub.vec[["K_tau2"]],
+                          M_Asus =  0.1 * lb.vec[["M_Asus"]] +
+  0.9 * ub.vec[["M_Asus"]],
+                          h_Asus = 0.5 * lb.vec[["h_Asus"]] +
+    0.5 * ub.vec[["h_Asus"]],
+                          K_Asus = 0.5 * lb.vec[["K_Asus"]] +
+    0.5 * ub.vec[["K_Asus"]],
+                          M_Atrans = 0.1*lb.vec[["M_Atrans"]] +
+  0.9 * ub.vec[["M_Atrans"]],
+                          h_Atrans = 0.5 * lb.vec[["h_Atrans"]] +
+    0.5 * ub.vec[["h_Atrans"]],
+                          K_Atrans = 0.5 * lb.vec[["K_Atrans"]] +
+    0.5 * ub.vec[["K_Atrans"]],
+                          M_Tshift = -(max(t) - min(t)) / 10,
+                          h_Tshift = 0.5 * lb.vec[["h_Tshift"]] +
+    0.5 * ub.vec[["h_Tshift"]],
+                          K_Tshift = 0.5 * lb.vec[["K_Tshift"]] +
+    0.5 * ub.vec[["K_Tshift"]],
+                          p_0 = 0.5 * lb.vec[["p_0"]] +
+    0.5 * ub.vec[["p_0"]],
+                          sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
+  } else {
     # Define Lower and Upper bounds, and Default initial guess
     lb.vec <- c(tau_1 = min(diff(unique(t))) / 2, # minimal sampling interval
                 tau_2 = min(diff(unique(t))) / 2, # minimal sampling interval
@@ -129,7 +152,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                           T_shift = -(max(t) - min(t)) / 10,
                           sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
     
-  # }
+  }
 
   if ("sdExp" %in% colnames(data)){
     lb.vec <- lb.vec[names(lb.vec) != "sigma"]

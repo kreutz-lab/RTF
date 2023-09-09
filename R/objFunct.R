@@ -56,6 +56,9 @@ objFunct <- function(par, data, optimObject) {
 
   # if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
   #    10^par[optimObject$positive.par.names]
+  
+  
+  d <- ifelse("d" %in% colnames(data), data$d, NULL)
 
   if (optimObject$optimFunction == "chiSquare") {
     par[names(which(optimObject[["takeLog10"]]))] <-
@@ -63,7 +66,9 @@ objFunct <- function(par, data, optimObject) {
   
     res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
                                                t = data$t,
-                                               fixed = optimObject$fixed)
+                                               d = d,
+                                               fixed = optimObject$fixed,
+                                               modus = optimObject$modus)
   
     if (("sdExp" %in% colnames(data))) {
       sdVec <- data$sdExp
