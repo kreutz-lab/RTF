@@ -105,7 +105,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
       print(plotWaterfallPlot(optimResTmpLstValuesAll) + ggplot2::ggtitle(names(statObjLst)[i]))
     }
     
-    statLst.df <- data.frame(do.call(rbind, statLst))  
+    statLst.df <- do.call(rbind, lapply(statLst, data.frame))
     write.csv(statLst.df, "parameterTable.csv", row.names = FALSE)
   }
   

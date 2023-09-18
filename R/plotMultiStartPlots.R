@@ -75,28 +75,28 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
     title = title
   )
   
-  gg.lst <- list()
-  for (i in seq(length(optimResTmpLstParsAll))){
-    pars <- optimResTmpLstParsAll[[i]]
-    # print(pars)
-    value <- optimResTmpLstValuesAll[[i]]
-    
-    title <- paste0("OptimValue: ", round(value, 2),
-                    "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
-                    paste(names(pars), round(pars, 4), sep = ": ", collapse = ", "))
-    
-    gg <- plotRTFComponents(pars = pars,
-                              data = optimObject$data,
-                              signum_TF = optimObject$fixed[[paramsToNotBeFitted]], title = title)
-    
-    gg.lst <- append(gg.lst, list(gg = gg))
-    
-  }
-  
   waterfallPlotData <- gg.waterfall$data
   
   if (plotAllFits) {
     if(saveToFile) {
+      gg.lst <- list()
+      for (i in seq(length(optimResTmpLstParsAll))){
+        pars <- optimResTmpLstParsAll[[i]]
+        # print(pars)
+        value <- optimResTmpLstValuesAll[[i]]
+        
+        title <- paste0("OptimValue: ", round(value, 2),
+                        "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
+                        paste(names(pars), round(pars, 4), sep = ": ", collapse = ", "))
+        
+        gg <- plotRTFComponents(pars = pars,
+                                data = optimObject$data,
+                                signum_TF = optimObject$fixed[[paramsToNotBeFitted]], title = title)
+        
+        gg.lst <- append(gg.lst, list(gg = gg))
+        
+      }
+      
       grDevices::pdf(file = paste0(fileNamePrefix, "_allFits.pdf"), width = 12, height = 10)
       for (i in seq(length(gg.lst))) {
         gg <- gg.lst[[i]]
