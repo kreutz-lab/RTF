@@ -3,9 +3,10 @@
 #' @description Get fits for defined number of initial guesses and add optional
 #' plots (incl. for best fit ('final') waterfall plot and for all parameters
 #' histograms of the parameter values across all fits)
-#' @return optimObject supplemented by all optimization results ('optimResults') and
-#' the ebst optimization result ('bestOptimResult')
-#' @param optimObject optimObject, which is a list containing input data frame with time resolved data ('data'),
+#' @return optimObject supplemented by all optimization results ('optimResults') 
+#' and the best optimization result ('bestOptimResult')
+#' @param optimObject optimObject, which is a list containing input data frame 
+#' with time resolved data ('data'),
 #' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 #' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
@@ -13,7 +14,8 @@
 #' modus ('modus'), and a list of values of fitted parameters ('fitted').
 #' optimObject$fixed[["signum_TF"]] has to be set to 1 or -1
 #' @param objFunct Name of the objective function
-#' @param nInitialGuesses Integer corresponding to number of initial guesses
+#' @param nInitialGuesses Integer corresponding to number of initial guesses 
+#' (Default: 50)
 #' @export getMultiStartResults
 #' @examples
 #' data <- getExampleDf()
@@ -26,21 +28,21 @@
 #'                 optimObject.orig, objFunct, nInitialGuesses)
 
 getMultiStartResults <- function(
-    optimObject, objFunct, nInitialGuesses) {
+    optimObject, objFunct, nInitialGuesses = 50) {
   initialGuess.vec.lst <- getInitialGuessVec(
     initialGuess.vec = optimObject$initialGuess.vec,
     lb.vec = optimObject$lb.vec,
     ub.vec = optimObject$ub.vec,
     nInitialGuesses = nInitialGuesses)
-
+  
   # paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
-
+  
   initialGuessResults <-
     runOptimization(initialGuess.vec.lst, optimObject, objFunct)
-
+  
   optimObject$optimResults <- initialGuessResults[["optimResults"]]
   optimObject$bestOptimResult <- initialGuessResults[["bestOptimResult"]]
-
+  
   # optimResults.wFinal <- list(optimResults = optimResults, optimRes = bestOptimResult)
   # optimResults.wFinal
   optimObject

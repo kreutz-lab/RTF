@@ -14,7 +14,8 @@
 #' modus ('modus'), and a list of values of fitted parameters ('fitted').
 #' @param parStr String of variable based on which comparison is conducted (Default: "signum_TF")
 #' @param parVal Value of variable defined in parString  (Default: 1)
-#' to TRUE
+#' @param nInitialGuesses Integer corresponding to number of initial guesses 
+#' (Default: 50)
 #' @export getBestFittingResult
 #' @examples
 #' data <- getExampleDf()
@@ -25,7 +26,7 @@
 
 getBestFittingResult <- function(
 #    optimObject, signum_TF, plot, titlePrefix = "") {
-  optimObject, parStr = "signum_TF", parVal = 1) {
+  optimObject, parStr = "signum_TF", parVal = 1, nInitialGuesses = 50) {
   optimObject$fixed[[parStr]] <- parVal
   
   
@@ -33,7 +34,7 @@ getBestFittingResult <- function(
   #  optimObject, plot = plot, nInitialGuesses = 50, titlePrefix = titlePrefix)
   
   optimObject.woptimRes <- getMultiStartResults(
-    optimObject, objFunct, nInitialGuesses = 50)
+    optimObject, objFunct, nInitialGuesses = nInitialGuesses)
   
   list(res.pars = optimObject.woptimRes$bestOptimResult$par,
        value = optimObject.woptimRes$bestOptimResult$value

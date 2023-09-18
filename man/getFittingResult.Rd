@@ -8,7 +8,7 @@ getFittingResult(
   optimObject,
   parStr = "signum_TF",
   parVals = c(-1, 1),
-  titlePrefixPrefix = ""
+  nInitialGuesses = 50
 )
 }
 \arguments{
@@ -28,8 +28,8 @@ parVals are used for the fitting (Default: "signum_TF")}
 \item{parVals}{Vector of different values of parameter parStr used for
 fitting (Default: c(-1, 1))}
 
-\item{titlePrefixPrefix}{Prefix of file names of plots, if plot  was set
-to TRUE}
+\item{nInitialGuesses}{Integer corresponding to number of initial guesses 
+(Default: 50)}
 }
 \value{
 List of two optimObjects for a positive and a negative signum_TF

@@ -4,7 +4,12 @@
 \alias{getBestFittingResult}
 \title{Fit function for positive OR negative sign}
 \usage{
-getBestFittingResult(optimObject, parStr = "signum_TF", parVal = 1)
+getBestFittingResult(
+  optimObject,
+  parStr = "signum_TF",
+  parVal = 1,
+  nInitialGuesses = 50
+)
 }
 \arguments{
 \item{optimObject}{optimObject, which is a list containing input data frame
@@ -19,8 +24,10 @@ modus ('modus'), and a list of values of fitted parameters ('fitted').}
 
 \item{parStr}{String of variable based on which comparison is conducted (Default: "signum_TF")}
 
-\item{parVal}{Value of variable defined in parString  (Default: 1)
-to TRUE}
+\item{parVal}{Value of variable defined in parString  (Default: 1)}
+
+\item{nInitialGuesses}{Integer corresponding to number of initial guesses 
+(Default: 50)}
 }
 \value{
 optimObject, to which fitting result of the best fit ('fitted'),

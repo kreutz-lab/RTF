@@ -17,8 +17,8 @@
 #' parVals are used for the fitting (Default: "signum_TF") 
 #' @param parVals Vector of different values of parameter parStr used for
 #' fitting (Default: c(-1, 1))
-#' @param titlePrefixPrefix Prefix of file names of plots, if plot  was set
-#' to TRUE
+#' @param nInitialGuesses Integer corresponding to number of initial guesses 
+#' (Default: 50)
 #' @export getFittingResult
 #' @examples
 #' data <- getExampleDf()
@@ -30,7 +30,7 @@
 #'             titlePrefixPrefix = "fullModel_")
 
 getFittingResult <- function(optimObject, parStr = "signum_TF", 
-                             parVals = c(-1, 1), titlePrefixPrefix = "") {
+                             parVals = c(-1, 1), nInitialGuesses = 50) {
   for (pname in names(optimObject$initialGuess.vec)) {
     # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
     # is fixed but is ot listed in lb.vec, ub.vec, and initialGuess.vec
@@ -48,7 +48,8 @@ getFittingResult <- function(optimObject, parStr = "signum_TF",
   for (parVal in parVals) {
     optim.res <- NULL
     optim.res <- getBestFittingResult(
-      optimObject, parStr = parStr, parVal = parVal)
+      optimObject, parStr = parStr, parVal = parVal,
+      nInitialGuesses = nInitialGuesses)
     res.lst <- append(res.lst, list(optim.res))
   }
 

@@ -14,14 +14,16 @@ devtools::install_github("kreutz-lab/RTF")
 ```
 library(RTF)
 
-modus <- "RetardedTransientDynamics"
 
 # data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
 data <- getExampleDf()
 plot(data)
-res <- runRTF(data, modus = modus)
-
+res <- runRTF(data, modus = "RetardedTransientDynamics")
 plotMultiStartPlots(optimObject = res$finalModel, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+
+data.doseResponse <- getDoseResponseExampleDf()
+plot(data.doseResponse)
+res.doseResponse <- runRTF(data.doseResponse, modus = "DoseDependentRetardedTransientDynamics")
 ```

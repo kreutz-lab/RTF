@@ -25,10 +25,10 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
                                   factr = 1.0e-20)) {
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
                                             optimFunction = optimFunction)
-  res.all.plusMinus <- getFittingResult(optimObject.orig,
-                                        titlePrefixPrefix = "fullModel_")
+  res.all.plusMinus <- getFittingResult(optimObject.orig)
   res <- selectBest(res.all.plusMinus)
-
+  
+  optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
   intermediateResults <- list(fullModel = res.all.plusMinus,
                               TshiftFixed = NULL,
                               Constant = NULL,
@@ -45,42 +45,73 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
       setdiff(optimObjectTmp$positive.par.names, "T_shift")  # because lb.vec[["T_shift"]] corresponds to -2
     optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
     res.T_shiftLB.plusMinus <- getFittingResult(
-      optimObjectTmp,
-      titlePrefixPrefix = "TshiftFixed_")
+      optimObjectTmp)
     res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
-  
+    
     # 2. Testing whether the model is in agreement with a constant.
     # If not significant, we set A_sus = A_trans = 0.
     optimObjectTmp2 <- res
     optimObjectTmp2$positive.par.names <-
-      setdiff(optimObjectTmp2$positive.par.names, c("A_sus", "A_trans"))  # because lb.vec[["T_shift"]] corresponds to -2
+      setdiff(optimObjectTmp2$positive.par.names, c("A_sus", "A_trans"))  
     optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
     res.constant.plusMinus <- getFittingResult(
-      optimObjectTmp2, titlePrefixPrefix = "Constant_")
+      optimObjectTmp2)
     res.constant <- selectBest(res.constant.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
-  
+    
     # 3. Testing whether the offset p0 is significantly different from zero.
     # If not significant, we set p_0 = 0.
     optimObjectTmp3 <- res
     optimObjectTmp3$positive.par.names <-
-      setdiff(optimObjectTmp3$positive.par.names, "p_0")  # because lb.vec[["T_shift"]] corresponds to -2
-    optimObjectTmp3$A_sus <- optimObjectTmp3$p_0  <- 0
+      setdiff(optimObjectTmp3$positive.par.names, "p_0")  
+    optimObjectTmp$fixed[["p_0"]] <- 0
     res.p_0Zero.plusMinus <- getFittingResult(
-      optimObjectTmp3, titlePrefixPrefix = "p0Zero_")
+      optimObjectTmp3)
     res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
     
     intermediateResults <- list(fullModel = res.all.plusMinus,
-                               TshiftFixed = res.T_shiftLB.plusMinus,
-                               Constant = res.constant.plusMinus,
-                               p0Zero = res.p_0Zero.plusMinus)
+                                TshiftFixed = res.T_shiftLB.plusMinus,
+                                Constant = res.constant.plusMinus,
+                                p0Zero = res.p_0Zero.plusMinus)
+  } else {
+    params <- setdiff(names(optimObject.orig[["lb.vec"]]), "sigma")
+    statLst <- list()
+    statObjLst <- list()
+    for (param in params) {
+      optimObjectTmp <- optimObject.orig
+      optimObjectTmp$initialGuess.vec <- optimParamsFullModel
+      optimObjectTmp$positive.par.names <-
+        setdiff(optimObjectTmp$positive.par.names, param) 
+      optimObjectTmp$fixed[[param]] <- 0
+      res.param.fixed <- getFittingResult(optimObjectTmp, nInitialGuesses = 50)
+      res.fixed <- selectBest(res.param.fixed)
+      
+      LRstat <- res.fixed$value / res$value
+      difference <-  res.fixed$value - res$value
+      df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
+      pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
+      statLst <- append(statLst, list(list(param = param, 
+                                           df = sum(is.na(res.fixed[["fixed"]])),
+                                           LRstat = LRstat, 
+                                           pVal = pVal)))
+      statObjLst <- append(statObjLst, list(res.fixed))
+    }
+    names(statLst) <- names(statObjLst) <- params
+    
+    for (i in seq(length(statObjLst))){
+      optimResTmpLstValuesAll <- unlist(lapply(statObjLst[[i]][["optimResults"]], function(x) unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
+      print(plotWaterfallPlot(optimResTmpLstValuesAll) + ggplot2::ggtitle(names(statObjLst)[i]))
+    }
+    
+    statLst.df <- data.frame(do.call(rbind, statLst))  
+    write.csv(statLst.df, "parameterTable.csv", row.names = FALSE)
   }
-
+  
   finalModel <- res
   finalParams <- res$fitted
-
+  
   print("The parameters of the best fit are:")
   print(paste(names(finalParams), round(finalParams, 4),
               sep = ": ", collapse = ", "))
@@ -88,5 +119,5 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
   return(list(finalModel = res,
               finalParams = finalParams,
               intermediateResults = intermediateResults))
-
+  
 }

@@ -11,7 +11,8 @@ runOptimization(initialGuess.vec.lst, optimObject, objFunct)
 a defined number of further initial guesses lying in between the lower and
 upper bound of each model parameter}
 
-\item{optimObject}{optimObject, which is a list containing input data frame with time resolved data ('data'),
+\item{optimObject}{optimObject, which is a list containing input data frame 
+with time resolved data ('data'),
 the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 if log10 is applied to bounds ('takeLog10'), the parameters having no

@@ -4,7 +4,13 @@
 \alias{getTransientFunctionResult}
 \title{Calculate RTF results for multiple time points}
 \usage{
-getTransientFunctionResult(par, t, fixed, modus = "RetardedTransientDynamics")
+getTransientFunctionResult(
+  par,
+  t,
+  d = NA,
+  fixed,
+  modus = "RetardedTransientDynamics"
+)
 }
 \arguments{
 \item{par}{Named vector of the parameter values used for RTF.}

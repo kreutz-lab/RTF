@@ -4,10 +4,11 @@
 \alias{getMultiStartResults}
 \title{Get fits for defined number of initial guesses}
 \usage{
-getMultiStartResults(optimObject, objFunct, nInitialGuesses)
+getMultiStartResults(optimObject, objFunct, nInitialGuesses = 50)
 }
 \arguments{
-\item{optimObject}{optimObject, which is a list containing input data frame with time resolved data ('data'),
+\item{optimObject}{optimObject, which is a list containing input data frame 
+with time resolved data ('data'),
 the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 if log10 is applied to bounds ('takeLog10'), the parameters having no
@@ -17,11 +18,12 @@ optimObject$fixed[["signum_TF"]] has to be set to 1 or -1}
 
 \item{objFunct}{Name of the objective function}
 
-\item{nInitialGuesses}{Integer corresponding to number of initial guesses}
+\item{nInitialGuesses}{Integer corresponding to number of initial guesses 
+(Default: 50)}
 }
 \value{
-optimObject supplemented by all optimization results ('optimResults') and
-the ebst optimization result ('bestOptimResult')
+optimObject supplemented by all optimization results ('optimResults') 
+and the best optimization result ('bestOptimResult')
 }
 \description{
 Get fits for defined number of initial guesses and add optional
