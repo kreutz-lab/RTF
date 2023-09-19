@@ -37,11 +37,18 @@ plotDoseResponse <- function(optimObject, fileNamePrefix = "") {
                    tau_1 = tau_1,
                    tau_2 = tau_2,
                    T_shift = T_shift)
+  
+  title <- paste0("OptimValue: ", round(optimObject[["finalModel"]][["value"]], 2),
+                  "; ", 
+                  paste(names(par), round(par, 4), sep = ": ", collapse = ", "))
+  title <- paste(strwrap(title, width = 120), collapse = "\n")
+  
   df.long <- reshape2::melt(df, id.vars = c("d"))
   gg <- ggplot2::ggplot(df.long, ggplot2::aes(x = d, y = value, color = variable)) +
     ggplot2::geom_line() +
     ggplot2::xlab("Dosis") +
     ggplot2::ylab("Value") +
+    ggplot2::ggtitle(title) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.title = ggplot2::element_blank())
   
@@ -55,7 +62,6 @@ plotDoseResponse <- function(optimObject, fileNamePrefix = "") {
     lapply(optimResults.optimRes, function(x) unlist(x[grep("value",names(x))])))
   
   gg <- gg + plotWaterfallPlot(optimResTmpLstValuesAll) +  plot_layout(nrow = 2)
-  
   
   if (saveToFile){
     ggplot2::ggsave(filename = paste0(fileNamePrefix, "_doseResponseFit.pdf"),

@@ -51,7 +51,7 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL) {
                         ggplot2::aes(x = idx, y = value, color = col)) +
     ggplot2::geom_point() +
     # geom_line() +
-    ggplot2::labs(x = 'Index') +
+    ggplot2::labs(x = 'Index', y = 'Value') +
     ggplot2::scale_colour_manual(values = c("#000000",  "#FF0000")) +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "none")

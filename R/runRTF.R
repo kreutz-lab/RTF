@@ -97,8 +97,6 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     }
     names(statLst) <- names(statObjLst) <- params
     
-    
-    
     grDevices::pdf(file = "doseResponseRTF_parameter_waterfallPlots.pdf", width = 12, height = 10)
     for (i in seq(length(statObjLst))){
       optimResTmpLstValuesAll <- unlist(lapply(statObjLst[[i]][["optimResults"]], function(x) unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
