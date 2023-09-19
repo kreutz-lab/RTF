@@ -26,5 +26,5 @@ plotRTF(optimObject = res$finalModel, fileNamePrefix = "finalModel", plotAllFits
 data.doseResponse <- getDoseResponseExampleDf()
 plot(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse, modus = "DoseDependentRetardedTransientDynamics")
-plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel)
+plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
 ```
