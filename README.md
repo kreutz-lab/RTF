@@ -21,9 +21,10 @@ library(RTF)
 data <- getExampleDf()
 plot(data)
 res <- runRTF(data, modus = "RetardedTransientDynamics")
-plotMultiStartPlots(optimObject = res$finalModel, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+plotRTF(optimObject = res$finalModel, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 
 data.doseResponse <- getDoseResponseExampleDf()
 plot(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse, modus = "DoseDependentRetardedTransientDynamics")
+plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel)
 ```

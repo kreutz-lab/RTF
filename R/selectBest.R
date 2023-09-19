@@ -22,8 +22,7 @@
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(
 #'                                   data, modus = 'RetardedTransientDynamics')
-#' res.all.plusMinus <- getFittingResult(
-#'             optimObject.orig, titlePrefixPrefix = "fullModel_")
+#' res.all.plusMinus <- getFittingResult(optimObject.orig)
 #' res <- selectBest(res.all.plusMinus)
 
 selectBest <- function(res) {

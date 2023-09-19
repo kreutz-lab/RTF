@@ -5,6 +5,7 @@
 #' with the specified parameters to time points given in t.
 #' @param par Named vector of the parameter values used for RTF.
 #' @param t Vector of time points
+#' @param d Dose. Only relevant for dose-response RTF.
 #' @param fixed Vector of fixed parameters, which are used to overwrite values
 #' in par, if they are non-NAs
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or

@@ -44,8 +44,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     optimObjectTmp$positive.par.names <-
       setdiff(optimObjectTmp$positive.par.names, "T_shift")  # because lb.vec[["T_shift"]] corresponds to -2
     optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-    res.T_shiftLB.plusMinus <- getFittingResult(
-      optimObjectTmp)
+    res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp)
     res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
     
@@ -55,8 +54,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     optimObjectTmp2$positive.par.names <-
       setdiff(optimObjectTmp2$positive.par.names, c("A_sus", "A_trans"))  
     optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
-    res.constant.plusMinus <- getFittingResult(
-      optimObjectTmp2)
+    res.constant.plusMinus <- getFittingResult(optimObjectTmp2)
     res.constant <- selectBest(res.constant.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
     
@@ -66,8 +64,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     optimObjectTmp3$positive.par.names <-
       setdiff(optimObjectTmp3$positive.par.names, "p_0")  
     optimObjectTmp$fixed[["p_0"]] <- 0
-    res.p_0Zero.plusMinus <- getFittingResult(
-      optimObjectTmp3)
+    res.p_0Zero.plusMinus <- getFittingResult(optimObjectTmp3)
     res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
     res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
     
@@ -100,13 +97,17 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     }
     names(statLst) <- names(statObjLst) <- params
     
+    
+    
+    grDevices::pdf(file = "doseResponseRTF_parameter_waterfallPlots.pdf", width = 12, height = 10)
     for (i in seq(length(statObjLst))){
       optimResTmpLstValuesAll <- unlist(lapply(statObjLst[[i]][["optimResults"]], function(x) unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
       print(plotWaterfallPlot(optimResTmpLstValuesAll) + ggplot2::ggtitle(names(statObjLst)[i]))
     }
+    grDevices::dev.off()
     
     statLst.df <- do.call(rbind, lapply(statLst, data.frame))
-    write.csv(statLst.df, "parameterTable.csv", row.names = FALSE)
+    utils::write.csv(statLst.df, "doseResponseRTF_parameter_significanceTable.csv", row.names = FALSE)
   }
   
   finalModel <- res

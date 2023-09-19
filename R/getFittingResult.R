@@ -26,8 +26,7 @@
 #'             data, modus = 'RetardedTransientDynamics')
 #' res.all.plusMinus <- getFittingResult(
 #'             optimObject.orig, 
-#'             parStr = "signum_TF", parVals = c(-1, 1),
-#'             titlePrefixPrefix = "fullModel_")
+#'             parStr = "signum_TF", parVals = c(-1, 1))
 
 getFittingResult <- function(optimObject, parStr = "signum_TF", 
                              parVals = c(-1, 1), nInitialGuesses = 50) {

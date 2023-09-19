@@ -22,15 +22,13 @@
 #' data <- getExampleDf()
 #' modus <- "RetardedTransientDynamics"
 #' optimObject.orig <- initializeOptimObject(data, modus = modus)
-#' res.all.plusMinus <- getFittingResult(
-#'             optimObject.orig, titlePrefixPrefix = "fullModel_")
+#' res.all.plusMinus <- getFittingResult(optimObject.orig)
 #' res.all <- selectBest(res.all.plusMinus)
 #' optimObjectTmp <- optimObject.orig
 #' optimObjectTmp$positive.par.names <-
 #'                       setdiff(optimObjectTmp$positive.par.names, "T_shift")
 #' optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-#' res.T_shiftLB.plusMinus <- getFittingResult(
-#'             optimObjectTmp, titlePrefixPrefix = "TshiftFixed_")
+#' res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp)
 #' res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
 #' res <- selectSmallerModelIfDiffIsSmall(res.all, res.T_shiftLB)
 

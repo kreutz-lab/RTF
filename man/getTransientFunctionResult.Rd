@@ -17,6 +17,8 @@ getTransientFunctionResult(
 
 \item{t}{Vector of time points}
 
+\item{d}{Dose. Only relevant for dose-response RTF.}
+
 \item{fixed}{Vector of fixed parameters, which are used to overwrite values
 in par, if they are non-NAs}
 
