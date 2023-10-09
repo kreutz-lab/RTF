@@ -123,6 +123,7 @@ plotDoseResponse <- function(optimObject, fileNamePrefix = "") {
   if (saveToFile){
     ggplot2::ggsave(filename = paste0(fileNamePrefix, "_doseResponseFit.pdf"),
                     gg, width = 12, height = 13)
+    gg
   } else {
     gg
   }

@@ -115,6 +115,7 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
   if (saveToFile){
     ggplot2::ggsave(filename = paste0(fileNamePrefix, "_bestFit.pdf"),
                     bestFit.plot, width = 12, height = 13)
+    bestFit.plot
   } else {
     bestFit.plot
   }
