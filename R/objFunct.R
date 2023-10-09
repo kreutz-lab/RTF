@@ -57,7 +57,7 @@ objFunct <- function(par, data, optimObject) {
   # if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
   #    10^par[optimObject$positive.par.names]
   
-  
+  data <- data[complete.cases(data), ] 
   d <- ifelse("d" %in% colnames(data), data$d, NA)
 
   if (optimObject$optimFunction == "chiSquare") {

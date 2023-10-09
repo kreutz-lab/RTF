@@ -6,8 +6,12 @@
 #' intermediate results (intermediateResults).
 #' @param data Data frame containing columns named 't' (time) and
 #' 'y' (quantitative value)
-#' @param modus String indicating if modus 'RetardedTransientDynamics' or
-#' 'ImmediateResponseFunction' should be used
+#' @param modus String indicating if modus 'RetardedTransientDynamics' ('D'), 
+#' 'ImmediateResponseFunction' ('I') or
+#' 'DoseDependentRetardedTransientDynamics' ('DD') should be used. 
+#' If no modus is provided default setting are  
+#' 'DoseDependentRetardedTransientDynamics' if column with name 'd' is present 
+#' and else 'RetardedTransientDynamics'.
 #' @param optimFunction String indicating the optimization function which 
 #' should be used (Default: "chiSquare")
 #' @param control List of control arguments passed to the function stats::optim 
@@ -16,13 +20,25 @@
 #' @examples
 #' modus <- "RetardedTransientDynamics"
 #' data <- getExampleDf()
-#' plot(data)
+#' plotData(data)
 #' res <- runRTF(data, modus = modus)
 
-runRTF <- function(data, modus = "RetardedTransientDynamics", 
+runRTF <- function(data, modus = NULL, 
                    optimFunction = "chiSquare", 
                    control = list(trace = 1, maxit = 1000,
                                   factr = 1.0e-20)) {
+  if (is.null(modus)) {
+    if (("d" %in% names(data))) {
+      modus <- 'DoseDependentRetardedTransientDynamics'
+    } else {
+      modus <- 'RetardedTransientDynamics'
+    }
+  } else {
+    if (modus == 'D') modus <- 'RetardedTransientDynamics'
+    if (modus == 'I') modus <- 'ImmediateResponseFunction'
+    if (modus == 'DD') modus <- 'DoseDependentRetardedTransientDynamics'
+  }
+  
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
                                             optimFunction = optimFunction)
   res.all.plusMinus <- getFittingResult(optimObject.orig)
@@ -97,7 +113,7 @@ runRTF <- function(data, modus = "RetardedTransientDynamics",
     }
     names(statLst) <- names(statObjLst) <- params
     
-    grDevices::pdf(file = "doseResponseRTF_parameter_waterfallPlots.pdf", width = 12, height = 10)
+    grDevices::pdf(file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf", width = 12, height = 10)
     for (i in seq(length(statObjLst))){
       optimResTmpLstValuesAll <- unlist(lapply(statObjLst[[i]][["optimResults"]], function(x) unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
       print(plotWaterfallPlot(optimResTmpLstValuesAll) + ggplot2::ggtitle(names(statObjLst)[i]))

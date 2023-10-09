@@ -11,7 +11,7 @@
 #' @export plotRTF
 #' @examples
 #' data.doseResponse <- getDoseResponseExampleDf()
-#' plot(data.doseResponse)
+#' plotData(data.doseResponse)
 #' res.doseResponse <- runRTF(data.doseResponse)
 
 plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {

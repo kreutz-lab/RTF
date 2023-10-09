@@ -4,7 +4,18 @@
 \alias{plotFit}
 \title{Plot RTF together with experimental data points}
 \usage{
-plotFit(tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t)
+plotFit(
+  tau_1,
+  tau_2,
+  A_sus,
+  A_trans,
+  p_0,
+  T_shift,
+  signum_TF,
+  y,
+  t,
+  title = ""
+)
 }
 \arguments{
 \item{tau_1}{tau_1}
@@ -25,6 +36,8 @@ plotFit(tau_1, tau_2, A_sus, A_trans, p_0, T_shift, signum_TF, y, t)
 experimental data frame)}
 
 \item{t}{Time points}
+
+\item{title}{Plot title}
 }
 \value{
 ggplot object showing RTF together with experimental data points

@@ -6,7 +6,7 @@
 \usage{
 runRTF(
   data,
-  modus = "RetardedTransientDynamics",
+  modus = NULL,
   optimFunction = "chiSquare",
   control = list(trace = 1, maxit = 1000, factr = 1e-20)
 )
@@ -15,8 +15,12 @@ runRTF(
 \item{data}{Data frame containing columns named 't' (time) and
 'y' (quantitative value)}
 
-\item{modus}{String indicating if modus 'RetardedTransientDynamics' or
-'ImmediateResponseFunction' should be used}
+\item{modus}{String indicating if modus 'RetardedTransientDynamics' ('D'), 
+'ImmediateResponseFunction' ('I') or
+'DoseDependentRetardedTransientDynamics' ('DD') should be used. 
+If no modus is provided default setting are  
+'DoseDependentRetardedTransientDynamics' if column with name 'd' is present 
+and else 'RetardedTransientDynamics'.}
 
 \item{optimFunction}{String indicating the optimization function which 
 should be used (Default: "chiSquare")}
@@ -35,6 +39,6 @@ Run RTF
 \examples{
 modus <- "RetardedTransientDynamics"
 data <- getExampleDf()
-plot(data)
+plotData(data)
 res <- runRTF(data, modus = modus)
 }

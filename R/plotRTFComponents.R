@@ -52,7 +52,7 @@ plotRTFComponents <- function(pars, data, signum_TF, title = "") {
   gg4 <- plotFit(tau_1 = tau_1, tau_2 = tau_2, A_sus = A_sus,
                  A_trans = A_trans, p_0 = p_0, T_shift = T_shift,
                  signum_TF = signum_TF,
-                 y = y, t = t)
+                 y = y, t = t, title = "RTF =  SignalSus + SignalTrans + p_0")
 
   patchworkObj <- patchwork::wrap_plots(gg1, gg2, gg3, gg4, ncol = 2)
 

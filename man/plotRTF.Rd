@@ -24,6 +24,6 @@ Plot fitting results for optimObjects of modus
 }
 \examples{
 data.doseResponse <- getDoseResponseExampleDf()
-plot(data.doseResponse)
+plotData(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse)
 }
