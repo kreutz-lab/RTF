@@ -15,6 +15,8 @@
 #' @param optimFunction String indicating the optimization function which 
 #' should be used (Default: "chiSquare")
 #' @param modelReduction Boolean indicating of model reduction should be performed
+#' (Default: TRUE)
+#' @param nInitialGuesses Integer indicating number of initial guesses (Default: 50)
 #' @param control List of control arguments passed to the function stats::optim 
 #' (Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))
 #' @export runRTF
@@ -28,6 +30,7 @@ runRTF <- function(data,
                    modus = NULL, 
                    optimFunction = "chiSquare", 
                    modelReduction = TRUE,
+                   nInitialGuesses = 50,
                    control = list(trace = 1, maxit = 1000,
                                   factr = 1.0e-20)) {
             if (is.null(modus)) {
@@ -44,7 +47,7 @@ runRTF <- function(data,
   
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
                                   optimFunction = optimFunction)
-  res.all.plusMinus <- getFittingResult(optimObject.orig)
+  res.all.plusMinus <- getFittingResult(optimObject.orig, nInitialGuesses = nInitialGuesses)
   res <- selectBest(res.all.plusMinus)
   
   optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
@@ -66,7 +69,7 @@ runRTF <- function(data,
       optimObjectTmp[["takeLog10"]][names(optimObjectTmp[["takeLog10"]]) == "T_shift"] <- FALSE
       
       optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-      res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp)
+      res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
       res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
       
@@ -79,7 +82,7 @@ runRTF <- function(data,
       optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in% c("A_sus", "A_trans")] <- FALSE
       
       optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
-      res.constant.plusMinus <- getFittingResult(optimObjectTmp2)
+      res.constant.plusMinus <- getFittingResult(optimObjectTmp2, nInitialGuesses = nInitialGuesses)
       res.constant <- selectBest(res.constant.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
       
@@ -91,7 +94,7 @@ runRTF <- function(data,
       
       optimObjectTmp3[["takeLog10"]][names(optimObjectTmp3[["takeLog10"]]) == "p_0"] <- FALSE
       optimObjectTmp3$fixed[["p_0"]] <- 0
-      res.p_0Zero.plusMinus <- getFittingResult(optimObjectTmp3)
+      res.p_0Zero.plusMinus <- getFittingResult(optimObjectTmp3, nInitialGuesses = nInitialGuesses)
       res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
       
@@ -118,7 +121,7 @@ runRTF <- function(data,
           optimObjectTmp$fixed[[param]] <- 0
         }
         
-        res.param.fixed <- getFittingResult(optimObjectTmp, nInitialGuesses = 50)
+        res.param.fixed <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
         res.fixed <- selectBest(res.param.fixed)
         
         LRstat <- res.fixed$value / res$value
