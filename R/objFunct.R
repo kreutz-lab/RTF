@@ -60,10 +60,9 @@ objFunct <- function(par, data, optimObject) {
   data <- data[complete.cases(data), ] 
   d <- ifelse("d" %in% colnames(data), data$d, NA)
   
-  par[names(which(optimObject[["takeLog10"]]))] <-
-    10^par[names(which(optimObject[["takeLog10"]]))]
+  par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
+    10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
   
-
   fixed <- optimObject$fixed
   for (fixedParam in setdiff(names(optimObject$fixed)[!is.na(optimObject$fixed)], c("signum_TF", "sigma"))) {
     if (optimObject[["takeLog10"]][fixedParam]) {

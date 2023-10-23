@@ -70,9 +70,12 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 optimObject = optimObject.tmp,
                                 control = optimObject.tmp$control)
 
-    optimResTmp$par[names(which(optimObject[["takeLog10"]]))] <-
-      10^optimResTmp$par[names(which(optimObject[["takeLog10"]]))]
-
+    optimResTmp$par[names(optimResTmp$par) %in% names(which(optimObject[["takeLog10"]]))] <-
+      10^optimResTmp$par[names(optimResTmp$par) %in% names(which(optimObject[["takeLog10"]]))]
+    
+    pars.tmp[names(pars.tmp) %in% names(which(optimObject[["takeLog10"]]))] <-
+      10^pars.tmp[names(pars.tmp) %in% names(which(optimObject[["takeLog10"]]))]
+    
     optimResTmp$par <- c(pars.tmp, optimResTmp$par)
     value <- optimResTmp$value
 

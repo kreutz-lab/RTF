@@ -51,10 +51,8 @@ runRTF <- function(data,
   res <- selectBest(res.all.plusMinus)
   
   optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
-  intermediateResults <- list(fullModel = res.all.plusMinus,
-                              TshiftFixed = NULL,
-                              Constant = NULL,
-                              p0Zero = NULL)
+  intermediateResults <- list()
+  
   if (modelReduction) {
     if (modus != "DoseDependentRetardedTransientDynamics") {
       #  MODEL REDUCTION
