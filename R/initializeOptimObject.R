@@ -26,10 +26,11 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                                   control = list(trace = 1, maxit = 1000,
                                                  factr = 1.0e-20), 
                                   takeLog10 = TRUE) {
-  for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
-
   
-  t <- t[!is.na(t)]
+  # data <- data[order(data$t),]
+  for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
+  
+  t <- sort(t[!is.na(t)])
   y <- y[!is.na(y)]
   # New variables: 
   # d, M_Asus, h_Asus, K_Asus, M_Atrans, h_Atrans, K_Atrans, M_tau1, h_tau1, K_tau1, M_tau2, h_tau2, K_tau2, M_Tshift, h_Tshift, K_Tshift

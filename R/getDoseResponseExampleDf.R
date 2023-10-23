@@ -9,7 +9,7 @@
 #' getDoseResponseExampleDf()
 
 getDoseResponseExampleDf <- function(){
-  t <- seq(3, 17, 0.7)
+  t <- seq(0, 17, 0.7)
   y2 <- getTransientFunctionExampleData(
     tau_1=1, tau_2=2, A_sus=1, A_trans=2, p_0=0.3,
     T_shift=2, signum_TF=1, t=t)

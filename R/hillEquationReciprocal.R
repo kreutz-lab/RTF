@@ -11,5 +11,9 @@
 #' hillEquationReciprocal(d = 20, M = 5, h = 3, K = 4)
 
 hillEquationReciprocal <- function(d, M, h, K){
-  M * (1 - ((d^h)/(K^h + d^h)))
+  result <- M * (1 - ((d^h)/(K^h + d^h)))
+  # if(is.infinite(result)){
+  #   warning(paste0("hillEquationReciprocal is infinite. Parameters: d=", d, ", M=", M, ", h=", h, ", K=", K))
+  # }
+  return(result)
 }

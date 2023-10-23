@@ -59,15 +59,24 @@ objFunct <- function(par, data, optimObject) {
   
   data <- data[complete.cases(data), ] 
   d <- ifelse("d" %in% colnames(data), data$d, NA)
+  
+  par[names(which(optimObject[["takeLog10"]]))] <-
+    10^par[names(which(optimObject[["takeLog10"]]))]
+  
 
+  fixed <- optimObject$fixed
+  for (fixedParam in setdiff(names(optimObject$fixed)[!is.na(optimObject$fixed)], c("signum_TF", "sigma"))) {
+    if (optimObject[["takeLog10"]][fixedParam]) {
+      fixed[names(fixed) == fixedParam] <- 10^fixed[names(fixed) == fixedParam]
+    }
+  }
+  
   if (optimObject$optimFunction == "chiSquare") {
-    par[names(which(optimObject[["takeLog10"]]))] <-
-      10^par[names(which(optimObject[["takeLog10"]]))]
   
     res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
                                                t = data$t,
                                                d = d,
-                                               fixed = optimObject$fixed,
+                                               fixed = fixed,
                                                modus = optimObject$modus)
   
     if (("sdExp" %in% colnames(data))) {
