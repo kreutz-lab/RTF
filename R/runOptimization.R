@@ -58,23 +58,39 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     }
   }
 
+
+  takeLog10 <- optimObject[["takeLog10"]]
+  
+  applyLog10ForTakeLog10 <- function(x, takeLog10) {
+    x[names(x) %in% names(which(takeLog10))] <-
+      log10(x[names(x) %in% names(which(takeLog10))])
+    x
+  }
+  
+  lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
+  upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
+    
   for (vec in initialGuess.vec.lst) {
     print(vec)
-
+    
+    vec <- applyLog10ForTakeLog10(vec, takeLog10)
+    # vec[names(vec) %in% names(which(optimObject[["takeLog10"]]))] <-
+    #   log10(vec[names(vec) %in% names(which(optimObject[["takeLog10"]]))])
+    
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
                                 method = "L-BFGS-B",
-                                lower = optimObject.tmp$lb.vec,
-                                upper = optimObject.tmp$ub.vec,
+                                lower = lower,
+                                upper = upper,
                                 data = optimObject.tmp$data,
                                 optimObject = optimObject.tmp,
                                 control = optimObject.tmp$control)
 
-    optimResTmp$par[names(optimResTmp$par) %in% names(which(optimObject[["takeLog10"]]))] <-
-      10^optimResTmp$par[names(optimResTmp$par) %in% names(which(optimObject[["takeLog10"]]))]
-    
-    pars.tmp[names(pars.tmp) %in% names(which(optimObject[["takeLog10"]]))] <-
-      10^pars.tmp[names(pars.tmp) %in% names(which(optimObject[["takeLog10"]]))]
+    optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))] <-
+      10^optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))]
+
+    pars.tmp[names(pars.tmp) %in% names(which(takeLog10))] <-
+      10^pars.tmp[names(pars.tmp) %in% names(which(takeLog10))]
     
     optimResTmp$par <- c(pars.tmp, optimResTmp$par)
     value <- optimResTmp$value

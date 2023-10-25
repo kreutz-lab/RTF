@@ -82,10 +82,10 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 M_tau2 = 2 * (max(t) - min(t)),
                 h_tau2 = hillCoef.ub,
                 K_tau2 = K.ub,
-                M_Asus = 2 * (max(y) - min(y)),
+                M_Asus = 10 * (max(y) - min(y)),
                 h_Asus = hillCoef.ub,
                 K_Asus = K.ub,
-                M_Atrans = 2 * (max(y) - min(y)),
+                M_Atrans = 10 * (max(y) - min(y)),
                 h_Atrans = hillCoef.ub,
                 K_Atrans = K.ub,
                 M_Tshift = (max(t) - min(t)) / 2,
@@ -187,7 +187,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
       initialGuess.vec = optimObject.orig$initialGuess.vec)
     positive.par.names <- setdiff(positive.par.names, "sigma")
     optimObject.orig$positive.par.names <- positive.par.names
-    optimObject.orig <- takeLog10OfBounds(optimObject.orig)
+    optimObject.orig[["takeLog10"]][positive.par.names] <- TRUE
+    # optimObject.orig <- takeLog10OfBounds(optimObject.orig)
   }
   optimObject.orig
 }

@@ -20,11 +20,11 @@ getDoseResponseExampleDf <- function(){
     tau_1=1, tau_2=2, A_sus=1, A_trans=6, p_0=0.3,
     T_shift=2, signum_TF=1, t=t)
   y9 <- getTransientFunctionExampleData(
-    tau_1=1, tau_2=2, A_sus=1, A_trans=9, p_0=0.3,
+    tau_1=1, tau_2=2, A_sus=1, A_trans=8, p_0=0.3,
     T_shift=2, signum_TF=1, t=t)
   d <- rep(c(2, 4, 6, 9), each = length(t))
   t <- rep(t, 4)
-  df <- data.frame(t = t, y = c(y2, y4, y6, y9) + stats::rnorm(length(t), 0, 0.03), 
+  df <- data.frame(t = t, y = c(y2, y4, y6, y9) + stats::rnorm(length(t), 0, 0.05), 
              d = d)
   df <- rbind(c(t = 2, y= NA, d = 2), df)
   df
