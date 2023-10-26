@@ -87,13 +87,16 @@ objFunct <- function(par, data, optimObject) {
   
     if (("sdExp" %in% colnames(data))) {
       sdVec <- data$sdExp
-      loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
+    #  loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
+      chi2 <- sum((res/sdVec)^2)
     } else {
-      loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
+     # loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
+      chi2 <- sum((res/par["sigma"])^2)
     }
   
-    retval <- -2 * loglik
-  
+    #retval <- -2 * loglik
+    retval <- chi2 
+    
     # if(is.infinite(retval)){
     if (retval == Inf) {
       print(par)

@@ -50,9 +50,9 @@ getTransientFunctionResult <- function(par,
     # rec_tau_2_d <-  hillEquation(d = d, M = M_rec_tau_2, 
     #                                       h = h_rec_tau_2, K = K_rec_tau_2)
     tau_1 <- hillEquationReciprocal(d = d, M = M_tau1, 
-                                      h = h_tau1, K = K_tau1)
+                                      h = h_tau1, K = K_tau1, minval = 1e-6)
     tau_2 <- hillEquationReciprocal(d = d, M = M_tau2, 
-                                      h = h_tau2, K = K_tau2)
+                                      h = h_tau2, K = K_tau2, minval = 1e-6)
     T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
                                         h = h_Tshift, K = K_Tshift)
   }

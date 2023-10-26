@@ -57,7 +57,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
     hillCoef.lb <- 1
     hillCoef.ub <- 10
     K.lb <- min(d[d > 0]) / 10
-    K.ub <- max(d) / 10
+    K.ub <- max(d) * 10
     lb.vec <- c(M_tau1 = min(diff(unique(t))) / 2,
                 h_tau1 = hillCoef.lb,
                 K_tau1 = K.lb,

@@ -31,9 +31,9 @@ getDoseResponseTransientFunctionExampleData <- function(
   A_sus <- hillEquation(d = d, M = M_Asus, h = h_Asus, K = K_Asus)
   A_trans <- hillEquation(d = d, M = M_Atrans, h = h_Atrans, K = K_Atrans)
   tau_1 <- hillEquationReciprocal(d = d, M = M_tau1, 
-                                  h = h_tau1, K = K_tau1)
+                                  h = h_tau1, K = K_tau1, minval = 1e-6)
   tau_2 <- hillEquationReciprocal(d = d, M = M_tau2, 
-                                  h = h_tau2, K = K_tau2)
+                                  h = h_tau2, K = K_tau2, minval = 1e-6)
   T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
                                     h = h_Tshift, K = K_Tshift)
   
