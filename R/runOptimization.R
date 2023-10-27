@@ -58,7 +58,6 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     }
   }
 
-
   takeLog10 <- optimObject[["takeLog10"]]
   
   applyLog10ForTakeLog10 <- function(x, takeLog10) {

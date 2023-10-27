@@ -5,37 +5,34 @@
 \title{Plot RTF together with experimental data points}
 \usage{
 plotFit(
-  tau_1,
-  tau_2,
-  A_sus,
-  A_trans,
-  p_0,
-  T_shift,
-  signum_TF,
-  y,
-  t,
+  par,
+  withData = FALSE,
+  modus = "RetardedTransientDynamics",
+  y = NULL,
+  t = NULL,
+  d = NULL,
   title = ""
 )
 }
 \arguments{
-\item{tau_1}{tau_1}
+\item{par}{Vector containing 
+tau_1, tau_2, A_sus, A_trans, p_0, T_shift, and signum_TF (modus 
+'RetardedTransientDynamics') or 
+M_tau1, h_tau1,  K_tau1, M_tau2, h_tau2, K_tau2, M_Asus, h_Asus, K_Asus, 
+M_Atrans, h_Atrans, K_Atrans, M_Tshift, h_Tshift, K_Tshift (modus 
+'DoseDependentRetardedTransientDynamics').}
 
-\item{tau_2}{tau_2}
+\item{withData}{Boolean indicating if data should be added to fit line}
 
-\item{A_sus}{A_sus}
-
-\item{A_trans}{A_trans}
-
-\item{p_0}{p_0}
-
-\item{T_shift}{T_shift}
-
-\item{signum_TF}{signum_TF}
+\item{modus}{Modus ('RetardedTransientDynamics' or 
+DoseDependentRetardedTransientDynamics')}
 
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
 
 \item{t}{Time points}
+
+\item{d}{Dosis (obligatory for 'DoseDependentRetardedTransientDynamics')}
 
 \item{title}{Plot title}
 }
@@ -47,9 +44,9 @@ Plot RTF together with experimental data points
 }
 \examples{
 gg <- plotFit(
-       tau_1 = 1.00, tau_2 = 1.00,
+       par = c(tau_1 = 1.00, tau_2 = 1.00,
        A_sus = 1.05, A_trans = 3.05,
-       p_0 = -0.28, T_shift = -1, signum_TF = 1,
+       p_0 = -0.28, T_shift = -1, signum_TF = 1),
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 }

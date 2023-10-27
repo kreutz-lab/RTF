@@ -17,7 +17,7 @@
 plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
   modus <- optimObject[["finalModel"]][["modus"]]
   if (modus == "RetardedTransientDynamics"){
-    plotMultiStartPlots(optimObject = res$finalModel, 
+    plotMultiStartPlots(optimObject = optimObject$finalModel, 
                         fileNamePrefix = fileNamePrefix, plotAllFits = plotAllFits)
   } else if (modus == "DoseDependentRetardedTransientDynamics") {
     plotDoseResponse(optimObject, fileNamePrefix) 

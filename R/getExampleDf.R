@@ -10,8 +10,12 @@
 
 getExampleDf <- function(){
   t <- seq(3, 17, 0.7)
-  y <- getTransientFunctionExampleData(
-    tau_1=1, tau_2=2, A_sus=1, A_trans=1.5, p_0=0.3,
-    T_shift=2, signum_TF=1, t=t)
+  
+  y <- getTransientFunctionResult(
+    t = t,
+    par = c(tau_1 = 1, tau_2 = 2, A_sus = 1, A_trans = 1.5, p_0 = 0.3,
+            T_shift = 2, signum_TF = 1),
+    modus = "RetardedTransientDynamics") 
+    
   data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.03))
 }

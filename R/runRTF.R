@@ -33,7 +33,7 @@ runRTF <- function(data,
                    nInitialGuesses = 50,
                    control = list(trace = 1, maxit = 1000,
                                   factr = 1.0e-20)) {
-            if (is.null(modus)) {
+  if (is.null(modus)) {
     if (("d" %in% names(data))) {
       modus <- 'DoseDependentRetardedTransientDynamics'
     } else {

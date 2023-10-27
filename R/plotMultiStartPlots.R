@@ -51,7 +51,7 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
   })
   
   optimResTmpLstValuesAll <- unlist(
-    lapply(optimResults.optimRes, function(x) unlist(x[grep("value",names(x))])))
+    lapply(optimResults.optimRes, function(x) unlist(x[grep("value", names(x))])))
   
   gg.waterfall <- plotWaterfallPlot(optimResTmpLstValuesAll)
   
@@ -64,14 +64,18 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
   
   paramsToNotBeFitted <- names(which(!is.na(optimObject$fixed)))
   title <- paste0("OptimValue: ", round(bestOptimResult$value, 2),
-                  "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
+                  "; ", 
+                  paste(paramsToNotBeFitted,
+                        round(optimObject$fixed[paramsToNotBeFitted], 4),
+                        sep = ": ", collapse = ", "),
+                  ", ",
                   paste(names(bestOptimResult$par),
                         round(bestOptimResult$par, 4),
                         sep = ": ", collapse = ", "))
   gg.final <- plotRTFComponents(
     pars = bestOptimResult$par,
     data = optimObject$data,
-    signum_TF = optimObject$fixed[[paramsToNotBeFitted]],
+    signum_TF = optimObject$fixed[["signum_TF"]],
     title = title
   )
   
@@ -86,12 +90,19 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
         value <- optimResTmpLstValuesAll[[i]]
         
         title <- paste0("OptimValue: ", round(value, 2),
-                        "; ", paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
-                        paste(names(pars), round(pars, 4), sep = ": ", collapse = ", "))
+                         "; ", 
+                        # paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
+                        paste(paramsToNotBeFitted,
+                              round(optimObject$fixed[paramsToNotBeFitted], 4),
+                              sep = ": ", collapse = ", "),
+                        ", ",
+                         paste(names(pars), 
+                               round(pars, 4), 
+                               sep = ": ", collapse = ", "))
         
         gg <- plotRTFComponents(pars = pars,
                                 data = optimObject$data,
-                                signum_TF = optimObject$fixed[[paramsToNotBeFitted]], title = title)
+                                signum_TF = optimObject$fixed[["signum_TF"]], title = title)
         
         gg.lst <- append(gg.lst, list(gg = gg))
         

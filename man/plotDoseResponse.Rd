@@ -4,7 +4,7 @@
 \alias{plotDoseResponse}
 \title{Generate plots for dose-response RTF}
 \usage{
-plotDoseResponse(optimObject, fileNamePrefix = "")
+plotDoseResponse(optimObject, fileNamePrefix = "", customParams = c())
 }
 \arguments{
 \item{optimObject}{optimObject containing element "finalModel"}

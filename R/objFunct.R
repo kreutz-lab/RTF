@@ -63,7 +63,7 @@ objFunct <- function(par, data, optimObject) {
   if ("d" %in% colnames(data)) {
     d <- data$d
   } else {
-    d <- NA
+    d <- NULL
   }
   
   par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
@@ -83,7 +83,8 @@ objFunct <- function(par, data, optimObject) {
                                                d = d,
                                                # fixed = fixed,
                                                fixed = optimObject$fixed,
-                                               modus = optimObject$modus)
+                                               modus = optimObject$modus,
+                                               scale = TRUE)
   
     if (("sdExp" %in% colnames(data))) {
       sdVec <- data$sdExp

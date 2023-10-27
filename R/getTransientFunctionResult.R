@@ -10,6 +10,8 @@
 #' in par, if they are non-NAs
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
+#' @param scale Boolean, indicates if time dependent parameters t, T_shift,
+#' tau_1, and tau_2 should be scaled
 #' @export getTransientFunctionResult
 #' @examples
 #' par <- c(tau_1 = 1.00, tau_2 = 1.00, A_sus = 1.05,
@@ -25,11 +27,12 @@
 #'                            modus = modus)
 #' plot(t, y)
 
-getTransientFunctionResult <- function(par,
-                                       t,
-                                       d = NA,
-                                       fixed,
-                                       modus = "RetardedTransientDynamics") {
+getTransientFunctionResult <- function(par = c(),
+                                       t = NULL,
+                                       d = NULL,
+                                       fixed = NA,
+                                       modus = "RetardedTransientDynamics",
+                                       scale = TRUE) {
 
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
 
@@ -38,29 +41,44 @@ getTransientFunctionResult <- function(par,
     if (!is.na(fixed[[v]])) assign(names(fixed)[v], fixed[[v]])
   }
 
-  scaleRes <- scaleTimeParameter(timeParam=t, maxVal = max(t))
-  t_prime <- scaleRes$timeParam
-  maxVal <- scaleRes$maxVal
+  if (scale) {
+    scaleRes <- scaleTimeParameter(timeParam = t, maxVal = max(t))
+    t_prime <- scaleRes$timeParam
+    maxVal <- scaleRes$maxVal
+  } else {
+    t_prime <- t
+  }
   
   if (modus == "DoseDependentRetardedTransientDynamics") {
-    A_sus <- hillEquation(d = d, M = M_Asus, h = h_Asus, K = K_Asus)
-    A_trans <- hillEquation(d = d, M = M_Atrans, h = h_Atrans, K = K_Atrans)
-    # rec_tau_1_d <-  hillEquation(d = d, M = M_rec_tau_1, 
-    #                                       h = h_rec_tau_1, K = K_rec_tau_1)
-    # rec_tau_2_d <-  hillEquation(d = d, M = M_rec_tau_2, 
-    #                                       h = h_rec_tau_2, K = K_rec_tau_2)
-    tau_1 <- hillEquationReciprocal(d = d, M = M_tau1, 
-                                      h = h_tau1, K = K_tau1, minval = 1e-6)
-    tau_2 <- hillEquationReciprocal(d = d, M = M_tau2, 
-                                      h = h_tau2, K = K_tau2, minval = 1e-6)
-    T_shift <- hillEquationReciprocal(d = d, M = M_Tshift, 
-                                        h = h_Tshift, K = K_Tshift)
+    df <- getHillResults(d = d, 
+                         param = c(M_tau1 = M_tau1, 
+                                   h_tau1 = h_tau1, 
+                                   K_tau1 = K_tau1, 
+                                   M_tau2 = M_tau2, 
+                                   h_tau2 = h_tau2, 
+                                   K_tau2 = K_tau2,
+                                   M_Asus = M_Asus, 
+                                   h_Asus = h_Asus, 
+                                   K_Asus = K_Asus, 
+                                   M_Atrans = M_Atrans, 
+                                   h_Atrans = h_Atrans, 
+                                   K_Atrans = K_Atrans,
+                                   M_Tshift = M_Tshift, 
+                                   h_Tshift = h_Tshift, 
+                                   K_Tshift = K_Tshift))
+    A_sus <- df$A_sus
+    A_trans <- df$A_trans
+    tau_1 <- df$tau_1
+    tau_2 <- df$tau_2
+    T_shift <- df$T_shift
   }
-
-  # scaling everything with time as phys. unit
-  T_shift <- scaleTimeParameter(timeParam = T_shift, maxVal = maxVal)$timeParam
-  tau_1 <- scaleTimeParameter(timeParam = tau_1, maxVal = maxVal)$timeParam
-  tau_2 <- scaleTimeParameter(timeParam = tau_2, maxVal = maxVal)$timeParam
+  
+  if (scale) {
+    # scaling everything with time as phys. unit
+    T_shift <- scaleTimeParameter(timeParam = T_shift, maxVal = maxVal)$timeParam
+    tau_1 <- scaleTimeParameter(timeParam = tau_1, maxVal = maxVal)$timeParam
+    tau_2 <- scaleTimeParameter(timeParam = tau_2, maxVal = maxVal)$timeParam
+  }
 
   nonLinTransformation <- log10(10^t_prime + 10^T_shift) - log10(1 + 10^T_shift)
 

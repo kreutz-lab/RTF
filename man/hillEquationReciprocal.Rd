@@ -4,7 +4,7 @@
 \alias{hillEquationReciprocal}
 \title{Calculate Hill equation of reciprocal parameter}
 \usage{
-hillEquationReciprocal(d, M, h, K)
+hillEquationReciprocal(d, M, h, K, minval = NULL)
 }
 \arguments{
 \item{d}{Dose}
@@ -14,6 +14,9 @@ hillEquationReciprocal(d, M, h, K)
 \item{h}{Hill coefficient}
 
 \item{K}{Half-maximum quantity}
+
+\item{minval}{(optional) Numeric, defines the lowest value the result can 
+acquire}
 }
 \value{
 Hill equation result value

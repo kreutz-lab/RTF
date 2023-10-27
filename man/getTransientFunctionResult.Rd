@@ -5,11 +5,12 @@
 \title{Calculate RTF results for multiple time points}
 \usage{
 getTransientFunctionResult(
-  par,
-  t,
-  d = NA,
-  fixed,
-  modus = "RetardedTransientDynamics"
+  par = c(),
+  t = NULL,
+  d = NULL,
+  fixed = NULL,
+  modus = "RetardedTransientDynamics",
+  scale = TRUE
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ in par, if they are non-NAs}
 
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or
 'ImmediateResponseFunction' should be used}
+
+\item{scale}{Boolean, indicates if time dependent parameters t, T_shift,
+tau_1, and tau_2 should be scaled}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
