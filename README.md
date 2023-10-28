@@ -18,10 +18,13 @@ library(RTF)
 # data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
+
 data <- getExampleDf()
 plotData(data)
 res <- runRTF(data, modus = "RetardedTransientDynamics")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+
+
 
 data.doseResponse <- getExampleDf(
                              modus = "DoseDependentRetardedTransientDynamics")
@@ -30,4 +33,11 @@ res.doseResponse <- runRTF(data.doseResponse,
                           modus = "DoseDependentRetardedTransientDynamics",
                           modelReduction = FALSE)
 plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
+
+plotFit(par = res.doseResponse[["finalParams"]],
+                 y = data.doseResponse$y, 
+                 t = data.doseResponse$t, 
+                 d = data.doseResponse$d, 
+                 modus = 'DoseDependentRetardedTransientDynamics',
+                 withData = TRUE)
 ```
