@@ -6,7 +6,8 @@
 #' @param data Data frame with columns t, y, and d (optional)
 #' @export plotData
 #' @examples
-#' data.doseResponse <- getDoseResponseExampleDf()
+#' data.doseResponse <- getExampleDf(
+#'                             modus = "DoseDependentRetardedTransientDynamics")
 #' plotData(data.doseResponse)
 
 plotData <- function(data) {

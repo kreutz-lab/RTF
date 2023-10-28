@@ -8,7 +8,7 @@ getTransientFunctionResult(
   par = c(),
   t = NULL,
   d = NULL,
-  fixed = NULL,
+  fixed = NA,
   modus = "RetardedTransientDynamics",
   scale = TRUE
 )

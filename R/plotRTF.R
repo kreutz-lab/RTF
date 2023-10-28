@@ -10,7 +10,8 @@
 #' if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" modus.
 #' @export plotRTF
 #' @examples
-#' data.doseResponse <- getDoseResponseExampleDf()
+#' data.doseResponse <- getExampleDf(
+#'                             modus = "DoseDependentRetardedTransientDynamics")
 #' plotData(data.doseResponse)
 #' res.doseResponse <- runRTF(data.doseResponse)
 

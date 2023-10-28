@@ -8,7 +8,8 @@
 #' file, otherwise they will be plotted directly.
 #' @export plotDoseResponse
 #' @examples
-#' data.doseResponse <- getDoseResponseExampleDf()
+#' data.doseResponse <- getExampleDf(
+#'                             modus = "DoseDependentRetardedTransientDynamics")
 #' plotData(data.doseResponse)
 #' res.doseResponse <- runRTF(data.doseResponse, 
 #'                           modus = "DoseDependentRetardedTransientDynamics")

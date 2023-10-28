@@ -4,7 +4,11 @@
 \alias{getExampleDf}
 \title{Generate example data frame for defined RTF parameters}
 \usage{
-getExampleDf()
+getExampleDf(modus = "RetardedTransientDynamics")
+}
+\arguments{
+\item{modus}{Modus, "RetardedTransientDynamics" or 
+"DoseDependentRetardedTransientDynamics"}
 }
 \value{
 Dataframe with data following an RTF with predefined parameters plus
