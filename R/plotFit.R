@@ -30,22 +30,6 @@ plotFit <- function(par,
                     modus = "RetardedTransientDynamics", 
                     y = NULL, t = NULL, d = NULL, 
                     title = "") {
-  # xi <- seq(0, max(t), length.out = 1000)
-  # 
-  # gg <- ggplot2::ggplot(data.frame(t = t, y = y),
-  #                 ggplot2::aes(x = t, y = y)) +
-  #   ggplot2::geom_point(alpha = 0.5) +
-  #   ggplot2::geom_line(data = data.frame(x = xi,
-  #                             y = getTransientFunctionResult(
-  #                               t = xi,
-  #                               par = par,
-  #                               modus = modus)),
-  #                      ggplot2::aes(x = x, y = y)) +
-  #   ggplot2::theme_bw()
-  # 
-  # if (nchar(title) > 0) gg <- gg + ggplot2::ggtitle(title) 
-  # 
-  # gg
   
   xi <- seq(0, max(t), length.out = 1000)
   
@@ -55,7 +39,7 @@ plotFit <- function(par,
     doses <- 1
   }
 
-  for (v in 1:length(par)) assign(names(par)[v], par[[v]])
+  # for (v in 1:length(par)) assign(names(par)[v], par[[v]])
   
   geom_point.lst <- list()
   geom_line.lst <- list()
@@ -63,19 +47,10 @@ plotFit <- function(par,
     df.dosis <- NULL
     dosis <- doses[i]
     
-    # df.dosis <- getHillResults(d = dosis, param = par)
-    
     geom_line.lst <- append(geom_line.lst, 
                             list(data.frame(t = xi,
                                             y = getTransientFunctionResult(
                                               t = xi,
-                                              # par = c(tau_1 = df.dosis$tau_1,
-                                              #         tau_2 = df.dosis$tau_2,
-                                              #         A_sus = df.dosis$A_sus,
-                                              #         A_trans = df.dosis$A_trans,
-                                              #         p_0 = p_0,
-                                              #         T_shift = df.dosis$T_shift,
-                                              #         signum_TF = signum_TF),
                                               d = dosis,
                                               par = par,
                                               modus = modus),
@@ -104,8 +79,6 @@ plotFit <- function(par,
                                      ggplot2::aes(x = t, y = y))
     }
   }
-  
-  
   
   if (!is.null(d)) gg <- gg + ggplot2::labs(color='Dosis') 
   if (nchar(title) > 0) gg <- gg + ggplot2::ggtitle(title) 

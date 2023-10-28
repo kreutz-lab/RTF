@@ -73,8 +73,6 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     print(vec)
     
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
-    # vec[names(vec) %in% names(which(optimObject[["takeLog10"]]))] <-
-    #   log10(vec[names(vec) %in% names(which(optimObject[["takeLog10"]]))])
     
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,

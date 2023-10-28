@@ -60,8 +60,6 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
   optimResTmpLstParsAll.df.long <- reshape2::melt(optimResTmpLstParsAll.df)
   gg.paramDistr <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
   
-  # paramsToNotBeFitted <- setdiff(names(optimObject$fixed), paramsToBeFitted)
-  
   paramsToNotBeFitted <- names(which(!is.na(optimObject$fixed)))
   title <- paste0("OptimValue: ", round(bestOptimResult$value, 2),
                   "; ", 
@@ -91,7 +89,6 @@ plotMultiStartPlots <- function(optimObject, fileNamePrefix = "",
         
         title <- paste0("OptimValue: ", round(value, 2),
                          "; ", 
-                        # paramsToNotBeFitted, ": ", optimObject$fixed[[paramsToNotBeFitted]], ", ",
                         paste(paramsToNotBeFitted,
                               round(optimObject$fixed[paramsToNotBeFitted], 4),
                               sep = ": ", collapse = ", "),

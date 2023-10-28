@@ -52,13 +52,8 @@
 
 objFunct <- function(par, data, optimObject) {
   retval <- NULL
-  # par <- optimObject$initialGuess.vec
-
-  # if (optimObject$takeLog10) par[optimObject$positive.par.names] <-
-  #    10^par[optimObject$positive.par.names]
   
   data <- data[complete.cases(data), ] 
-  # d <- ifelse("d" %in% colnames(data), data$d, NA)
   
   if ("d" %in% colnames(data)) {
     d <- data$d
@@ -68,13 +63,6 @@ objFunct <- function(par, data, optimObject) {
   
   par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
     10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
-  
-  # fixed <- optimObject$fixed
-  # for (fixedParam in setdiff(names(optimObject$fixed)[!is.na(optimObject$fixed)], c("signum_TF", "sigma"))) {
-  #   if (optimObject[["takeLog10"]][fixedParam]) {
-  #     fixed[names(fixed) == fixedParam] <- 10^fixed[names(fixed) == fixedParam]
-  #   }
-  # }
   
   if (optimObject$optimFunction == "chiSquare") {
   
@@ -88,17 +76,13 @@ objFunct <- function(par, data, optimObject) {
   
     if (("sdExp" %in% colnames(data))) {
       sdVec <- data$sdExp
-    #  loglik <- sum(log(stats::dnorm(res, 0, sdVec)))
       chi2 <- sum((res/sdVec)^2)
     } else {
-     # loglik <- sum(log(stats::dnorm(res, 0, par["sigma"])))
       chi2 <- sum((res/par["sigma"])^2)
     }
-  
-    #retval <- -2 * loglik
+
     retval <- chi2 
     
-    # if(is.infinite(retval)){
     if (retval == Inf) {
       print(par)
       retval <- 10^10
