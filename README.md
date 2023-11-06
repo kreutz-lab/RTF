@@ -39,5 +39,6 @@ plotFit(par = res.doseResponse[["finalParams"]],
                  t = data.doseResponse$t, 
                  d = data.doseResponse$d, 
                  modus = 'DoseDependentRetardedTransientDynamics',
-                 withData = TRUE)
+                 withData = TRUE,
+                 title = " ")
 ```
