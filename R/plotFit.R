@@ -15,13 +15,19 @@
 #' experimental data frame)
 #' @param t Time points
 #' @param d Dosis (obligatory for 'DoseDependentRetardedTransientDynamics')
+#' @param plotType String indication if transient function should be plotted
+#' ('all') (Default) or if in case of modus = 'RetardedTransientDynamics'
+#'  components of transient function ("nonLinearTransformationOnly", 
+#' "transientOnly", "sustainedOnly") should be plotted.
 #' @param title Plot title
+#' @param alpha Transparency of points
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
 #'        par = c(tau_1 = 1.00, tau_2 = 1.00,
 #'        A_sus = 1.05, A_trans = 3.05,
 #'        p_0 = -0.28, T_shift = -1, signum_TF = 1),
+#'        withData = TRUE,
 #'        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
 #'        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 
@@ -29,8 +35,11 @@ plotFit <- function(par,
                     withData = FALSE,
                     modus = "RetardedTransientDynamics", 
                     y = NULL, t = NULL, d = NULL, 
-                    title = "") {
+                    plotType = "all",
+                    title = "",
+                    alpha = 0.5) {
   
+  for (v in 1:length(par)) assign(names(par)[v], par[[v]])
   xi <- seq(0, max(t), length.out = 1000)
   
   if (!is.null(d)) {
@@ -47,13 +56,46 @@ plotFit <- function(par,
     df.dosis <- NULL
     dosis <- doses[i]
     
+    if (plotType == "all" | modus == 'DoseDependentRetardedTransientDynamics') {
+      functionResVec <- getTransientFunctionResult(
+        t = xi,
+        d = dosis,
+        par = par,
+        modus = modus)
+      if (nchar(title) == 0) title <- "RTF =  SignalSus + SignalTrans + p_0"
+      
+    } else if (plotType == "nonLinearTransformationOnly") {
+      functionResVec <- getNonLinTransformationPlusOffset(
+        t = xi,
+        T_shift = T_shift,
+        p_0 = p_0)
+      if (nchar(title) == 0) title <- "NonLinTransformation + p_0"
+      
+    } else if (plotType == "sustainedOnly") {
+      functionResVec <- getSignalSusPlusOffset(
+        t = xi,
+        tau_1 = tau_1,
+        A_sus = A_sus,
+        p_0 = p_0,
+        T_shift = T_shift,
+        signum_TF = signum_TF)
+      if (nchar(title) == 0) title <- "SignalSus + p_0"
+      
+    } else if (plotType == "transientOnly") {
+      functionResVec <-  getSignalTransPlusOffset(
+        t = xi,
+        tau_1 = tau_1,
+        tau_2 = tau_2,
+        A_trans = A_trans,
+        p_0 = p_0,
+        T_shift = T_shift,
+        signum_TF = signum_TF)
+      if (nchar(title) == 0) title <- "SignalTrans + p_0"
+    }
+    
     geom_line.lst <- append(geom_line.lst, 
                             list(data.frame(t = xi,
-                                            y = getTransientFunctionResult(
-                                              t = xi,
-                                              d = dosis,
-                                              par = par,
-                                              modus = modus),
+                                            y = functionResVec,
                                             d = rep(dosis, times = length(xi)))))
     
   } 
@@ -69,14 +111,18 @@ plotFit <- function(par,
                        ggplot2::aes(x = t, y = y, color = factor(d)))
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
-                                     ggplot2::aes(x = t, y = y, color = factor(d)))
+                                     ggplot2::aes(x = t, y = y, 
+                                                  color = factor(d)),
+                                     alpha = alpha
+                                     )
     }
   } else {
     gg <- gg + ggplot2::geom_line(data = geom_line.df,
                        ggplot2::aes(x = t, y = y))
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
-                                     ggplot2::aes(x = t, y = y))
+                                     ggplot2::aes(x = t, y = y),
+                                     alpha = alpha)
     }
   }
   

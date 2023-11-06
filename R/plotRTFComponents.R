@@ -40,20 +40,29 @@ plotRTFComponents <- function(pars, data, signum_TF, title = "") {
   for (v in 1:length(pars)) assign(names(pars)[v], pars[[v]])
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
-  gg1 <- plotNonLinearTransformation(p_0 = p_0, T_shift = T_shift,
-                                  y = y, t = t)
-  gg2 <- plotSignalSus(tau_1 = tau_1, A_sus = A_sus, p_0 = p_0,
-                       T_shift = T_shift, signum_TF = signum_TF,
-                       y = y, t = t)
-  gg3 <- plotSignalTrans(tau_1 = tau_1, tau_2 = tau_2,
+  alpha <- 0.5
+
+  gg1 <- plotFit(par = c(p_0 = p_0, T_shift = T_shift),
+                 y = y, t = t, 
+                 plotType = "nonLinearTransformationOnly",
+                 withData = TRUE, alpha = alpha)
+  gg2 <- plotFit(par = c(tau_1 = tau_1, A_sus = A_sus, p_0 = p_0,
+                         T_shift = T_shift, signum_TF = signum_TF),
+                 y = y, t = t, 
+                 plotType = "sustainedOnly",
+                 withData = TRUE, alpha = alpha)
+  gg3 <- plotFit(par = c(tau_1 = tau_1, tau_2 = tau_2,
                          A_trans = A_trans,
-                         p_0 = p_0, T_shift = T_shift, signum_TF = signum_TF,
-                         y = y, t = t)
+                         p_0 = p_0, T_shift = T_shift, signum_TF = signum_TF),
+                 y = y, t = t, 
+                 plotType = "transientOnly",
+                 withData = TRUE, alpha = alpha)
   gg4 <- plotFit(par = c(tau_1 = tau_1, tau_2 = tau_2, A_sus = A_sus,
-                 A_trans = A_trans, p_0 = p_0, T_shift = T_shift,
-                 signum_TF = signum_TF),
-                 y = y, t = t, title = "RTF =  SignalSus + SignalTrans + p_0",
-                 withData = TRUE)
+                         A_trans = A_trans, p_0 = p_0, T_shift = T_shift,
+                         signum_TF = signum_TF),
+                 y = y, t = t,
+                 plotType = "all",
+                 withData = TRUE, alpha = alpha)
 
   patchworkObj <- patchwork::wrap_plots(gg1, gg2, gg3, gg4, ncol = 2)
 

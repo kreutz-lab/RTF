@@ -161,9 +161,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                            initialGuess.vec = initialGuess.vec,
                            lb.vec = lb.vec,
                            ub.vec = ub.vec,
-                           fixed = setNames(
+                           fixed = stats::setNames(
                              rep(NA, length(lb.vec)), names(lb.vec)),
-                           takeLog10 = setNames(
+                           takeLog10 = stats::setNames(
                              rep(FALSE, length(lb.vec)), names(lb.vec)),
                            positive.par.names = NULL,
                            modus = modus,

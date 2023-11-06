@@ -12,11 +12,11 @@
 
 getExampleDf <- function(modus = "RetardedTransientDynamics"){
   if (modus == "RetardedTransientDynamics") {
-    t <- seq(3, 17, 0.7)
+    t <- seq(0, 17, 0.7)
     
     y <- getTransientFunctionResult(
       t = t,
-      par = c(tau_1 = 1, tau_2 = 2, A_sus = 1, A_trans = 1.5, p_0 = 0.3,
+      par = c(tau_1 = 1, tau_2 = 2, A_sus = 1, A_trans = 2, p_0 = 0.3,
               T_shift = 2, signum_TF = 1),
       modus = "RetardedTransientDynamics") 
       

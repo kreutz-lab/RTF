@@ -26,5 +26,6 @@ Plot fitting results for optimObjects of modus
 data.doseResponse <- getExampleDf(
                             modus = "DoseDependentRetardedTransientDynamics")
 plotData(data.doseResponse)
-res.doseResponse <- runRTF(data.doseResponse)
+res.doseResponse <- runRTF(data.doseResponse, modelReduction = FALSE)
+plotRTF(res.doseResponse)
 }

@@ -53,7 +53,7 @@
 objFunct <- function(par, data, optimObject) {
   retval <- NULL
   
-  data <- data[complete.cases(data), ] 
+  data <- data[stats::complete.cases(data), ] 
   
   if ("d" %in% colnames(data)) {
     d <- data$d

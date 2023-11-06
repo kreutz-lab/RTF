@@ -11,7 +11,9 @@ plotFit(
   y = NULL,
   t = NULL,
   d = NULL,
-  title = ""
+  plotType = "all",
+  title = "",
+  alpha = 0.5
 )
 }
 \arguments{
@@ -34,7 +36,14 @@ experimental data frame)}
 
 \item{d}{Dosis (obligatory for 'DoseDependentRetardedTransientDynamics')}
 
+\item{plotType}{String indication if transient function should be plotted
+('all') (Default) or if in case of modus = 'RetardedTransientDynamics'
+ components of transient function ("nonLinearTransformationOnly", 
+"transientOnly", "sustainedOnly") should be plotted.}
+
 \item{title}{Plot title}
+
+\item{alpha}{Transparency of points}
 }
 \value{
 ggplot object showing RTF together with experimental data points
@@ -47,6 +56,7 @@ gg <- plotFit(
        par = c(tau_1 = 1.00, tau_2 = 1.00,
        A_sus = 1.05, A_trans = 3.05,
        p_0 = -0.28, T_shift = -1, signum_TF = 1),
+       withData = TRUE,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
 }
