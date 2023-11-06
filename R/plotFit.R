@@ -53,7 +53,7 @@ plotFit <- function(par,
   geom_point.lst <- list()
   geom_line.lst <- list()
   for (i in seq(length(doses))) {
-    df.dose <- NULL
+    functionResVec <- NULL
     dose <- doses[i]
     
     if (plotType == "all" | modus == 'DoseDependentRetardedTransientDynamics') {
