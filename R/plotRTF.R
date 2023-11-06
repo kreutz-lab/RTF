@@ -14,7 +14,7 @@
 #'                             modus = "DoseDependentRetardedTransientDynamics")
 #' plotData(data.doseResponse)
 #' res.doseResponse <- runRTF(data.doseResponse, modelReduction = FALSE)
-#' plotRTF(res.doseResponse)
+#' plotRTF(res.doseResponse, plotAllFits = FALSE)
 
 plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
   
@@ -152,7 +152,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
     ##################################################
     d <- seq(0, max(data[["d"]]), length.out = 1000)
     
-    df <- getHillResults(d = d, param = par)
+    df <- getHillResults(d = d, params = par)
     
     df.long <- reshape2::melt(df, id.vars = c("d"))
     dosisParamPlot <- ggplot2::ggplot(

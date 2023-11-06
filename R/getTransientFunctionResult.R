@@ -51,7 +51,7 @@ getTransientFunctionResult <- function(par = c(),
   
   if (modus == "DoseDependentRetardedTransientDynamics") {
     df <- getHillResults(d = d, 
-                         param = c(M_tau1 = M_tau1, 
+                         params = c(M_tau1 = M_tau1, 
                                    h_tau1 = h_tau1, 
                                    K_tau1 = K_tau1, 
                                    M_tau2 = M_tau2, 
