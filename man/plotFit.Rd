@@ -34,7 +34,7 @@ experimental data frame)}
 
 \item{t}{Time points}
 
-\item{d}{Dosis (obligatory for 'DoseDependentRetardedTransientDynamics')}
+\item{d}{Dose (obligatory for 'DoseDependentRetardedTransientDynamics')}
 
 \item{plotType}{String indication if transient function should be plotted
 ('all') (Default) or if in case of modus = 'RetardedTransientDynamics'

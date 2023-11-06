@@ -8,7 +8,7 @@
 getHillResults(d = NULL, params = c())
 }
 \arguments{
-\item{d}{Dosis given as single value or a vector}
+\item{d}{Dose given as single value or a vector}
 
 \item{params}{Named vector containing the parameters 'M_tau1', 'h_tau1', 'K_tau1', 
 'M_tau2', 'h_tau2', 'K_tau2', 'M_Asus', 'h_Asus', 'K_Asus', 

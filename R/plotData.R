@@ -16,7 +16,7 @@ plotData <- function(data) {
     ggplot2::ggplot(data, 
                     ggplot2::aes(x = t, y = y, color = factor(d))) +
       ggplot2::geom_point() +
-      ggplot2::labs(color='Dosis') +
+      ggplot2::labs(color='Dose') +
       ggplot2::scale_color_brewer() +
       ggplot2::theme_bw()
   } else {

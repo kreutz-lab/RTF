@@ -142,7 +142,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
       parDistributionPlot + patchwork::plot_layout(ncol = numCol)
     
   } else if (modus == "DoseDependentRetardedTransientDynamics") {
-    bestFitWDataPlot <- dosisParamPlot <- NA
+    bestFitWDataPlot <- doseParamPlot <- NA
     
     
     bestFitWDataPlot <- plotFit(par, withData = TRUE,
@@ -155,16 +155,16 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
     df <- getHillResults(d = d, params = par)
     
     df.long <- reshape2::melt(df, id.vars = c("d"))
-    dosisParamPlot <- ggplot2::ggplot(
+    doseParamPlot <- ggplot2::ggplot(
       df.long, ggplot2::aes(x = d, y = value, color = variable)) +
       ggplot2::geom_line() +
-      ggplot2::xlab("Dosis") +
+      ggplot2::xlab("Dose") +
       ggplot2::ylab("Value") +
       ggplot2::ggtitle(title) +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank())
     
-    bestFit.plot <- dosisParamPlot + bestFitWDataPlot + waterfallPlot +
+    bestFit.plot <- doseParamPlot + bestFitWDataPlot + waterfallPlot +
       parDistributionPlot + patchwork::plot_layout(ncol = numCol)
   }
   

@@ -27,11 +27,11 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
     times <- length(doses)
     
     vec <- c()
-    for (dosis in doses) {
+    for (dose in doses) {
       y <- NULL
       y <- getTransientFunctionResult(
         t = t, 
-        d = dosis,
+        d = dose,
         par = c(
           M_tau1 = 0.1,
           h_tau1 = 1,
@@ -42,7 +42,7 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
           M_Asus = 1,
           h_Asus = 10,
           K_Asus = 0.2, 
-          M_Atrans = 6 * dosis,
+          M_Atrans = 6 * dose,
           h_Atrans = 1.5,
           K_Atrans = 8,
           M_Tshift = 4,

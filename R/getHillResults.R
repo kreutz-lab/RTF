@@ -6,7 +6,7 @@
 #' @return Data frame with the caclulated A_sus, A_trans, tau_1, tau_2, and 
 #' T_shift, where each row corresponds to the dose procided as a single value or
 #' a vector.
-#' @param d Dosis given as single value or a vector
+#' @param d Dose given as single value or a vector
 #' @param params Named vector containing the parameters 'M_tau1', 'h_tau1', 'K_tau1', 
 #' 'M_tau2', 'h_tau2', 'K_tau2', 'M_Asus', 'h_Asus', 'K_Asus', 
 #' 'M_Atrans', 'h_Atrans', 'K_Atrans', 'M_Tshift', 'h_Tshift', 'K_Tshift'

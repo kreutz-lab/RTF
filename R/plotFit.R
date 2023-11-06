@@ -14,7 +14,7 @@
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
 #' @param t Time points
-#' @param d Dosis (obligatory for 'DoseDependentRetardedTransientDynamics')
+#' @param d Dose (obligatory for 'DoseDependentRetardedTransientDynamics')
 #' @param plotType String indication if transient function should be plotted
 #' ('all') (Default) or if in case of modus = 'RetardedTransientDynamics'
 #'  components of transient function ("nonLinearTransformationOnly", 
@@ -53,13 +53,13 @@ plotFit <- function(par,
   geom_point.lst <- list()
   geom_line.lst <- list()
   for (i in seq(length(doses))) {
-    df.dosis <- NULL
-    dosis <- doses[i]
+    df.dose <- NULL
+    dose <- doses[i]
     
     if (plotType == "all" | modus == 'DoseDependentRetardedTransientDynamics') {
       functionResVec <- getTransientFunctionResult(
         t = xi,
-        d = dosis,
+        d = dose,
         par = par,
         modus = modus)
       if (nchar(title) == 0) title <- "RTF =  SignalSus + SignalTrans + p_0"
@@ -96,7 +96,7 @@ plotFit <- function(par,
     geom_line.lst <- append(geom_line.lst, 
                             list(data.frame(t = xi,
                                             y = functionResVec,
-                                            d = rep(dosis, times = length(xi)))))
+                                            d = rep(dose, times = length(xi)))))
     
   } 
   
@@ -126,7 +126,7 @@ plotFit <- function(par,
     }
   }
   
-  if (!is.null(d)) gg <- gg + ggplot2::labs(color='Dosis') 
+  if (!is.null(d)) gg <- gg + ggplot2::labs(color='Dose') 
   if (nchar(title) > 0) gg <- gg + ggplot2::ggtitle(title) 
   
   gg
