@@ -2,7 +2,7 @@
 % Please edit documentation in R/getHillResults.R
 \name{getHillResults}
 \alias{getHillResults}
-\title{Generate data frame for A, B, alphaInv, gammaInv, and tau for
+\title{Generate data frame for A, B, alpha, gamma, and tau for
  one or multiple defined doses}
 \usage{
 getHillResults(d = NULL, params = c())
@@ -10,24 +10,24 @@ getHillResults(d = NULL, params = c())
 \arguments{
 \item{d}{Dose given as single value or a vector}
 
-\item{params}{Named vector containing the parameters 'M_alphaInv', 'h_alphaInv', 'K_alphaInv', 
-'M_gammaInv', 'h_gammaInv', 'K_gammaInv', 'M_A', 'h_A', 'K_A', 
+\item{params}{Named vector containing the parameters 'M_alpha', 'h_alpha', 'K_alpha', 
+'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 
 'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
 (but can also contain additional ones)}
 }
 \value{
-Data frame with the caclulated A, B, alphaInv, gammaInv, and 
+Data frame with the caclulated A, B, alpha, gamma, and 
 tau, where each row corresponds to the dose procided as a single value or
 a vector.
 }
 \description{
-Generate data frame for A, B, alphaInv, gammaInv, and 
+Generate data frame for A, B, alpha, gamma, and 
 tau for one or multiple defined doses
 }
 \examples{
 df <- getHillResults(d = c(2, 6),
-                     params = c(M_alphaInv = 1, h_alphaInv = 2, K_alphaInv = 2,
-                                M_gammaInv = 1, h_gammaInv = 3, K_gammaInv = 2,
+                     params = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
+                                M_gamma = 1, h_gamma = 3, K_gamma = 2,
                                 M_A = 4, h_A = 2, K_A = 1,
                                 M_B = 2, h_B = 3, K_B = 1,
                                 M_tau = 2, h_tau = 3, K_tau = 2))

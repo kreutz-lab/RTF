@@ -110,7 +110,8 @@ runRTF <- function(data,
         optimObjectTmp$initialGuess.vec <- optimParamsFullModel
         
         # if parameters with reciprocal hill (equationhillEquationReciprocal) set fixed to upper bound
-        if (param %in% c("M_alphaInv", "M_gammaInv", "K_alphaInv", "K_gammaInv", "M_tau", "K_tau")) {
+        # if (param %in% c("M_alpha", "M_gamma", "K_alpha", "K_gamma", "M_tau", "K_tau")) {
+        if (param %in% c("M_tau", "K_tau")) {
           optimObjectTmp$fixed[[param]] <- optimObjectTmp[["ub.vec"]][names(optimObjectTmp[["ub.vec"]]) == param]
         } else {
           # optimObjectTmp$positive.par.names <-

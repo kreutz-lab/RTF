@@ -46,18 +46,18 @@ plotRTFComponents <- function(pars, data, signum_TF, title = "") {
                  y = y, t = t, 
                  plotType = "nonLinearTransformationOnly",
                  withData = TRUE, alphaVal = alphaVal)
-  gg2 <- plotFit(par = c(alphaInv = alphaInv, A = A, b = b,
+  gg2 <- plotFit(par = c(alpha = alpha, A = A, b = b,
                          tau = tau, signum_TF = signum_TF),
                  y = y, t = t, 
                  plotType = "sustainedOnly",
                  withData = TRUE, alphaVal = alphaVal)
-  gg3 <- plotFit(par = c(alphaInv = alphaInv, gammaInv = gammaInv,
+  gg3 <- plotFit(par = c(alpha = alpha, gamma = gamma,
                          B = B,
                          b = b, tau = tau, signum_TF = signum_TF),
                  y = y, t = t, 
                  plotType = "transientOnly",
                  withData = TRUE, alphaVal = alphaVal)
-  gg4 <- plotFit(par = c(alphaInv = alphaInv, gammaInv = gammaInv, A = A,
+  gg4 <- plotFit(par = c(alpha = alpha, gamma = gamma, A = A,
                          B = B, b = b, tau = tau,
                          signum_TF = signum_TF),
                  y = y, t = t,

@@ -16,7 +16,7 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
     
     y <- getTransientFunctionResult(
       t = t,
-      par = c(alphaInv = 1, gammaInv = 2, A = 1, B = 2, b = 0.3,
+      par = c(alpha = 1, gamma = 2, A = 1, B = 2, b = 0.3,
               tau = 2, signum_TF = 1),
       modus = "RetardedTransientDynamics") 
       
@@ -33,12 +33,12 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
         t = t, 
         d = dose,
         par = c(
-          M_alphaInv = 0.1,
-          h_alphaInv = 1,
-          K_alphaInv = 30,
-          M_gammaInv = 2,
-          h_gammaInv = 7,
-          K_gammaInv = 55,
+          M_alpha = 1,
+          h_alpha = 1,
+          K_alpha = 3,
+          M_gamma = .2,
+          h_gamma = 7,
+          K_gamma = 1,
           M_A = 1,
           h_A = 10,
           K_A = 0.2, 
@@ -58,7 +58,7 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
     
     d <- rep(doses, each = length(t))
     t <- rep(t, times)
-    df <- data.frame(t = t, y = vec + stats::rnorm(length(t), 0, 0.05), 
+    df <- data.frame(t = t, y = vec + stats::rnorm(length(t), 0, 0.3), 
                      d = d)
     df <- rbind(c(t = 2, y= NA, d = 2), df)
     df

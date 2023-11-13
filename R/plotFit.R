@@ -3,9 +3,9 @@
 #' @description Plot RTF together with experimental data points
 #' @return ggplot object showing RTF together with experimental data points
 #' @param par Vector containing 
-#' alphaInv, gammaInv, A, B, b, tau, and signum_TF (modus 
+#' alpha, gamma, A, B, b, tau, and signum_TF (modus 
 #' 'RetardedTransientDynamics') or 
-#' M_alphaInv, h_alphaInv,  K_alphaInv, M_gammaInv, h_gammaInv, K_gammaInv, 
+#' M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma, 
 #' M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 
 #' 'DoseDependentRetardedTransientDynamics').
 #' @param withData Boolean indicating if data should be added to fit line
@@ -24,7 +24,7 @@
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
-#'        par = c(alphaInv = 1.00, gammaInv = 1.00,
+#'        par = c(alpha = 1.00, gamma = 1.00,
 #'        A = 1.05, B = 3.05,
 #'        b = -0.28, tau = -1, signum_TF = 1),
 #'        withData = TRUE,
@@ -74,7 +74,7 @@ plotFit <- function(par,
     } else if (plotType == "sustainedOnly") {
       functionResVec <- getSignalSusPlusOffset(
         t = xi,
-        alphaInv = alphaInv,
+        alpha = alpha,
         A = A,
         b = b,
         tau = tau,
@@ -84,8 +84,8 @@ plotFit <- function(par,
     } else if (plotType == "transientOnly") {
       functionResVec <-  getSignalTransPlusOffset(
         t = xi,
-        alphaInv = alphaInv,
-        gammaInv = gammaInv,
+        alpha = alpha,
+        gamma = gamma,
         B = B,
         b = b,
         tau = tau,

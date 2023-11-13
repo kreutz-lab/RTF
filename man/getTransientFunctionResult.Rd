@@ -27,7 +27,7 @@ in par, if they are non-NAs}
 'ImmediateResponseFunction' should be used}
 
 \item{scale}{Boolean, indicates if time dependent parameters t, tau,
-alphaInv, and gammaInv should be scaled}
+alpha, and gamma should be scaled}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
@@ -37,11 +37,11 @@ with the specified parameters to time points given in t.
 Apply RTF with defined parameters for defined time points
 }
 \examples{
-par <- c(alphaInv = 1.00, gammaInv = 1.00, A = 1.05,
+par <- c(alpha = 1.00, gamma = 1.00, A = 1.05,
          B = 3.05, b = -0.28, tau = -1)
 t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
-fixed <- c(signum_TF = 1, alphaInv = NA, gammaInv = 2.5, A = NA, B = NA,
+fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
            b = NA, tau = NA)
 modus <- "RetardedTransientDynamics"
 y <- getTransientFunctionResult(par = par,

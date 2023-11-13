@@ -4,12 +4,12 @@
 \alias{getSignalTransPlusOffset}
 \title{Calculate sum of the transient part of the RTF and offset b}
 \usage{
-getSignalTransPlusOffset(alphaInv, gammaInv, B, b, tau, signum_TF, t)
+getSignalTransPlusOffset(alpha, gamma, B, b, tau, signum_TF, t)
 }
 \arguments{
-\item{alphaInv}{alphaInv}
+\item{alpha}{alpha}
 
-\item{gammaInv}{gammaInv}
+\item{gamma}{gamma}
 
 \item{B}{B}
 
@@ -31,7 +31,7 @@ for a defined time point.
 }
 \examples{
 getSignalTransPlusOffset(
-        alphaInv = 1.00, gammaInv = 1.00,
+        alpha = 1.00, gamma = 1.00,
         B = 3.05,
         b = -0.28, tau = -1, signum_TF = 1,
         t = 0.6)

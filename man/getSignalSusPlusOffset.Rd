@@ -4,10 +4,10 @@
 \alias{getSignalSusPlusOffset}
 \title{Calculate sum of the sustained part of the RTF and offset b}
 \usage{
-getSignalSusPlusOffset(alphaInv, A, b, tau, signum_TF, t)
+getSignalSusPlusOffset(alpha, A, b, tau, signum_TF, t)
 }
 \arguments{
-\item{alphaInv}{alphaInv}
+\item{alpha}{alpha}
 
 \item{A}{A}
 
@@ -29,7 +29,7 @@ for a defined time point.
 }
 \examples{
 getSignalSusPlusOffset(
-        alphaInv = 1.00,
+        alpha = 1.00,
         A = 1.05,
         b = -0.28, tau = -1, signum_TF = 1,
         t = 0.6)

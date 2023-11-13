@@ -11,14 +11,14 @@
 #' @param modus String indicating if modus 'RetardedTransientDynamics' or
 #' 'ImmediateResponseFunction' should be used
 #' @param scale Boolean, indicates if time dependent parameters t, tau,
-#' alphaInv, and gammaInv should be scaled
+#' alpha, and gamma should be scaled
 #' @export getTransientFunctionResult
 #' @examples
-#' par <- c(alphaInv = 1.00, gammaInv = 1.00, A = 1.05,
+#' par <- c(alpha = 1.00, gamma = 1.00, A = 1.05,
 #'          B = 3.05, b = -0.28, tau = -1)
 #' t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
 #'              7.14, 7.85, 8.57, 9.28, 10)
-#' fixed <- c(signum_TF = 1, alphaInv = NA, gammaInv = 2.5, A = NA, B = NA,
+#' fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
 #'            b = NA, tau = NA)
 #' modus <- "RetardedTransientDynamics"
 #' y <- getTransientFunctionResult(par = par,
@@ -51,12 +51,12 @@ getTransientFunctionResult <- function(par = c(),
   
   if (modus == "DoseDependentRetardedTransientDynamics") {
     df <- getHillResults(d = d, 
-                         params = c(M_alphaInv = M_alphaInv, 
-                                   h_alphaInv = h_alphaInv, 
-                                   K_alphaInv = K_alphaInv, 
-                                   M_gammaInv = M_gammaInv, 
-                                   h_gammaInv = h_gammaInv, 
-                                   K_gammaInv = K_gammaInv,
+                         params = c(M_alpha = M_alpha, 
+                                   h_alpha = h_alpha, 
+                                   K_alpha = K_alpha, 
+                                   M_gamma = M_gamma, 
+                                   h_gamma = h_gamma, 
+                                   K_gamma = K_gamma,
                                    M_A = M_A, 
                                    h_A = h_A, 
                                    K_A = K_A, 
@@ -68,31 +68,32 @@ getTransientFunctionResult <- function(par = c(),
                                    K_tau = K_tau))
     A <- df$A
     B <- df$B
-    alphaInv <- df$alphaInv
-    gammaInv <- df$gammaInv
+    alpha <- df$alpha
+    gamma <- df$gamma
     tau <- df$tau
   }
   
   if (scale) {
     # scaling everything with time as phys. unit
     tau <- scaleTimeParameter(timeParam = tau, maxVal = maxVal)$timeParam
-    alphaInv <- scaleTimeParameter(timeParam = alphaInv, maxVal = maxVal)$timeParam
-    gammaInv <- scaleTimeParameter(timeParam = gammaInv, maxVal = maxVal)$timeParam
+    alpha <- scaleTimeParameter(timeParam = alpha, maxVal = maxVal)$timeParam
+    gamma <- scaleTimeParameter(timeParam = gamma, maxVal = maxVal)$timeParam
   }
 
   nonLinTransformation <- log10(10^t_prime + 10^tau) - log10(1 + 10^tau)
 
   if (modus == "ImmediateResponseFunction") {
-    Signal_sus <- A * (1-exp(-t_prime / alphaInv))
-    Signal_trans <- B * (1 - exp(-t_prime / alphaInv)) *
-      exp(-t_prime / gammaInv)
+    Signal_sus <- A * (1-exp(- alpha * t_prime))
+    Signal_trans <- B * (1 - exp(- alpha * t_prime)) *
+      exp(- gamma * t_prime)
+    
     transientFunctionRes <- signum_TF * Signal_sus +
       signum_TF * Signal_trans + b
   } else if (modus %in% c("RetardedTransientDynamics", 
                           "DoseDependentRetardedTransientDynamics")) {
-    Signal_sus <- A * (1 - exp(-nonLinTransformation / alphaInv))
-    Signal_trans <- B * (1 - exp(-nonLinTransformation / alphaInv)) *
-      exp(-nonLinTransformation / gammaInv)
+    Signal_sus <- A * (1 - exp(- alpha * nonLinTransformation))
+    Signal_trans <- B * (1 - exp(- alpha * nonLinTransformation)) *
+       exp(- gamma * nonLinTransformation)
     transientFunctionRes <- signum_TF * Signal_sus +
       signum_TF * Signal_trans + b
   } 
