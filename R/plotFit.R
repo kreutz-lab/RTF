@@ -3,10 +3,10 @@
 #' @description Plot RTF together with experimental data points
 #' @return ggplot object showing RTF together with experimental data points
 #' @param par Vector containing 
-#' tau_1, tau_2, A_sus, A_trans, p_0, T_shift, and signum_TF (modus 
+#' alphaInv, gammaInv, A, B, b, tau, and signum_TF (modus 
 #' 'RetardedTransientDynamics') or 
-#' M_tau1, h_tau1,  K_tau1, M_tau2, h_tau2, K_tau2, M_Asus, h_Asus, K_Asus, 
-#' M_Atrans, h_Atrans, K_Atrans, M_Tshift, h_Tshift, K_Tshift (modus 
+#' M_alphaInv, h_alphaInv,  K_alphaInv, M_gammaInv, h_gammaInv, K_gammaInv, 
+#' M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 
 #' 'DoseDependentRetardedTransientDynamics').
 #' @param withData Boolean indicating if data should be added to fit line
 #' @param modus Modus ('RetardedTransientDynamics' or 
@@ -20,13 +20,13 @@
 #'  components of transient function ("nonLinearTransformationOnly", 
 #' "transientOnly", "sustainedOnly") should be plotted.
 #' @param title Plot title
-#' @param alpha Transparency of points
+#' @param alphaVal Transparency of points
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
-#'        par = c(tau_1 = 1.00, tau_2 = 1.00,
-#'        A_sus = 1.05, A_trans = 3.05,
-#'        p_0 = -0.28, T_shift = -1, signum_TF = 1),
+#'        par = c(alphaInv = 1.00, gammaInv = 1.00,
+#'        A = 1.05, B = 3.05,
+#'        b = -0.28, tau = -1, signum_TF = 1),
 #'        withData = TRUE,
 #'        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
 #'        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
@@ -37,7 +37,7 @@ plotFit <- function(par,
                     y = NULL, t = NULL, d = NULL, 
                     plotType = "all",
                     title = "",
-                    alpha = 0.5) {
+                    alphaVal = 0.5) {
   
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
   xi <- seq(0, max(t), length.out = 1000)
@@ -62,35 +62,35 @@ plotFit <- function(par,
         d = dose,
         par = par,
         modus = modus)
-      if (nchar(title) == 0) title <- "RTF =  SignalSus + SignalTrans + p_0"
+      if (nchar(title) == 0) title <- "RTF =  SignalSus + SignalTrans + b"
       
     } else if (plotType == "nonLinearTransformationOnly") {
       functionResVec <- getNonLinTransformationPlusOffset(
         t = xi,
-        T_shift = T_shift,
-        p_0 = p_0)
-      if (nchar(title) == 0) title <- "NonLinTransformation + p_0"
+        tau = tau,
+        b = b)
+      if (nchar(title) == 0) title <- "NonLinTransformation + b"
       
     } else if (plotType == "sustainedOnly") {
       functionResVec <- getSignalSusPlusOffset(
         t = xi,
-        tau_1 = tau_1,
-        A_sus = A_sus,
-        p_0 = p_0,
-        T_shift = T_shift,
+        alphaInv = alphaInv,
+        A = A,
+        b = b,
+        tau = tau,
         signum_TF = signum_TF)
-      if (nchar(title) == 0) title <- "SignalSus + p_0"
+      if (nchar(title) == 0) title <- "SignalSus + b"
       
     } else if (plotType == "transientOnly") {
       functionResVec <-  getSignalTransPlusOffset(
         t = xi,
-        tau_1 = tau_1,
-        tau_2 = tau_2,
-        A_trans = A_trans,
-        p_0 = p_0,
-        T_shift = T_shift,
+        alphaInv = alphaInv,
+        gammaInv = gammaInv,
+        B = B,
+        b = b,
+        tau = tau,
         signum_TF = signum_TF)
-      if (nchar(title) == 0) title <- "SignalTrans + p_0"
+      if (nchar(title) == 0) title <- "SignalTrans + b"
     }
     
     geom_line.lst <- append(geom_line.lst, 
@@ -113,7 +113,7 @@ plotFit <- function(par,
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y, 
                                                   color = factor(d)),
-                                     alpha = alpha
+                                     alpha = alphaVal
                                      )
     }
   } else {
@@ -122,7 +122,7 @@ plotFit <- function(par,
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y),
-                                     alpha = alpha)
+                                     alpha = alphaVal)
     }
   }
   

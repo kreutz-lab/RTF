@@ -33,7 +33,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
   t <- sort(t[!is.na(t)])
   y <- y[!is.na(y)]
   # New variables: 
-  # d, M_Asus, h_Asus, K_Asus, M_Atrans, h_Atrans, K_Atrans, M_tau1, h_tau1, K_tau1, M_tau2, h_tau2, K_tau2, M_Tshift, h_Tshift, K_Tshift
+  # d, M_A, h_A, K_A, M_B, h_B, K_B, M_alphaInv, h_alphaInv, K_alphaInv, M_gammaInv, h_gammaInv, K_gammaInv, M_tau, h_tau, K_tau
   
   # d Dose
   # M Maximum value
@@ -50,103 +50,103 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
     hillCoef.ub <- 10
     K.lb <- min(d[d > 0]) / 10
     K.ub <- max(d) * 10
-    lb.vec <- c(M_tau1 = min(diff(unique(t))) / 2,
-                h_tau1 = hillCoef.lb,
-                K_tau1 = K.lb,
-                M_tau2 = min(diff(unique(t))) / 2,
-                h_tau2 = hillCoef.lb,
-                K_tau2 = K.lb,
-                M_Asus = 0,
-                h_Asus = hillCoef.lb,
-                K_Asus = K.lb,
-                M_Atrans = 0,
-                h_Atrans = hillCoef.lb,
-                K_Atrans = K.lb,
-                M_Tshift = -(max(t) - min(t)) / 5,
-                h_Tshift = hillCoef.lb,
-                K_Tshift = K.lb,
-                p_0 = min(y),
+    lb.vec <- c(M_alphaInv = min(diff(unique(t))) / 2,
+                h_alphaInv = hillCoef.lb,
+                K_alphaInv = K.lb,
+                M_gammaInv = min(diff(unique(t))) / 2,
+                h_gammaInv = hillCoef.lb,
+                K_gammaInv = K.lb,
+                M_A = 0,
+                h_A = hillCoef.lb,
+                K_A = K.lb,
+                M_B = 0,
+                h_B = hillCoef.lb,
+                K_B = K.lb,
+                M_tau = -(max(t) - min(t)) / 5,
+                h_tau = hillCoef.lb,
+                K_tau = K.lb,
+                b = min(y),
                 sigma = max(1e-8, diff(range(y)) / (10^4)))
 
-    ub.vec <- c(M_tau1 = 2 * (max(t) - min(t)),
-                h_tau1 = hillCoef.ub,
-                K_tau1 = K.ub,
-                M_tau2 = 2 * (max(t) - min(t)),
-                h_tau2 = hillCoef.ub,
-                K_tau2 = K.ub,
-                M_Asus = 10 * (max(y) - min(y)),
-                h_Asus = hillCoef.ub,
-                K_Asus = K.ub,
-                M_Atrans = 10 * (max(y) - min(y)),
-                h_Atrans = hillCoef.ub,
-                K_Atrans = K.ub,
-                M_Tshift = (max(t) - min(t)) / 2,
-                h_Tshift = hillCoef.ub,
-                K_Tshift = K.ub,
-                p_0 = max(y),
+    ub.vec <- c(M_alphaInv = 2 * (max(t) - min(t)),
+                h_alphaInv = hillCoef.ub,
+                K_alphaInv = K.ub,
+                M_gammaInv = 2 * (max(t) - min(t)),
+                h_gammaInv = hillCoef.ub,
+                K_gammaInv = K.ub,
+                M_A = 10 * (max(y) - min(y)),
+                h_A = hillCoef.ub,
+                K_A = K.ub,
+                M_B = 10 * (max(y) - min(y)),
+                h_B = hillCoef.ub,
+                K_B = K.ub,
+                M_tau = (max(t) - min(t)) / 2,
+                h_tau = hillCoef.ub,
+                K_tau = K.ub,
+                b = max(y),
                 sigma = stats::sd(y, na.rm = TRUE))
 
-    initialGuess.vec <- c(M_tau1 =  0.5 * lb.vec[["M_tau1"]] +
-  0.5 * ub.vec[["M_tau1"]],
-                          h_tau1 = 0.5 * lb.vec[["h_tau1"]] +
-    0.5 * ub.vec[["h_tau1"]],
-                          K_tau1 =  0.5 * lb.vec[["K_tau1"]] +
-    0.5 * ub.vec[["K_tau1"]],
-                          M_tau2 = 0.5 * lb.vec[["M_tau2"]] +
-  0.5 * ub.vec[["M_tau2"]],
-                          h_tau2 = 0.5 * lb.vec[["h_tau2"]] +
-    0.5 * ub.vec[["h_tau2"]],
-                          K_tau2 = 0.5 * lb.vec[["K_tau2"]] +
-    0.5 * ub.vec[["K_tau2"]],
-                          M_Asus =  0.1 * lb.vec[["M_Asus"]] +
-  0.9 * ub.vec[["M_Asus"]],
-                          h_Asus = 0.5 * lb.vec[["h_Asus"]] +
-    0.5 * ub.vec[["h_Asus"]],
-                          K_Asus = 0.5 * lb.vec[["K_Asus"]] +
-    0.5 * ub.vec[["K_Asus"]],
-                          M_Atrans = 0.1*lb.vec[["M_Atrans"]] +
-  0.9 * ub.vec[["M_Atrans"]],
-                          h_Atrans = 0.5 * lb.vec[["h_Atrans"]] +
-    0.5 * ub.vec[["h_Atrans"]],
-                          K_Atrans = 0.5 * lb.vec[["K_Atrans"]] +
-    0.5 * ub.vec[["K_Atrans"]],
-                          M_Tshift = -(max(t) - min(t)) / 10,
-                          h_Tshift = 0.5 * lb.vec[["h_Tshift"]] +
-    0.5 * ub.vec[["h_Tshift"]],
-                          K_Tshift = 0.5 * lb.vec[["K_Tshift"]] +
-    0.5 * ub.vec[["K_Tshift"]],
-                          p_0 = 0.5 * lb.vec[["p_0"]] +
-    0.5 * ub.vec[["p_0"]],
+    initialGuess.vec <- c(M_alphaInv =  0.5 * lb.vec[["M_alphaInv"]] +
+  0.5 * ub.vec[["M_alphaInv"]],
+                          h_alphaInv = 0.5 * lb.vec[["h_alphaInv"]] +
+    0.5 * ub.vec[["h_alphaInv"]],
+                          K_alphaInv =  0.5 * lb.vec[["K_alphaInv"]] +
+    0.5 * ub.vec[["K_alphaInv"]],
+                          M_gammaInv = 0.5 * lb.vec[["M_gammaInv"]] +
+  0.5 * ub.vec[["M_gammaInv"]],
+                          h_gammaInv = 0.5 * lb.vec[["h_gammaInv"]] +
+    0.5 * ub.vec[["h_gammaInv"]],
+                          K_gammaInv = 0.5 * lb.vec[["K_gammaInv"]] +
+    0.5 * ub.vec[["K_gammaInv"]],
+                          M_A =  0.1 * lb.vec[["M_A"]] +
+  0.9 * ub.vec[["M_A"]],
+                          h_A = 0.5 * lb.vec[["h_A"]] +
+    0.5 * ub.vec[["h_A"]],
+                          K_A = 0.5 * lb.vec[["K_A"]] +
+    0.5 * ub.vec[["K_A"]],
+                          M_B = 0.1*lb.vec[["M_B"]] +
+  0.9 * ub.vec[["M_B"]],
+                          h_B = 0.5 * lb.vec[["h_B"]] +
+    0.5 * ub.vec[["h_B"]],
+                          K_B = 0.5 * lb.vec[["K_B"]] +
+    0.5 * ub.vec[["K_B"]],
+                          M_tau = -(max(t) - min(t)) / 10,
+                          h_tau = 0.5 * lb.vec[["h_tau"]] +
+    0.5 * ub.vec[["h_tau"]],
+                          K_tau = 0.5 * lb.vec[["K_tau"]] +
+    0.5 * ub.vec[["K_tau"]],
+                          b = 0.5 * lb.vec[["b"]] +
+    0.5 * ub.vec[["b"]],
                           sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
   } else {
     # Define Lower and Upper bounds, and Default initial guess
-    lb.vec <- c(tau_1 = min(diff(unique(t))) / 2, # minimal sampling interval
-                tau_2 = min(diff(unique(t))) / 2, # minimal sampling interval
-                A_sus = 0,
-                A_trans = 0,
-                p_0 = min(y),
-                T_shift = -(max(t) - min(t)) / 5,
+    lb.vec <- c(alphaInv = min(diff(unique(t))) / 2, # minimal sampling interval
+                gammaInv = min(diff(unique(t))) / 2, # minimal sampling interval
+                A = 0,
+                B = 0,
+                b = min(y),
+                tau = -(max(t) - min(t)) / 5,
                 sigma = max(1e-8, diff(range(y)) / (10^4)))
     
-    ub.vec <- c(tau_1 = 2 * (max(t) - min(t)),
-                tau_2 = 2 * (max(t) - min(t)),
-                A_sus = 2 * (max(y) - min(y)),
-                A_trans = 2 * (max(y) - min(y)),
-                p_0 = max(y),
-                T_shift = (max(t) - min(t)) / 2,
+    ub.vec <- c(alphaInv = 2 * (max(t) - min(t)),
+                gammaInv = 2 * (max(t) - min(t)),
+                A = 2 * (max(y) - min(y)),
+                B = 2 * (max(y) - min(y)),
+                b = max(y),
+                tau = (max(t) - min(t)) / 2,
                 sigma = stats::sd(y, na.rm = TRUE))
     
-    initialGuess.vec <- c(tau_1 = 0.5 * lb.vec[["tau_1"]] +
-                            0.5 * ub.vec[["tau_1"]],
-                          tau_2 = 0.5 * lb.vec[["tau_2"]] +
-                            0.5 * ub.vec[["tau_2"]],
-                          A_sus = 0.1 * lb.vec[["A_sus"]] +
-                            0.9 * ub.vec[["A_sus"]],
-                          A_trans = 0.1*lb.vec[["A_trans"]] +
-                            0.9 * ub.vec[["A_trans"]],
-                          p_0 = 0.5 * lb.vec[["p_0"]] +
-                            0.5 * ub.vec[["p_0"]],
-                          T_shift = -(max(t) - min(t)) / 10,
+    initialGuess.vec <- c(alphaInv = 0.5 * lb.vec[["alphaInv"]] +
+                            0.5 * ub.vec[["alphaInv"]],
+                          gammaInv = 0.5 * lb.vec[["gammaInv"]] +
+                            0.5 * ub.vec[["gammaInv"]],
+                          A = 0.1 * lb.vec[["A"]] +
+                            0.9 * ub.vec[["A"]],
+                          B = 0.1*lb.vec[["B"]] +
+                            0.9 * ub.vec[["B"]],
+                          b = 0.5 * lb.vec[["b"]] +
+                            0.5 * ub.vec[["b"]],
+                          tau = -(max(t) - min(t)) / 10,
                           sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
     
   }

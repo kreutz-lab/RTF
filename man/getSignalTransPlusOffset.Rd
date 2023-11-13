@@ -2,37 +2,37 @@
 % Please edit documentation in R/getSignalTransPlusOffset.R
 \name{getSignalTransPlusOffset}
 \alias{getSignalTransPlusOffset}
-\title{Calculate sum of the transient part of the RTF and offset p_0}
+\title{Calculate sum of the transient part of the RTF and offset b}
 \usage{
-getSignalTransPlusOffset(tau_1, tau_2, A_trans, p_0, T_shift, signum_TF, t)
+getSignalTransPlusOffset(alphaInv, gammaInv, B, b, tau, signum_TF, t)
 }
 \arguments{
-\item{tau_1}{tau_1}
+\item{alphaInv}{alphaInv}
 
-\item{tau_2}{tau_2}
+\item{gammaInv}{gammaInv}
 
-\item{A_trans}{A_trans}
+\item{B}{B}
 
-\item{p_0}{p_0}
+\item{b}{b}
 
-\item{T_shift}{T_shift}
+\item{tau}{tau}
 
 \item{signum_TF}{signum_TF}
 
 \item{t}{Time point}
 }
 \value{
-Sum of the transient part of the RTF and offset p_0 for a defined
+Sum of the transient part of the RTF and offset b for a defined
 time point t.
 }
 \description{
-Calculate sum of the transient part of the RTF and offset p_0
+Calculate sum of the transient part of the RTF and offset b
 for a defined time point.
 }
 \examples{
 getSignalTransPlusOffset(
-        tau_1 = 1.00, tau_2 = 1.00,
-        A_trans = 3.05,
-        p_0 = -0.28, T_shift = -1, signum_TF = 1,
+        alphaInv = 1.00, gammaInv = 1.00,
+        B = 3.05,
+        b = -0.28, tau = -1, signum_TF = 1,
         t = 0.6)
 }

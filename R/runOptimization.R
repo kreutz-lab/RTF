@@ -42,7 +42,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   pars.tmp <- c()
   # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
   for (el in paramsToBeFitted) {
-#       c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")) {
+#       c("alphaInv", "gammaInv", "A", "B", "b", "tau", "sigma")) {
     if (!is.na(optimObject.tmp$fixed[[el]])) {
       nam <- names(pars.tmp)
       pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])

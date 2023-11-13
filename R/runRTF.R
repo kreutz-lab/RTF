@@ -57,49 +57,49 @@ runRTF <- function(data,
     if (modus != "DoseDependentRetardedTransientDynamics") {
       #  MODEL REDUCTION
       # 1. Testing whether there is time retardation,
-      # i.e., if T_shift parameter is significantly different from the lower bound.
-      #  If not significant, T_shift is set to the lower bound which is
-      # T_shift = −2 by default.
+      # i.e., if tau parameter is significantly different from the lower bound.
+      #  If not significant, tau is set to the lower bound which is
+      # tau = −2 by default.
       optimObjectTmp <- optimObject.orig
       # optimObjectTmp$positive.par.names <-
-      #   setdiff(optimObjectTmp$positive.par.names, "T_shift")  # because lb.vec[["T_shift"]] corresponds to -2
+      #   setdiff(optimObjectTmp$positive.par.names, "tau")  # because lb.vec[["tau"]] corresponds to -2
       
-      optimObjectTmp[["takeLog10"]][names(optimObjectTmp[["takeLog10"]]) == "T_shift"] <- FALSE
+      optimObjectTmp[["takeLog10"]][names(optimObjectTmp[["takeLog10"]]) == "tau"] <- FALSE
       
-      optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-      res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
-      res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
-      res <- selectSmallerModelIfDiffIsSmall(res, res.T_shiftLB)
+      optimObjectTmp$fixed[["tau"]] <- optimObject.orig$lb.vec[["tau"]]
+      res.tauLB.plusMinus <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
+      res.tauLB <- selectBest(res.tauLB.plusMinus)
+      res <- selectSmallerModelIfDiffIsSmall(res, res.tauLB)
       
       # 2. Testing whether the model is in agreement with a constant.
-      # If not significant, we set A_sus = A_trans = 0.
+      # If not significant, we set A = B = 0.
       optimObjectTmp2 <- res
       # optimObjectTmp2$positive.par.names <-
-      #   setdiff(optimObjectTmp2$positive.par.names, c("A_sus", "A_trans"))  
+      #   setdiff(optimObjectTmp2$positive.par.names, c("A", "B"))  
       
-      optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in% c("A_sus", "A_trans")] <- FALSE
+      optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in% c("A", "B")] <- FALSE
       
-      optimObjectTmp2$fixed[["A_sus"]] <- optimObjectTmp2$fixed[["A_trans"]] <- 0
+      optimObjectTmp2$fixed[["A"]] <- optimObjectTmp2$fixed[["B"]] <- 0
       res.constant.plusMinus <- getFittingResult(optimObjectTmp2, nInitialGuesses = nInitialGuesses)
       res.constant <- selectBest(res.constant.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
       
-      # 3. Testing whether the offset p0 is significantly different from zero.
-      # If not significant, we set p_0 = 0.
+      # 3. Testing whether the offset b is significantly different from zero.
+      # If not significant, we set b = 0.
       optimObjectTmp3 <- res
       # optimObjectTmp3$positive.par.names <-
-      #   setdiff(optimObjectTmp3$positive.par.names, "p_0")  
+      #   setdiff(optimObjectTmp3$positive.par.names, "b")  
       
-      optimObjectTmp3[["takeLog10"]][names(optimObjectTmp3[["takeLog10"]]) == "p_0"] <- FALSE
-      optimObjectTmp3$fixed[["p_0"]] <- 0
-      res.p_0Zero.plusMinus <- getFittingResult(optimObjectTmp3, nInitialGuesses = nInitialGuesses)
-      res.p_0Zero <- selectBest(res.p_0Zero.plusMinus)
-      res <- selectSmallerModelIfDiffIsSmall(res, res.p_0Zero)
+      optimObjectTmp3[["takeLog10"]][names(optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
+      optimObjectTmp3$fixed[["b"]] <- 0
+      res.bZero.plusMinus <- getFittingResult(optimObjectTmp3, nInitialGuesses = nInitialGuesses)
+      res.bZero <- selectBest(res.bZero.plusMinus)
+      res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
       
       intermediateResults <- list(fullModel = res.all.plusMinus,
-                                  TshiftFixed = res.T_shiftLB.plusMinus,
+                                  tauFixed = res.tauLB.plusMinus,
                                   Constant = res.constant.plusMinus,
-                                  p0Zero = res.p_0Zero.plusMinus)
+                                  bZero = res.bZero.plusMinus)
     } else {
       params <- setdiff(names(optimObject.orig[["lb.vec"]]), "sigma")
       statLst <- list()
@@ -110,7 +110,7 @@ runRTF <- function(data,
         optimObjectTmp$initialGuess.vec <- optimParamsFullModel
         
         # if parameters with reciprocal hill (equationhillEquationReciprocal) set fixed to upper bound
-        if (param %in% c("M_tau1", "M_tau2", "K_tau1", "K_tau2", "M_Tshift", "K_Tshift")) {
+        if (param %in% c("M_alphaInv", "M_gammaInv", "K_alphaInv", "K_gammaInv", "M_tau", "K_tau")) {
           optimObjectTmp$fixed[[param]] <- optimObjectTmp[["ub.vec"]][names(optimObjectTmp[["ub.vec"]]) == param]
         } else {
           # optimObjectTmp$positive.par.names <-

@@ -4,9 +4,9 @@
 #' function (RTF)
 #' @return Combined plot of scatter plot of  t vs.
 #' the components of the retarded transient function
-#' (Nonlinear transformation + p_0, sustained signal + p_0,
-#' transient signal + p_0, retarded transient function (sustained signal +
-#' transient signal + p_0))
+#' (Nonlinear transformation + b, sustained signal + b,
+#' transient signal + b, retarded transient function (sustained signal +
+#' transient signal + b))
 #' @param pars Named vector of the values of the model parameters
 #' @param data Data frame which needs contain columns 'y' (with quantitative
 #' value of outcome) and 't'
@@ -40,29 +40,29 @@ plotRTFComponents <- function(pars, data, signum_TF, title = "") {
   for (v in 1:length(pars)) assign(names(pars)[v], pars[[v]])
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
 
-  alpha <- 0.5
+  alphaVal <- 0.5
 
-  gg1 <- plotFit(par = c(p_0 = p_0, T_shift = T_shift),
+  gg1 <- plotFit(par = c(b = b, tau = tau),
                  y = y, t = t, 
                  plotType = "nonLinearTransformationOnly",
-                 withData = TRUE, alpha = alpha)
-  gg2 <- plotFit(par = c(tau_1 = tau_1, A_sus = A_sus, p_0 = p_0,
-                         T_shift = T_shift, signum_TF = signum_TF),
+                 withData = TRUE, alphaVal = alphaVal)
+  gg2 <- plotFit(par = c(alphaInv = alphaInv, A = A, b = b,
+                         tau = tau, signum_TF = signum_TF),
                  y = y, t = t, 
                  plotType = "sustainedOnly",
-                 withData = TRUE, alpha = alpha)
-  gg3 <- plotFit(par = c(tau_1 = tau_1, tau_2 = tau_2,
-                         A_trans = A_trans,
-                         p_0 = p_0, T_shift = T_shift, signum_TF = signum_TF),
+                 withData = TRUE, alphaVal = alphaVal)
+  gg3 <- plotFit(par = c(alphaInv = alphaInv, gammaInv = gammaInv,
+                         B = B,
+                         b = b, tau = tau, signum_TF = signum_TF),
                  y = y, t = t, 
                  plotType = "transientOnly",
-                 withData = TRUE, alpha = alpha)
-  gg4 <- plotFit(par = c(tau_1 = tau_1, tau_2 = tau_2, A_sus = A_sus,
-                         A_trans = A_trans, p_0 = p_0, T_shift = T_shift,
+                 withData = TRUE, alphaVal = alphaVal)
+  gg4 <- plotFit(par = c(alphaInv = alphaInv, gammaInv = gammaInv, A = A,
+                         B = B, b = b, tau = tau,
                          signum_TF = signum_TF),
                  y = y, t = t,
                  plotType = "all",
-                 withData = TRUE, alpha = alpha)
+                 withData = TRUE, alphaVal = alphaVal)
 
   patchworkObj <- patchwork::wrap_plots(gg1, gg2, gg3, gg4, ncol = 2)
 

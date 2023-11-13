@@ -26,8 +26,8 @@ in par, if they are non-NAs}
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' or
 'ImmediateResponseFunction' should be used}
 
-\item{scale}{Boolean, indicates if time dependent parameters t, T_shift,
-tau_1, and tau_2 should be scaled}
+\item{scale}{Boolean, indicates if time dependent parameters t, tau,
+alphaInv, and gammaInv should be scaled}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
@@ -37,12 +37,12 @@ with the specified parameters to time points given in t.
 Apply RTF with defined parameters for defined time points
 }
 \examples{
-par <- c(tau_1 = 1.00, tau_2 = 1.00, A_sus = 1.05,
-         A_trans = 3.05, p_0 = -0.28, T_shift = -1)
+par <- c(alphaInv = 1.00, gammaInv = 1.00, A = 1.05,
+         B = 3.05, b = -0.28, tau = -1)
 t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
-fixed <- c(signum_TF = 1, tau_1 = NA, tau_2 = 2.5, A_sus = NA, A_trans = NA,
-           p_0 = NA, T_shift = NA)
+fixed <- c(signum_TF = 1, alphaInv = NA, gammaInv = 2.5, A = NA, B = NA,
+           b = NA, tau = NA)
 modus <- "RetardedTransientDynamics"
 y <- getTransientFunctionResult(par = par,
                            t = t,

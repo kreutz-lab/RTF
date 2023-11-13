@@ -13,15 +13,15 @@ plotFit(
   d = NULL,
   plotType = "all",
   title = "",
-  alpha = 0.5
+  alphaVal = 0.5
 )
 }
 \arguments{
 \item{par}{Vector containing 
-tau_1, tau_2, A_sus, A_trans, p_0, T_shift, and signum_TF (modus 
+alphaInv, gammaInv, A, B, b, tau, and signum_TF (modus 
 'RetardedTransientDynamics') or 
-M_tau1, h_tau1,  K_tau1, M_tau2, h_tau2, K_tau2, M_Asus, h_Asus, K_Asus, 
-M_Atrans, h_Atrans, K_Atrans, M_Tshift, h_Tshift, K_Tshift (modus 
+M_alphaInv, h_alphaInv,  K_alphaInv, M_gammaInv, h_gammaInv, K_gammaInv, 
+M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 
 'DoseDependentRetardedTransientDynamics').}
 
 \item{withData}{Boolean indicating if data should be added to fit line}
@@ -43,7 +43,7 @@ experimental data frame)}
 
 \item{title}{Plot title}
 
-\item{alpha}{Transparency of points}
+\item{alphaVal}{Transparency of points}
 }
 \value{
 ggplot object showing RTF together with experimental data points
@@ -53,9 +53,9 @@ Plot RTF together with experimental data points
 }
 \examples{
 gg <- plotFit(
-       par = c(tau_1 = 1.00, tau_2 = 1.00,
-       A_sus = 1.05, A_trans = 3.05,
-       p_0 = -0.28, T_shift = -1, signum_TF = 1),
+       par = c(alphaInv = 1.00, gammaInv = 1.00,
+       A = 1.05, B = 3.05,
+       b = -0.28, tau = -1, signum_TF = 1),
        withData = TRUE,
        y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
        t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))

@@ -26,7 +26,7 @@ data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
                         modus = 'RetardedTransientDynamics')
 optimObject.orig$fixed[["signum_TF"]] <- 1
-optimObject.orig$fixed[["tau_2"]] <- 0.5
+optimObject.orig$fixed[["gammaInv"]] <- 0.5
 nInitialGuesses <- 50
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =
@@ -39,7 +39,7 @@ optimObject.tmp <- optimObject.orig
 
 # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
 for (el in
-      c("tau_1", "tau_2", "A_sus", "A_trans", "p_0", "T_shift", "sigma")){
+      c("alphaInv", "gammaInv", "A", "B", "b", "tau", "sigma")){
   if (!is.na(optimObject.tmp$fixed[[el]])){
     optimObject.tmp$lb.vec <-
          optimObject.tmp$lb.vec[-which(names(optimObject.tmp$lb.vec) == el)]

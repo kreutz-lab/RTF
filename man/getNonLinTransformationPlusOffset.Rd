@@ -2,28 +2,28 @@
 % Please edit documentation in R/getNonLinTransformationPlusOffset.R
 \name{getNonLinTransformationPlusOffset}
 \alias{getNonLinTransformationPlusOffset}
-\title{Calculate sum of nonlinear transformation and offset p_0}
+\title{Calculate sum of nonlinear transformation and offset b}
 \usage{
-getNonLinTransformationPlusOffset(p_0, T_shift, t)
+getNonLinTransformationPlusOffset(b, tau, t)
 }
 \arguments{
-\item{p_0}{p_0}
+\item{b}{b}
 
-\item{T_shift}{T_shift}
+\item{tau}{tau}
 
 \item{t}{Time point}
 }
 \value{
-Sum of nonlinear transformation and offset p_0 for a defined
+Sum of nonlinear transformation and offset b for a defined
 time point t.
 }
 \description{
-Calculate sum of nonlinear transformation and offset p_0
+Calculate sum of nonlinear transformation and offset b
 for a defined time point.
 }
 \examples{
 getNonLinTransformationPlusOffset(
-        p_0 = -0.28,
-        T_shift = -1,
+        b = -0.28,
+        tau = -1,
         t = 0.6)
 }

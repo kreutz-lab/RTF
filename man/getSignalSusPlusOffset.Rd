@@ -2,35 +2,35 @@
 % Please edit documentation in R/getSignalSusPlusOffset.R
 \name{getSignalSusPlusOffset}
 \alias{getSignalSusPlusOffset}
-\title{Calculate sum of the sustained part of the RTF and offset p_0}
+\title{Calculate sum of the sustained part of the RTF and offset b}
 \usage{
-getSignalSusPlusOffset(tau_1, A_sus, p_0, T_shift, signum_TF, t)
+getSignalSusPlusOffset(alphaInv, A, b, tau, signum_TF, t)
 }
 \arguments{
-\item{tau_1}{tau_1}
+\item{alphaInv}{alphaInv}
 
-\item{A_sus}{A_sus}
+\item{A}{A}
 
-\item{p_0}{p_0}
+\item{b}{b}
 
-\item{T_shift}{T_shift}
+\item{tau}{tau}
 
 \item{signum_TF}{signum_TF}
 
 \item{t}{Time point}
 }
 \value{
-Sum of the sustained part of the RTF and offset p_0 for a defined
+Sum of the sustained part of the RTF and offset b for a defined
 time point t.
 }
 \description{
-Calculate sum of the sustained part of the RTF and offset p_0
+Calculate sum of the sustained part of the RTF and offset b
 for a defined time point.
 }
 \examples{
 getSignalSusPlusOffset(
-        tau_1 = 1.00,
-        A_sus = 1.05,
-        p_0 = -0.28, T_shift = -1, signum_TF = 1,
+        alphaInv = 1.00,
+        A = 1.05,
+        b = -0.28, tau = -1, signum_TF = 1,
         t = 0.6)
 }

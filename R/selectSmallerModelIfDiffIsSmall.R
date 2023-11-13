@@ -26,11 +26,11 @@
 #' res.all <- selectBest(res.all.plusMinus)
 #' optimObjectTmp <- optimObject.orig
 #' optimObjectTmp$positive.par.names <-
-#'                       setdiff(optimObjectTmp$positive.par.names, "T_shift")
-#' optimObjectTmp$fixed[["T_shift"]] <- optimObject.orig$lb.vec[["T_shift"]]
-#' res.T_shiftLB.plusMinus <- getFittingResult(optimObjectTmp)
-#' res.T_shiftLB <- selectBest(res.T_shiftLB.plusMinus)
-#' res <- selectSmallerModelIfDiffIsSmall(res.all, res.T_shiftLB)
+#'                       setdiff(optimObjectTmp$positive.par.names, "tau")
+#' optimObjectTmp$fixed[["tau"]] <- optimObject.orig$lb.vec[["tau"]]
+#' res.tauLB.plusMinus <- getFittingResult(optimObjectTmp)
+#' res.tauLB <- selectBest(res.tauLB.plusMinus)
+#' res <- selectSmallerModelIfDiffIsSmall(res.all, res.tauLB)
 
 selectSmallerModelIfDiffIsSmall <- function(res, res.smallerModel) {
   # allg:

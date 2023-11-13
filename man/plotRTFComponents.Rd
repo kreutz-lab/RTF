@@ -19,9 +19,9 @@ value of outcome) and 't'}
 \value{
 Combined plot of scatter plot of  t vs.
 the components of the retarded transient function
-(Nonlinear transformation + p_0, sustained signal + p_0,
-transient signal + p_0, retarded transient function (sustained signal +
-transient signal + p_0))
+(Nonlinear transformation + b, sustained signal + b,
+transient signal + b, retarded transient function (sustained signal +
+transient signal + b))
 }
 \description{
 Plot t against the components of the retarded transient

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getHillResults.R
 \name{getHillResults}
 \alias{getHillResults}
-\title{Generate data frame for A_sus, A_trans, tau_1, tau_2, and T_shift for
+\title{Generate data frame for A, B, alphaInv, gammaInv, and tau for
  one or multiple defined doses}
 \usage{
 getHillResults(d = NULL, params = c())
@@ -10,25 +10,25 @@ getHillResults(d = NULL, params = c())
 \arguments{
 \item{d}{Dose given as single value or a vector}
 
-\item{params}{Named vector containing the parameters 'M_tau1', 'h_tau1', 'K_tau1', 
-'M_tau2', 'h_tau2', 'K_tau2', 'M_Asus', 'h_Asus', 'K_Asus', 
-'M_Atrans', 'h_Atrans', 'K_Atrans', 'M_Tshift', 'h_Tshift', 'K_Tshift'
+\item{params}{Named vector containing the parameters 'M_alphaInv', 'h_alphaInv', 'K_alphaInv', 
+'M_gammaInv', 'h_gammaInv', 'K_gammaInv', 'M_A', 'h_A', 'K_A', 
+'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
 (but can also contain additional ones)}
 }
 \value{
-Data frame with the caclulated A_sus, A_trans, tau_1, tau_2, and 
-T_shift, where each row corresponds to the dose procided as a single value or
+Data frame with the caclulated A, B, alphaInv, gammaInv, and 
+tau, where each row corresponds to the dose procided as a single value or
 a vector.
 }
 \description{
-Generate data frame for A_sus, A_trans, tau_1, tau_2, and 
-T_shift for one or multiple defined doses
+Generate data frame for A, B, alphaInv, gammaInv, and 
+tau for one or multiple defined doses
 }
 \examples{
 df <- getHillResults(d = c(2, 6),
-                     params = c(M_tau1 = 1, h_tau1 = 2, K_tau1 = 2,
-                                M_tau2 = 1, h_tau2 = 3, K_tau2 = 2,
-                                M_Asus = 4, h_Asus = 2, K_Asus = 1,
-                                M_Atrans = 2, h_Atrans = 3, K_Atrans = 1,
-                                M_Tshift = 2, h_Tshift = 3, K_Tshift = 2))
+                     params = c(M_alphaInv = 1, h_alphaInv = 2, K_alphaInv = 2,
+                                M_gammaInv = 1, h_gammaInv = 3, K_gammaInv = 2,
+                                M_A = 4, h_A = 2, K_A = 1,
+                                M_B = 2, h_B = 3, K_B = 1,
+                                M_tau = 2, h_tau = 3, K_tau = 2))
 }
