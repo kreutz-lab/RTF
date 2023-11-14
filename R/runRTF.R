@@ -5,7 +5,9 @@
 #' (finalParams), the plot of the final model (finalPlot), as well as the
 #' intermediate results (intermediateResults).
 #' @param data Data frame containing columns named 't' (time) and
-#' 'y' (quantitative value)
+#' 'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and 
+#' 'ImmediateResponseFunction' ('I'), and columns 't', 'y', and 'd' (dose) for
+#' modus = 'DoseDependentRetardedTransientDynamics' ('DD')
 #' @param modus String indicating if modus 'RetardedTransientDynamics' ('D'), 
 #' 'ImmediateResponseFunction' ('I') or
 #' 'DoseDependentRetardedTransientDynamics' ('DD') should be used. 
@@ -44,6 +46,15 @@ runRTF <- function(data,
     if (modus == 'I') modus <- 'ImmediateResponseFunction'
     if (modus == 'DD') modus <- 'DoseDependentRetardedTransientDynamics'
   }
+  
+  if (modus != "DoseDependentRetardedTransientDynamics" &
+      !all(c("t", "y") %in% names(data))) {
+    stop("Input data frame needs to contain the columns 't' and 'y'.")
+  } else if (modus == "DoseDependentRetardedTransientDynamics" &
+             !all(c("t", "y", "d") %in% names(data))) {
+    stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
+  }
+  
   
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
                                   optimFunction = optimFunction)

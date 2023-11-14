@@ -16,10 +16,13 @@ library(RTF)
 
 ```
 
-'Simple' RTF:
+'Simple' RTF 
+(Input data frame should contain the columns 't' for time and 
+'y' for the quantitative value):
 
 ```
-# data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3"))
+# data <- getData(file="LDH_WT.xlsx", tCol="time", 
+#                 quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
 
@@ -29,7 +32,9 @@ res <- runRTF(data, modus = "RetardedTransientDynamics")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 ```
 
-RTF based on dose-dependent data:
+RTF based on dose-dependent data 
+(Input data frame should contain the columns 't' for time, 
+'y' for the quantitative value, and 'd' for dose):
 
 ```
 data.doseResponse <- getExampleDf(

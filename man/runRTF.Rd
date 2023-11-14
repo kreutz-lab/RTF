@@ -15,7 +15,9 @@ runRTF(
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and
-'y' (quantitative value)}
+'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and 
+'ImmediateResponseFunction' ('I'), and columns 't', 'y', and 'd' (dose) for
+modus = 'DoseDependentRetardedTransientDynamics' ('DD')}
 
 \item{modus}{String indicating if modus 'RetardedTransientDynamics' ('D'), 
 'ImmediateResponseFunction' ('I') or
