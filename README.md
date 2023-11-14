@@ -16,7 +16,7 @@ library(RTF)
 
 ```
 
-'Simple' RTF 
+RTF with no dose-response dependency
 (Input data frame should contain the columns 't' for time and 
 'y' for the quantitative value):
 
@@ -25,14 +25,13 @@ library(RTF)
 #                 quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
-
 data <- getExampleDf()
 plotData(data)
 res <- runRTF(data, modus = "RetardedTransientDynamics")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 ```
 
-RTF based on dose-dependent data 
+RTF with dose-response dependency
 (Input data frame should contain the columns 't' for time, 
 'y' for the quantitative value, and 'd' for dose):
 
