@@ -14,7 +14,11 @@ devtools::install_github("kreutz-lab/RTF")
 ```
 library(RTF)
 
+```
 
+'Simple' RTF:
+
+```
 # data <- getData(file="LDH_WT.xlsx", tCol="time", quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 # data <- getData()
 
@@ -23,9 +27,11 @@ data <- getExampleDf()
 plotData(data)
 res <- runRTF(data, modus = "RetardedTransientDynamics")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+```
 
+RTF based on dose-dependent data:
 
-
+```
 data.doseResponse <- getExampleDf(
                              modus = "DoseDependentRetardedTransientDynamics")
 plotData(data.doseResponse)
