@@ -5,9 +5,11 @@
 #' @return ggplot object
 #' @param optimObject optimObject containing elements "finalModel" and "modus"
 #' @param fileNamePrefix File name prefix. If length>0 plots will be written to
-#' file, otherwise they will be plotted directly.
+#' file, otherwise they will be plotted directly. Default is empty string.
+#' @param plotTitle Title of the plot (Default is no title).
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
-#' if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" modus.
+#' if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" 
+#' modus. (Default: TRUE)
 #' @export plotRTF
 #' @examples
 #' data.doseResponse <- getExampleDf(
@@ -16,7 +18,8 @@
 #' res.doseResponse <- runRTF(data.doseResponse, modelReduction = FALSE)
 #' plotRTF(res.doseResponse, plotAllFits = FALSE)
 
-plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
+plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
+                    plotAllFits = TRUE) {
   
   optimObject <- optimObject$finalModel
   
@@ -170,6 +173,10 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotAllFits = TRUE) {
   
   #############################################################################
   
+  if (nchar(plotTitle) > 0 ) {
+    bestFit.plot <- bestFit.plot + patchwork::plot_annotation(title = plotTitle)
+  }
+    
   if (saveToFile){
     ggplot2::ggsave(filename = paste0(fileNamePrefix, "_", modus ,"_bestFit.pdf"),
                     bestFit.plot, width = 12, height = height)

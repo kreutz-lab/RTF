@@ -4,16 +4,19 @@
 \alias{plotRTF}
 \title{Generate plots}
 \usage{
-plotRTF(optimObject, fileNamePrefix = "", plotAllFits = TRUE)
+plotRTF(optimObject, fileNamePrefix = "", plotTitle = "", plotAllFits = TRUE)
 }
 \arguments{
 \item{optimObject}{optimObject containing elements "finalModel" and "modus"}
 
 \item{fileNamePrefix}{File name prefix. If length>0 plots will be written to
-file, otherwise they will be plotted directly.}
+file, otherwise they will be plotted directly. Default is empty string.}
+
+\item{plotTitle}{Title of the plot (Default is no title).}
 
 \item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
-if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" modus.}
+if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" 
+modus. (Default: TRUE)}
 }
 \value{
 ggplot object
