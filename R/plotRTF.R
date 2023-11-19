@@ -163,7 +163,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
       ggplot2::geom_line() +
       ggplot2::xlab("Dose") +
       ggplot2::ylab("Value") +
-      ggplot2::ggtitle(title) +
+      # ggplot2::ggtitle(title) +
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank())
     
@@ -173,9 +173,10 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   
   #############################################################################
   
-  if (nchar(plotTitle) > 0 ) {
-    bestFit.plot <- bestFit.plot + patchwork::plot_annotation(title = plotTitle)
-  }
+  # if (nchar(plotTitle) > 0 ) {
+    bestFit.plot <- bestFit.plot + patchwork::plot_annotation(title = plotTitle,
+                                                              subtitle = title)
+  #}
     
   if (saveToFile){
     ggplot2::ggsave(filename = paste0(fileNamePrefix, "_", modus ,"_bestFit.pdf"),
