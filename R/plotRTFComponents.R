@@ -62,7 +62,11 @@ plotRTFComponents <- function(pars, data, signum_TF, title = "") {
                          signum_TF = signum_TF),
                  y = y, t = t,
                  plotType = "all",
-                 withData = TRUE, alphaVal = alphaVal)
+                 withData = TRUE, alphaVal = alphaVal) +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(colour = "black", 
+                                              fill = NA, 
+                                              linewidth = 3))
 
   patchworkObj <- patchwork::wrap_plots(gg1, gg2, gg3, gg4, ncol = 2)
 
