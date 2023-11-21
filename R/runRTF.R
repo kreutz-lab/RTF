@@ -20,7 +20,7 @@
 #' (Default: TRUE)
 #' @param nInitialGuesses Integer indicating number of initial guesses (Default: 50)
 #' @param control List of control arguments passed to the function stats::optim 
-#' (Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))
+#' (Default: list(trace = 1, maxit = 1000, factr = 1e7))
 #' @export runRTF
 #' @examples
 #' modus <- "RetardedTransientDynamics"
@@ -34,7 +34,7 @@ runRTF <- function(data,
                    modelReduction = TRUE,
                    nInitialGuesses = 50,
                    control = list(trace = 1, maxit = 1000,
-                                  factr = 1.0e-20)) {
+                                  factr = 1e7)) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {
       modus <- 'DoseDependentRetardedTransientDynamics'
@@ -57,7 +57,8 @@ runRTF <- function(data,
   
   
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
-                                  optimFunction = optimFunction)
+                                  optimFunction = optimFunction,
+                                  control = control)
   res.all.plusMinus <- getFittingResult(optimObject.orig, nInitialGuesses = nInitialGuesses)
   res <- selectBest(res.all.plusMinus)
   

@@ -10,7 +10,7 @@ runRTF(
   optimFunction = "chiSquare",
   modelReduction = TRUE,
   nInitialGuesses = 50,
-  control = list(trace = 1, maxit = 1000, factr = 1e-20)
+  control = list(trace = 1, maxit = 1000, factr = 1e+07)
 )
 }
 \arguments{
@@ -35,7 +35,7 @@ should be used (Default: "chiSquare")}
 \item{nInitialGuesses}{Integer indicating number of initial guesses (Default: 50)}
 
 \item{control}{List of control arguments passed to the function stats::optim 
-(Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))}
+(Default: list(trace = 1, maxit = 1000, factr = 1e7))}
 }
 \value{
 List of the final RTF model (finalModel), the optimized parameters

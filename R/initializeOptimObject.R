@@ -15,7 +15,7 @@
 #' @param optimFunction String indicating the optimization function which 
 #' should be used (Default: "chiSquare")
 #' @param control List of control arguments passed to the function stats::optim 
-#' (Default: list(trace = 1, maxit = 1000, factr = 1.0e-20))
+#' (Default: list(trace = 1, maxit = 1000, factr = 1e7))
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
 #' @export initializeOptimObject
 #' @examples
@@ -24,7 +24,7 @@
 
 initializeOptimObject <- function(data, modus, optimFunction = "chiSquare", 
                                   control = list(trace = 1, maxit = 1000,
-                                                 factr = 1.0e-20), 
+                                                 factr = 1e7), 
                                   takeLog10 = TRUE) {
   
   # data <- data[order(data$t),]
