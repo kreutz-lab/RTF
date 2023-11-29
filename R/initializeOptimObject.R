@@ -128,7 +128,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 0,
                 b = min(y),
                 tau = -(max(t) - min(t)) / 5,
-                sigma = min(c(1e-10, stats::sd(y, na.rm = TRUE), max(1e-10, diff(range(y)) / (10^4)))
+                sigma = min(c(1e-10, stats::sd(y, na.rm = TRUE), 
+                              max(1e-10, diff(range(y)) / (10^4))))
                 )
     
     ub.vec <- c(alpha = 2 / (min(diff(unique(t)))),
