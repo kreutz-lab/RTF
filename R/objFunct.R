@@ -53,6 +53,12 @@
 objFunct <- function(par, data, optimObject) {
   retval <- NULL
   
+  if (!is.na(optimObject.tmp$fixed[["sigma"]])) {
+    sigma <- optimObject.tmp$fixed[["sigma"]]
+  } else {
+    sigma <- par[["sigma"]]
+  }
+  
   data <- data[stats::complete.cases(data), ] 
   
   if ("d" %in% colnames(data)) {
@@ -78,7 +84,8 @@ objFunct <- function(par, data, optimObject) {
       sdVec <- data$sdExp
       chi2 <- sum((res/sdVec)^2)
     } else {
-      chi2 <- sum((res/par["sigma"])^2)
+      chi2 <- sum(-2*log(pnorm(res,cmean=0, sd=sigma)))
+      # chi2 <- -2*log(1/(sqrt(2*pi*par[["sigma"]]^2)))*length(res) + sum((res/par["sigma"])^2) # chi2 == -2 ln(likelihood), likelihood = 1/sqrt(2*pi*sigma^2) * exp(-res^2/(2*sigma^2))
     }
 
     retval <- chi2 

@@ -128,7 +128,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 0,
                 b = min(y),
                 tau = -(max(t) - min(t)) / 5,
-                sigma = max(1e-300, diff(range(y)) / (10^4))
+                sigma = min(c(1e-10, stats::sd(y, na.rm = TRUE), max(1e-10, diff(range(y)) / (10^4)))
                 )
     
     ub.vec <- c(alpha = 2 / (min(diff(unique(t)))),
@@ -137,7 +137,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 2 * (max(y) - min(y)),
                 b = max(y),
                 tau = (max(t) - min(t)) * 0.9,
-                sigma = max(1e-300, stats::sd(y, na.rm = TRUE))
+                sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
               )
     
     initialGuess.vec <- c(alpha = 0.5 * lb.vec[["alpha"]] +
