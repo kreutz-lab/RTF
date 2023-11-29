@@ -21,7 +21,6 @@
 #' gg.paramDistr <- plotParameterDistribution(df.parameterValues.long)
 
 plotParameterDistribution <- function(df.parameterValues.long) {
-  # df.parameterValues.long2 <- df.parameterValues.long[-which(df.parameterValues.long$value <=.Machine$double.xmin),]
   ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
     ggplot2::geom_histogram(alpha = 0.6) +
     ggplot2::theme_bw() +
