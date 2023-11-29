@@ -85,7 +85,7 @@ objFunct <- function(par, data, optimObject) {
       chi2 <- sum((res/sdVec)^2)
     } else {
       # chi2 <- sum((res/sigma)^2)
-      chi2 <- sum(-log(stats::dnorm(res, mean = 0, sd = sigma)))
+      chi2 <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma)))
     }
 
     retval <- chi2 
