@@ -66,7 +66,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 h_tau = hillCoef.lb,
                 K_tau = K.lb,
                 b = min(y),
-                sigma = max(1e-300, diff(range(y)) / (10^4))
+                sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
+                           max(1e-10, diff(range(y)) / (10^4)))
                 )
 
     ub.vec <- c(M_alpha = 2 / (min(diff(unique(t)))),
@@ -85,7 +86,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 h_tau = hillCoef.ub,
                 K_tau = K.ub,
                 b = max(y),
-                sigma = max(1e-300, stats::sd(y, na.rm = TRUE))
+                sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
     )
 
     initialGuess.vec <- c(M_alpha =  0.5 * lb.vec[["M_alpha"]] +
@@ -119,7 +120,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
     0.5 * ub.vec[["K_tau"]],
                           b = 0.5 * lb.vec[["b"]] +
     0.5 * ub.vec[["b"]],
-                          sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
+                          sigma = 0.5 * lb.vec[["sigma"]] +
+    0.5 * ub.vec[["sigma"]]
+  )
   } else {
     # Define Lower and Upper bounds, and Default initial guess
     lb.vec <- c(alpha = 1 / (2 * (max(t) - min(t))),
@@ -128,8 +131,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 0,
                 b = min(y),
                 tau = -(max(t) - min(t)) / 5,
-                sigma = min(c(1e-10, stats::sd(y, na.rm = TRUE), 
-                              max(1e-10, diff(range(y)) / (10^4))))
+                sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
+                              max(1e-10, diff(range(y)) / (10^4)))
                 )
     
     ub.vec <- c(alpha = 2 / (min(diff(unique(t)))),
@@ -152,7 +155,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                           b = 0.5 * lb.vec[["b"]] +
                             0.5 * ub.vec[["b"]],
                           tau = -(max(t) - min(t)) / 10,
-                          sigma = max(lb.vec["sigma"], 0.1 * diff(range(y))))
+                          sigma = 0.5 * lb.vec[["sigma"]] +
+                            0.5 * ub.vec[["sigma"]]
+                          )
     
   }
 
