@@ -85,7 +85,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 h_tau = hillCoef.ub,
                 K_tau = K.ub,
                 b = max(y),
-                sigma = stats::sd(y, na.rm = TRUE))
+                sigma = max(.Machine$double.xmin, stats::sd(y, na.rm = TRUE))
+    )
 
     initialGuess.vec <- c(M_alpha =  0.5 * lb.vec[["M_alpha"]] +
   0.5 * ub.vec[["M_alpha"]],
@@ -136,7 +137,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 2 * (max(y) - min(y)),
                 b = max(y),
                 tau = (max(t) - min(t)) * 0.9,
-                sigma = stats::sd(y, na.rm = TRUE))
+                sigma = max(.Machine$double.xmin, stats::sd(y, na.rm = TRUE))
+              )
     
     initialGuess.vec <- c(alpha = 0.5 * lb.vec[["alpha"]] +
                             0.5 * ub.vec[["alpha"]],
