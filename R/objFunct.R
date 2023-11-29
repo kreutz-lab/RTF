@@ -84,8 +84,8 @@ objFunct <- function(par, data, optimObject) {
       sdVec <- data$sdExp
       chi2 <- sum((res/sdVec)^2)
     } else {
-      chi2 <- sum(-2 * log(stats::pnorm(res, mean = 0, sd = sigma)))
-      # chi2 <- -2*log(1/(sqrt(2*pi*par[["sigma"]]^2)))*length(res) + sum((res/par["sigma"])^2) # chi2 == -2 ln(likelihood), likelihood = 1/sqrt(2*pi*sigma^2) * exp(-res^2/(2*sigma^2))
+      # chi2 <- sum((res/sigma)^2)
+      chi2 <- sum(-log(stats::dnorm(res, mean = 0, sd = sigma)))
     }
 
     retval <- chi2 
