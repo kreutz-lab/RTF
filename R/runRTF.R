@@ -59,6 +59,12 @@ runRTF <- function(data,
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
                                   optimFunction = optimFunction,
                                   control = control)
+  
+  parsWithIdenticalBounds <- names(optimObject.orig$lb.vec[optimObject.orig$lb.vec == optimObject.orig$ub.vec])
+  for (el in parsWithIdenticalBounds) {
+    optimObject.orig$fixed[[el]] <- optimObject.orig$lb.vec[[el]]
+  }
+
   res.all.plusMinus <- getFittingResult(optimObject.orig, nInitialGuesses = nInitialGuesses)
   res <- selectBest(res.all.plusMinus)
   
