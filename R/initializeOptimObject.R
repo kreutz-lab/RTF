@@ -66,8 +66,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 h_tau = hillCoef.lb,
                 K_tau = K.lb,
                 b = min(y),
-                # sigma = max(1e-2, diff(range(y)) / (10^4))
-                sigma = max(.Machine$double.xmin, diff(range(y)) / (10^4))
+                sigma = max(1e-300, diff(range(y)) / (10^4))
+                # sigma = max(.Machine$double.xmin, diff(range(y)) / (10^4))
                 )
 
     ub.vec <- c(M_alpha = 2 / (min(diff(unique(t)))),
@@ -128,8 +128,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 B = 0,
                 b = min(y),
                 tau = -(max(t) - min(t)) / 5,
-                # sigma = max(1e-2, diff(range(y)) / (10^4))
-                sigma = max(.Machine$double.xmin, diff(range(y)) / (10^4))
+                sigma = max(1e-300, diff(range(y)) / (10^4))
+                # sigma = max(.Machine$double.xmin, diff(range(y)) / (10^4))
                 )
     
     ub.vec <- c(alpha = 2 / (min(diff(unique(t)))),
