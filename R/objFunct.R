@@ -53,8 +53,8 @@
 objFunct <- function(par, data, optimObject) {
   retval <- NULL
   
-  if (!is.na(optimObject.tmp$fixed[["sigma"]])) {
-    sigma <- optimObject.tmp$fixed[["sigma"]]
+  if (!is.na(optimObject$fixed[["sigma"]])) {
+    sigma <- optimObject$fixed[["sigma"]]
   } else {
     sigma <- par[["sigma"]]
   }
