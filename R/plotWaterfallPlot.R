@@ -43,10 +43,11 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL) {
   } else {
     df <- data.frame(value = sort(waterfallValues))
     df$idx <- as.numeric(row.names(df))
-    df[df == 10^10] <- NA
+    # df[df >= 10^10] <- NA
     df$col <- "#000000" # "black"
   }
 
+  maxValue <- max(df[df$value < 10^20,]$value)
   gg <- ggplot2::ggplot(data = df,
                         ggplot2::aes(x = idx, y = value, color = col)) +
     ggplot2::geom_point() +
@@ -54,7 +55,8 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL) {
     ggplot2::labs(x = 'Index', y = 'Value') +
     ggplot2::scale_colour_manual(values = c("#000000",  "#FF0000")) +
     ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "none")
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::ylim(NA, maxValue)
 
   gg
 }
