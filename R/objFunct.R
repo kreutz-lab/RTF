@@ -90,12 +90,12 @@ objFunct <- function(par, data, optimObject) {
 
     retval <- chi2 
     
-    if (retval == Inf) {
+    if (retval > 10^20) {
       print(par)
-      retval <- 10^10
+      retval <- 10^20
       warning(paste0("objective function is infinite."))
-    } else if (retval == -Inf) {
-      retval <- -10^10
+    } else if (retval < -10^20) {
+      retval <- -10^20
     }
   }
   return(retval)

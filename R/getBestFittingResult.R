@@ -25,20 +25,11 @@
 #'         optimObject.orig, parStr = "signum_TF", parVal = 1)
 
 getBestFittingResult <- function(
-#    optimObject, signum_TF, plot, titlePrefix = "") {
   optimObject, parStr = "signum_TF", parVal = 1, nInitialGuesses = 50) {
+  
   optimObject$fixed[[parStr]] <- parVal
-  
-  
-  # optim.res <- fittingHelper(
-  #  optimObject, plot = plot, nInitialGuesses = 50, titlePrefix = titlePrefix)
-  
   optimObject.woptimRes <- getMultiStartResults(
     optimObject, objFunct, nInitialGuesses = nInitialGuesses)
-  
-  list(res.pars = optimObject.woptimRes$bestOptimResult$par,
-       value = optimObject.woptimRes$bestOptimResult$value
-  )
   
   res.pars <- optimObject.woptimRes$bestOptimResult$par
   value <- optimObject.woptimRes$bestOptimResult$value

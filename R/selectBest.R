@@ -28,6 +28,7 @@
 selectBest <- function(res) {
   resNames <- names(res)
   bestVal <- 10^10
+  res.best <- res[[1]]
   for (resName in resNames) {
     if (res[[resName]]$value < bestVal) {
       res.best <- res[[resName]]

@@ -58,7 +58,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     }
   }
 
-  takeLog10 <- optimObject[["takeLog10"]]
+  takeLog10 <- optimObject.tmp$takeLog10 
   
   applyLog10ForTakeLog10 <- function(x, takeLog10) {
     x[names(x) %in% names(which(takeLog10))] <-
@@ -68,7 +68,15 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   
   lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
   upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
-    
+  
+  # Take logarithm of fixed parameters for which takeLog10 = TRUE
+  fixed <- optimObject.tmp$fixed
+  intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), names(which(takeLog10)))
+  fixedAndTakeLog10 <- rep(NA, length(takeLog10))
+  names(fixedAndTakeLog10) <- names(takeLog10)
+  fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE
+  optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
+  
   for (vec in initialGuess.vec.lst) {
     print(vec)
     
@@ -86,10 +94,10 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))] <-
       10^optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))]
 
-    pars.tmp[names(pars.tmp) %in% names(which(takeLog10))] <-
-      10^pars.tmp[names(pars.tmp) %in% names(which(takeLog10))]
+    # pars.tmp[names(pars.tmp) %in% names(which(takeLog10))] <-
+    #  10^pars.tmp[names(pars.tmp) %in% names(which(takeLog10))]
     
-    optimResTmp$par <- c(pars.tmp, optimResTmp$par)
+    optimResTmp$par <- c(fixed[!is.na(fixed)], optimResTmp$par)
     value <- optimResTmp$value
 
     res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
