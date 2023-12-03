@@ -33,8 +33,9 @@ getBestFittingResult <- function(
   
   res.pars <- optimObject.woptimRes$bestOptimResult$par
   value <- optimObject.woptimRes$bestOptimResult$value
-  optimObject$fitted <- c(res.pars, parVal)
-  names(optimObject$fitted) <- c(names(res.pars), parStr)
+  optimObject$fitted <- res.pars
+  # optimObject$fitted <- c(res.pars, parVal)
+  # names(optimObject$fitted) <- c(names(res.pars), parStr)
   optimObject$value <- value
   #optimObject$bestFit.plot <- optim.res$bestFit.plot
   
