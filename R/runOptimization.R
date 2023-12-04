@@ -97,7 +97,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     # pars.tmp[names(pars.tmp) %in% names(which(takeLog10))] <-
     #  10^pars.tmp[names(pars.tmp) %in% names(which(takeLog10))]
     
-    vecOrder <- c("signum_TF", names(optimObject$initialGuess.vec))
+    vecOrder <- names(optimObject$fixed)
     parsFinal <- c(fixed[!is.na(fixed)], optimResTmp$par)[vecOrder]
     optimResTmp$par <- parsFinal
     value <- optimResTmp$value

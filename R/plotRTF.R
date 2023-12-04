@@ -35,8 +35,6 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   }
   
   par <- bestOptimResult$par
-  fixedPars <- optimObject$fixed[!is.na(optimObject$fixed)]
-  par <- c(fixedPars, par)
   
   if (modus == "RetardedTransientDynamics") {
     numCol <- 2
@@ -78,7 +76,6 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
       gg.lst <- list()
       for (i in seq(length(optimResTmpLstParsAll))){
         pars <- optimResTmpLstParsAll[[i]]
-        pars <- c(fixedPars, pars)
         
         # print(pars)
         value <- optimResTmpLstValuesAll[[i]]
@@ -92,7 +89,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
         if (modus == "RetardedTransientDynamics") {
           gg <- plotRTFComponents(pars = pars,
                                   data = data,
-                                  signum_TF = optimObject$fixed[["signum_TF"]], title = title)
+                                  title = title)
         } else if (modus == "DoseDependentRetardedTransientDynamics") {
           gg <- plotFit(pars, withData = TRUE,
                         modus = optimObject$modus, 
@@ -137,7 +134,6 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
     RTFComponentsPlot <- plotRTFComponents(
       pars = par,
       data = data,
-      signum_TF = optimObject$fixed[["signum_TF"]],
       title = title
     )
     

@@ -4,7 +4,7 @@
 \alias{plotRTFComponents}
 \title{Plot t against the components of the RTF}
 \usage{
-plotRTFComponents(pars, data, signum_TF, title = "")
+plotRTFComponents(pars, data, title = "")
 }
 \arguments{
 \item{pars}{Named vector of the values of the model parameters}
@@ -12,12 +12,10 @@ plotRTFComponents(pars, data, signum_TF, title = "")
 \item{data}{Data frame which needs contain columns 'y' (with quantitative
 value of outcome) and 't'}
 
-\item{signum_TF}{Sign of transient function. Positive (1) or negative (-1) sign}
-
 \item{title}{String of the title of the plot}
 }
 \value{
-Combined plot of scatter plot of  t vs.
+Combination of scatter plot of t vs.
 the components of the retarded transient function
 (Nonlinear transformation + b, sustained signal + b,
 transient signal + b, retarded transient function (sustained signal +
@@ -31,8 +29,7 @@ function (RTF)
 data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
-signum_TF <- 1
-optimObject.orig$fixed[["signum_TF"]] <- signum_TF
+optimObject.orig$fixed[["signum_TF"]] <- 1
 nInitialGuesses <- 50
 initialGuess.vec.lst <- getInitialGuessVec(
   initialGuess.vec = optimObject.orig$initialGuess.vec,
@@ -46,6 +43,6 @@ bestOptimRes <- initialGuessResults[["bestOptimResult"]]
 gg.final <- plotRTFComponents(
   pars = bestOptimRes$par,
   data = optimObject.orig$data,
-  signum_TF = optimObject.orig$fixed[["signum_TF"]], title = ""
+  title = ""
 )
 }
