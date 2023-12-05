@@ -39,6 +39,9 @@ plotFit <- function(par,
                     title = "",
                     alphaVal = 0.5) {
   
+  if (is.null(t))
+    stop("Please provide vector of time points or maximum time point.")
+  
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
   xi <- seq(0, max(t), length.out = 1000)
   
