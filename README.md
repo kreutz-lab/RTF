@@ -53,7 +53,7 @@ plotFit(par = res.doseResponse[["finalParams"]],
                  title = " ")
 ```
 
-Low-dimnensional representation of RTF parameters of 20 or more time series. 
+Low-dimnensional representation of RTF parameters of 20 or more time series: 
 
 ```
 data(strasenTimeSeries)
