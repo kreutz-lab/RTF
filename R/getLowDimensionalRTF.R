@@ -82,12 +82,12 @@ getLowDimensionalRTF <- function(df,
     plotsLst[["umap.metaInfo"]], 
     plotsLst[["umap.cluster"]],
     plotsLst[["parDistribution"]],
-    wrap_elements(plotsLst[["dynamics.notscaled"]] + 
+    patchwork::wrap_elements(plotsLst[["dynamics.notscaled"]] + 
                     patchwork::plot_annotation(
                       title = "Dynamics (unscaled)",
                       theme = ggplot2::theme(
                         plot.title = ggplot2::element_text(face = "bold")))),
-    wrap_elements(plotsLst[["dynamics.scaled"]] +
+    patchwork::wrap_elements(plotsLst[["dynamics.scaled"]] +
                     patchwork::plot_annotation(
                       title = "Dynamics (scaled)",
                       theme = ggplot2::theme(
