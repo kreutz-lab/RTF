@@ -1,12 +1,18 @@
-#' Simulated time series data of NFkB pathway components
+#' Example RTF parameter data frame to simulated time series data of 
+#' NFkB pathway components
 #'
-#' Time series data is modelled using Data2Dynamics and is based on the 
-#' NFkB model of Almaden et al.
+#' This example data frame containing the estimated RTF parameters for the 
+#' 'almadenTimeSeries' dataset, which is modelled using Data2Dynamics and is 
+#' based on the NFkB model of Almaden et al.
 #'  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
+#' It has been generated as follows:
+#' data(almadenTimeSeries)
+#' res.lst <- runRTFOnMultipleTimeSeries(strasenTimeSeries)
+#' strasenParams <- getParamDf(res.lst)
 #'
 #' @docType data
 #'
-#' @usage data(almadenTimeSeries)
+#' @usage data(almadenParams)
 #'
 #' @keywords datasets
 #'
@@ -21,5 +27,5 @@
 #' (\href{https://doi.org/10.1093/bioinformatics/btv405})
 #'
 #' @examples
-#' data(almadenTimeSeries)
-"almadenTimeSeries"
+#' data(almadenParams)
+"almadenParams"

@@ -11,7 +11,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(strasenTimeSeries)
+#' @usage data(strasenParams)
 #'
 #' @keywords datasets
 #'

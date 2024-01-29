@@ -4,7 +4,13 @@
 \alias{getLowDimensionalRTFPlots}
 \title{Generate plots of low dimensional representation of RTF parameters}
 \usage{
-getLowDimensionalRTFPlots(df, metaInfo, metaInfoName, maxTime = 10)
+getLowDimensionalRTFPlots(
+  df,
+  metaInfo,
+  metaInfoName,
+  maxTime = 10,
+  numClust = NULL
+)
 }
 \arguments{
 \item{df}{Data frame with the RTF parameter values. 
@@ -18,6 +24,10 @@ groups.}
 \item{metaInfoName}{String of the name of the meta information.}
 
 \item{maxTime}{Time point up to which the dynamics should be plotted.}
+
+\item{numClust}{(Optional) Number of clusters. If not specified, number of
+clusters will be detrmined automatically using the function 
+NbClust::NbClust().}
 }
 \value{
 List containing UMAP plot colored by meta info ('umap.metaInfo'), 

@@ -9,7 +9,7 @@ classes}
 An object of class \code{data.frame} with 138 rows and 7 columns.
 }
 \usage{
-data(strasenTimeSeries)
+data(strasenParams)
 }
 \description{
 This example data frame containing the estimated RTF parameters for the 

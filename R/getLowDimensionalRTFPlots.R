@@ -16,6 +16,9 @@
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
 #' @param maxTime Time point up to which the dynamics should be plotted.
+#' @param numClust (Optional) Number of clusters. If not specified, number of
+#' clusters will be detrmined automatically using the function 
+#' NbClust::NbClust().
 #' @export getLowDimensionalRTFPlots
 #' @importFrom dplyr %>%
 #' @examples
@@ -28,7 +31,8 @@
 #'                                 maxTime = 10)
 
 getLowDimensionalRTFPlots <- function(df, metaInfo, 
-                                      metaInfoName, maxTime = 10) {
+                                      metaInfoName, maxTime = 10,
+                                      numClust = NULL) {
   params <- colnames(df)
   df.wMetaInfo <- data.frame(df, metaInfo)
   colnames(df.wMetaInfo) <- c(colnames(df), metaInfoName)
@@ -41,9 +45,15 @@ getLowDimensionalRTFPlots <- function(df, metaInfo,
   df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
   
   # Kmeans Clustering on UMAP data
-  clustID <- as.factor(
-    NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")], 
-                     method = 'complete', index = 'all')$Best.partition)
+  if (is.null(numClust)) {
+    clustID <- as.factor(
+      NbClust::NbClust(scale(df.umap.metaInfo[, c("UMAP1", "UMAP2")]), 
+                       method = 'kmeans', index = 'all')$Best.partition)
+  } else {
+    clustID <- as.factor(kmeans(scale(df.umap.metaInfo[, c("UMAP1", "UMAP2")]), 
+                                numClust)$cluster)
+  }
+  
   gg.umap.cluster <- getUMAPplot(data.frame(cbind(df, clustID)), 
                           groupColName = "clustID", alpha = 1, size = 1.5)
   umap.cluster <- gg.umap.cluster +

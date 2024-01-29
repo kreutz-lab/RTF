@@ -60,9 +60,9 @@ data(strasenTimeSeries)
 df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
 metaInfo <- sub("_[^_]+$", "", colNames)
-getLowDimensionalRTF(df.multipleTimeSeries,
-                     metaInfo = metaInfo, 
-                     metaInfoName = "species",
-                     fileString = "strasen_subset")
+res <- getLowDimensionalRTF(df.multipleTimeSeries,
+                            metaInfo = metaInfo, 
+                            metaInfoName = "species",
+                            fileString = "strasen_subset")
 
 ```

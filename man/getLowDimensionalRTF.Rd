@@ -16,7 +16,9 @@ getLowDimensionalRTF(
   readInParamRdsFilePath = "",
   modelReduction = FALSE,
   nInitialGuesses = 200,
-  saveToFile = TRUE
+  saveToFile = TRUE,
+  numClust = NULL,
+  param.df = NULL
 )
 }
 \arguments{
@@ -51,6 +53,15 @@ performed for RTF}
 RTF.}
 
 \item{saveToFile}{Boolean indicating if results should be saved to file}
+
+\item{numClust}{(Optional) Number of clusters. If not specified, number of
+clusters will be detrmined automatically using the function 
+NbClust::NbClust().}
+
+\item{param.df}{(Optional) Data frame with the RTF parameter values. 
+Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
+represent the different RTF parameters. The rows correspond to the different
+time series.}
 }
 \value{
 List with data frame of RTF parameters for each time series 

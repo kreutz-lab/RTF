@@ -29,6 +29,13 @@
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
 #' RTF.
 #' @param saveToFile Boolean indicating if results should be saved to file
+#' @param numClust (Optional) Number of clusters. If not specified, number of
+#' clusters will be detrmined automatically using the function 
+#' NbClust::NbClust().
+#' @param param.df (Optional) Data frame with the RTF parameter values. 
+#' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
+#' represent the different RTF parameters. The rows correspond to the different
+#' time series. 
 #' @export getLowDimensionalRTF
 #' @examples
 #' data(strasenTimeSeries)
@@ -48,7 +55,9 @@ getLowDimensionalRTF <- function(df,
                                  readInParamRdsFilePath = "",
                                  modelReduction = FALSE,
                                  nInitialGuesses = 200,
-                                 saveToFile = TRUE) {
+                                 saveToFile = TRUE,
+                                 numClust = NULL,
+                                 param.df = NULL) {
   
   if (metaInfoSecondRow & length(metaInfo) == 0) {
     metaInfo <- as.character(
@@ -62,16 +71,19 @@ getLowDimensionalRTF <- function(df,
     warning("Please provide meta information of size #columns-1 .")
   }
   
-  param.df <- getParamsFromMultipleTimeSeries(
-    df, 
-    fileString = fileString,
-    readInParamRdsFilePath = readInParamRdsFilePath,
-    modelReduction = modelReduction,
-    nInitialGuesses = nInitialGuesses) 
+  if (is.null(param.df)) {
+    param.df <- getParamsFromMultipleTimeSeries(
+      df, 
+      fileString = fileString,
+      readInParamRdsFilePath = readInParamRdsFilePath,
+      modelReduction = modelReduction,
+      nInitialGuesses = nInitialGuesses) 
+  }
   
   plotsLst <- getLowDimensionalRTFPlots(
     param.df, metaInfo, metaInfoName, 
-    maxTime = max(df$time))
+    maxTime = max(df$time),
+    numClust = numClust)
   
   numCluster <- length(unique(plotsLst[["dynamics.data"]]$cluster))
   
