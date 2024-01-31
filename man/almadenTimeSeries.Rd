@@ -5,7 +5,7 @@
 \alias{almadenTimeSeries}
 \title{Simulated time series data of NFkB pathway components}
 \format{
-An object of class \code{data.frame} with 572 rows and 183 columns.
+An object of class \code{data.frame} with 101 rows and 183 columns.
 }
 \usage{
 data(almadenTimeSeries)

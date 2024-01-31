@@ -1,4 +1,4 @@
-#' Add new column with data points scaled to lie between 0 and 10
+#' Get vectored with data points scaled to lie between 0 and 10
 #'
 #' @description Scales or reverses scaling for time-dependent variable
 #' @return Scaled vector if reverse = FALSE and unscaled timeParam is entered,

@@ -18,8 +18,7 @@ based on the NFkB model of Almaden et al.
  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
 It has been generated as follows:
 data(almadenTimeSeries)
-res.lst <- runRTFOnMultipleTimeSeries(strasenTimeSeries)
-strasenParams <- getParamDf(res.lst)
+strasenParams <- getParamsFromMultipleTimeSeries(strasenTimeSeries)
 }
 \examples{
 data(almadenParams)

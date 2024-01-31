@@ -2,7 +2,7 @@
 % Please edit documentation in R/scaleTimeParameter.R
 \name{scaleTimeParameter}
 \alias{scaleTimeParameter}
-\title{Add new column with data points scaled to lie between 0 and 10}
+\title{Get vectored with data points scaled to lie between 0 and 10}
 \usage{
 scaleTimeParameter(timeParam, maxVal = NULL, reverse = FALSE)
 }

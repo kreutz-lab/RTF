@@ -27,6 +27,14 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                                                  factr = 1e7), 
                                   takeLog10 = TRUE) {
   
+  mintVal <- min(data$t)
+  if (mintVal > 0) {
+    warning("Minimum time point of dataset is larger than 0.
+            To make the time series start at 0, minimum time point will be 
+            subtracted from all time points of dataset.")
+    data$t <- data$t - mintVal
+  }
+  
   # data <- data[order(data$t),]
   for (v in 1:ncol(data)) assign(names(data)[v], data[,v])
   

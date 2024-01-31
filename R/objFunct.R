@@ -93,7 +93,7 @@ objFunct <- function(par, data, optimObject) {
     if (retval > 10^20) {
       print(par)
       retval <- 10^20
-      warning(paste0("objective function is infinite."))
+      # warning(paste0("objective function is infinite."))
     } else if (retval < -10^20) {
       retval <- -10^20
     }

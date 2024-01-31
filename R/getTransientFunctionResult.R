@@ -76,8 +76,8 @@ getTransientFunctionResult <- function(par = c(),
   if (scale) {
     # scaling everything with time as phys. unit
     tau <- scaleTimeParameter(timeParam = tau, maxVal = maxVal)$timeParam
-    alpha <- scaleTimeParameter(timeParam = alpha, maxVal = maxVal)$timeParam
-    gamma <- scaleTimeParameter(timeParam = gamma, maxVal = maxVal)$timeParam
+    alpha <- scaleTimeParameter(timeParam = alpha, maxVal = 1/maxVal)$timeParam
+    gamma <- scaleTimeParameter(timeParam = gamma, maxVal = 1/maxVal)$timeParam
   }
 
   nonLinTransformation <- log10(10^t_prime + 10^tau) - log10(1 + 10^tau)
