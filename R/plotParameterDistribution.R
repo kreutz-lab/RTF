@@ -29,5 +29,6 @@ plotParameterDistribution <- function(df.parameterValues.long) {
       panel.spacing = ggplot2::unit(0.1, "lines"),
       strip.text.x = ggplot2::element_text(size = 8)
     ) +
-    ggplot2::facet_wrap(~variable, scales = "free")
+    ggplot2::facet_wrap(~variable, scales = "free") +
+    ggplot2::ylab("Count")
 }

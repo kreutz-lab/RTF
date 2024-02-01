@@ -16,9 +16,10 @@
 #' and else 'RetardedTransientDynamics'.
 #' @param optimFunction String indicating the optimization function which 
 #' should be used (Default: "chiSquare")
-#' @param modelReduction Boolean indicating of model reduction should be performed
-#' (Default: TRUE)
-#' @param nInitialGuesses Integer indicating number of initial guesses (Default: 50)
+#' @param modelReduction Boolean indicating of model reduction should be 
+#' performed (Default: TRUE)
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (Default: 50)
 #' @param control List of control arguments passed to the function stats::optim 
 #' (Default: list(trace = 1, maxit = 1000, factr = 1e7))
 #' @export runRTF
@@ -57,16 +58,17 @@ runRTF <- function(data,
   
   
   optimObject.orig <- initializeOptimObject(data, modus = modus, 
-                                  optimFunction = optimFunction,
-                                  control = control)
+                                            optimFunction = optimFunction,
+                                            control = control)
   
   parsWithIdenticalBounds <- names(
     optimObject.orig$lb.vec[optimObject.orig$lb.vec == optimObject.orig$ub.vec])
   for (el in parsWithIdenticalBounds) {
     optimObject.orig$fixed[[el]] <- optimObject.orig$lb.vec[[el]]
   }
-
-  res.all.plusMinus <- getFittingResult(optimObject.orig, nInitialGuesses = nInitialGuesses)
+  
+  res.all.plusMinus <- getFittingResult(optimObject.orig, 
+                                        nInitialGuesses = nInitialGuesses)
   res <- selectBest(res.all.plusMinus)
   
   optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
@@ -80,13 +82,13 @@ runRTF <- function(data,
       #  If not significant, tau is set to the lower bound which is
       # tau = −2 by default.
       optimObjectTmp <- optimObject.orig
-      # optimObjectTmp$positive.par.names <-
-      #   setdiff(optimObjectTmp$positive.par.names, "tau")  # because lb.vec[["tau"]] corresponds to -2
       
-      optimObjectTmp[["takeLog10"]][names(optimObjectTmp[["takeLog10"]]) == "tau"] <- FALSE
+      optimObjectTmp[["takeLog10"]][names(
+        optimObjectTmp[["takeLog10"]]) == "tau"] <- FALSE
       
       optimObjectTmp$fixed[["tau"]] <- optimObject.orig$lb.vec[["tau"]]
-      res.tauLB.plusMinus <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
+      res.tauLB.plusMinus <- getFittingResult(optimObjectTmp, 
+                                              nInitialGuesses = nInitialGuesses)
       res.tauLB <- selectBest(res.tauLB.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.tauLB)
       
@@ -96,10 +98,13 @@ runRTF <- function(data,
       # optimObjectTmp2$positive.par.names <-
       #   setdiff(optimObjectTmp2$positive.par.names, c("A", "B"))  
       
-      optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in% c("A", "B")] <- FALSE
+      optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in% 
+                                       c("A", "B")] <- FALSE
       
       optimObjectTmp2$fixed[["A"]] <- optimObjectTmp2$fixed[["B"]] <- 0
-      res.constant.plusMinus <- getFittingResult(optimObjectTmp2, nInitialGuesses = nInitialGuesses)
+      res.constant.plusMinus <- getFittingResult(
+        optimObjectTmp2, 
+        nInitialGuesses = nInitialGuesses)
       res.constant <- selectBest(res.constant.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
       
@@ -109,9 +114,11 @@ runRTF <- function(data,
       # optimObjectTmp3$positive.par.names <-
       #   setdiff(optimObjectTmp3$positive.par.names, "b")  
       
-      optimObjectTmp3[["takeLog10"]][names(optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
+      optimObjectTmp3[["takeLog10"]][names(
+        optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
       optimObjectTmp3$fixed[["b"]] <- 0
-      res.bZero.plusMinus <- getFittingResult(optimObjectTmp3, nInitialGuesses = nInitialGuesses)
+      res.bZero.plusMinus <- getFittingResult(optimObjectTmp3, 
+                                              nInitialGuesses = nInitialGuesses)
       res.bZero <- selectBest(res.bZero.plusMinus)
       res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
       
@@ -128,44 +135,56 @@ runRTF <- function(data,
         optimObjectTmp <- optimObject.orig
         optimObjectTmp$initialGuess.vec <- optimParamsFullModel
         
-        # if parameters with reciprocal hill (equationhillEquationReciprocal) set fixed to upper bound
-        # if (param %in% c("M_alpha", "M_gamma", "K_alpha", "K_gamma", "M_tau", "K_tau")) {
+        # if parameters with reciprocal hill (equationhillEquationReciprocal) 
+        # set fixed to upper bound
         if (param %in% c("M_tau", "K_tau")) {
-          optimObjectTmp$fixed[[param]] <- optimObjectTmp[["ub.vec"]][names(optimObjectTmp[["ub.vec"]]) == param]
+          optimObjectTmp$fixed[[param]] <- 
+            optimObjectTmp[["ub.vec"]][names(
+              optimObjectTmp[["ub.vec"]]) == param]
         } else {
           # optimObjectTmp$positive.par.names <-
           #   setdiff(optimObjectTmp$positive.par.names, param) 
-          optimObjectTmp[["takeLog10"]][names(optimObjectTmp[["takeLog10"]]) == param] <- FALSE
+          optimObjectTmp[["takeLog10"]][names(
+            optimObjectTmp[["takeLog10"]]) == param] <- FALSE
           optimObjectTmp$fixed[[param]] <- 0
         }
         
-        res.param.fixed <- getFittingResult(optimObjectTmp, nInitialGuesses = nInitialGuesses)
+        res.param.fixed <- getFittingResult(optimObjectTmp, 
+                                            nInitialGuesses = nInitialGuesses)
         res.fixed <- selectBest(res.param.fixed)
         
         LRstat <- res.fixed$value / res$value
         difference <-  res.fixed$value - res$value
         df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
         pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
-        statLst <- append(statLst, list(list(param = param, 
-                                             df = sum(is.na(res.fixed[["fixed"]])),
-                                             LRstat = LRstat, 
-                                             pVal = pVal)))
+        statLst <- append(statLst, 
+                          list(list(param = param, 
+                                    df = sum(is.na(res.fixed[["fixed"]])),
+                                    LRstat = LRstat, 
+                                    pVal = pVal)))
         statObjLst <- append(statObjLst, list(res.fixed))
       }
       names(statLst) <- names(statObjLst) <- params
       
-      grDevices::pdf(file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf", width = 12, height = 10)
+      grDevices::pdf(
+        file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf", 
+        width = 12, height = 10)
       for (i in seq(length(statObjLst))){
-        optimResTmpLstValuesAll <- unlist(lapply(statObjLst[[i]][["optimResults"]], function(x) unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
-        print(plotWaterfallPlot(optimResTmpLstValuesAll) + ggplot2::ggtitle(names(statObjLst)[i]))
+        optimResTmpLstValuesAll <- unlist(
+          lapply(statObjLst[[i]][["optimResults"]], function(x) 
+            unlist(x[["optimRes"]][grep("value",names(x[["optimRes"]]))])))
+        print(plotWaterfallPlot(optimResTmpLstValuesAll) +
+                ggplot2::ggtitle(names(statObjLst)[i]))
       }
       grDevices::dev.off()
       
       statLst.df <- do.call(rbind, lapply(statLst, data.frame))
-      utils::write.csv(statLst.df, "doseResponseRTF_parameter_significanceTable.csv", row.names = FALSE)
+      utils::write.csv(statLst.df, 
+                       "doseResponseRTF_parameter_significanceTable.csv", 
+                       row.names = FALSE)
     }
   }
-    
+  
   finalModel <- res
   finalParams <- res$fitted
   

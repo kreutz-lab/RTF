@@ -16,7 +16,8 @@
 #' @param t Time points
 #' @param d Dose (obligatory for 'DoseDependentRetardedTransientDynamics')
 #' @param title Plot title
-#' @param alphaVal Transparency of points
+#' @param pointAlpha Transparency of points
+#' @param lineAlpha For modus 'RetardedTransientDynamics': Transparency of lines
 #' @param pointSize Point size
 #' @export plotFit
 #' @examples
@@ -33,7 +34,8 @@ plotFit <- function(par,
                     modus = "RetardedTransientDynamics", 
                     y = NULL, t = NULL, d = NULL, 
                     title = "",
-                    alphaVal = 0.5,
+                    pointAlpha = 0.5,
+                    lineAlpha = 0.5,
                     pointSize = 0.5) {
   
   if (is.null(t))
@@ -122,7 +124,7 @@ plotFit <- function(par,
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y, 
                                                   color = factor(d)),
-                                     alpha = alphaVal,
+                                     alpha = pointAlpha,
                                      size = pointSize
       )
     }
@@ -130,19 +132,23 @@ plotFit <- function(par,
     gg <- gg + 
       ggplot2::geom_line(data = geom_line.df,
                          ggplot2::aes(x = t, y = y, 
-                                      color = factor(Component))) +
+                                      color = factor(Component),
+                                      size = factor(Component)),
+                                      alpha = lineAlpha) +
       ggplot2::scale_colour_manual(values = c(RTF = "black",
                                             Transient = "blue",
                                             Sustained = "#339999")) +
-      ggplot2::scale_size_manual(values = c(RTF = 20,
+      ggplot2::scale_size_manual(values = c(RTF = 2,
                                             Transient = 1,
                                             Sustained = 1)) +
       ggplot2::theme(legend.position = "bottom", 
-                     legend.title = ggplot2::element_blank())
+                     legend.title = ggplot2::element_blank()) +
+      ggplot2::guides(colour = ggplot2::guide_legend(
+        override.aes = list(alpha = lineAlpha)))
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y),
-                                     alpha = alphaVal,
+                                     alpha = pointAlpha,
                                      size = pointSize)
     }
   }

@@ -41,7 +41,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
   t <- sort(t[!is.na(t)])
   y <- y[!is.na(y)]
   # New variables: 
-  # d, M_A, h_A, K_A, M_B, h_B, K_B, M_alpha, h_alpha, K_alpha, M_gamma, h_gamma, K_gamma, M_tau, h_tau, K_tau
+  # d, M_A, h_A, K_A, M_B, h_B, K_B, M_alpha, h_alpha, K_alpha, 
+  # M_gamma, h_gamma, K_gamma, M_tau, h_tau, K_tau
   
   # d Dose
   # M Maximum value
@@ -52,129 +53,119 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
     if (!("d" %in% names(data))) {
       stop("Please provide data frame with data column d.")
     }
-
+    
     d <- d[!is.na(d)]
     hillCoef.lb <- 1
     hillCoef.ub <- 10
     K.lb <- min(d[d > 0]) / 10
     K.ub <- max(d) * 10
-    lb.vec <- c(M_alpha = 1 / (2 * (max(t) - min(t))),
-                h_alpha = hillCoef.lb,
-                K_alpha = K.lb,
-                M_gamma = 1 / (2 * (max(t) - min(t))),
-                h_gamma = hillCoef.lb,
-                K_gamma = K.lb,
-                M_A = 0,
-                h_A = hillCoef.lb,
-                K_A = K.lb,
-                M_B = 0,
-                h_B = hillCoef.lb,
-                K_B = K.lb,
-                M_tau = -(max(t) - min(t)) / 5,
-                h_tau = hillCoef.lb,
-                K_tau = K.lb,
-                b = min(y),
-                sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
-                           max(1e-10, diff(range(y)) / (10^4)))
-                )
-
-    ub.vec <- c(M_alpha = 2 / (min(diff(unique(t)))),
-                h_alpha = hillCoef.ub,
-                K_alpha = K.ub,
-                M_gamma = 2 / (min(diff(unique(t)))),
-                h_gamma = hillCoef.ub,
-                K_gamma = K.ub,
-                M_A = 10 * (max(y) - min(y)),
-                h_A = hillCoef.ub,
-                K_A = K.ub,
-                M_B = 10 * (max(y) - min(y)),
-                h_B = hillCoef.ub,
-                K_B = K.ub,
-                M_tau = (max(t) - min(t)) * 0.9,
-                h_tau = hillCoef.ub,
-                K_tau = K.ub,
-                b = max(y),
-                sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
+    lb.vec <- c(
+      M_alpha = 1 / (100 * (max(t) - min(t))),
+      h_alpha = hillCoef.lb,
+      K_alpha = K.lb,
+      M_gamma = 1 / (100 * (max(t) - min(t))),
+      h_gamma = hillCoef.lb,
+      K_gamma = K.lb,
+      M_A = 0,
+      h_A = hillCoef.lb,
+      K_A = K.lb,
+      M_B = 0,
+      h_B = hillCoef.lb,
+      K_B = K.lb,
+      M_tau = -(max(t) - min(t)) / 5,
+      h_tau = hillCoef.lb,
+      K_tau = K.lb,
+      b = min(y),
+      sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
+                  max(1e-10, diff(range(y)) / (10^4)))
     )
-
-    initialGuess.vec <- c(M_alpha =  0.5 * lb.vec[["M_alpha"]] +
-  0.5 * ub.vec[["M_alpha"]],
-                          h_alpha = 0.5 * lb.vec[["h_alpha"]] +
-    0.5 * ub.vec[["h_alpha"]],
-                          K_alpha =  0.5 * lb.vec[["K_alpha"]] +
-    0.5 * ub.vec[["K_alpha"]],
-                          M_gamma = 0.5 * lb.vec[["M_gamma"]] +
-  0.5 * ub.vec[["M_gamma"]],
-                          h_gamma = 0.5 * lb.vec[["h_gamma"]] +
-    0.5 * ub.vec[["h_gamma"]],
-                          K_gamma = 0.5 * lb.vec[["K_gamma"]] +
-    0.5 * ub.vec[["K_gamma"]],
-                          M_A =  0.1 * lb.vec[["M_A"]] +
-  0.9 * ub.vec[["M_A"]],
-                          h_A = 0.5 * lb.vec[["h_A"]] +
-    0.5 * ub.vec[["h_A"]],
-                          K_A = 0.5 * lb.vec[["K_A"]] +
-    0.5 * ub.vec[["K_A"]],
-                          M_B = 0.1*lb.vec[["M_B"]] +
-  0.9 * ub.vec[["M_B"]],
-                          h_B = 0.5 * lb.vec[["h_B"]] +
-    0.5 * ub.vec[["h_B"]],
-                          K_B = 0.5 * lb.vec[["K_B"]] +
-    0.5 * ub.vec[["K_B"]],
-                          M_tau = -(max(t) - min(t)) / 10,
-                          h_tau = 0.5 * lb.vec[["h_tau"]] +
-    0.5 * ub.vec[["h_tau"]],
-                          K_tau = 0.5 * lb.vec[["K_tau"]] +
-    0.5 * ub.vec[["K_tau"]],
-                          b = 0.5 * lb.vec[["b"]] +
-    0.5 * ub.vec[["b"]],
-                          sigma = 0.5 * lb.vec[["sigma"]] +
-    0.5 * ub.vec[["sigma"]]
-  )
+    
+    ub.vec <- c(
+      M_alpha = 2 / (min(diff(unique(t)))),
+      h_alpha = hillCoef.ub,
+      K_alpha = K.ub,
+      M_gamma = 2 / (min(diff(unique(t)))),
+      h_gamma = hillCoef.ub,
+      K_gamma = K.ub,
+      M_A = 10 * (max(y) - min(y)),
+      h_A = hillCoef.ub,
+      K_A = K.ub,
+      M_B = 10 * (max(y) - min(y)),
+      h_B = hillCoef.ub,
+      K_B = K.ub,
+      M_tau = (max(t) - min(t)) * 0.9,
+      h_tau = hillCoef.ub,
+      K_tau = K.ub,
+      b = max(y),
+      sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
+    )
+    
+    initialGuess.vec <- c(
+      M_alpha = sqrt(lb.vec[["M_alpha"]] * ub.vec[["M_alpha"]]),
+      h_alpha = sqrt(lb.vec[["h_alpha"]] * ub.vec[["h_alpha"]]),
+      K_alpha = sqrt(lb.vec[["K_alpha"]] * ub.vec[["K_alpha"]]),
+      M_gamma = sqrt(lb.vec[["M_gamma"]] * ub.vec[["M_gamma"]]),
+      h_gamma = sqrt(lb.vec[["h_gamma"]] * ub.vec[["h_gamma"]]),
+      K_gamma = sqrt(lb.vec[["K_gamma"]] * ub.vec[["K_gamma"]]),
+      M_A = 0.1 * lb.vec[["M_A"]] + 0.9 * ub.vec[["M_A"]],
+      h_A = 0.5 * lb.vec[["h_A"]] + 0.5 * ub.vec[["h_A"]],
+      K_A = 0.5 * lb.vec[["K_A"]] + 0.5 * ub.vec[["K_A"]],
+      M_B = 0.1*lb.vec[["M_B"]] + 0.9 * ub.vec[["M_B"]],
+      h_B = 0.5 * lb.vec[["h_B"]] + 0.5 * ub.vec[["h_B"]],
+      K_B = 0.5 * lb.vec[["K_B"]] + 0.5 * ub.vec[["K_B"]],
+      M_tau = -(max(t) - min(t)) / 10,
+      h_tau = 0.5 * lb.vec[["h_tau"]] + 0.5 * ub.vec[["h_tau"]],
+      K_tau = 0.5 * lb.vec[["K_tau"]] + 0.5 * ub.vec[["K_tau"]],
+      b = 0.5 * lb.vec[["b"]] + 0.5 * ub.vec[["b"]],
+      sigma = 0.5 * lb.vec[["sigma"]] + 0.5 * ub.vec[["sigma"]]
+    )
   } else {
     # Define Lower and Upper bounds, and Default initial guess
-    lb.vec <- c(alpha = 1 / (2 * (max(t) - min(t))),
-                gamma = 1 / (2 * (max(t) - min(t))),
-                A = 0,
-                B = 0,
-                b = min(y),
-                tau = -(max(t) - min(t)) / 5,
-                sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
-                              max(1e-10, diff(range(y)) / (10^4)))
-                )
+    lb.vec <- c(
+      alpha = 1 / (100 * (max(t) - min(t))),
+      gamma = 1 / (100 * (max(t) - min(t))),
+      A = 0,
+      B = 0,
+      b = min(y),
+      tau = -(max(t) - min(t)) / 5,
+      sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
+                  max(1e-10, diff(range(y)) / (10^4)))
+    )
     
-    ub.vec <- c(alpha = 2 / (min(diff(unique(t)))),
-                gamma = 2 / (min(diff(unique(t)))),
-                A = 2 * (max(y) - min(y)),
-                B = 2 * (max(y) - min(y)),
-                b = max(y),
-                tau = (max(t) - min(t)) * 0.9,
-                sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
-              )
+    ub.vec <- c(
+      alpha = 2 / (min(diff(unique(t)))),
+      gamma = 2 / (min(diff(unique(t)))),
+      A = 2 * (max(y) - min(y)),
+      B = 2 * (max(y) - min(y)),
+      b = max(y),
+      tau = (max(t) - min(t)) * 0.9,
+      sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
+    )
     
-    initialGuess.vec <- c(alpha = sqrt(lb.vec[["alpha"]] *
-                            ub.vec[["alpha"]]),
-                          gamma = sqrt(lb.vec[["gamma"]] *
-                            ub.vec[["gamma"]]),
-                          A = 0.1 * lb.vec[["A"]] +
-                            0.9 * ub.vec[["A"]],
-                          B = 0.1 * lb.vec[["B"]] +
-                            0.9 * ub.vec[["B"]],
-                          b = 0.5 * lb.vec[["b"]] +
-                            0.5 * ub.vec[["b"]],
-                          tau = -(max(t) - min(t)) / 10,
-                          sigma = 0.5 * lb.vec[["sigma"]] +
-                            0.5 * ub.vec[["sigma"]]
-                          )
+    initialGuess.vec <- c(
+      alpha = sqrt(lb.vec[["alpha"]] *
+                     ub.vec[["alpha"]]),
+      gamma = sqrt(lb.vec[["gamma"]] *
+                     ub.vec[["gamma"]]),
+      A = 0.1 * lb.vec[["A"]] +
+        0.9 * ub.vec[["A"]],
+      B = 0.1 * lb.vec[["B"]] +
+        0.9 * ub.vec[["B"]],
+      b = 0.5 * lb.vec[["b"]] +
+        0.5 * ub.vec[["b"]],
+      tau = -(max(t) - min(t)) / 10,
+      sigma = 0.5 * lb.vec[["sigma"]] +
+        0.5 * ub.vec[["sigma"]]
+    )
     
   }
-
+  
   if ("sdExp" %in% colnames(data)){
     lb.vec <- lb.vec[names(lb.vec) != "sigma"]
     ub.vec <- ub.vec[names(ub.vec) != "sigma"]
     initialGuess.vec <- initialGuess.vec[names(initialGuess.vec) != "sigma"]
   }
-
+  
   optimObject.orig <- list(data = data,
                            initialGuess.vec = initialGuess.vec,
                            lb.vec = lb.vec,
@@ -189,7 +180,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                            control = control,
                            fitted = list()
   )
-
+  
   if (takeLog10) {
     positive.par.names <- getPositiveParNames(
       lb.vec = optimObject.orig$lb.vec,
@@ -198,7 +189,6 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
     positive.par.names <- setdiff(positive.par.names, "sigma")
     optimObject.orig$positive.par.names <- positive.par.names
     optimObject.orig[["takeLog10"]][positive.par.names] <- TRUE
-    # optimObject.orig <- takeLog10OfBounds(optimObject.orig)
   }
   optimObject.orig
 }
