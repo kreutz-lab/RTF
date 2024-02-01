@@ -4,7 +4,14 @@
 \alias{plotRTFForAllTimeSeries}
 \title{Generate plots based on the list of RTF parameters to multiple time series}
 \usage{
-plotRTFForAllTimeSeries(res.lst, fileString = "", height = 12, width = 10)
+plotRTFForAllTimeSeries(
+  res.lst,
+  fileString = "",
+  height = 12,
+  width = 10,
+  plotFitsToSingleFile = TRUE,
+  plotFitOnly = FALSE
+)
 }
 \arguments{
 \item{res.lst}{List with the RTF result for each time series}
@@ -14,6 +21,12 @@ plotRTFForAllTimeSeries(res.lst, fileString = "", height = 12, width = 10)
 \item{height}{Integer indicating page height}
 
 \item{width}{Integer indicating page width}
+
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
+single file.}
+
+\item{plotFitOnly}{Plot fit only without additional information as provided 
+using function plotRTF().}
 }
 \value{
 pdf file, where each page corresponds to one time series.

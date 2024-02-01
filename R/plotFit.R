@@ -10,15 +10,11 @@
 #' 'DoseDependentRetardedTransientDynamics').
 #' @param withData Boolean indicating if data should be added to fit line
 #' @param modus Modus ('RetardedTransientDynamics' or 
-#' DoseDependentRetardedTransientDynamics')
+#' 'DoseDependentRetardedTransientDynamics')
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
 #' @param t Time points
 #' @param d Dose (obligatory for 'DoseDependentRetardedTransientDynamics')
-#' @param plotType String indication if transient function should be plotted
-#' ('all') (Default) or if in case of modus = 'RetardedTransientDynamics'
-#'  components of transient function ("nonLinearTransformationOnly", 
-#' "transientOnly", "sustainedOnly") should be plotted.
 #' @param title Plot title
 #' @param alphaVal Transparency of points
 #' @export plotFit
@@ -35,93 +31,108 @@ plotFit <- function(par,
                     withData = FALSE,
                     modus = "RetardedTransientDynamics", 
                     y = NULL, t = NULL, d = NULL, 
-                    plotType = "all",
                     title = "",
                     alphaVal = 0.5) {
   
   if (is.null(t))
     stop("Please provide vector of time points or maximum time point.")
   
-  for (v in 1:length(par)) assign(names(par)[v], par[[v]])
-  xi <- seq(0, max(t), length.out = 1000)
+  xi <- seq(min(t), max(t), length.out = 1000)
   
   if (!is.null(d)) {
     doses <- sort(unique(d))
   } else {
     doses <- 1
   }
-
-  # for (v in 1:length(par)) assign(names(par)[v], par[[v]])
   
-  geom_point.lst <- list()
-  geom_line.lst <- list()
-  for (i in seq(length(doses))) {
-    functionResVec <- NULL
-    dose <- doses[i]
+  if (modus == 'RetardedTransientDynamics') {
+    RTFResVec <- getTransientFunctionResult(
+      t = xi,
+      par = par,
+      modus = modus)
     
-    if (plotType == "all" | modus == 'DoseDependentRetardedTransientDynamics') {
-      functionResVec <- getTransientFunctionResult(
+    RTFResDf <- data.frame(t = xi,
+                           y = RTFResVec,
+                           Component = "RTF")
+    
+    # Only Signal_sus: B = 0 
+    # Only Signal_trans: A = 0
+    parSus <- parTrans <- par 
+    parSus[names(parSus) == "B"] <- parTrans[names(parTrans) == "A"] <- 0
+    
+    susOnlyResVec <- getTransientFunctionResult(
+      t = xi,
+      par = parSus,
+      modus = modus)
+    susOnlyResDf <- data.frame(t = xi,
+                               y = susOnlyResVec,
+                               Component = "Sustained")
+    
+    transOnlyResVec <- getTransientFunctionResult(
+      t = xi,
+      par = parTrans,
+      modus = modus)
+    
+    transOnlyResDf <- data.frame(t = xi,
+                                 y = transOnlyResVec,
+                                 Component = "Transient")
+    
+    geom_line.df <- do.call("rbind", list(RTFResDf, 
+                                          susOnlyResDf, 
+                                          transOnlyResDf))
+    
+  } else if (modus == 'DoseDependentRetardedTransientDynamics') {
+    geom_line.lst <- list()
+    for (i in seq(length(doses))) {
+      RTFResVec <- NULL
+      dose <- doses[i]
+      
+      RTFResVec <- getTransientFunctionResult(
         t = xi,
         d = dose,
         par = par,
         modus = modus)
-      if (nchar(title) == 0) title <- "RTF =  SignalSus + SignalTrans + b"
       
-    } else if (plotType == "nonLinearTransformationOnly") {
-      functionResVec <- getNonLinTransformationPlusOffset(
-        t = xi,
-        tau = tau,
-        b = b)
-      if (nchar(title) == 0) title <- "NonLinTransformation + b"
-      
-    } else if (plotType == "sustainedOnly") {
-      functionResVec <- getSignalSusPlusOffset(
-        t = xi,
-        alpha = alpha,
-        A = A,
-        b = b,
-        tau = tau,
-        signum_TF = signum_TF)
-      if (nchar(title) == 0) title <- "SignalSus + b"
-      
-    } else if (plotType == "transientOnly") {
-      functionResVec <-  getSignalTransPlusOffset(
-        t = xi,
-        alpha = alpha,
-        gamma = gamma,
-        B = B,
-        b = b,
-        tau = tau,
-        signum_TF = signum_TF)
-      if (nchar(title) == 0) title <- "SignalTrans + b"
-    }
+      geom_line.lst <- append(geom_line.lst, 
+                              list(data.frame(
+                                t = xi,
+                                y = RTFResVec,
+                                # d = rep(dose, times = length(xi))
+                                d = dose
+                              )))
+    } 
     
-    geom_line.lst <- append(geom_line.lst, 
-                            list(data.frame(t = xi,
-                                            y = functionResVec,
-                                            d = rep(dose, times = length(xi)))))
-    
-  } 
-  
-  geom_line.df <- dplyr::bind_rows(geom_line.lst)
+    geom_line.df <- dplyr::bind_rows(geom_line.lst)
+  }
   
   gg <- ggplot2::ggplot() +
-    ggplot2::theme_bw() +
-    ggplot2::scale_color_brewer() 
+    ggplot2::theme_bw()
   
   if (length(doses) > 1) {
-    gg <- gg + ggplot2::geom_line(data = geom_line.df,
-                       ggplot2::aes(x = t, y = y, color = factor(d)))
+    gg <- gg + ggplot2::geom_line(
+      data = geom_line.df,
+      ggplot2::aes(x = t, y = y, color = factor(d))
+      ) +
+      ggplot2::theme(legend.position = "bottom", 
+                     legend.title = ggplot2::element_blank()) +
+      ggplot2::scale_color_brewer() 
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y, 
                                                   color = factor(d)),
                                      alpha = alphaVal
-                                     )
+      )
     }
   } else {
-    gg <- gg + ggplot2::geom_line(data = geom_line.df,
-                       ggplot2::aes(x = t, y = y))
+    gg <- gg + 
+      ggplot2::geom_line(data = geom_line.df,
+                         ggplot2::aes(x = t, y = y, 
+                                      color = factor(Component))) +
+      ggplot2::scale_colour_manual(values=c(RTF = "black",
+                                            Transient ="blue",
+                                            Sustained = "#339999")) +
+      ggplot2::theme(legend.position = "bottom", 
+                     legend.title = ggplot2::element_blank())
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y),

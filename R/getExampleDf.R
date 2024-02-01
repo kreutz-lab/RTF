@@ -17,7 +17,7 @@ getExampleDf <- function(modus = "RetardedTransientDynamics"){
     y <- getTransientFunctionResult(
       t = t,
       par = c(alpha = 1, gamma = 2, A = 1, B = 2, b = 0.3,
-              tau = 2, signum_TF = 1),
+              tau = 2, signum_TF = 1), # alpha = 0.01, gamma = 0.002
       modus = "RetardedTransientDynamics") 
       
     data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.03))

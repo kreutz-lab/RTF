@@ -10,7 +10,9 @@ getParamsFromMultipleTimeSeries(
   fileString = "lowDimRTF",
   readInParamRdsFilePath = "",
   modelReduction = FALSE,
-  nInitialGuesses = 200
+  nInitialGuesses = 200,
+  plotFitsToSingleFile = TRUE,
+  plotFitOnly = FALSE
 )
 }
 \arguments{
@@ -34,6 +36,12 @@ performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
 RTF.}
+
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
+single file.}
+
+\item{plotFitOnly}{Plot fit only without additional information as provided 
+using function plotRTF().}
 }
 \value{
 Data frame containing the RTF parameters for each time 

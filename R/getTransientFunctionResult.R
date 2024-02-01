@@ -73,6 +73,7 @@ getTransientFunctionResult <- function(par = c(),
     tau <- df$tau
   }
   
+   
   if (scale) {
     # scaling everything with time as phys. unit
     tau <- scaleTimeParameter(timeParam = tau, maxVal = maxVal)$timeParam
@@ -99,5 +100,11 @@ getTransientFunctionResult <- function(par = c(),
   } 
   if(sum(is.infinite(transientFunctionRes))>0)
     print(transientFunctionRes)
+  
+  # if(signum_TF>0){
+  #   
+  #   print(signum_TF)
+  #   
+  # }
   transientFunctionRes
 }

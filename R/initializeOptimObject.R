@@ -152,10 +152,10 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
                 sigma = max(1e-10, stats::sd(y, na.rm = TRUE))
               )
     
-    initialGuess.vec <- c(alpha = 0.5 * lb.vec[["alpha"]] +
-                            0.5 * ub.vec[["alpha"]],
-                          gamma = 0.5 * lb.vec[["gamma"]] +
-                            0.5 * ub.vec[["gamma"]],
+    initialGuess.vec <- c(alpha = sqrt(lb.vec[["alpha"]] *
+                            ub.vec[["alpha"]]),
+                          gamma = sqrt(lb.vec[["gamma"]] *
+                            ub.vec[["gamma"]]),
                           A = 0.1 * lb.vec[["A"]] +
                             0.9 * ub.vec[["A"]],
                           B = 0.1 * lb.vec[["B"]] +

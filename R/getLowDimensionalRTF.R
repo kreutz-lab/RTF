@@ -36,6 +36,10 @@
 #' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 #' represent the different RTF parameters. The rows correspond to the different
 #' time series. 
+#' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
+#' single file.
+#' @param plotFitOnly Plot fit only without additional information as provided 
+#' using function plotRTF().
 #' @export getLowDimensionalRTF
 #' @examples
 #' data(strasenTimeSeries)
@@ -57,7 +61,9 @@ getLowDimensionalRTF <- function(df,
                                  nInitialGuesses = 200,
                                  saveToFile = TRUE,
                                  numClust = NULL,
-                                 param.df = NULL) {
+                                 param.df = NULL,
+                                 plotFitsToSingleFile = TRUE,
+                                 plotFitOnly = FALSE) {
   
   if (metaInfoSecondRow & length(metaInfo) == 0) {
     metaInfo <- as.character(
@@ -77,7 +83,9 @@ getLowDimensionalRTF <- function(df,
       fileString = fileString,
       readInParamRdsFilePath = readInParamRdsFilePath,
       modelReduction = modelReduction,
-      nInitialGuesses = nInitialGuesses) 
+      nInitialGuesses = nInitialGuesses,
+      plotFitsToSingleFile = plotFitsToSingleFile,
+      plotFitOnly = plotFitOnly) 
   }
   
   plotsLst <- getLowDimensionalRTFPlots(

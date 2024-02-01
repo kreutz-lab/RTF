@@ -11,7 +11,6 @@ plotFit(
   y = NULL,
   t = NULL,
   d = NULL,
-  plotType = "all",
   title = "",
   alphaVal = 0.5
 )
@@ -27,7 +26,7 @@ M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus
 \item{withData}{Boolean indicating if data should be added to fit line}
 
 \item{modus}{Modus ('RetardedTransientDynamics' or 
-DoseDependentRetardedTransientDynamics')}
+'DoseDependentRetardedTransientDynamics')}
 
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
@@ -35,11 +34,6 @@ experimental data frame)}
 \item{t}{Time points}
 
 \item{d}{Dose (obligatory for 'DoseDependentRetardedTransientDynamics')}
-
-\item{plotType}{String indication if transient function should be plotted
-('all') (Default) or if in case of modus = 'RetardedTransientDynamics'
- components of transient function ("nonLinearTransformationOnly", 
-"transientOnly", "sustainedOnly") should be plotted.}
 
 \item{title}{Plot title}
 

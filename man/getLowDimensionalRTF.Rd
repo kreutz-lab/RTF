@@ -18,7 +18,9 @@ getLowDimensionalRTF(
   nInitialGuesses = 200,
   saveToFile = TRUE,
   numClust = NULL,
-  param.df = NULL
+  param.df = NULL,
+  plotFitsToSingleFile = TRUE,
+  plotFitOnly = FALSE
 )
 }
 \arguments{
@@ -62,6 +64,12 @@ NbClust::NbClust().}
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
 time series.}
+
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
+single file.}
+
+\item{plotFitOnly}{Plot fit only without additional information as provided 
+using function plotRTF().}
 }
 \value{
 List with data frame of RTF parameters for each time series 

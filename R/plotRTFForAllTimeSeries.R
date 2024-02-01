@@ -7,6 +7,10 @@
 #' @param fileString String that should be added to file name
 #' @param height Integer indicating page height
 #' @param width Integer indicating page width
+#' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
+#' single file.
+#' @param plotFitOnly Plot fit only without additional information as provided 
+#' using function plotRTF(). 
 #' @export plotRTFForAllTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
@@ -15,11 +19,51 @@
 #' plotRTFForAllTimeSeries(res.lst)
 
 plotRTFForAllTimeSeries <- function(res.lst, fileString = "", 
-                                 height = 12, width = 10) {
-  grDevices::pdf(paste0("modelPlots_", fileString,".pdf"), height = height, width = width)
+                                 height = 12, width = 10,
+                                 plotFitsToSingleFile = TRUE,
+                                 plotFitOnly = FALSE) {
+  
+  if (plotFitsToSingleFile)
+    grDevices::pdf(paste0("modelPlots_", fileString,".pdf"), height = height, 
+                   width = width)
   for (i in seq(length(res.lst))) {
     el <- res.lst[[i]]
-    print(plotRTF(el, plotTitle = names(res.lst)[i]))
+    title <- names(res.lst)[i]
+    
+    if (!plotFitsToSingleFile)
+      grDevices::pdf(paste0("modelPlot_", gsub("/", "_", title),".pdf"), 
+                     height = height, 
+                     width = width)
+    
+    if (plotFitOnly) {
+      optimObject <- el$finalModel
+      bestOptimResult <- optimObject$bestOptimResult
+      par <- bestOptimResult$par
+      value <- bestOptimResult$value
+      data <- optimObject$data
+      
+      
+      plotTitle <- paste0(title, "; OptimValue: ", round(value, 2),
+                      "; ", 
+                      paste(names(par), 
+                            round(par, 4), 
+                            sep = ": ", collapse = ", "))
+      plotTitle <- paste(strwrap(plotTitle, width = 120), collapse = "\n")
+      
+      print(plotFit(par = par,
+              y = data$y, 
+              t = data$t, 
+              modus = "RetardedTransientDynamics",
+              withData = TRUE,
+              title = plotTitle))
+    } else {
+      print(plotRTF(el, plotTitle = title))
+    }
+    
+    if (!plotFitsToSingleFile)
+      grDevices::dev.off()
   }
-  grDevices::dev.off()
+  
+  if (plotFitsToSingleFile)
+    grDevices::dev.off()
 }

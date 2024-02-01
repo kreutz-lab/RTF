@@ -36,11 +36,10 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   
   par <- bestOptimResult$par
   
+  numCol <- 1
   if (modus == "RetardedTransientDynamics") {
-    numCol <- 2
     height <- 13
   } else if (modus == "DoseDependentRetardedTransientDynamics") {
-    numCol <- 1
     height <- 20
   }
   
@@ -87,9 +86,11 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
                               sep = ": ", collapse = ", "))
         title <- paste(strwrap(title, width = 120), collapse = "\n")
         if (modus == "RetardedTransientDynamics") {
-          gg <- plotRTFComponents(pars = pars,
-                                  data = data,
-                                  title = title)
+          gg <- plotFit(par = pars,
+                  y = data$y, t = data$t,
+                  withData = TRUE, alphaVal = 0.5) +
+            ggplot2::ggtitle(title)
+          
         } else if (modus == "DoseDependentRetardedTransientDynamics") {
           gg <- plotFit(pars, withData = TRUE,
                         modus = optimObject$modus, 
@@ -131,11 +132,9 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   if (modus == "RetardedTransientDynamics") {
     RTFComponentsPlot <- NA
     
-    RTFComponentsPlot <- plotRTFComponents(
-      pars = par,
-      data = data,
-      title = title
-    )
+    RTFComponentsPlot <- plotFit(par = par,
+            y = data$y, t = data$t,
+            withData = TRUE, alphaVal = 0.5) # + ggplot2::ggtitle(title)
     
     bestFit.plot <- RTFComponentsPlot + waterfallPlot +
       parDistributionPlot + patchwork::plot_layout(ncol = numCol)

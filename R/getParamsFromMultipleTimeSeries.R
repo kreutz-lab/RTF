@@ -20,6 +20,10 @@
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
 #' RTF.
+#' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
+#' single file.
+#' @param plotFitOnly Plot fit only without additional information as provided 
+#' using function plotRTF(). 
 #' @export getParamsFromMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
@@ -31,7 +35,9 @@ getParamsFromMultipleTimeSeries <- function(df,
                                             fileString = "lowDimRTF",
                                             readInParamRdsFilePath = "",
                                             modelReduction = FALSE,
-                                            nInitialGuesses = 200) {
+                                            nInitialGuesses = 200,
+                                            plotFitsToSingleFile = TRUE,
+                                            plotFitOnly = FALSE) {
   
   if (nchar(readInParamRdsFilePath) > 0) {
     res.lst <- readRDS(file = readInParamRdsFilePath)
@@ -46,7 +52,10 @@ getParamsFromMultipleTimeSeries <- function(df,
       saveRDS(res.lst, file = paste0(fileString, ".RDS"))
     
     if (doRTFPlots) 
-      plotRTFForAllTimeSeries(res.lst, fileString = fileString)
+      plotRTFForAllTimeSeries(res.lst, 
+                              fileString = fileString,
+                              plotFitsToSingleFile = plotFitsToSingleFile,
+                              plotFitOnly = plotFitOnly)
   }
   param.df <- getParamDf(res.lst)
   param.df
