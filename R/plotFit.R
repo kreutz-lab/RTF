@@ -17,6 +17,7 @@
 #' @param d Dose (obligatory for 'DoseDependentRetardedTransientDynamics')
 #' @param title Plot title
 #' @param alphaVal Transparency of points
+#' @param pointSize Point size
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
@@ -32,7 +33,8 @@ plotFit <- function(par,
                     modus = "RetardedTransientDynamics", 
                     y = NULL, t = NULL, d = NULL, 
                     title = "",
-                    alphaVal = 0.5) {
+                    alphaVal = 0.5,
+                    pointSize = 0.5) {
   
   if (is.null(t))
     stop("Please provide vector of time points or maximum time point.")
@@ -120,7 +122,8 @@ plotFit <- function(par,
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y, 
                                                   color = factor(d)),
-                                     alpha = alphaVal
+                                     alpha = alphaVal,
+                                     size = pointSize
       )
     }
   } else {
@@ -128,15 +131,19 @@ plotFit <- function(par,
       ggplot2::geom_line(data = geom_line.df,
                          ggplot2::aes(x = t, y = y, 
                                       color = factor(Component))) +
-      ggplot2::scale_colour_manual(values=c(RTF = "black",
-                                            Transient ="blue",
+      ggplot2::scale_colour_manual(values = c(RTF = "black",
+                                            Transient = "blue",
                                             Sustained = "#339999")) +
+      ggplot2::scale_size_manual(values = c(RTF = 20,
+                                            Transient = 1,
+                                            Sustained = 1)) +
       ggplot2::theme(legend.position = "bottom", 
                      legend.title = ggplot2::element_blank())
     if (withData) {
       gg <- gg + ggplot2::geom_point(data = data.frame(t = t, y = y),
                                      ggplot2::aes(x = t, y = y),
-                                     alpha = alphaVal)
+                                     alpha = alphaVal,
+                                     size = pointSize)
     }
   }
   

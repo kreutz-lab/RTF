@@ -30,7 +30,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   optimResults <- optimObject$optimResults
   bestOptimResult <- optimObject$bestOptimResult
   
-  if (is.null(optimResults) | is.null(bestOptimResult)){
+  if (is.null(optimResults) | is.null(bestOptimResult)) {
     stop("optimResults and bestOptimResult needs to be available in the optimObject.")
   }
   
@@ -38,7 +38,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   
   numCol <- 1
   if (modus == "RetardedTransientDynamics") {
-    height <- 13
+    height <- 12
   } else if (modus == "DoseDependentRetardedTransientDynamics") {
     height <- 20
   }
@@ -62,7 +62,8 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   #############################################################################
   
   optimResTmpLstValuesAll <- unlist(
-    lapply(optimResults.optimRes, function(x) unlist(x[grep("value", names(x))])))
+    lapply(optimResults.optimRes, function(x) unlist(x[grep("value", 
+                                                            names(x))])))
   
   waterfallPlot <- plotWaterfallPlot(optimResTmpLstValuesAll)
   
@@ -71,12 +72,10 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   waterfallPlotData <- waterfallPlot$data
   
   if (plotAllFits) {
-    if(saveToFile) {
+    if (saveToFile) {
       gg.lst <- list()
-      for (i in seq(length(optimResTmpLstParsAll))){
+      for (i in seq(length(optimResTmpLstParsAll))) {
         pars <- optimResTmpLstParsAll[[i]]
-        
-        # print(pars)
         value <- optimResTmpLstValuesAll[[i]]
         
         title <- paste0("OptimValue: ", round(value, 2),
@@ -84,7 +83,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
                         paste(names(pars), 
                               round(pars, 4), 
                               sep = ": ", collapse = ", "))
-        title <- paste(strwrap(title, width = 120), collapse = "\n")
+        title <- paste(strwrap(title, width = 90), collapse = "\n")
         if (modus == "RetardedTransientDynamics") {
           gg <- plotFit(par = pars,
                   y = data$y, t = data$t,
@@ -101,10 +100,12 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
         
       }
       
-      grDevices::pdf(file = paste0(fileNamePrefix, "_", modus, "_allFits.pdf"), width = 12, height = 12)
+      grDevices::pdf(file = paste0(fileNamePrefix, "_", modus, "_allFits.pdf"), 
+                     width = 8, height = 10)
       for (i in seq(length(gg.lst))) {
         gg <- gg.lst[[i]]
-        waterfallPlot2 <-  gg + plotWaterfallPlot(waterfallPlotData, i) + patchwork::plot_layout(ncol = numCol)
+        waterfallPlot2 <-  gg + plotWaterfallPlot(waterfallPlotData, i) + 
+          patchwork::plot_layout(ncol = numCol)
         print(waterfallPlot2)
       }
       grDevices::dev.off()
@@ -118,7 +119,8 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   optimResTmpLstParsAll.df <- data.frame(
     do.call(rbind, optimResTmpLstParsAll))
   optimResTmpLstParsAll.df.long <- reshape2::melt(optimResTmpLstParsAll.df)
-  parDistributionPlot <- plotParameterDistribution(optimResTmpLstParsAll.df.long)
+  parDistributionPlot <- 
+    plotParameterDistribution(optimResTmpLstParsAll.df.long)
   
   #############################################################################
   
@@ -173,9 +175,10 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
                                                               subtitle = title)
   #}
     
-  if (saveToFile){
-    ggplot2::ggsave(filename = paste0(fileNamePrefix, "_", modus ,"_bestFit.pdf"),
-                    bestFit.plot, width = 12, height = height)
+  if (saveToFile) {
+    ggplot2::ggsave(filename = paste0(fileNamePrefix, "_", modus, 
+                                      "_bestFit.pdf"),
+                    bestFit.plot, width = 8, height = height)
     bestFit.plot
   } else {
     bestFit.plot

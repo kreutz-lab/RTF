@@ -12,7 +12,8 @@ plotFit(
   t = NULL,
   d = NULL,
   title = "",
-  alphaVal = 0.5
+  alphaVal = 0.5,
+  pointSize = 0.5
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ experimental data frame)}
 \item{title}{Plot title}
 
 \item{alphaVal}{Transparency of points}
+
+\item{pointSize}{Point size}
 }
 \value{
 ggplot object showing RTF together with experimental data points
