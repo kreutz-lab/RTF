@@ -96,7 +96,7 @@ getTransientFunctionResult <- function(par = c(),
     Signal_trans <- B * (1 - exp(- alpha * nonLinTransformation)) *
        exp(- gamma * nonLinTransformation)
     transientFunctionRes <- signum_TF * Signal_sus +
-      signum_TF * Signal_trans + b
+      signum_TF * Signal_trans + b # + (abs(alpha-gamma)/1000)
   } 
   if(sum(is.infinite(transientFunctionRes))>0)
     print(transientFunctionRes)

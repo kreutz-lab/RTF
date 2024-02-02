@@ -167,7 +167,8 @@ runRTF <- function(data,
       names(statLst) <- names(statObjLst) <- params
       
       grDevices::pdf(
-        file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf", 
+        file = 
+          "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf", 
         width = 12, height = 10)
       for (i in seq(length(statObjLst))){
         optimResTmpLstValuesAll <- unlist(

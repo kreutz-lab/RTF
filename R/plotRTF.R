@@ -40,7 +40,7 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
   if (modus == "RetardedTransientDynamics") {
     height <- 12
   } else if (modus == "DoseDependentRetardedTransientDynamics") {
-    height <- 20
+    height <- 17
   }
   
   #############################################################################
@@ -104,8 +104,8 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
                      width = 8, height = 10)
       for (i in seq(length(gg.lst))) {
         gg <- gg.lst[[i]]
-        waterfallPlot2 <-  gg + plotWaterfallPlot(waterfallPlotData, i) + 
-          patchwork::plot_layout(ncol = numCol)
+        waterfall.tmp <- plotWaterfallPlot(waterfallPlotData, i)
+        waterfallPlot2 <-  gg + waterfall.tmp + patchwork::plot_layout(ncol = numCol)
         print(waterfallPlot2)
       }
       grDevices::dev.off()
@@ -162,7 +162,8 @@ plotRTF <- function(optimObject, fileNamePrefix = "", plotTitle = "",
       ggplot2::ylab("Value") +
       # ggplot2::ggtitle(title) +
       ggplot2::theme_bw() +
-      ggplot2::theme(legend.title = ggplot2::element_blank())
+      ggplot2::theme(legend.position = "bottom",
+                     legend.title = ggplot2::element_blank())
     
     bestFit.plot <- doseParamPlot + bestFitWDataPlot + waterfallPlot +
       parDistributionPlot + patchwork::plot_layout(ncol = numCol)

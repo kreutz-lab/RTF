@@ -36,7 +36,7 @@ plotFit <- function(par,
                     title = "",
                     pointAlpha = 0.5,
                     lineAlpha = 0.5,
-                    pointSize = 0.5) {
+                    pointSize = 0.75) {
   
   if (is.null(t))
     stop("Please provide vector of time points or maximum time point.")
