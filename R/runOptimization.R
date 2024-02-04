@@ -71,7 +71,8 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   
   # Take logarithm of fixed parameters for which takeLog10 = TRUE
   fixed <- optimObject.tmp$fixed
-  intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), names(which(takeLog10)))
+  intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), 
+                                          names(which(takeLog10)))
   fixedAndTakeLog10 <- rep(NA, length(takeLog10))
   names(fixedAndTakeLog10) <- names(takeLog10)
   fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE

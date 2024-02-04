@@ -48,7 +48,7 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
                       paste(names(par), 
                             round(par, 4), 
                             sep = ": ", collapse = ", "))
-      plotTitle <- paste(strwrap(plotTitle, width = 120), collapse = "\n")
+      plotTitle <- paste(strwrap(plotTitle, width = 70), collapse = "\n")
       
       print(plotFit(par = par,
               y = data$y, 

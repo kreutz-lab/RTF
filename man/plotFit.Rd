@@ -12,8 +12,9 @@ plotFit(
   t = NULL,
   d = NULL,
   title = "",
-  alphaVal = 0.5,
-  pointSize = 0.5
+  pointAlpha = 0.5,
+  lineAlpha = 0.5,
+  pointSize = 0.75
 )
 }
 \arguments{
@@ -38,7 +39,9 @@ experimental data frame)}
 
 \item{title}{Plot title}
 
-\item{alphaVal}{Transparency of points}
+\item{pointAlpha}{Transparency of points}
+
+\item{lineAlpha}{For modus 'RetardedTransientDynamics': Transparency of lines}
 
 \item{pointSize}{Point size}
 }

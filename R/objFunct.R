@@ -81,14 +81,10 @@ objFunct <- function(par, data, optimObject) {
                                                scale = TRUE)
   
     if (("sdExp" %in% colnames(data))) {
-      sdVec <- data$sdExp
-      chi2 <- sum((res/sdVec)^2)
-    } else {
-      # chi2 <- sum((res/sigma)^2)
-      chi2 <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma)))
-    }
+      sigma <- data$sdExp
+    } 
 
-    retval <- chi2 
+    retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
     
     if (retval > 10^20) {
       print(par)

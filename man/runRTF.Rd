@@ -29,10 +29,11 @@ and else 'RetardedTransientDynamics'.}
 \item{optimFunction}{String indicating the optimization function which 
 should be used (Default: "chiSquare")}
 
-\item{modelReduction}{Boolean indicating of model reduction should be performed
-(Default: TRUE)}
+\item{modelReduction}{Boolean indicating of model reduction should be 
+performed (Default: TRUE)}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses (Default: 50)}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(Default: 50)}
 
 \item{control}{List of control arguments passed to the function stats::optim 
 (Default: list(trace = 1, maxit = 1000, factr = 1e7))}
