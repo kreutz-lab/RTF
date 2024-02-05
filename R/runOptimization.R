@@ -82,6 +82,12 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     print(vec)
     
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
+    # parscale <- rep.int(1,length(vec))
+    # names(parscale) <- names(vec)
+    # rangeY <- max(optimObject.tmp$data$y) - min(optimObject.tmp$data$y)
+    # parscale["A"] <- parscale["B"] <- parscale["b"] <- rangeY
+    # optimObject$control <- append(optimObject$control, 
+    #                               list(parscale = parscale))
     
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
