@@ -16,22 +16,22 @@ getParamsFromMultipleTimeSeries(
 )
 }
 \arguments{
-\item{df}{Data frame with the first column named 'time' defining the 
-different time points and all the following columns corresponding to the 
+\item{df}{Data frame with the first column named 'time' defining the
+different time points and all the following columns corresponding to the
 different time series.}
 
 \item{doRTFPlots}{Boolean indicating if RTF plots should be generated.}
 
-\item{fileString}{String the name of the created .rds file of the RTF 
-parameters should contain. If this string has length 0 or if 
+\item{fileString}{String the name of the created .rds file of the RTF
+parameters should contain. If this string has length 0 or if
 readInParamRdsFilePath is defined no .rds file will be created.}
 
-\item{readInParamRdsFilePath}{if the RTF parameters to time series have 
+\item{readInParamRdsFilePath}{if the RTF parameters to time series have
 already been determined previously, the path of the resulting .rds file can
-be specified  using readInParamRdsFilePath, so that the time-intensive 
+be specified  using readInParamRdsFilePath, so that the time-intensive
 calculation of the RTF parameter does not have to be repreated a second time.}
 
-\item{modelReduction}{Boolean indicating if model reduction should be 
+\item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
@@ -40,16 +40,16 @@ RTF.}
 \item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
 single file.}
 
-\item{plotFitOnly}{Plot fit only without additional information as provided 
+\item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
 }
 \value{
-Data frame containing the RTF parameters for each time 
-series, where the rows correspond to the different time series and 
+Data frame containing the RTF parameters for each time
+series, where the rows correspond to the different time series and
 the columns to the RTF parameters.
 }
 \description{
-Get RTF parameters for multiple time series specified in 
+Get RTF parameters for multiple time series specified in
 data frame.
 }
 \examples{

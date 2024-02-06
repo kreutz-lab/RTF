@@ -15,27 +15,27 @@ runRTF(
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and
-'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and 
+'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and
 'ImmediateResponseFunction' ('I'), and columns 't', 'y', and 'd' (dose) for
 modus = 'DoseDependentRetardedTransientDynamics' ('DD')}
 
-\item{modus}{String indicating if modus 'RetardedTransientDynamics' ('D'), 
+\item{modus}{String indicating if modus 'RetardedTransientDynamics' ('D'),
 'ImmediateResponseFunction' ('I') or
-'DoseDependentRetardedTransientDynamics' ('DD') should be used. 
-If no modus is provided default setting are  
-'DoseDependentRetardedTransientDynamics' if column with name 'd' is present 
+'DoseDependentRetardedTransientDynamics' ('DD') should be used.
+If no modus is provided default setting are
+'DoseDependentRetardedTransientDynamics' if column with name 'd' is present
 and else 'RetardedTransientDynamics'.}
 
-\item{optimFunction}{String indicating the optimization function which 
+\item{optimFunction}{String indicating the optimization function which
 should be used (Default: "chiSquare")}
 
-\item{modelReduction}{Boolean indicating of model reduction should be 
+\item{modelReduction}{Boolean indicating of model reduction should be
 performed (Default: TRUE)}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
+\item{nInitialGuesses}{Integer indicating number of initial guesses
 (Default: 50)}
 
-\item{control}{List of control arguments passed to the function stats::optim 
+\item{control}{List of control arguments passed to the function stats::optim
 (Default: list(trace = 1, maxit = 1000, factr = 1e7))}
 }
 \value{

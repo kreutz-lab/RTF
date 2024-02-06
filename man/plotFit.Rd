@@ -18,16 +18,16 @@ plotFit(
 )
 }
 \arguments{
-\item{par}{Vector containing 
-alpha, gamma, A, B, b, tau, and signum_TF (modus 
-'RetardedTransientDynamics') or 
-M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma, 
-M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 
+\item{par}{Vector containing
+alpha, gamma, A, B, b, tau, and signum_TF (modus
+'RetardedTransientDynamics') or
+M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma,
+M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus
 'DoseDependentRetardedTransientDynamics').}
 
 \item{withData}{Boolean indicating if data should be added to fit line}
 
-\item{modus}{Modus ('RetardedTransientDynamics' or 
+\item{modus}{Modus ('RetardedTransientDynamics' or
 'DoseDependentRetardedTransientDynamics')}
 
 \item{y}{Experimental outcome for time points (corresponds to y column in

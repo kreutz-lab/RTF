@@ -15,14 +15,14 @@ file, otherwise they will be plotted directly. Default is empty string.}
 \item{plotTitle}{Title of the plot (Default is no title).}
 
 \item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
-if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics" 
+if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics"
 modus. (Default: TRUE)}
 }
 \value{
 ggplot object
 }
 \description{
-Plot fitting results for optimObjects of modus 
+Plot fitting results for optimObjects of modus
 "RetardedTransientDynamics" or "DoseDependentRetardedTransientDynamics"
 }
 \examples{

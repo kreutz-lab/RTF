@@ -25,7 +25,7 @@ getLowDimensionalRTF(
 }
 \arguments{
 \item{df}{Data frame with the first column named 'time'
-defining the different time points and all the following columns 
+defining the different time points and all the following columns
 corresponding to the different time series.}
 
 \item{metaInfo}{String of the column name with meta information (.e.g.
@@ -38,17 +38,17 @@ info.}
 
 \item{fileString}{String the output files should contain.}
 
-\item{plotItemHeight}{Integer indicating height of each plot type in the 
+\item{plotItemHeight}{Integer indicating height of each plot type in the
 output plot.}
 
 \item{plotWidth}{Integer indicating width of output plot.}
 
-\item{readInParamRdsFilePath}{if the RTF parameters to time series have 
+\item{readInParamRdsFilePath}{if the RTF parameters to time series have
 already been determined previously, the path of the resulting .rds file can
-be specified  using readInParamRdsFilePath, so that the time-intensive 
+be specified  using readInParamRdsFilePath, so that the time-intensive
 calculation of the RTF parameter does not have to be repreated a second time.}
 
-\item{modelReduction}{Boolean indicating if model reduction should be 
+\item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
@@ -57,10 +57,10 @@ RTF.}
 \item{saveToFile}{Boolean indicating if results should be saved to file}
 
 \item{numClust}{(Optional) Number of clusters. If not specified, number of
-clusters will be detrmined automatically using the function 
+clusters will be detrmined automatically using the function
 NbClust::NbClust().}
 
-\item{param.df}{(Optional) Data frame with the RTF parameter values. 
+\item{param.df}{(Optional) Data frame with the RTF parameter values.
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
 time series.}
@@ -68,18 +68,18 @@ time series.}
 \item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
 single file.}
 
-\item{plotFitOnly}{Plot fit only without additional information as provided 
+\item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
 }
 \value{
-List with data frame of RTF parameters for each time series 
-('param.data'), data frame of UMAP results ('umap.data'), data frame of 
-dynamics per cluster ('dynamics.data'), and ggplot2 object of combined 
-result plots ('plots'). Function also saves those objects to files if 
+List with data frame of RTF parameters for each time series
+('param.data'), data frame of UMAP results ('umap.data'), data frame of
+dynamics per cluster ('dynamics.data'), and ggplot2 object of combined
+result plots ('plots'). Function also saves those objects to files if
 saveToFile=TRUE.
 }
 \description{
-Generates low-dimensional representation of the RTF parameters 
+Generates low-dimensional representation of the RTF parameters
 of multiple time series.
 }
 \examples{
@@ -87,7 +87,7 @@ data(strasenTimeSeries)
 df <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df[2:ncol(df)])
 metaInfo <- species <- sub("_[^_]+$", "", colNames)
-res <- getLowDimensionalRTF(df, 
+res <- getLowDimensionalRTF(df,
                             metaInfo = metaInfo,
                             fileString = "strasen_subset",
                             metaInfoName = "species", saveToFile = FALSE)
