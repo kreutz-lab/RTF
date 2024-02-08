@@ -27,7 +27,7 @@ optimObject.orig <- initializeOptimObject(data,
                         modus = 'RetardedTransientDynamics')
 optimObject.orig$fixed[["signum_TF"]] <- 1
 optimObject.orig$fixed[["gamma"]] <- 2
-nInitialGuesses <- 50
+nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =
                                     optimObject.orig$initialGuess.vec,

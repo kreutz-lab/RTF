@@ -22,7 +22,7 @@
 #'                                          modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-#' nInitialGuesses <- 50
+#' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
 #'                             initialGuess.vec =
 #'                                           optimObject.orig$initialGuess.vec,
@@ -60,11 +60,11 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
   takeLog10 <- optimObject.tmp$takeLog10 
   
-  applyLog10ForTakeLog10 <- function(x, takeLog10) {
-    x[names(x) %in% names(which(takeLog10))] <-
-      log10(x[names(x) %in% names(which(takeLog10))])
-    x
-  }
+  # applyLog10ForTakeLog10 <- function(x, takeLog10) {
+  #   x[names(x) %in% names(which(takeLog10))] <-
+  #     log10(x[names(x) %in% names(which(takeLog10))])
+  #   x
+  # }
   
   lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
   upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
@@ -81,6 +81,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   for (vec in initialGuess.vec.lst) {
     print(vec)
     
+    # parscale
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
     parscale <- rep.int(1,length(vec))
     names(parscale) <- names(vec)
@@ -89,8 +90,23 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     for (parameter in c("A", "B", "b", "sigma")) {
       if (parameter %in% names(vec)) parscale[parameter] <- rangeY
     }
+    
+    parscale <- parscale/1000
+    
+    # ndeps
+    ndeps <- vec
+    for (paramName in names(ndeps)) {
+      if (takeLog10[[paramName]]) {
+        ndeps[[paramName]] <- min(1e-3, lower[[paramName]])
+      } else {
+        ndeps[[paramName]] <- min(
+          1e-3, (upper[[paramName]] - lower[[paramName]]) * 1e-5)
+      }
+    }
+    
     optimObject.tmp$control <- append(optimObject.tmp$control,
-                                  list(parscale = parscale))
+                                  list(parscale = parscale,
+                                       ndeps = ndeps))
     
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
@@ -101,8 +117,11 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                 optimObject = optimObject.tmp,
                                 control = optimObject.tmp$control)
 
-    optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))] <-
-      10^optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))]
+    # optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))] <-
+    #   10^optimResTmp$par[names(optimResTmp$par) %in% names(which(takeLog10))]
+    
+    optimResTmp$par <- applyLog10ForTakeLog10(optimResTmp$par, 
+                                              takeLog10, reverse = TRUE)
     
     vecOrder <- names(optimObject$fixed)
     parsFinal <- c(fixed[!is.na(fixed)], optimResTmp$par)[vecOrder]

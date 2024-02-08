@@ -27,7 +27,7 @@
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF.
+#' RTF (Default: 200).
 #' @param saveToFile Boolean indicating if results should be saved to file
 #' @param numClust (Optional) Number of clusters. If not specified, number of
 #' clusters will be detrmined automatically using the function
@@ -40,6 +40,9 @@
 #' single file.
 #' @param plotFitOnly Plot fit only without additional information as provided
 #' using function plotRTF().
+#' @param plotAllPointsWaterfall Boolean indicating if all points should be 
+#' plotted in waterfall plot (Default: FALSE). 
+#' If FALSE, all values up to the median of those values are plotted.
 #' @export getLowDimensionalRTF
 #' @examples
 #' data(strasenTimeSeries)
@@ -65,7 +68,8 @@ getLowDimensionalRTF <- function(df,
                                  numClust = NULL,
                                  param.df = NULL,
                                  plotFitsToSingleFile = TRUE,
-                                 plotFitOnly = FALSE) {
+                                 plotFitOnly = FALSE,
+                                 plotAllPointsWaterfall = FALSE) {
   if (metaInfoSecondRow & length(metaInfo) == 0) {
     metaInfo <- as.character(unlist(df[1, 2:ncol(df)]))
     df <- df[-1,]
@@ -85,7 +89,8 @@ getLowDimensionalRTF <- function(df,
       modelReduction = modelReduction,
       nInitialGuesses = nInitialGuesses,
       plotFitsToSingleFile = plotFitsToSingleFile,
-      plotFitOnly = plotFitOnly
+      plotFitOnly = plotFitOnly,
+      plotAllPointsWaterfall = plotAllPointsWaterfall
     )
   }
   

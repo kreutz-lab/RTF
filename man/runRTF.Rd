@@ -9,8 +9,9 @@ runRTF(
   modus = NULL,
   optimFunction = "chiSquare",
   modelReduction = TRUE,
-  nInitialGuesses = 50,
-  control = list(trace = 1, maxit = 1000, factr = 1e+07)
+  nInitialGuesses = 100,
+  plotAllPointsWaterfall = FALSE,
+  control = list(trace = 1, maxit = 1000, factr = 10)
 )
 }
 \arguments{
@@ -33,10 +34,14 @@ should be used (Default: "chiSquare")}
 performed (Default: TRUE)}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses
-(Default: 50)}
+(Default: 100)}
+
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
+plotted in waterfall plot (Default: FALSE). 
+If FALSE, all values up to the median of those values are plotted.}
 
 \item{control}{List of control arguments passed to the function stats::optim
-(Default: list(trace = 1, maxit = 1000, factr = 1e7))}
+(Default: list(trace = 1, maxit = 1000, factr = 1e1))}
 }
 \value{
 List of the final RTF model (finalModel), the optimized parameters

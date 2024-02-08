@@ -14,7 +14,7 @@
 #'                         modus = 'RetardedTransientDynamics')
 #' optimObject.orig$fixed[["signum_TF"]] <- 1
 #' optimObject.orig$fixed[["gamma"]] <- 2
-#' nInitialGuesses <- 50
+#' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
 #'                             initialGuess.vec =
 #'                                     optimObject.orig$initialGuess.vec,
@@ -67,8 +67,18 @@ objFunct <- function(par, data, optimObject) {
     d <- NULL
   }
   
-  par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
-    10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
+  lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
+  upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
+  lowerReg <- lowerReg[names(par)]
+  upperReg <- upperReg[names(par)]
+  meanReg <- rowMeans(cbind(lowerReg, upperReg), na.rm = TRUE)
+  regularizationTerm <- sum(((par - meanReg)^2) /
+                              (((upperReg - lowerReg)^2) * 100))
+  
+  # par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
+  #   10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
+  
+  par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
   if (optimObject$optimFunction == "chiSquare") {
   
@@ -85,6 +95,8 @@ objFunct <- function(par, data, optimObject) {
     } 
 
     retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
+    
+    retval <- retval + regularizationTerm 
     
     if (retval > 10^20) {
       print(par)

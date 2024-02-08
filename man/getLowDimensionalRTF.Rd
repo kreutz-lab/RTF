@@ -20,7 +20,8 @@ getLowDimensionalRTF(
   numClust = NULL,
   param.df = NULL,
   plotFitsToSingleFile = TRUE,
-  plotFitOnly = FALSE
+  plotFitOnly = FALSE,
+  plotAllPointsWaterfall = FALSE
 )
 }
 \arguments{
@@ -52,7 +53,7 @@ calculation of the RTF parameter does not have to be repreated a second time.}
 performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
-RTF.}
+RTF (Default: 200).}
 
 \item{saveToFile}{Boolean indicating if results should be saved to file}
 
@@ -70,6 +71,10 @@ single file.}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
+
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
+plotted in waterfall plot (Default: FALSE). 
+If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
 List with data frame of RTF parameters for each time series

@@ -4,7 +4,13 @@
 \alias{plotRTF}
 \title{Generate plots}
 \usage{
-plotRTF(optimObject, fileNamePrefix = "", plotTitle = "", plotAllFits = TRUE)
+plotRTF(
+  optimObject,
+  fileNamePrefix = "",
+  plotTitle = "",
+  plotAllFits = TRUE,
+  plotAllPointsWaterfall = FALSE
+)
 }
 \arguments{
 \item{optimObject}{optimObject containing elements "finalModel" and "modus"}
@@ -16,7 +22,12 @@ file, otherwise they will be plotted directly. Default is empty string.}
 
 \item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
 if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics"
-modus. (Default: TRUE)}
+modus. (Default: TRUE)
+using function plotRTF().}
+
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
+plotted in waterfall plot (Default: FALSE). 
+If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
 ggplot object

@@ -4,7 +4,7 @@
 \alias{getMultiStartResults}
 \title{Get fits for defined number of initial guesses}
 \usage{
-getMultiStartResults(optimObject, objFunct, nInitialGuesses = 50)
+getMultiStartResults(optimObject, objFunct, nInitialGuesses = 100)
 }
 \arguments{
 \item{optimObject}{optimObject, which is a list containing input data frame 
@@ -19,7 +19,7 @@ optimObject$fixed[["signum_TF"]] has to be set to 1 or -1}
 \item{objFunct}{Name of the objective function}
 
 \item{nInitialGuesses}{Integer corresponding to number of initial guesses 
-(Default: 50)}
+(Default: 100)}
 }
 \value{
 optimObject supplemented by all optimization results ('optimResults') 
@@ -36,7 +36,7 @@ optimObject.orig <- initializeOptimObject(
                 data, modus = 'RetardedTransientDynamics')
 signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-nInitialGuesses <- 50
+nInitialGuesses <- 100
 optim.res <- getMultiStartResults(
                 optimObject.orig, objFunct, nInitialGuesses)
 }

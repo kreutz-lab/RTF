@@ -4,7 +4,13 @@
 \alias{getInitialGuessVec}
 \title{Get list of initial guesses}
 \usage{
-getInitialGuessVec(initialGuess.vec, lb.vec, ub.vec, nInitialGuesses)
+getInitialGuessVec(
+  initialGuess.vec,
+  lb.vec,
+  ub.vec,
+  takeLog10,
+  nInitialGuesses = 100
+)
 }
 \arguments{
 \item{initialGuess.vec}{Vector of the default initial guesses for each
@@ -14,7 +20,11 @@ model parameter}
 
 \item{ub.vec}{Vector of the upper bounds for each model parameter}
 
-\item{nInitialGuesses}{Integer corresponding to number of initial guesses}
+\item{takeLog10}{Vector of booleans indicating if log10 is/should be taken
+of the model parameters.}
+
+\item{nInitialGuesses}{Integer corresponding to number of initial guesses
+(Default: 100)}
 }
 \value{
 List of default initial guess for each model parameter
@@ -33,7 +43,9 @@ optimObject.orig <- initializeOptimObject(data,
 initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 lb.vec <- optimObject.orig[["lb.vec"]]
 ub.vec <- optimObject.orig[["ub.vec"]]
-nInitialGuesses <- 50
+takeLog10 <- optimObject.orig[["takeLog10"]]
+nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
-                          initialGuess.vec, lb.vec, ub.vec, nInitialGuesses)
+                          initialGuess.vec, lb.vec, ub.vec, takeLog10,
+                          nInitialGuesses)
 }

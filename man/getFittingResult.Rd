@@ -8,7 +8,7 @@ getFittingResult(
   optimObject,
   parStr = "signum_TF",
   parVals = c(-1, 1),
-  nInitialGuesses = 50
+  nInitialGuesses = 100
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ parVals are used for the fitting (Default: "signum_TF")}
 fitting (Default: c(-1, 1))}
 
 \item{nInitialGuesses}{Integer corresponding to number of initial guesses 
-(Default: 50)}
+(Default: 100)}
 }
 \value{
 List of two optimObjects for a positive and a negative signum_TF

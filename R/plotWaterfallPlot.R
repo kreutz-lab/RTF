@@ -10,6 +10,9 @@
 #'  fit)
 #' @param idxCurrentFit Index indicating the position of the fit in the
 #' waterfall plot that should be highlighted.
+#' @param plotAllPoints Boolean indicating if all points should be plotted 
+#' (Default: FALSE). If FALSE, all values up to the median of those values 
+#' are plotted.
 #' @export plotWaterfallPlot
 #' @examples
 #' data <- getExampleDf()
@@ -17,7 +20,7 @@
 #'                         data, modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-#' nInitialGuesses <- 50
+#' nInitialGuesses <- 100
 #' res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
 #'                     nInitialGuesses)
 #' 
@@ -33,7 +36,9 @@
 #'   lapply(optimResults.optimRes, function(x) unlist(x[grep("value",names(x))])))
 #' gg <- plotWaterfallPlot(optimResTmpLstValuesAll)
 
-plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL) {
+plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,
+                              plotAllPoints = FALSE) {
+  
   if (!is.null(idxCurrentFit)) {
     #colVals <- rep("black", nrow(waterfallValues))
     # colVals[idxCurrentFit] <- "red"
@@ -47,7 +52,12 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL) {
     df$col <- "#000000" # "black"
   }
 
-  maxValue <- max(df[df$value < 10^20,]$value)
+  if (plotAllPoints) {
+    maxValue <- max(waterfallValues)
+  } else {
+    maxValue <- median(waterfallValues)
+  }
+  
   gg <- ggplot2::ggplot(data = df,
                         ggplot2::aes(x = idx, y = value, color = col)) +
     ggplot2::geom_point() +

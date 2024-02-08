@@ -15,7 +15,7 @@
 #' @param parStr String of variable based on which comparison is conducted (Default: "signum_TF")
 #' @param parVal Value of variable defined in parString  (Default: 1)
 #' @param nInitialGuesses Integer corresponding to number of initial guesses 
-#' (Default: 50)
+#' (Default: 100)
 #' @export getBestFittingResult
 #' @examples
 #' data <- getExampleDf()
@@ -25,7 +25,7 @@
 #'         optimObject.orig, parStr = "signum_TF", parVal = 1)
 
 getBestFittingResult <- function(
-  optimObject, parStr = "signum_TF", parVal = 1, nInitialGuesses = 50) {
+  optimObject, parStr = "signum_TF", parVal = 1, nInitialGuesses = 100) {
   
   optimObject$fixed[[parStr]] <- parVal
   optimObject.woptimRes <- getMultiStartResults(

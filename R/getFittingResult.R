@@ -18,7 +18,7 @@
 #' @param parVals Vector of different values of parameter parStr used for
 #' fitting (Default: c(-1, 1))
 #' @param nInitialGuesses Integer corresponding to number of initial guesses 
-#' (Default: 50)
+#' (Default: 100)
 #' @export getFittingResult
 #' @examples
 #' data <- getExampleDf()
@@ -29,7 +29,7 @@
 #'             parStr = "signum_TF", parVals = c(-1, 1))
 
 getFittingResult <- function(optimObject, parStr = "signum_TF", 
-                             parVals = c(-1, 1), nInitialGuesses = 50) {
+                             parVals = c(-1, 1), nInitialGuesses = 100) {
   for (pname in names(optimObject$initialGuess.vec)) {
     # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
     # is fixed but is ot listed in lb.vec, ub.vec, and initialGuess.vec

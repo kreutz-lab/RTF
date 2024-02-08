@@ -8,7 +8,7 @@ getBestFittingResult(
   optimObject,
   parStr = "signum_TF",
   parVal = 1,
-  nInitialGuesses = 50
+  nInitialGuesses = 100
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ modus ('modus'), and a list of values of fitted parameters ('fitted').}
 \item{parVal}{Value of variable defined in parString  (Default: 1)}
 
 \item{nInitialGuesses}{Integer corresponding to number of initial guesses 
-(Default: 50)}
+(Default: 100)}
 }
 \value{
 optimObject, to which fitting result of the best fit ('fitted'),

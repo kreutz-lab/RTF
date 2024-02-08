@@ -4,7 +4,7 @@
 \alias{plotWaterfallPlot}
 \title{Generate waterfall plot of all fits}
 \usage{
-plotWaterfallPlot(waterfallValues, idxCurrentFit = NULL)
+plotWaterfallPlot(waterfallValues, idxCurrentFit = NULL, plotAllPoints = FALSE)
 }
 \arguments{
 \item{waterfallValues}{List of optimization measures or, if idxCurrentFit is
@@ -15,6 +15,10 @@ of ordered values), "col" (HEX values for color that should be given to each
 
 \item{idxCurrentFit}{Index indicating the position of the fit in the
 waterfall plot that should be highlighted.}
+
+\item{plotAllPoints}{Boolean indicating if all points should be plotted 
+(Default: FALSE). If FALSE, all values up to the median of those values 
+are plotted.}
 }
 \value{
 ggplot object of the waterfall plot
@@ -29,7 +33,7 @@ optimObject.orig <- initializeOptimObject(
                         data, modus = 'RetardedTransientDynamics')
 signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-nInitialGuesses <- 50
+nInitialGuesses <- 100
 res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
                     nInitialGuesses)
 

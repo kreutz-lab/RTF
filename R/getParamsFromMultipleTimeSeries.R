@@ -19,11 +19,14 @@
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF.
+#' RTF (Default: 200).
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitOnly Plot fit only without additional information as provided
 #' using function plotRTF().
+#' @param plotAllPointsWaterfall Boolean indicating if all points should be 
+#' plotted in waterfall plot (Default: FALSE). 
+#' If FALSE, all values up to the median of those values are plotted.
 #' @export getParamsFromMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
@@ -37,7 +40,8 @@ getParamsFromMultipleTimeSeries <- function(df,
                                             modelReduction = FALSE,
                                             nInitialGuesses = 200,
                                             plotFitsToSingleFile = TRUE,
-                                            plotFitOnly = FALSE) {
+                                            plotFitOnly = FALSE,
+                                            plotAllPointsWaterfall = FALSE) {
   if (nchar(readInParamRdsFilePath) > 0) {
     res.lst <- readRDS(file = readInParamRdsFilePath)
   } else {
@@ -57,7 +61,8 @@ getParamsFromMultipleTimeSeries <- function(df,
         res.lst,
         fileString = fileString,
         plotFitsToSingleFile = plotFitsToSingleFile,
-        plotFitOnly = plotFitOnly
+        plotFitOnly = plotFitOnly,
+        plotAllPointsWaterfall = plotAllPointsWaterfall
       )
   }
   param.df <- getParamDf(res.lst)

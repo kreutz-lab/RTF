@@ -19,9 +19,12 @@
 #' @param modelReduction Boolean indicating of model reduction should be
 #' performed (Default: TRUE)
 #' @param nInitialGuesses Integer indicating number of initial guesses
-#' (Default: 50)
+#' (Default: 100)
+#' @param plotAllPointsWaterfall Boolean indicating if all points should be 
+#' plotted in waterfall plot (Default: FALSE). 
+#' If FALSE, all values up to the median of those values are plotted.
 #' @param control List of control arguments passed to the function stats::optim
-#' (Default: list(trace = 1, maxit = 1000, factr = 1e7))
+#' (Default: list(trace = 1, maxit = 1000, factr = 1e1))
 #' @export runRTF
 #' @examples
 #' modus <- "RetardedTransientDynamics"
@@ -33,10 +36,11 @@ runRTF <- function(data,
                    modus = NULL,
                    optimFunction = "chiSquare",
                    modelReduction = TRUE,
-                   nInitialGuesses = 50,
+                   nInitialGuesses = 100,
+                   plotAllPointsWaterfall = FALSE,
                    control = list(trace = 1,
                                   maxit = 1000,
-                                  factr = 1e7)) {
+                                  factr = 1e1)) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {
       modus <- 'DoseDependentRetardedTransientDynamics'
@@ -186,7 +190,8 @@ runRTF <- function(data,
         optimResTmpLstValuesAll <- unlist(
           lapply(statObjLst[[i]][["optimResults"]], function(x)
             unlist(x[["optimRes"]][grep("value", names(x[["optimRes"]]))])))
-        print(plotWaterfallPlot(optimResTmpLstValuesAll) +
+        print(plotWaterfallPlot(optimResTmpLstValuesAll, 
+                                plotAllPoints = plotAllPointsWaterfall) +
                 ggplot2::ggtitle(names(statObjLst)[i]))
       }
       grDevices::dev.off()
@@ -198,16 +203,17 @@ runRTF <- function(data,
     }
   }
   
-  finalModel <- res
   finalParams <- res$fitted
   
   print("The parameters of the best fit are:")
   print(paste(
     names(finalParams),
-    round(finalParams, 4),
+    signif(finalParams, 4),
     sep = ": ",
     collapse = ", "
   ))
+  print("OptimValue:")
+  print(res[["bestOptimResult"]][["value"]])
   
   return(
     list(

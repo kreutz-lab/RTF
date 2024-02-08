@@ -10,6 +10,10 @@
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
 #' if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics"
 #' modus. (Default: TRUE)
+#' using function plotRTF().
+#' @param plotAllPointsWaterfall Boolean indicating if all points should be 
+#' plotted in waterfall plot (Default: FALSE). 
+#' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTF
 #' @examples
 #' data.doseResponse <- getExampleDf(
@@ -22,7 +26,8 @@ plotRTF <-
   function(optimObject,
            fileNamePrefix = "",
            plotTitle = "",
-           plotAllFits = TRUE) {
+           plotAllFits = TRUE,
+           plotAllPointsWaterfall = FALSE) {
     optimObject <- optimObject$finalModel
     
     saveToFile <- nchar(fileNamePrefix) > 0
@@ -67,7 +72,8 @@ plotRTF <-
       unlist(x[grep("value",
                     names(x))])))
     
-    waterfallPlot <- plotWaterfallPlot(optimResTmpLstValuesAll)
+    waterfallPlot <- plotWaterfallPlot(optimResTmpLstValuesAll, 
+                                       plotAllPoints = plotAllPointsWaterfall)
     
     ############################################################################
     
@@ -82,11 +88,11 @@ plotRTF <-
           
           title <- paste0(
             "OptimValue: ",
-            round(value, 2),
+            signif(value, 2),
             "; ",
             paste(
               names(pars),
-              round(pars, 4),
+              signif(pars, 4),
               sep = ": ",
               collapse = ", "
             )
@@ -124,15 +130,16 @@ plotRTF <-
         )
         for (i in seq(length(gg.lst))) {
           gg <- gg.lst[[i]]
-          waterfall.tmp <- plotWaterfallPlot(waterfallPlotData, i)
+          waterfall.tmp <- plotWaterfallPlot(
+            waterfallPlotData, i, plotAllPoints = plotAllPointsWaterfall)
           waterfallPlot2 <- patchwork::wrap_plots(
             gg, waterfall.tmp, ncol = numCol)
           print(waterfallPlot2)
         }
         grDevices::dev.off()
-      } else {
-        message("Please enter a file name to save all fits to file.")
-      }
+      } # else {
+        # message("Please enter a file name to save all fits to file.")
+      # }
     }
     
     ############################################################################
@@ -148,11 +155,11 @@ plotRTF <-
     
     title <- paste0(
       "OptimValue: ",
-      round(bestOptimResult$value, 2),
+      signif(bestOptimResult$value, 2),
       "; ",
       paste(
         names(par),
-        round(par, 4),
+        signif(par, 4),
         sep = ": ",
         collapse = ", "
       )

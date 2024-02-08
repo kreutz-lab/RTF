@@ -10,7 +10,10 @@
 #' model parameter
 #' @param lb.vec Vector of the lower bounds for each model parameter
 #' @param ub.vec Vector of the upper bounds for each model parameter
+#' @param takeLog10 Vector of booleans indicating if log10 is/should be taken
+#' of the model parameters.
 #' @param nInitialGuesses Integer corresponding to number of initial guesses
+#'  (Default: 100)
 #' @export getInitialGuessVec
 #' @examples
 #' data <- getExampleDf()
@@ -19,22 +22,32 @@
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 #' lb.vec <- optimObject.orig[["lb.vec"]]
 #' ub.vec <- optimObject.orig[["ub.vec"]]
-#' nInitialGuesses <- 50
+#' takeLog10 <- optimObject.orig[["takeLog10"]]
+#' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
-#'                           initialGuess.vec, lb.vec, ub.vec, nInitialGuesses)
+#'                           initialGuess.vec, lb.vec, ub.vec, takeLog10,
+#'                           nInitialGuesses)
 
 getInitialGuessVec <- function(initialGuess.vec,
                                lb.vec,
                                ub.vec,
-                               nInitialGuesses) {
+                               takeLog10,
+                               nInitialGuesses = 100) {
   # For 50 different random initial guesses between bounds
   initialGuess.vec.lst <- list()
   initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- initialGuess.vec
-
-  for (i in 1:nInitialGuesses){
+  
+  lb.vec <- applyLog10ForTakeLog10(lb.vec, takeLog10, reverse = FALSE) 
+  ub.vec <- applyLog10ForTakeLog10(ub.vec, takeLog10, reverse = FALSE)   
+  
+  for (i in 1:nInitialGuesses) {
     randomPortions <- stats::runif(length(initialGuess.vec))
-    randomInitialGuess.vec <- (randomPortions*lb.vec) + ((1-randomPortions)*ub.vec)
-    initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- randomInitialGuess.vec
+    randomInitialGuess.vec <- 
+      (randomPortions * lb.vec) + ((1 - randomPortions) * ub.vec)
+    randomInitialGuess.vec <- applyLog10ForTakeLog10(randomInitialGuess.vec, 
+                                                     takeLog10, reverse = TRUE)   
+    initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- 
+      randomInitialGuess.vec
   }
 
   initialGuess.vec.lst

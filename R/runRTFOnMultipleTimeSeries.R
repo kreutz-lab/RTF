@@ -9,7 +9,7 @@
 #' @param modelReduction Boolean indicating if model reduction should be 
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF
+#' RTF (Default: 200)
 #' @export runRTFOnMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)

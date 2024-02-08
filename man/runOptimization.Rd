@@ -35,7 +35,7 @@ optimObject.orig <- initializeOptimObject(data,
                                          modus = 'RetardedTransientDynamics')
 signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-nInitialGuesses <- 50
+nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =
                                           optimObject.orig$initialGuess.vec,

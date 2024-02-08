@@ -15,7 +15,7 @@ corresponding to the different time series.}
 performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
-RTF}
+RTF (Default: 200)}
 }
 \value{
 List with the RTF result for each time series

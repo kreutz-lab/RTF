@@ -10,7 +10,10 @@
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitOnly Plot fit only without additional information as provided 
-#' using function plotRTF(). 
+#' using function plotRTF().
+#' @param plotAllPointsWaterfall Boolean indicating if all points should be 
+#' plotted in waterfall plot (Default: FALSE). 
+#' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTFForAllTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
@@ -21,7 +24,8 @@
 plotRTFForAllTimeSeries <- function(res.lst, fileString = "", 
                                  height = 12, width = 10,
                                  plotFitsToSingleFile = TRUE,
-                                 plotFitOnly = FALSE) {
+                                 plotFitOnly = FALSE,
+                                 plotAllPointsWaterfall = FALSE) {
   
   if (plotFitsToSingleFile)
     grDevices::pdf(paste0("modelPlots_", fileString,".pdf"), height = height, 
@@ -43,10 +47,10 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
       data <- optimObject$data
       
       
-      plotTitle <- paste0(title, "; OptimValue: ", round(value, 2),
+      plotTitle <- paste0(title, "; OptimValue: ", signif(value, 2),
                       "; ", 
                       paste(names(par), 
-                            round(par, 4), 
+                            signif(par, 4), 
                             sep = ": ", collapse = ", "))
       plotTitle <- paste(strwrap(plotTitle, width = 70), collapse = "\n")
       
@@ -57,7 +61,8 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
               withData = TRUE,
               title = plotTitle))
     } else {
-      print(plotRTF(el, plotTitle = title))
+      print(plotRTF(el, plotTitle = title,
+                    plotAllPointsWaterfall = plotAllPointsWaterfall))
     }
     
     if (!plotFitsToSingleFile)

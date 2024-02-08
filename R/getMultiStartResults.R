@@ -15,7 +15,7 @@
 #' optimObject$fixed[["signum_TF"]] has to be set to 1 or -1
 #' @param objFunct Name of the objective function
 #' @param nInitialGuesses Integer corresponding to number of initial guesses 
-#' (Default: 50)
+#' (Default: 100)
 #' @export getMultiStartResults
 #' @examples
 #' data <- getExampleDf()
@@ -23,16 +23,17 @@
 #'                 data, modus = 'RetardedTransientDynamics')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
-#' nInitialGuesses <- 50
+#' nInitialGuesses <- 100
 #' optim.res <- getMultiStartResults(
 #'                 optimObject.orig, objFunct, nInitialGuesses)
 
 getMultiStartResults <- function(
-    optimObject, objFunct, nInitialGuesses = 50) {
+    optimObject, objFunct, nInitialGuesses = 100) {
   initialGuess.vec.lst <- getInitialGuessVec(
     initialGuess.vec = optimObject$initialGuess.vec,
     lb.vec = optimObject$lb.vec,
     ub.vec = optimObject$ub.vec,
+    takeLog10 = optimObject$takeLog10,
     nInitialGuesses = nInitialGuesses)
   
   # paramsToBeFitted <- names(initialGuess.vec.lst[[1]])

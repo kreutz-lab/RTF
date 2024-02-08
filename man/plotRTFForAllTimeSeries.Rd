@@ -10,7 +10,8 @@ plotRTFForAllTimeSeries(
   height = 12,
   width = 10,
   plotFitsToSingleFile = TRUE,
-  plotFitOnly = FALSE
+  plotFitOnly = FALSE,
+  plotAllPointsWaterfall = FALSE
 )
 }
 \arguments{
@@ -27,6 +28,10 @@ single file.}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided 
 using function plotRTF().}
+
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
+plotted in waterfall plot (Default: FALSE). 
+If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
 pdf file, where each page corresponds to one time series.
