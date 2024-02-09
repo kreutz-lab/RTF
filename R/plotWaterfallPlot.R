@@ -52,10 +52,12 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,
     df$col <- "#000000" # "black"
   }
 
+  values <- df$value
   if (plotAllPoints) {
-    maxValue <- max(df$value)
+    maxValue <- max(values)
   } else {
-    maxValue <- median(df$value)
+    maxValue <- median(values)
+    if (maxValue == 10^20) maxValue <- max(values[values < 10^20])
   }
   
   gg <- ggplot2::ggplot(data = df,
