@@ -53,9 +53,9 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,
   }
 
   if (plotAllPoints) {
-    maxValue <- max(waterfallValues)
+    maxValue <- max(df$value)
   } else {
-    maxValue <- median(waterfallValues)
+    maxValue <- median(df$value)
   }
   
   gg <- ggplot2::ggplot(data = df,

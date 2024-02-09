@@ -85,28 +85,35 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
     parscale <- rep.int(1,length(vec))
     names(parscale) <- names(vec)
-    rangeY <- max(optimObject.tmp$data$y) - min(optimObject.tmp$data$y)
+    rangeY <- max(optimObject.tmp$data$y, na.rm = TRUE) - 
+      min(optimObject.tmp$data$y, na.rm = TRUE)
     
-    for (parameter in c("A", "B", "b", "sigma")) {
+    for (parameter in c("A", "B", "b", "sigma", "M_A", "M_B")) {
       if (parameter %in% names(vec)) parscale[parameter] <- rangeY
     }
     
     parscale <- parscale/1000
     
-    # ndeps
-    ndeps <- vec
-    for (paramName in names(ndeps)) {
-      if (takeLog10[[paramName]]) {
-        ndeps[[paramName]] <- min(1e-3, lower[[paramName]])
-      } else {
-        ndeps[[paramName]] <- min(
-          1e-3, (upper[[paramName]] - lower[[paramName]]) * 1e-5)
+    if (optimObject.tmp$modus != "DoseDependentRetardedTransientDynamics") {
+      # ndeps
+      ndeps <- vec
+      for (paramName in names(ndeps)) {
+        if (takeLog10[[paramName]]) {
+          ndeps[[paramName]] <- min(1e-3, lower[[paramName]])
+        } else {
+          ndeps[[paramName]] <- min(
+            1e-3, (upper[[paramName]] - lower[[paramName]]) * 1e-5)
+        }
       }
+      
+      optimObject.tmp$control <- append(optimObject.tmp$control,
+                                        list(parscale = parscale,
+                                             ndeps = ndeps))
+    } else {
+      optimObject.tmp$control <- append(optimObject.tmp$control,
+                                        list(parscale = parscale))
     }
-    
-    optimObject.tmp$control <- append(optimObject.tmp$control,
-                                  list(parscale = parscale,
-                                       ndeps = ndeps))
+
     
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,

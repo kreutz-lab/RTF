@@ -77,7 +77,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "chiSquare",
       K_tau = K.lb,
       b = min(y),
       sigma = min(max(1e-10, stats::sd(y, na.rm = TRUE)), 
-                  max(1e-10, diff(range(y)) / (10^4)))
+                  max(1e-10, diff(range(y)) / (10^3)))
     )
     
     ub.vec <- c(
