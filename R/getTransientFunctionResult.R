@@ -32,7 +32,7 @@ getTransientFunctionResult <- function(par = c(),
                                        d = NULL,
                                        fixed = NA,
                                        modus = "RetardedTransientDynamics",
-                                       scale = TRUE, calcGradient = T) {
+                                       scale = TRUE, calcGradient = F) {
 
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
 
@@ -52,29 +52,61 @@ getTransientFunctionResult <- function(par = c(),
   if (modus == "DoseDependentRetardedTransientDynamics") {
     df <- getHillResults(d = d, 
                          params = c(M_alpha = M_alpha, 
-                                   h_alpha = h_alpha, 
-                                   K_alpha = K_alpha, 
-                                   M_gamma = M_gamma, 
-                                   h_gamma = h_gamma, 
-                                   K_gamma = K_gamma,
-                                   M_A = M_A, 
-                                   h_A = h_A, 
-                                   K_A = K_A, 
-                                   M_B = M_B, 
-                                   h_B = h_B, 
-                                   K_B = K_B,
-                                   M_tau = M_tau, 
-                                   h_tau = h_tau, 
-                                   K_tau = K_tau))
+                                    h_alpha = h_alpha, 
+                                    K_alpha = K_alpha, 
+                                    M_gamma = M_gamma, 
+                                    h_gamma = h_gamma, 
+                                    K_gamma = K_gamma,
+                                    M_A = M_A, 
+                                    h_A = h_A, 
+                                    K_A = K_A, 
+                                    M_B = M_B, 
+                                    h_B = h_B, 
+                                    K_B = K_B,
+                                    M_tau = M_tau, 
+                                    h_tau = h_tau, 
+                                    K_tau = K_tau))
     A <- df$A
     B <- df$B
     alpha <- df$alpha
     gamma <- df$gamma
     tau <- df$tau
+
+    if(calcGradient)
+      df_dpar <- getHillResults(d = d, 
+                           params = c(M_alpha = M_alpha, 
+                                      h_alpha = h_alpha, 
+                                      K_alpha = K_alpha, 
+                                      M_gamma = M_gamma, 
+                                      h_gamma = h_gamma, 
+                                      K_gamma = K_gamma,
+                                      M_A = M_A, 
+                                      h_A = h_A, 
+                                      K_A = K_A, 
+                                      M_B = M_B, 
+                                      h_B = h_B, 
+                                      K_B = K_B,
+                                      M_tau = M_tau, 
+                                      h_tau = h_tau, 
+                                      K_tau = K_tau), gradientNames = names(par))
+    dA_dpar <- df_dpar$A
+    dB_dpar <- df_dpar$B
+    dalpha_dpar <- df_dpar$alpha
+    dgamma_dpar <- df_dpar$gamma
+    dtau_dpar <- df_dpar$tau
   }
-  
+
    
   if (scale) {
+    if(calcGradient){
+      dtau_dtau <- scaleTimeParameter(timeParam = c(tau=tau), maxVal = maxVal, gradientNames = names(par))$timeParam
+      dalpha_dalpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = maxVal, gradientNames = names(par))$timeParam
+      dgamma_dgamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = maxVal, gradientNames = names(par))$timeParam
+      
+      dtau_dpar <- dtau_dtau * dtau_dpar[,"tau"]
+      dalpha_dpar <- dalpha_dalpha * dalpha_dpar[,"alpha"]
+      dgamma_dpar <- dgamma_dgamma * dgamma_dpar[,"gamma"]
+    }
     # scaling everything with time as phys. unit
     tau <- scaleTimeParameter(timeParam = tau, maxVal = maxVal)$timeParam
     alpha <- scaleTimeParameter(timeParam = alpha, maxVal = 1/maxVal)$timeParam

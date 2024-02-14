@@ -12,28 +12,37 @@
 #' @examples
 #' t <- c(2, 5, 4, 0.9, 1.2)
 #' t_prime <- scaleTimeParameter(timeParam=t, maxVal = max(t))
+#' scaleTimeParameter(timeParam=c(tau=1), maxVal = max(t),gradientNames = c("tau","alpha"))
 
 scaleTimeParameter <- function(timeParam, maxVal = NULL, reverse = FALSE,
-                               calcGradient = FALSE) {
+                               gradientNames = c()) {
   if (is.null(maxVal)) {
     message("Please enter maxVal as arguments")
   }
   if (!reverse) {
-    if (calcGradient) {
-      dtimeParam_dtimeParam = 10/maxVal
+    if (length(gradientNames)>0) {
+      dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
+      colnames(dtimeParam_dgradNames) <- gradientNames
+      rownames(dtimeParam_dgradNames) <- names(timeParam)
+      
+      diag(dtimeParam_dgradNames) = 10/maxVal
     } else {
       timeParam <- timeParam * 10 / maxVal
     }
   } else {
-    if (calcGradient) {
-      dtimeParam_dtimeParam = maxVal / 10
+    if (length(gradientNames)>0) {
+      dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
+      colnames(dtimeParam_dgradNames) <- gradientNames
+      rownames(dtimeParam_dgradNames) <- names(timeParam)
+      
+      diag(dtimeParam_dgradNames) = maxVal / 10
     } else {
       timeParam <- timeParam * maxVal / 10
     }
   }
   
-  if (calcGradient) {
-    list(dtimeParam=dtimeParam, maxVal=maxVal)
+  if (length(gradientNames)>0) {
+    list(dtimeParam=dtimeParam_dgradNames, maxVal=maxVal)
   } else {
     list(timeParam = timeParam,
          maxVal = maxVal)
