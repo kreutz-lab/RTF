@@ -16,15 +16,41 @@
 #' lb.vec <- optimObject.orig[["lb.vec"]]
 #' takeLog10 <- optimObject.orig[["takeLog10"]]
 #' applyLog10ForTakeLog10(lb.vec, takeLog10) 
+#' 
+#' 
+#' x <- 1:3
+#' names(x) <- c("A","B","C")
+#' takeLog10 <- c(T,T,F)
+#' names(takeLog10) <- names(x)
+#' applyLog10ForTakeLog10(x,takeLog10 = takeLog10)
+#' applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient=T)
 
-applyLog10ForTakeLog10 <- function(x, takeLog10, reverse = FALSE) {
+applyLog10ForTakeLog10 <- function(x, takeLog10, reverse = FALSE, calcGradient=F) {
+  
+  y <- x
+  dy_dx <- matrix(0,nrow=length(y),ncol=length(x))
+  diag(dy_dx) <- 1
+  diagAll <- diag(dy_dx)
+  
+  bol <- names(x) %in% names(which(takeLog10))
   
   if (reverse) {
-    x[names(x) %in% names(which(takeLog10))] <-
-      10^x[names(x) %in% names(which(takeLog10))]
+    y[bol] <-
+      10^x[bol]
+    if(calcGradient){
+      diagAll[bol] <- 10^x[bol]*log(10)
+      diag(dy_dx) <- diagAll
+    }
+    
   } else {
-    x[names(x) %in% names(which(takeLog10))] <-
-      log10(x[names(x) %in% names(which(takeLog10))])
+    y[bol] <- log10(x[bol])
+    if(calcGradient){
+      diagAll[bol] <- 1/(x[bol]*log(10))
+      diag(dy_dx) <- diagAll
+    }
   }
-  x
+  if(!calcGradient)
+    return(y)
+  else
+    return(dy_dx)
 }

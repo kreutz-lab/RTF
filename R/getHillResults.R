@@ -21,7 +21,7 @@
 #'                                 M_tau = 2, h_tau = 3, K_tau = 2))
 
 getHillResults <- function(d = NULL, 
-                           params = c()) {
+                           params = c(),calcGradient = F) {
   
   for (v in 1:length(params)) assign(names(params)[v], params[[v]])
   

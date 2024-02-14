@@ -20,6 +20,7 @@
 #'                                     optimObject.orig$initialGuess.vec,
 #'                             lb.vec = optimObject.orig$lb.vec,
 #'                             ub.vec = optimObject.orig$ub.vec,
+#'                             takeLog10 = optimObject.orig$takeLog10,
 #'                             nInitialGuesses = nInitialGuesses
 #'  )
 #' optimObject.tmp <- optimObject.orig
@@ -50,7 +51,7 @@
 #'                             optimObject = optimObject.tmp,
 #'                             control = optimObject.tmp$control)
 
-objFunct <- function(par, data, optimObject) {
+objFunct <- function(par, data, optimObject, calcGradient=F) {
   retval <- NULL
   
   if (!is.na(optimObject$fixed[["sigma"]])) {
@@ -67,17 +68,19 @@ objFunct <- function(par, data, optimObject) {
     d <- NULL
   }
   
-  lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
-  upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
-  lowerReg <- lowerReg[names(par)]
-  upperReg <- upperReg[names(par)]
-  meanReg <- rowMeans(cbind(lowerReg, upperReg), na.rm = TRUE)
-  regularizationTerm <- sum(((par - meanReg)^2) /
-                              (((upperReg - lowerReg)^2) * 100))
+  # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
+  # upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
+  # lowerReg <- lowerReg[names(par)]
+  # upperReg <- upperReg[names(par)]
+  # meanReg <- rowMeans(cbind(lowerReg, upperReg), na.rm = TRUE)
+  # regularizationTerm <- sum(((par - meanReg)^2) /
+  #                             (((upperReg - lowerReg)^2) * 100))
+  
   
   # par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
   #   10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
   
+  dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE, calcGradient = T)
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
   if (optimObject$optimFunction == "chiSquare") {
@@ -96,7 +99,7 @@ objFunct <- function(par, data, optimObject) {
 
     retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
     
-    retval <- retval + regularizationTerm 
+    # retval <- retval + regularizationTerm 
     
     if (retval > 10^20) {
       print(par)
