@@ -65,7 +65,7 @@ getTransientFunctionResult <- function(par = c(),
                                    K_B = K_B,
                                    M_tau = M_tau, 
                                    h_tau = h_tau, 
-                                   K_tau = K_tau), )
+                                   K_tau = K_tau))
     A <- df$A
     B <- df$B
     alpha <- df$alpha

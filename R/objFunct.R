@@ -76,14 +76,11 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
   # regularizationTerm <- sum(((par - meanReg)^2) /
   #                             (((upperReg - lowerReg)^2) * 100))
   
-  
-  # par[names(par) %in% names(which(optimObject[["takeLog10"]]))] <-
-  #   10^par[names(par) %in% names(which(optimObject[["takeLog10"]]))]
-  
-  dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE, calcGradient = T)
+  dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
+                                      reverse = TRUE, calcGradient = T)
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
-  if (optimObject$optimFunction == "chiSquare") {
+  if (optimObject$optimFunction == "logLikelihood") {
   
     res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
                                                t = data$t,
@@ -97,7 +94,7 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
       sigma <- data$sdExp
     } 
 
-    retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
+    retval <- sum(-2 * log10(stats::dnorm(res, mean = 0, sd = sigma))) 
     
     # retval <- retval + regularizationTerm 
     

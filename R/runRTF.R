@@ -15,7 +15,7 @@
 #' 'DoseDependentRetardedTransientDynamics' if column with name 'd' is present
 #' and else 'RetardedTransientDynamics'.
 #' @param optimFunction String indicating the optimization function which
-#' should be used (Default: "chiSquare")
+#' should be used (Default: "logLikelihood")
 #' @param modelReduction Boolean indicating of model reduction should be
 #' performed (Default: TRUE)
 #' @param nInitialGuesses Integer indicating number of initial guesses
@@ -34,7 +34,7 @@
 
 runRTF <- function(data,
                    modus = NULL,
-                   optimFunction = "chiSquare",
+                   optimFunction = "logLikelihood",
                    modelReduction = TRUE,
                    nInitialGuesses = 100,
                    plotAllPointsWaterfall = FALSE,

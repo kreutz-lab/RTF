@@ -11,6 +11,7 @@
 #' 'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 
 #' 'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
 #' (but can also contain additional ones)
+#' @param calcGradient Boolean indicating if gradient should be calculated
 #' @export getHillResults
 #' @examples
 #' df <- getHillResults(d = c(2, 6),
@@ -21,7 +22,7 @@
 #'                                 M_tau = 2, h_tau = 3, K_tau = 2))
 
 getHillResults <- function(d = NULL, 
-                           params = c(),calcGradient = F) {
+                           params = c(), calcGradient = FALSE) {
   
   for (v in 1:length(params)) assign(names(params)[v], params[[v]])
   
@@ -57,12 +58,16 @@ getHillResults <- function(d = NULL,
     if (!exists(el)) warning(paste0(el, " missing in function getHillResults"))
   }
   
-  A <- hillEquation(d = d, M = M_A, h = h_A, K = K_A)
-  B <- hillEquation(d = d, M = M_B, h = h_B, K = K_B)
-  alpha <- hillEquation(d = d, M = M_alpha, h = h_alpha, K = K_alpha)
-  gamma <- hillEquation(d = d, M = M_gamma, h = h_gamma, K = K_gamma)
-  tau <- hillEquationReciprocal(d = d, M = M_tau, 
-                                    h = h_tau, K = K_tau)
+  A <- hillEquation(d = d, M = M_A, h = h_A, K = K_A, 
+                    reciprocal = FALSE)
+  B <- hillEquation(d = d, M = M_B, h = h_B, K = K_B, 
+                    reciprocal = FALSE)
+  alpha <- hillEquation(d = d, M = M_alpha, h = h_alpha, K = K_alpha, 
+                        reciprocal = FALSE)
+  gamma <- hillEquation(d = d, M = M_gamma, h = h_gamma, K = K_gamma, 
+                        reciprocal = FALSE)
+  tau <- hillEquation(d = d, M = M_tau, 
+                                    h = h_tau, K = K_tau, reciprocal = TRUE)
   
   df <- data.frame(d = d,
                    A = A,
