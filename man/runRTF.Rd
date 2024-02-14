@@ -7,7 +7,7 @@
 runRTF(
   data,
   modus = NULL,
-  optimFunction = "chiSquare",
+  optimFunction = "logLikelihood",
   modelReduction = TRUE,
   nInitialGuesses = 100,
   plotAllPointsWaterfall = FALSE,
@@ -28,7 +28,7 @@ If no modus is provided default setting are
 and else 'RetardedTransientDynamics'.}
 
 \item{optimFunction}{String indicating the optimization function which
-should be used (Default: "chiSquare")}
+should be used (Default: "logLikelihood")}
 
 \item{modelReduction}{Boolean indicating of model reduction should be
 performed (Default: TRUE)}

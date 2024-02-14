@@ -4,7 +4,15 @@
 \alias{hillEquation}
 \title{Calculate Hill equation}
 \usage{
-hillEquation(d, M, h, K)
+hillEquation(
+  d,
+  M,
+  h,
+  K,
+  reciprocal = FALSE,
+  calcGradient = FALSE,
+  minval = NULL
+)
 }
 \arguments{
 \item{d}{Dose}
@@ -14,6 +22,14 @@ hillEquation(d, M, h, K)
 \item{h}{Hill coefficient}
 
 \item{K}{Half-maximum quantity}
+
+\item{reciprocal}{Boolean indicating if Hill equation is calculated for
+reciprocal parameter}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated}
+
+\item{minval}{(optional) Numeric, defines the lowest value the result can 
+acquire. Only relevant if reciprocal = TRUE.}
 }
 \value{
 Hill equation result value

@@ -4,14 +4,22 @@
 \alias{scaleTimeParameter}
 \title{Get vectored with data points scaled to lie between 0 and 10}
 \usage{
-scaleTimeParameter(timeParam, maxVal = NULL, reverse = FALSE)
+scaleTimeParameter(
+  timeParam,
+  maxVal = NULL,
+  reverse = FALSE,
+  calcGradient = FALSE
+)
 }
 \arguments{
 \item{timeParam}{Time-dependent variable}
 
-\item{maxVal}{Maximum of range the time-dependent variable should be scaled to}
+\item{maxVal}{Maximum of range the time-dependent variable should be scaled 
+to}
 
 \item{reverse}{Boolean if scaling should be reversed}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated}
 }
 \value{
 Scaled vector if reverse = FALSE and unscaled timeParam is entered,

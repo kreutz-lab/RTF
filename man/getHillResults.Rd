@@ -5,7 +5,7 @@
 \title{Generate data frame for A, B, alpha, gamma, and tau for
  one or multiple defined doses}
 \usage{
-getHillResults(d = NULL, params = c())
+getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 }
 \arguments{
 \item{d}{Dose given as single value or a vector}
@@ -14,6 +14,8 @@ getHillResults(d = NULL, params = c())
 'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 
 'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
 (but can also contain additional ones)}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated}
 }
 \value{
 Data frame with the caclulated A, B, alpha, gamma, and 

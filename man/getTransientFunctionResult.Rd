@@ -10,7 +10,8 @@ getTransientFunctionResult(
   d = NULL,
   fixed = NA,
   modus = "RetardedTransientDynamics",
-  scale = TRUE
+  scale = TRUE,
+  calcGradient = T
 )
 }
 \arguments{

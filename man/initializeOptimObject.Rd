@@ -7,7 +7,7 @@
 initializeOptimObject(
   data,
   modus,
-  optimFunction = "chiSquare",
+  optimFunction = "logLikelihood",
   control = list(trace = 1, maxit = 1000, factr = 1e+07),
   takeLog10 = TRUE
 )
@@ -20,7 +20,7 @@ initializeOptimObject(
 'ImmediateResponseFunction' should be used}
 
 \item{optimFunction}{String indicating the optimization function which 
-should be used (Default: "chiSquare")}
+should be used (Default: "logLikelihood")}
 
 \item{control}{List of control arguments passed to the function stats::optim 
 (Default: list(trace = 1, maxit = 1000, factr = 1e7))}

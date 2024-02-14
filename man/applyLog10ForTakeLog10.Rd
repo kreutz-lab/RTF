@@ -4,7 +4,7 @@
 \alias{applyLog10ForTakeLog10}
 \title{Take Log10(x) or 10^(x) for a vector x}
 \usage{
-applyLog10ForTakeLog10(x, takeLog10, reverse = FALSE)
+applyLog10ForTakeLog10(x, takeLog10, reverse = FALSE, calcGradient = F)
 }
 \arguments{
 \item{x}{Named vector with parameter values}
@@ -29,4 +29,12 @@ initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 lb.vec <- optimObject.orig[["lb.vec"]]
 takeLog10 <- optimObject.orig[["takeLog10"]]
 applyLog10ForTakeLog10(lb.vec, takeLog10) 
+
+
+x <- 1:3
+names(x) <- c("A","B","C")
+takeLog10 <- c(T,T,F)
+names(takeLog10) <- names(x)
+applyLog10ForTakeLog10(x,takeLog10 = takeLog10)
+applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient=T)
 }

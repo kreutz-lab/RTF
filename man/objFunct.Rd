@@ -4,7 +4,7 @@
 \alias{objFunct}
 \title{Chi square optimization function}
 \usage{
-objFunct(par, data, optimObject)
+objFunct(par, data, optimObject, calcGradient = F)
 }
 \arguments{
 \item{par}{Initial values for the parameters to be optimized over.}
@@ -33,6 +33,7 @@ initialGuess.vec.lst <- getInitialGuessVec(
                                     optimObject.orig$initialGuess.vec,
                             lb.vec = optimObject.orig$lb.vec,
                             ub.vec = optimObject.orig$ub.vec,
+                            takeLog10 = optimObject.orig$takeLog10,
                             nInitialGuesses = nInitialGuesses
  )
 optimObject.tmp <- optimObject.orig
