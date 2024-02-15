@@ -174,6 +174,7 @@ getTransientFunctionResult <- function(par = c(),
   } 
   
   if (modus == "DoseDependentRetardedTransientDynamics") {
+    modus
     # dtransFunRes_dpar dtransFunRes_dpar[,"A"]*dA_dpar
     # 
     # dB_dpar <- df_dpar$B
