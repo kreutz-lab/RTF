@@ -32,7 +32,7 @@ Run optimization using stats::optim with method = "L-BFGS-B"
 \examples{
 data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
-                                         modus = 'RetardedTransientDynamics')
+                                         modus = 'timeDependent')
 signum_TF <- 1
 optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 nInitialGuesses <- 100

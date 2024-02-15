@@ -16,16 +16,14 @@ runRTF(
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and
-'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and
-'ImmediateResponseFunction' ('I'), and columns 't', 'y', and 'd' (dose) for
-modus = 'DoseDependentRetardedTransientDynamics' ('DD')}
+'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
+'t', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD')}
 
-\item{modus}{String indicating if modus 'RetardedTransientDynamics' ('D'),
-'ImmediateResponseFunction' ('I') or
-'DoseDependentRetardedTransientDynamics' ('DD') should be used.
+\item{modus}{String indicating if modus 'timeDependent' ('TD') or
+'doseDependent' ('DD') should be used.
 If no modus is provided default setting are
-'DoseDependentRetardedTransientDynamics' if column with name 'd' is present
-and else 'RetardedTransientDynamics'.}
+'doseDependent' if column with name 'd' is present
+and else 'timeDependent'.}
 
 \item{optimFunction}{String indicating the optimization function which
 should be used (Default: "logLikelihood")}
@@ -52,7 +50,7 @@ intermediate results (intermediateResults).
 Run RTF
 }
 \examples{
-modus <- "RetardedTransientDynamics"
+modus <- "timeDependent"
 data <- getExampleDf()
 plotData(data)
 res <- runRTF(data, modus = modus)

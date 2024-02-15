@@ -15,7 +15,8 @@ getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
 (but can also contain additional ones)}
 
-\item{calcGradient}{Boolean indicating if gradient should be calculated}
+\item{calcGradient}{Boolean indicating if gradient should be calculated
+(Default: FALSE)}
 }
 \value{
 Data frame with the caclulated A, B, alpha, gamma, and 

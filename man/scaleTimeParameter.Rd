@@ -8,7 +8,7 @@ scaleTimeParameter(
   timeParam,
   maxVal = NULL,
   reverse = FALSE,
-  calcGradient = FALSE
+  gradientNames = c()
 )
 }
 \arguments{
@@ -31,4 +31,5 @@ Scales or reverses scaling for time-dependent variable
 \examples{
 t <- c(2, 5, 4, 0.9, 1.2)
 t_prime <- scaleTimeParameter(timeParam=t, maxVal = max(t))
+scaleTimeParameter(timeParam=c(tau=1), maxVal = max(t),gradientNames = c("tau","alpha"))
 }

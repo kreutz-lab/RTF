@@ -16,8 +16,8 @@ initializeOptimObject(
 \item{data}{Data frame containing columns named 't' (time) and 'y'
 (quantitative value)}
 
-\item{modus}{String indicating if modus 'RetardedTransientDynamics' or
-'ImmediateResponseFunction' should be used}
+\item{modus}{String indicating if modus 'timeDependent' or
+'doseDependent' should be used}
 
 \item{optimFunction}{String indicating the optimization function which 
 should be used (Default: "logLikelihood")}
@@ -41,5 +41,5 @@ Initializes OptimObject
 }
 \examples{
 data <- getExampleDf()
-optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+optimObject <- initializeOptimObject(data, modus = 'timeDependent')
 }

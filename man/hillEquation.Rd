@@ -10,7 +10,7 @@ hillEquation(
   h,
   K,
   reciprocal = FALSE,
-  calcGradient = FALSE,
+  gradientNames = c(),
   minval = NULL
 )
 }
@@ -26,7 +26,9 @@ hillEquation(
 \item{reciprocal}{Boolean indicating if Hill equation is calculated for
 reciprocal parameter}
 
-\item{calcGradient}{Boolean indicating if gradient should be calculated}
+\item{gradientNames}{names of parameters for which derivatives are calculated
+"M","h","K" should be part of it
+If provided, then derivatives are calculated instead of the hillEquation itself}
 
 \item{minval}{(optional) Numeric, defines the lowest value the result can 
 acquire. Only relevant if reciprocal = TRUE.}
@@ -39,4 +41,5 @@ Calculates Hill equation
 }
 \examples{
 hillEquation(d = 20, M = 5, h = 3, K = 4)
+hillEquation(d = 1:20, M = 5, h = 3, K = 4, gradientNames = c("A","B","M","h","K","alpha"))
 }

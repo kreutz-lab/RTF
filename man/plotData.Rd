@@ -17,7 +17,6 @@ Plot data. If there are doses, i.e., if there is a column d,
 plot data points of different doses in different colours.
 }
 \examples{
-data.doseResponse <- getExampleDf(
-                            modus = "DoseDependentRetardedTransientDynamics")
+data.doseResponse <- getExampleDf(modus = "doseDependent")
 plotData(data.doseResponse)
 }

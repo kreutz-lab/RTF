@@ -9,9 +9,9 @@ getTransientFunctionResult(
   t = NULL,
   d = NULL,
   fixed = NA,
-  modus = "RetardedTransientDynamics",
+  modus = "timeDependent",
   scale = TRUE,
-  calcGradient = T
+  calcGradient = FALSE
 )
 }
 \arguments{
@@ -24,11 +24,14 @@ getTransientFunctionResult(
 \item{fixed}{Vector of fixed parameters, which are used to overwrite values
 in par, if they are non-NAs}
 
-\item{modus}{String indicating if modus 'RetardedTransientDynamics' or
+\item{modus}{String indicating if modus 'timeDependent' or
 'ImmediateResponseFunction' should be used}
 
 \item{scale}{Boolean, indicates if time dependent parameters t, tau,
 alpha, and gamma should be scaled}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated
+(Default: FALSE)}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
@@ -44,10 +47,22 @@ t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
 fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
            b = NA, tau = NA)
-modus <- "RetardedTransientDynamics"
+modus <- "timeDependent"
 y <- getTransientFunctionResult(par = par,
                            t = t,
                            fixed = fixed,
                            modus = modus)
 plot(t, y)
+
+d = 4
+par = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
+        M_gamma = 1, h_gamma = 3, K_gamma = 2,
+        M_A = 4, h_A = 2, K_A = 1,
+        M_B = 2, h_B = 3, K_B = 1,
+        M_tau = 2, h_tau = 3, K_tau = 2, b=1)
+t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
+       7.14, 7.85, 8.57, 9.28, 10)
+fixed <- c(par*NA,signum_TF=1)
+ y <- getTransientFunctionResult(par = par, d = d,
+             t = t, fixed = fixed, modus = "doseDependent")
 }
