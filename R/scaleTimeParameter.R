@@ -19,30 +19,30 @@ scaleTimeParameter <- function(timeParam, maxVal = NULL, reverse = FALSE,
   if (is.null(maxVal)) {
     message("Please enter maxVal as arguments")
   }
-  if (!reverse) {
+  # if (!reverse) {
     if (length(gradientNames)>0) {
       dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
       colnames(dtimeParam_dgradNames) <- gradientNames
       rownames(dtimeParam_dgradNames) <- names(timeParam)
       
-      diag(dtimeParam_dgradNames) = 10/maxVal
+      dtimeParam_dgradNames[,names(timeParam)] = maxVal
     } else {
-      timeParam <- timeParam * 10 / maxVal
+      timeParam <- timeParam  * maxVal
     }
-  } else {
-    if (length(gradientNames)>0) {
-      dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
-      colnames(dtimeParam_dgradNames) <- gradientNames
-      rownames(dtimeParam_dgradNames) <- names(timeParam)
-      
-      diag(dtimeParam_dgradNames) = maxVal / 10
-    } else {
-      timeParam <- timeParam * maxVal / 10
-    }
-  }
+  # } else {
+  #   if (length(gradientNames)>0) {
+  #     dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
+  #     colnames(dtimeParam_dgradNames) <- gradientNames
+  #     rownames(dtimeParam_dgradNames) <- names(timeParam)
+  #     
+  #     dtimeParam_dgradNames[,names(timeParam)] <- maxVal 
+  #   } else {
+  #     timeParam <- timeParam * maxVal
+  #   }
+  # }
   
   if (length(gradientNames)>0) {
-    list(dtimeParam=dtimeParam_dgradNames, maxVal=maxVal)
+    list(timeParam=dtimeParam_dgradNames, maxVal=maxVal)
   } else {
     list(timeParam = timeParam,
          maxVal = maxVal)

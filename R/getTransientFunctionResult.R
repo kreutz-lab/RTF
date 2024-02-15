@@ -42,7 +42,7 @@ getTransientFunctionResult <- function(par = c(),
   }
 
   if (scale) {
-    scaleRes <- scaleTimeParameter(timeParam = t, maxVal = max(t))
+    scaleRes <- scaleTimeParameter(timeParam = t, maxVal = 10/max(t))
     t_prime <- scaleRes$timeParam
     maxVal <- scaleRes$maxVal
   } else {
@@ -72,7 +72,7 @@ getTransientFunctionResult <- function(par = c(),
     gamma <- df$gamma
     tau <- df$tau
 
-    if(calcGradient)
+    # if(calcGradient)
       df_dpar <- getHillResults(d = d, 
                            params = c(M_alpha = M_alpha, 
                                       h_alpha = h_alpha, 
@@ -97,38 +97,68 @@ getTransientFunctionResult <- function(par = c(),
   }
 
    
+  # scaling everything with time as phys. unit
+
+  dparScaled_dpar <- matrix(0,nrow=length(par),ncol=length(par))
+  diag(dparScaled_dpar) <- 1
   if (scale) {
     if(calcGradient){
       dtau_dtau <- scaleTimeParameter(timeParam = c(tau=tau), maxVal = maxVal, gradientNames = names(par))$timeParam
-      dalpha_dalpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = maxVal, gradientNames = names(par))$timeParam
-      dgamma_dgamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = maxVal, gradientNames = names(par))$timeParam
+      dalpha_dalpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = 1/maxVal, gradientNames = names(par))$timeParam
+      dgamma_dgamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = 1/maxVal, gradientNames = names(par))$timeParam
       
-      dtau_dpar <- dtau_dtau * dtau_dpar[,"tau"]
-      dalpha_dpar <- dalpha_dalpha * dalpha_dpar[,"alpha"]
-      dgamma_dpar <- dgamma_dgamma * dgamma_dpar[,"gamma"]
+      if(modus == "DoseDependentRetardedTransientDynamics") {
+        dtau_dpar <- dtau_dtau * dtau_dpar[,"tau"]
+        dalpha_dpar <- dalpha_dalpha * dalpha_dpar[,"alpha"]
+        dgamma_dpar <- dgamma_dgamma * dgamma_dpar[,"gamma"]
+      } else {
+        dtau_dpar <- dtau_dtau 
+        dalpha_dpar <- dalpha_dalpha
+        dgamma_dpar <- dgamma_dgamma 
+      }
+      
+      rownames(dparScaled_dpar) <- names(par)
+      colnames(dparScaled_dpar) <- names(par)
+      dparScaled_dpar["tau",]   <- dtau_dpar
+      dparScaled_dpar["alpha",] <- dalpha_dpar
+      dparScaled_dpar["gamma",] <- dgamma_dpar
+      
     }
-    # scaling everything with time as phys. unit
-    tau <- scaleTimeParameter(timeParam = tau, maxVal = maxVal)$timeParam
-    alpha <- scaleTimeParameter(timeParam = alpha, maxVal = 1/maxVal)$timeParam
-    gamma <- scaleTimeParameter(timeParam = gamma, maxVal = 1/maxVal)$timeParam
+    tau <- scaleTimeParameter(timeParam = c(tau=tau), maxVal = maxVal)$timeParam
+    alpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = 1/maxVal)$timeParam
+    gamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = 1/maxVal)$timeParam
   }
 
-  nonLinTransformation <- log10(10^t_prime + 10^tau) - log10(1 + 10^tau)
-
   if (modus == "ImmediateResponseFunction") {
-    Signal_sus <- A * (1-exp(- alpha * t_prime))
-    Signal_trans <- B * (1 - exp(- alpha * t_prime)) *
-      exp(- gamma * t_prime)
     
-    transientFunctionRes <- signum_TF * Signal_sus +
-      signum_TF * Signal_trans + b
+    transientFunctionRes <- signum_TF * A * (1-exp(- alpha * t_prime)) + signum_TF * B * (1 - exp(- alpha * t_prime)) * exp(- gamma * t_prime) + b
+    dtransFunRes_dpar <- matrix(0,nrow=length(transientFunctionRes),ncol=length(par))
+    colnames(dtransFunRes_dpar) <- names(par)
+    dtransFunRes_dpar[,"alpha"] <- A*signum_TF*t_prime*exp(-alpha*t_prime) + B*signum_TF*t_prime*exp(-alpha*t_prime)*exp(-gamma*t_prime)
+    dtransFunRes_dpar[,"gamma"] <- B*signum_TF*t_prime*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
+    dtransFunRes_dpar[,"b"] <- 1
+    dtransFunRes_dpar[,"A"] <- -signum_TF*(exp(-alpha*t_prime) - 1)
+    dtransFunRes_dpar[,"B"] <- -signum_TF*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
+    
   } else if (modus %in% c("RetardedTransientDynamics", 
                           "DoseDependentRetardedTransientDynamics")) {
-    Signal_sus <- A * (1 - exp(- alpha * nonLinTransformation))
-    Signal_trans <- B * (1 - exp(- alpha * nonLinTransformation)) *
-       exp(- gamma * nonLinTransformation)
-    transientFunctionRes <- signum_TF * Signal_sus +
-      signum_TF * Signal_trans + b # + (abs(alpha-gamma)/1000)
+    nonLinTransformation <- log10(10^t_prime + 10^tau) - log10(1 + 10^tau)
+    
+    dnonLinTrans_dpar <- matrix(0,nrow=length(nonLinTransformation),ncol=length(par))
+    colnames(dnonLinTrans_dpar) <- names(par)
+    dnonLinTrans_dpar[,"tau"] <- 10^tau/(10^t_prime + 10^tau) - 10^tau/(10^tau + 1)
+
+    transientFunctionRes <- signum_TF*A*(1-exp(-alpha*nonLinTransformation)) + signum_TF*B*(1-exp(-alpha*nonLinTransformation))*exp(-gamma*nonLinTransformation) + b
+    
+    dtransFunRes_dpar <- matrix(0,nrow=length(transientFunctionRes),ncol=length(par))
+    colnames(dtransFunRes_dpar) <- names(par)
+    dtransFunRes_dpar[,"alpha"] <- A*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation) + B*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
+    dtransFunRes_dpar[,"gamma"] <- B*signum_TF*nonLinTransformation*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
+    dtransFunRes_dpar[,"b"] <- 1
+    dtransFunRes_dpar[,"A"] <- -signum_TF*(exp(-alpha*nonLinTransformation) - 1)
+    dtransFunRes_dpar[,"B"] <- -signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
+    
+    dtransFunRes_dpar <- dtransFunRes_dpar + dnonLinTrans_dpar ## Bock
   } 
   if(sum(is.infinite(transientFunctionRes))>0)
     print(transientFunctionRes)
@@ -138,5 +168,8 @@ getTransientFunctionResult <- function(par = c(),
   #   print(signum_TF)
   #   
   # }
-  transientFunctionRes
+  if(!calcGradient)
+    transientFunctionRes
+  else
+    dtransFunRes_dpar
 }
