@@ -19,7 +19,7 @@
 #' @examples
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
-#'                                          modus = 'RetardedTransientDynamics')
+#'                                          modus = 'timeDependent')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 100
@@ -94,7 +94,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     # parscale <- parscale/1000
     
-    if (optimObject.tmp$modus != "DoseDependentRetardedTransientDynamics") {
+    if (optimObject.tmp$modus != "doseDependent") {
       # ndeps
       ndeps <- vec
       for (paramName in names(ndeps)) {

@@ -1,14 +1,14 @@
 #' Generate plots
 #'
 #' @description Plot fitting results for optimObjects of modus
-#' "RetardedTransientDynamics" or "DoseDependentRetardedTransientDynamics"
+#' "timeDependent" or "doseDependent"
 #' @return ggplot object
 #' @param optimObject optimObject containing elements "finalModel" and "modus"
 #' @param fileNamePrefix File name prefix. If length>0 plots will be written to
 #' file, otherwise they will be plotted directly. Default is empty string.
 #' @param plotTitle Title of the plot (Default is no title).
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
-#' if fileNamePrefix is given. Only relevant for "RetardedTransientDynamics"
+#' if fileNamePrefix is given. Only relevant for "timeDependent"
 #' modus. (Default: TRUE)
 #' using function plotRTF().
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
@@ -17,7 +17,7 @@
 #' @export plotRTF
 #' @examples
 #' data.doseResponse <- getExampleDf(
-#'                             modus = "DoseDependentRetardedTransientDynamics")
+#'                             modus = "doseDependent")
 #' plotData(data.doseResponse)
 #' res.doseResponse <- runRTF(data.doseResponse, modelReduction = FALSE)
 #' plotRTF(res.doseResponse, plotAllFits = FALSE)
@@ -44,9 +44,9 @@ plotRTF <-
     par <- bestOptimResult$par
     
     numCol <- 1
-    if (modus == "RetardedTransientDynamics") {
+    if (modus == "timeDependent") {
       height <- 12
-    } else if (modus == "DoseDependentRetardedTransientDynamics") {
+    } else if (modus == "doseDependent") {
       height <- 17
     }
     
@@ -98,7 +98,7 @@ plotRTF <-
             )
           )
           title <- paste(strwrap(title, width = 80), collapse = "\n")
-          if (modus == "RetardedTransientDynamics") {
+          if (modus == "timeDependent") {
             gg <- plotFit(
               par = pars,
               y = data$y,
@@ -107,7 +107,7 @@ plotRTF <-
             ) +
               ggplot2::ggtitle(title)
             
-          } else if (modus == "DoseDependentRetardedTransientDynamics") {
+          } else if (modus == "doseDependent") {
             gg <- plotFit(
               pars,
               withData = TRUE,
@@ -166,7 +166,7 @@ plotRTF <-
     )
     title <- paste(strwrap(title, width = 100), collapse = "\n")
     
-    if (modus == "RetardedTransientDynamics") {
+    if (modus == "timeDependent") {
       RTFComponentsPlot <- plotFit(
         par = par,
         y = data$y,
@@ -180,7 +180,7 @@ plotRTF <-
                               parDistributionPlot,
                               ncol = numCol)
       
-    } else if (modus == "DoseDependentRetardedTransientDynamics") {
+    } else if (modus == "doseDependent") {
       bestFitWDataPlot <- plotFit(
         par,
         withData = TRUE,

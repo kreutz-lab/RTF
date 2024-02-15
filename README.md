@@ -27,7 +27,7 @@ RTF with no dose-response dependency
 
 data <- getExampleDf()
 plotData(data)
-res <- runRTF(data, modus = "RetardedTransientDynamics")
+res <- runRTF(data, modus = "timeDependent")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 ```
 
@@ -37,10 +37,10 @@ RTF with dose-response dependency
 
 ```
 data.doseResponse <- getExampleDf(
-                             modus = "DoseDependentRetardedTransientDynamics")
+                             modus = "doseDependent")
 plotData(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse, 
-                          modus = "DoseDependentRetardedTransientDynamics",
+                          modus = "doseDependent",
                           modelReduction = FALSE)
 plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
 
@@ -48,7 +48,7 @@ plotFit(par = res.doseResponse[["finalParams"]],
                  y = data.doseResponse$y, 
                  t = data.doseResponse$t, 
                  d = data.doseResponse$d, 
-                 modus = 'DoseDependentRetardedTransientDynamics',
+                 modus = 'doseDependent',
                  withData = TRUE,
                  title = " ")
 ```

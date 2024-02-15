@@ -10,8 +10,8 @@
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
 #' @param data Data frame containing columns named 't' (time) and 'y'
 #' (quantitative value)
-#' @param modus String indicating if modus 'RetardedTransientDynamics' or
-#' 'ImmediateResponseFunction' should be used
+#' @param modus String indicating if modus 'timeDependent' or
+#' 'doseDependent' should be used
 #' @param optimFunction String indicating the optimization function which 
 #' should be used (Default: "logLikelihood")
 #' @param control List of control arguments passed to the function stats::optim 
@@ -20,7 +20,7 @@
 #' @export initializeOptimObject
 #' @examples
 #' data <- getExampleDf()
-#' optimObject <- initializeOptimObject(data, modus = 'RetardedTransientDynamics')
+#' optimObject <- initializeOptimObject(data, modus = 'timeDependent')
 
 initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood", 
                                   control = list(trace = 1, maxit = 1000,
@@ -49,7 +49,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
   # h Hill coefficient
   # K Half-maximum quantity
   
-  if (modus == "DoseDependentRetardedTransientDynamics") {
+  if (modus == "doseDependent") {
     if (!("d" %in% names(data))) {
       stop("Please provide data frame with data column d.")
     }

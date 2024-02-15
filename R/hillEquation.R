@@ -21,36 +21,39 @@
 hillEquation <- function(d, M, h, K, reciprocal = FALSE,
                          gradientNames = c(), minval = NULL){
   
-  if(length(gradientNames)>0)
-    if(length(setdiff(c("h","M","K"),gradientNames))>0)
+  if(length(gradientNames) > 0)
+    if(length(setdiff(c("h","M","K"), gradientNames))>0)
       warning("gradientNames does not contain all parameters (h,M,K)")
   
   if (reciprocal) {
-    if (length(gradientNames)>0) {
-      dresult_dMhp <- matrix(0,nrow=length(d), ncol=length(gradientNames))
+    if (length(gradientNames) > 0) {
+      dresult_dMhp <- matrix(0, nrow = length(d), ncol = length(gradientNames))
       colnames(dresult_dMhp) <- gradientNames
       row.names(dresult_dMhp) <- as.character(d)
       dresult_dMhp[,"M"] <- 1 - d^h/(K^h + d^h)
-      dresult_dMhp[,"h"] <- -M*((d^h*log(d))/(K^h + d^h) - (d^h*(K^h*log(K) + d^h*log(d)))/(K^h + d^h)^2)
-      dresult_dMhp[,"K"] <- (K^(h - 1)*M*d^h*h)/(K^h + d^h)^2
+      dresult_dMhp[,"h"] <- -M * ((d^h * log(d))/(K^h + d^h) - 
+                                    (d^h * (K^h * log(K) + 
+                                              d^h * log(d))) / (K^h + d^h)^2)
+      dresult_dMhp[,"K"] <- (K^(h - 1) * M * d^h * h)/(K^h + d^h)^2
     } else {
-      result <- M * (1 - ((d^h)/(K^h + d^h)))
+      result <- M * (1 - ((d^h) / (K^h + d^h)))
       if (!is.null(minval)) {
         result[result < minval] <- minval
-        if (length(gradientNames)>0) 
+        if (length(gradientNames) > 0) 
           warning("result[result < minval] <- minval cannot be considered in gradients.")
       }
     }
   } else {
-    if (length(gradientNames)>0) {
-      dresult_dMhp <- matrix(0,nrow=length(d), ncol=length(gradientNames))
+    if (length(gradientNames) > 0) {
+      dresult_dMhp <- matrix(0, nrow = length(d), ncol = length(gradientNames))
       colnames(dresult_dMhp) <- gradientNames
       row.names(dresult_dMhp) <- as.character(d)
-      dresult_dMhp[,"M"] <- d^h/(K^h + d^h)
-      dresult_dMhp[,"h"] <- (M*d^h*log(d))/(K^h + d^h) - (M*d^h*(K^h*log(K) + d^h*log(d)))/(K^h + d^h)^2
-      dresult_dMhp[,"K"] <- -(K^(h - 1)*M*d^h*h)/(K^h + d^h)^2
+      dresult_dMhp[,"M"] <- d^h / (K^h + d^h)
+      dresult_dMhp[,"h"] <- (M * d^h * log(d)) / (K^h + d^h) - 
+        (M * d^h * (K^h * log(K) + d^h * log(d))) / (K^h + d^h)^2
+      dresult_dMhp[,"K"] <- -(K^(h - 1) * M * d^h * h) / (K^h + d^h)^2
     } else { 
-      result <- M * ((d^h)/(K^h + d^h))
+      result <- M * ((d^h) / (K^h + d^h))
     }
   }
   

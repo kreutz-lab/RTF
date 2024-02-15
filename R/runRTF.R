@@ -5,15 +5,13 @@
 #' (finalParams), the plot of the final model (finalPlot), as well as the
 #' intermediate results (intermediateResults).
 #' @param data Data frame containing columns named 't' (time) and
-#' 'y' (quantitative value) for modus = 'RetardedTransientDynamics' ('D') and
-#' 'ImmediateResponseFunction' ('I'), and columns 't', 'y', and 'd' (dose) for
-#' modus = 'DoseDependentRetardedTransientDynamics' ('DD')
-#' @param modus String indicating if modus 'RetardedTransientDynamics' ('D'),
-#' 'ImmediateResponseFunction' ('I') or
-#' 'DoseDependentRetardedTransientDynamics' ('DD') should be used.
+#' 'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
+#' 't', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD')
+#' @param modus String indicating if modus 'timeDependent' ('TD') or
+#' 'doseDependent' ('DD') should be used.
 #' If no modus is provided default setting are
-#' 'DoseDependentRetardedTransientDynamics' if column with name 'd' is present
-#' and else 'RetardedTransientDynamics'.
+#' 'doseDependent' if column with name 'd' is present
+#' and else 'timeDependent'.
 #' @param optimFunction String indicating the optimization function which
 #' should be used (Default: "logLikelihood")
 #' @param modelReduction Boolean indicating of model reduction should be
@@ -27,7 +25,7 @@
 #' (Default: list(trace = 1, maxit = 1000, factr = 1e1))
 #' @export runRTF
 #' @examples
-#' modus <- "RetardedTransientDynamics"
+#' modus <- "timeDependent"
 #' data <- getExampleDf()
 #' plotData(data)
 #' res <- runRTF(data, modus = modus)
@@ -43,23 +41,21 @@ runRTF <- function(data,
                                   factr = 1e1)) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {
-      modus <- 'DoseDependentRetardedTransientDynamics'
+      modus <- 'doseDependent'
     } else {
-      modus <- 'RetardedTransientDynamics'
+      modus <- 'timeDependent'
     }
   } else {
-    if (modus == 'D')
-      modus <- 'RetardedTransientDynamics'
-    if (modus == 'I')
-      modus <- 'ImmediateResponseFunction'
+    if (modus == 'TD')
+      modus <- 'timeDependent'
     if (modus == 'DD')
-      modus <- 'DoseDependentRetardedTransientDynamics'
+      modus <- 'doseDependent'
   }
   
-  if (modus != "DoseDependentRetardedTransientDynamics" &
+  if (modus != "doseDependent" &
       !all(c("t", "y") %in% names(data))) {
     stop("Input data frame needs to contain the columns 't' and 'y'.")
-  } else if (modus == "DoseDependentRetardedTransientDynamics" &
+  } else if (modus == "doseDependent" &
              !all(c("t", "y", "d") %in% names(data))) {
     stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
   }
@@ -84,7 +80,7 @@ runRTF <- function(data,
   intermediateResults <- list()
   
   if (modelReduction) {
-    if (modus != "DoseDependentRetardedTransientDynamics") {
+    if (modus != "doseDependent") {
       #  MODEL REDUCTION
       # 1. Testing whether there is time retardation,
       # i.e., if tau parameter is significantly different from the lower bound.

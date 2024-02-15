@@ -4,20 +4,20 @@
 #' @return ggplot object showing RTF together with experimental data points
 #' @param par Vector containing
 #' alpha, gamma, A, B, b, tau, and signum_TF (modus
-#' 'RetardedTransientDynamics') or
+#' 'timeDependent') or
 #' M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma,
 #' M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus
-#' 'DoseDependentRetardedTransientDynamics').
+#' 'doseDependent').
 #' @param withData Boolean indicating if data should be added to fit line
-#' @param modus Modus ('RetardedTransientDynamics' or
-#' 'DoseDependentRetardedTransientDynamics')
+#' @param modus Modus ('timeDependent' or
+#' 'doseDependent')
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
 #' @param t Time points
-#' @param d Dose (obligatory for 'DoseDependentRetardedTransientDynamics')
+#' @param d Dose (obligatory for 'doseDependent')
 #' @param title Plot title
 #' @param pointAlpha Transparency of points
-#' @param lineAlpha For modus 'RetardedTransientDynamics': Transparency of lines
+#' @param lineAlpha For modus 'timeDependent': Transparency of lines
 #' @param pointSize Point size
 #' @export plotFit
 #' @examples
@@ -31,7 +31,7 @@
 
 plotFit <- function(par,
                     withData = FALSE,
-                    modus = "RetardedTransientDynamics",
+                    modus = "timeDependent",
                     y = NULL,
                     t = NULL,
                     d = NULL,
@@ -50,7 +50,7 @@ plotFit <- function(par,
     doses <- 1
   }
   
-  if (modus == 'RetardedTransientDynamics') {
+  if (modus == 'timeDependent') {
     RTFResVec <- getTransientFunctionResult(t = xi,
                                             par = par,
                                             modus = modus)
@@ -84,7 +84,7 @@ plotFit <- function(par,
                                           susOnlyResDf,
                                           transOnlyResDf))
     
-  } else if (modus == 'DoseDependentRetardedTransientDynamics') {
+  } else if (modus == 'doseDependent') {
     geom_line.lst <- list()
     for (i in seq(length(doses))) {
       RTFResVec <- NULL

@@ -4,24 +4,24 @@
 #' predefined parameters plus some added noise.
 #' @return Dataframe with data following an RTF with predefined parameters plus
 #' some added noise.
-#' @param modus Modus, "RetardedTransientDynamics" or 
-#' "DoseDependentRetardedTransientDynamics"
+#' @param modus Modus, "timeDependent" or 
+#' "doseDependent"
 #' @export getExampleDf
 #' @examples
 #' getExampleDf()
 
-getExampleDf <- function(modus = "RetardedTransientDynamics"){
-  if (modus == "RetardedTransientDynamics") {
+getExampleDf <- function(modus = "timeDependent"){
+  if (modus == "timeDependent") {
     t <- seq(0, 17, 0.7)
     
     y <- getTransientFunctionResult(
       t = t,
       par = c(alpha = 0.004, gamma = 0.0025, A = 1, B = 5, b = 2,
               tau = 4, signum_TF = 1),
-      modus = "RetardedTransientDynamics") 
+      modus = "timeDependent") 
       
     data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.04))
-  } else if (modus == "DoseDependentRetardedTransientDynamics") {
+  } else if (modus == "doseDependent") {
     t <- seq(0, 17, 0.7)
     doses <- c(2, 4, 6, 9)
     times <- length(doses)
