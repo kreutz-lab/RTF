@@ -27,16 +27,15 @@
 #'                            modus = modus)
 #' plot(t, y)
 #' 
-#' d = c(2, 6)
+#' d = 4
 #' par = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
 #'         M_gamma = 1, h_gamma = 3, K_gamma = 2,
 #'         M_A = 4, h_A = 2, K_A = 1,
 #'         M_B = 2, h_B = 3, K_B = 1,
-#'         M_tau = 2, h_tau = 3, K_tau = 2)
+#'         M_tau = 2, h_tau = 3, K_tau = 2, b=1)
 #' t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
 #'        7.14, 7.85, 8.57, 9.28, 10)
-#' fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
-#'            b = NA, tau = NA)
+#' fixed <- c(par*NA,signum_TF=1)
 #'  y <- getTransientFunctionResult(par = par, d = d,
 #'              t = t, fixed = fixed, modus = "DoseDependentRetardedTransientDynamics")
 
@@ -47,6 +46,7 @@ getTransientFunctionResult <- function(par = c(),
                                        fixed = NA,
                                        modus = "RetardedTransientDynamics",
                                        scale = TRUE, calcGradient = F) {
+  
 
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
 
@@ -90,15 +90,16 @@ getTransientFunctionResult <- function(par = c(),
                                     K_B = K_B,
                                     M_tau = M_tau, 
                                     h_tau = h_tau, 
-                                    K_tau = K_tau))
-    A <- df$A
-    B <- df$B
-    alpha <- df$alpha
-    gamma <- df$gamma
-    tau <- df$tau
+                                    K_tau = K_tau, 
+                                    b = b))
+    
+    pnamesRTF <- names(df) ## ugly point in the code 
+
+    for(el in pnamesRTF)    
+      assign(el,df[[el]])
 
     # if(calcGradient)
-      df_dpar <- getHillResults(d = d, 
+      drtfParams_dpar <- getHillResults(d = d, 
                            params = c(M_alpha = M_alpha, 
                                       h_alpha = h_alpha, 
                                       K_alpha = K_alpha, 
@@ -113,24 +114,19 @@ getTransientFunctionResult <- function(par = c(),
                                       K_B = K_B,
                                       M_tau = M_tau, 
                                       h_tau = h_tau, 
-                                      K_tau = K_tau), calcGradient = T)
-    dA_dpar <- df_dpar$A
-    dB_dpar <- df_dpar$B
-    dalpha_dpar <- df_dpar$alpha
-    dgamma_dpar <- df_dpar$gamma
-    dtau_dpar <- df_dpar$tau
+                                      K_tau = K_tau, 
+                                      b = b), calcGradient = T)
   }
 
-   
   # scaling everything with time as phys. unit
 
   dparScaled_dpar <- matrix(0,nrow=length(par),ncol=length(par))
   diag(dparScaled_dpar) <- 1
   if (scale) {
     if(calcGradient){
-      dtau_dtau <- scaleTimeParameter(timeParam = c(tau=tau), maxVal = maxVal, gradientNames = names(par))$timeParam
-      dalpha_dalpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = 1/maxVal, gradientNames = names(par))$timeParam
-      dgamma_dgamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = 1/maxVal, gradientNames = names(par))$timeParam
+      dtau_dtau <- scaleTimeParameter(timeParam = c(tau=tau), maxVal = maxVal, gradientNames = "tau")$timeParam
+      dalpha_dalpha <- scaleTimeParameter(timeParam = c(alpha=alpha), maxVal = 1/maxVal, gradientNames = "alpha")$timeParam
+      dgamma_dgamma <- scaleTimeParameter(timeParam = c(gamma=gamma), maxVal = 1/maxVal, gradientNames = "gamma")$timeParam
       
       if(modus == "DoseDependentRetardedTransientDynamics") {
         dtau_dpar <- dtau_dtau * dtau_dpar[,"tau"]
@@ -142,7 +138,7 @@ getTransientFunctionResult <- function(par = c(),
         dgamma_dpar <- dgamma_dgamma 
       }
       
-      rownames(dparScaled_dpar) <- names(par)
+      rownames(dparScaled_dpar) <- pnamesRTF
       colnames(dparScaled_dpar) <- names(par)
       dparScaled_dpar["tau",]   <- dtau_dpar
       dparScaled_dpar["alpha",] <- dalpha_dpar
@@ -157,34 +153,37 @@ getTransientFunctionResult <- function(par = c(),
   if (modus == "ImmediateResponseFunction") {
     
     transientFunctionRes <- signum_TF * A * (1-exp(- alpha * t_prime)) + signum_TF * B * (1 - exp(- alpha * t_prime)) * exp(- gamma * t_prime) + b
-    dtransFunRes_dpar <- matrix(0,nrow=length(transientFunctionRes),ncol=length(par))
-    colnames(dtransFunRes_dpar) <- names(par)
-    dtransFunRes_dpar[,"alpha"] <- A*signum_TF*t_prime*exp(-alpha*t_prime) + B*signum_TF*t_prime*exp(-alpha*t_prime)*exp(-gamma*t_prime)
-    dtransFunRes_dpar[,"gamma"] <- B*signum_TF*t_prime*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
-    dtransFunRes_dpar[,"b"] <- 1
-    dtransFunRes_dpar[,"A"] <- -signum_TF*(exp(-alpha*t_prime) - 1)
-    dtransFunRes_dpar[,"B"] <- -signum_TF*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
+    dtransFunRes_dparRtf <- matrix(0,nrow=length(transientFunctionRes),ncol=length(pnamesRTF))
+    colnames(dtransFunRes_dparRtf) <- pnamesRTF
+    dtransFunRes_dparRtf[,"alpha"] <- A*signum_TF*t_prime*exp(-alpha*t_prime) + B*signum_TF*t_prime*exp(-alpha*t_prime)*exp(-gamma*t_prime)
+    dtransFunRes_dparRtf[,"gamma"] <- B*signum_TF*t_prime*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
+    dtransFunRes_dparRtf[,"b"] <- 1
+    dtransFunRes_dparRtf[,"A"] <- -signum_TF*(exp(-alpha*t_prime) - 1)
+    dtransFunRes_dparRtf[,"B"] <- -signum_TF*exp(-gamma*t_prime)*(exp(-alpha*t_prime) - 1)
     
   } else if (modus %in% c("RetardedTransientDynamics", 
                           "DoseDependentRetardedTransientDynamics")) {
     nonLinTransformation <- log10(10^t_prime + 10^tau) - log10(1 + 10^tau)
     
-    dnonLinTrans_dpar <- matrix(0,nrow=length(nonLinTransformation),ncol=length(par))
-    colnames(dnonLinTrans_dpar) <- names(par)
-    dnonLinTrans_dpar[,"tau"] <- 10^tau/(10^t_prime + 10^tau) - 10^tau/(10^tau + 1)
+    dnonLinTrans_dparRtf <- matrix(0,nrow=length(nonLinTransformation),ncol=length(pnamesRTF))
+    colnames(dnonLinTrans_dparRtf) <- pnamesRTF
+    dnonLinTrans_dparRtf[,"tau"] <- 10^tau/(10^t_prime + 10^tau) - 10^tau/(10^tau + 1)
 
     transientFunctionRes <- signum_TF*A*(1-exp(-alpha*nonLinTransformation)) + signum_TF*B*(1-exp(-alpha*nonLinTransformation))*exp(-gamma*nonLinTransformation) + b
     dtransFunRes_dnonLinTrans <- matrix(0,nrow=length(transientFunctionRes),ncol=length(nonLinTransformation))
     diag(dtransFunRes_dnonLinTrans) <- A*alpha*signum_TF*exp(-alpha*nonLinTransformation) + B*gamma*signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1) + B*alpha*signum_TF*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
-    dtransFunRes_dpar <- matrix(0,nrow=length(transientFunctionRes),ncol=length(par))
-    colnames(dtransFunRes_dpar) <- names(par)
-    dtransFunRes_dpar[,"alpha"] <- A*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation) + B*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
-    dtransFunRes_dpar[,"gamma"] <- B*signum_TF*nonLinTransformation*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
-    dtransFunRes_dpar[,"b"] <- 1
-    dtransFunRes_dpar[,"A"] <- -signum_TF*(exp(-alpha*nonLinTransformation) - 1)
-    dtransFunRes_dpar[,"B"] <- -signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
+    dtransFunRes_dparRtf <- matrix(0,nrow=length(transientFunctionRes),ncol=length(pnamesRTF))
+    colnames(dtransFunRes_dparRtf) <- pnamesRTF
     
-    dtransFunRes_dpar <- dtransFunRes_dpar + dtransFunRes_dnonLinTrans %*% dnonLinTrans_dpar ## Bock
+    dtransFunRes_dparRtf[,"alpha"] <- A*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation) + B*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
+    dtransFunRes_dparRtf[,"gamma"] <- B*signum_TF*nonLinTransformation*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
+    dtransFunRes_dparRtf[,"b"] <- 1
+    dtransFunRes_dparRtf[,"A"] <- -signum_TF*(exp(-alpha*nonLinTransformation) - 1)
+    dtransFunRes_dparRtf[,"B"] <- -signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
+    
+    
+    dtransFunRes_dparRtf <- dtransFunRes_dparRtf + dtransFunRes_dnonLinTrans %*% dnonLinTrans_dparRtf ## Bock
+    dtransFunRes_dpar <- dtransFunRes_dparRtf %*% drtfParams_dpar 
   } 
   
   if (modus == "DoseDependentRetardedTransientDynamics") {

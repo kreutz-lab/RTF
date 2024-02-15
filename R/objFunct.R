@@ -80,31 +80,35 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
                                       reverse = TRUE, calcGradient = T)
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
-  if (optimObject$optimFunction == "logLikelihood") {
-      
-    res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                               t = data$t,
-                                               d = d,
-                                               # fixed = fixed,
-                                               fixed = optimObject$fixed,
-                                               modus = optimObject$modus,
-                                               scale = TRUE)
-  
+  ds <- unique(d)
+  res <- array(NA,dim=length(data$d))
+  for(id in 1:length(ds)){ # loop over all doses
+    ind <- which(d==ds[id]) # indices where dose matches
+    
+    res[ind] <- data$y[ind] - getTransientFunctionResult(par = par[names(par) != "sigma"],
+                                                         t = data$t[ind],
+                                                         d = ds[id],
+                                                         # fixed = fixed,
+                                                         fixed = optimObject$fixed,
+                                                         modus = optimObject$modus,
+                                                         scale = TRUE)
     if (("sdExp" %in% colnames(data))) {
-      sigma <- data$sdExp
+      if(id==1)
+        sigma <- array(NA,dim=length(data$d))
+      sigma[ind] <- data$sdExp[ind]
     } 
-
-    retval <- sum(-2 * log10(stats::dnorm(res, mean = 0, sd = sigma))) 
-    
-    # retval <- retval + regularizationTerm 
-    
-    if (retval > 10^20) {
-      print(par)
-      retval <- 10^20
-      # warning(paste0("objective function is infinite."))
-    } else if (retval < -10^20) {
-      retval <- -10^20
-    }
   }
+  retval <- sum(-2 * log10(stats::dnorm(res, mean = 0, sd = sigma))) 
+  
+  # retval <- retval + regularizationTerm 
+  
+  if (retval > 10^20) {
+    print(par)
+    retval <- 10^20
+    # warning(paste0("objective function is infinite."))
+  } else if (retval < -10^20) {
+    retval <- -10^20
+  }
+  
   return(retval)
 }
