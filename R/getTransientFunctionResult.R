@@ -26,6 +26,17 @@
 #'                            fixed = fixed,
 #'                            modus = modus)
 #' plot(t, y)
+#' 
+#' d = c(2, 6)
+#' par = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
+#'         M_gamma = 1, h_gamma = 3, K_gamma = 2,
+#'         M_A = 4, h_A = 2, K_A = 1,
+#'         M_B = 2, h_B = 3, K_B = 1,
+#'         M_tau = 2, h_tau = 3, K_tau = 2)
+#' t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
+#'        7.14, 7.85, 8.57, 9.28, 10)
+#' fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
+#'            b = NA, tau = NA)
 
 getTransientFunctionResult <- function(par = c(),
                                        t = NULL,
