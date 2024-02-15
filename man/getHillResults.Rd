@@ -10,9 +10,10 @@ getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 \arguments{
 \item{d}{Dose given as single value or a vector}
 
-\item{params}{Named vector containing the parameters 'M_alpha', 'h_alpha', 'K_alpha', 
+\item{params}{Named vector containing the parameters 
+'M_alpha', 'h_alpha', 'K_alpha', 
 'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 
-'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau'
+'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau', 'b'
 (but can also contain additional ones)}
 
 \item{calcGradient}{Boolean indicating if gradient should be calculated

@@ -80,21 +80,55 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
                                       reverse = TRUE, calcGradient = T)
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
+  
+  # Fixed parameters will overwrite the values in par
+  dpar_dparVorFix <- matrix(0, nrow = length(par), ncol = length(par))
+  rownames(dpar_dparVorFix) <- colnames(dpar_dparVorFix) <- names(par)
+  diag(dpar_dparVorFix) <- 1
+  
+  overlap <- intersect(names(fixed[!is.na(fixed)]), names(par)) 
+  dpar_dparVorFix[names(par) %in% overlap, names(par) %in% overlap] <- 0
+  
+  for (v in 1:length(fixed)) {
+    if (!is.na(fixed[[v]])# & names(fixed)[v] %in% names(par)
+    ) {
+      # assign(names(fixed)[v], fixed[[v]])
+      par[names(fixed)[v]] <- fixed[[v]]
+    }
+  }
+  
+  rtfParams <- c("A", "B", "alpha", "gamma", "tau")
+  
   ds <- unique(d)
-  res <- array(NA,dim=length(data$d))
-  for(id in 1:length(ds)){ # loop over all doses
-    ind <- which(d==ds[id]) # indices where dose matches
+  res <- array(NA, dim = length(data$d))
+  for (id in 1:length(ds)) { # loop over all doses TODO
+    ind <- which(d == ds[id]) # indices where dose matches
     
-    res[ind] <- data$y[ind] - getTransientFunctionResult(par = par[names(par) != "sigma"],
-                                                         t = data$t[ind],
-                                                         d = ds[id],
-                                                         # fixed = fixed,
-                                                         fixed = optimObject$fixed,
-                                                         modus = optimObject$modus,
-                                                         scale = TRUE)
+    hillF <- hillGradient <- NULL
+    if (optimObject$modus == "doseDependent") {
+        hillF <- getHillResults(d = ds[id], params = par)
+        hillGradient <- getHillResults(d = ds[id],
+                                          params = par, calcGradient = TRUE)
+        hillF
+        for (name in names(hillF)) {
+          par[names(hillF)[name]] <- hillF[[name]]
+        }
+    }
+    
+    res[ind] <- data$y[ind] - 
+      getTransientFunctionResult(
+        par = par[names(par) != "sigma"],
+        t = data$t[ind],
+        # d = ds[id],
+        # fixed = optimObject$fixed,
+        modus = optimObject$modus,
+        scale = TRUE,
+        dpar_dparVorFix = dpar_dparVorFix,
+        hillGradient = hillGradient)
+    
     if (("sdExp" %in% colnames(data))) {
-      if(id==1)
-        sigma <- array(NA,dim=length(data$d))
+      if (id == 1)
+        sigma <- array(NA, dim = length(data$d))
       sigma[ind] <- data$sdExp[ind]
     } 
   }
