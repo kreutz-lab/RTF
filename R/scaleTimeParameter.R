@@ -7,7 +7,8 @@
 #' @param maxVal Maximum of range the time-dependent variable should be scaled 
 #' to
 #' @param reverse Boolean if scaling should be reversed
-#' @param calcGradient Boolean indicating if gradient should be calculated
+#' @param gradientNames  names of parameters for which derivatives are calculated
+#' "M","h","K" should be part of it.
 #' @export scaleTimeParameter
 #' @examples
 #' t <- c(2, 5, 4, 0.9, 1.2)
@@ -19,32 +20,21 @@ scaleTimeParameter <- function(timeParam, maxVal = NULL, reverse = FALSE,
   if (is.null(maxVal)) {
     message("Please enter maxVal as arguments")
   }
-  # if (!reverse) {
-    if (length(gradientNames)>0) {
-      dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
-      colnames(dtimeParam_dgradNames) <- gradientNames
-      rownames(dtimeParam_dgradNames) <- names(timeParam)
-      
-      dtimeParam_dgradNames[,names(timeParam)] = maxVal
-    } else {
-      timeParam <- timeParam  * maxVal
-    }
-  # } else {
-  #   if (length(gradientNames)>0) {
-  #     dtimeParam_dgradNames <- matrix(0,nrow=length(timeParam),ncol=length(gradientNames))
-  #     colnames(dtimeParam_dgradNames) <- gradientNames
-  #     rownames(dtimeParam_dgradNames) <- names(timeParam)
-  #     
-  #     dtimeParam_dgradNames[,names(timeParam)] <- maxVal 
-  #   } else {
-  #     timeParam <- timeParam * maxVal
-  #   }
-  # }
   
-  if (length(gradientNames)>0) {
-    list(timeParam=dtimeParam_dgradNames, maxVal=maxVal)
+  if (length(gradientNames) > 0) {
+    dtimeParam_dgradNames <- matrix(0, 
+                                    nrow = length(timeParam), 
+                                    ncol = length(gradientNames))
+    colnames(dtimeParam_dgradNames) <- gradientNames
+    rownames(dtimeParam_dgradNames) <- names(timeParam)
+    dtimeParam_dgradNames[,names(timeParam)] <- maxVal
   } else {
-    list(timeParam = timeParam,
-         maxVal = maxVal)
+    timeParam <- timeParam  * maxVal
+  }
+
+  if (length(gradientNames)>0) {
+    list(timeParam = dtimeParam_dgradNames, maxVal = maxVal)
+  } else {
+    list(timeParam = timeParam, maxVal = maxVal)
   }
 }

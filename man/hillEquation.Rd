@@ -26,9 +26,10 @@ hillEquation(
 \item{reciprocal}{Boolean indicating if Hill equation is calculated for
 reciprocal parameter}
 
-\item{gradientNames}{names of parameters for which derivatives are calculated
-"M","h","K" should be part of it
-If provided, then derivatives are calculated instead of the hillEquation itself}
+\item{gradientNames}{names of parameters for which derivatives are 
+calculated. "M","h","K" should be part of it.
+If provided, then derivatives are calculated instead of the hillEquation 
+itself}
 
 \item{minval}{(optional) Numeric, defines the lowest value the result can 
 acquire. Only relevant if reciprocal = TRUE.}

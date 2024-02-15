@@ -19,7 +19,8 @@ to}
 
 \item{reverse}{Boolean if scaling should be reversed}
 
-\item{calcGradient}{Boolean indicating if gradient should be calculated}
+\item{gradientNames}{names of parameters for which derivatives are calculated
+"M","h","K" should be part of it.}
 }
 \value{
 Scaled vector if reverse = FALSE and unscaled timeParam is entered,
