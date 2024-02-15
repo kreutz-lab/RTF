@@ -81,7 +81,7 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
   if (optimObject$optimFunction == "logLikelihood") {
-  
+      
     res <- data$y - getTransientFunctionResult(par = par[names(par) != "sigma"],
                                                t = data$t,
                                                d = d,

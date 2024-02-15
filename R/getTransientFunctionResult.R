@@ -37,9 +37,20 @@ getTransientFunctionResult <- function(par = c(),
   for (v in 1:length(par)) assign(names(par)[v], par[[v]])
 
   # Fixed parameters will overwrite the values in par
+  dpar_dparVorFix <- matrix(0, nrow = length(par), ncol = length(par))
+  rownames(dpar_dparVorFix) <- colnames(dpar_dparVorFix) <- names(par)
+  diag(dpar_dparVorFix) <- 1
   for (v in 1:length(fixed)) {
-    if (!is.na(fixed[[v]])) assign(names(fixed)[v], fixed[[v]])
+    if (!is.na(fixed[[v]])) {
+      assign(names(fixed)[v], fixed[[v]])
+      # if (sum(names(fixed)[v] == names(par)) > 0)
+      #   dpar_dparVorFix[names(fixed)[v]==names(par),
+      #                   names(fixed)[v]==names(par),] <- 0
+    }
   }
+  
+  overlap <- intersect(names(fixed[!is.na(fixed)]), names(par)) 
+  dpar_dparVorFix[names(par) %in% overlap, names(par) %in% overlap] <- 0
 
   if (scale) {
     scaleRes <- scaleTimeParameter(timeParam = t, maxVal = 10/max(t))
@@ -149,7 +160,8 @@ getTransientFunctionResult <- function(par = c(),
     dnonLinTrans_dpar[,"tau"] <- 10^tau/(10^t_prime + 10^tau) - 10^tau/(10^tau + 1)
 
     transientFunctionRes <- signum_TF*A*(1-exp(-alpha*nonLinTransformation)) + signum_TF*B*(1-exp(-alpha*nonLinTransformation))*exp(-gamma*nonLinTransformation) + b
-    
+    dtransFunRes_dnonLinTrans <- matrix(0,nrow=length(transientFunctionRes),ncol=length(nonLinTransformation))
+    diag(dtransFunRes_dnonLinTrans) <- A*alpha*signum_TF*exp(-alpha*nonLinTransformation) + B*gamma*signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1) + B*alpha*signum_TF*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
     dtransFunRes_dpar <- matrix(0,nrow=length(transientFunctionRes),ncol=length(par))
     colnames(dtransFunRes_dpar) <- names(par)
     dtransFunRes_dpar[,"alpha"] <- A*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation) + B*signum_TF*nonLinTransformation*exp(-alpha*nonLinTransformation)*exp(-gamma*nonLinTransformation)
@@ -158,8 +170,18 @@ getTransientFunctionResult <- function(par = c(),
     dtransFunRes_dpar[,"A"] <- -signum_TF*(exp(-alpha*nonLinTransformation) - 1)
     dtransFunRes_dpar[,"B"] <- -signum_TF*exp(-gamma*nonLinTransformation)*(exp(-alpha*nonLinTransformation) - 1)
     
-    dtransFunRes_dpar <- dtransFunRes_dpar + dnonLinTrans_dpar ## Bock
+    dtransFunRes_dpar <- dtransFunRes_dpar + dtransFunRes_dnonLinTrans %*% dnonLinTrans_dpar ## Bock
   } 
+  
+  if (modus == "DoseDependentRetardedTransientDynamics") {
+    # dtransFunRes_dpar dtransFunRes_dpar[,"A"]*dA_dpar
+    # 
+    # dB_dpar <- df_dpar$B
+    # dalpha_dpar <- df_dpar$alpha
+    # dgamma_dpar <- df_dpar$gamma
+    # dtau_dpar
+  }
+  
   if(sum(is.infinite(transientFunctionRes))>0)
     print(transientFunctionRes)
   
@@ -169,7 +191,9 @@ getTransientFunctionResult <- function(par = c(),
   #   
   # }
   if(!calcGradient)
-    transientFunctionRes
+    # set derivates of fixed parameters to zero
+    transientFunctionRes 
   else
-    dtransFunRes_dpar
+    return(dtransFunRes_dpar %*% dpar_dparVorFix) # consider fixing of parameters
+  
 }
