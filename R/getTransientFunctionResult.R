@@ -37,6 +37,9 @@
 #'        7.14, 7.85, 8.57, 9.28, 10)
 #' fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = NA, B = NA,
 #'            b = NA, tau = NA)
+#'  y <- getTransientFunctionResult(par = par, d = d,
+#'              t = t, fixed = fixed, modus = "DoseDependentRetardedTransientDynamics")
+
 
 getTransientFunctionResult <- function(par = c(),
                                        t = NULL,
@@ -110,7 +113,7 @@ getTransientFunctionResult <- function(par = c(),
                                       K_B = K_B,
                                       M_tau = M_tau, 
                                       h_tau = h_tau, 
-                                      K_tau = K_tau), gradientNames = names(par))
+                                      K_tau = K_tau), calcGradient = T)
     dA_dpar <- df_dpar$A
     dB_dpar <- df_dpar$B
     dalpha_dpar <- df_dpar$alpha
