@@ -41,7 +41,7 @@
 #'              # fixed = fixed, 
 #'              modus = "doseDependent")
 
-getTransientFunctionResult <- function(par = c(),
+getTransientFunctionResult <- function(rtfPar = c(),
                                        t = NULL,
                                        # d = NULL,
                                        # fixed = NA,
@@ -191,8 +191,10 @@ getTransientFunctionResult <- function(par = c(),
   dtransFunRes_dparRtf <- dtransFunRes_dparRtf + 
     dtransFunRes_dnonLinTrans %*% dnonLinTrans_dparRtf ## Bock
   
-  dtransFunRes_dpar <- dtransFunRes_dparRtf %*% hillGradient # TODO dtransFunRes_dparRtf %*% drtfParams_dpar 
+  # dtransFunRes_dpar <- dtransFunRes_dparRtf %*% hillGradient # TODO dtransFunRes_dparRtf %*% drtfParams_dpar 
 
+  dtransFunRes_dparRtf
+  
   if (modus == "doseDependent") {
     modus
     # dtransFunRes_dpar dtransFunRes_dpar[,"A"]*dA_dpar
