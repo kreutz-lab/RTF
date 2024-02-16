@@ -29,7 +29,7 @@ getHillResults <- function(d = NULL,
   
   for (v in 1:length(params)) assign(names(params)[v], params[[v]])
   
-  rtfParams <- c("A", "B", "alpha", "gamma", "tau")
+  rtfParams <- c("A", "B", "alpha", "gamma", "tau") # Include "signum_TF"?
   
   for (el in c("d", 
                "M_alpha", "h_alpha", "K_alpha", 

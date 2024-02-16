@@ -4,7 +4,7 @@
 \alias{objFunct}
 \title{Chi square optimization function}
 \usage{
-objFunct(par, data, optimObject, calcGradient = F)
+objFunct(par, data, optimObject, calcGradient = FALSE)
 }
 \arguments{
 \item{par}{Initial values for the parameters to be optimized over.}

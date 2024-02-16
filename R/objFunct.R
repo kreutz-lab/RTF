@@ -51,7 +51,7 @@
 #'                             optimObject = optimObject.tmp,
 #'                             control = optimObject.tmp$control)
 
-objFunct <- function(par, data, optimObject, calcGradient=F) {
+objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- NULL
   
   if (!is.na(optimObject$fixed[["sigma"]])) {
@@ -77,17 +77,19 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
   #                             (((upperReg - lowerReg)^2) * 100))
   
   dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
-                                      reverse = TRUE, calcGradient = T)
+                                      reverse = TRUE, calcGradient = TRUE)
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
   
   
   # Fixed parameters will overwrite the values in par
-  dpar_dparVorFix <- matrix(0, nrow = length(par), ncol = length(par))
-  rownames(dpar_dparVorFix) <- colnames(dpar_dparVorFix) <- names(par)
-  diag(dpar_dparVorFix) <- 1
+  dparAfterFix_dpar <- matrix(0, nrow = length(par), ncol = length(par))
+  rownames(dparAfterFix_dpar) <- colnames(dparAfterFix_dpar) <- names(par)
+  diag(dparAfterFix_dpar) <- 1
+  
+  rtfParamNames <- c("A", "B", "alpha", "gamma", "tau", "signum_TF")
   
   overlap <- intersect(names(fixed[!is.na(fixed)]), names(par)) 
-  dpar_dparVorFix[names(par) %in% overlap, names(par) %in% overlap] <- 0
+  dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
   
   for (v in 1:length(fixed)) {
     if (!is.na(fixed[[v]])# & names(fixed)[v] %in% names(par)
@@ -96,8 +98,6 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
       par[names(fixed)[v]] <- fixed[[v]]
     }
   }
-  
-  rtfParams <- c("A", "B", "alpha", "gamma", "tau")
   
   ds <- unique(d)
   res <- array(NA, dim = length(data$d))
@@ -122,26 +122,22 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
       
     }
     
-    yRtf <-       getTransientFunctionResult(
+    yRtf <- getTransientFunctionResult(
       par = rtfPar,
       t = data$t[ind],
-      # d = ds[id],
-      # fixed = optimObject$fixed,
       modus = optimObject$modus,
-      scale = TRUE,
-      dpar_dparVorFix = dpar_dparVorFix)#,
-    #hillGradient = hillGradient)
+      scale = TRUE, 
+      calcGradient = TRUE)
     
     dyRtf_drtfPar <- getTransientFunctionResult(
       par = rtfPar,
       t = data$t[ind],
-      # d = ds[id],
-      # fixed = optimObject$fixed,
       modus = optimObject$modus,
-      scale = TRUE,
-      dpar_dparVorFix = dpar_dparVorFix, calcGradient = T)
+      scale = TRUE, 
+      calcGradient = TRUE)
     
-    dyRtf_par <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
+    # set derivates of fixed parameters to zero
+    dyRtf_par <- dyRtf_drtfPar %*% drtfPar_dpar %*% dparAfterFix_dpar # length(data$y) x length(par)
     
     res[ind] <- data$y[ind] - yRtf  # entweder mit ind an die richtige Stelle schreiben oder mit yRtf mit rbind so zusammenbauen, dass es zu data$y passt (gleiche dosen und Zeiten in gleicher Zeile)
     dres_dpar[ind,] <- - dyRtf_dpar 

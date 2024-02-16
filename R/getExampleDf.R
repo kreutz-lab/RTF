@@ -2,10 +2,8 @@
 #'
 #' @description Generates an example dataframe with data following an RTF with
 #' predefined parameters plus some added noise.
-#' @return Dataframe with data following an RTF with predefined parameters plus
+#' @return Data frame with data following an RTF with predefined parameters plus
 #' some added noise.
-#' @param modus Modus, "timeDependent" or 
-#' "doseDependent"
 #' @export getExampleDf
 #' @examples
 #' getExampleDf()
@@ -16,9 +14,8 @@ getExampleDf <- function(modus = "timeDependent"){
     
     y <- getTransientFunctionResult(
       t = t,
-      par = c(alpha = 0.004, gamma = 0.0025, A = 1, B = 5, b = 2,
-              tau = 4, signum_TF = 1),
-      modus = "timeDependent") 
+      rtfPar = c(alpha = 0.004, gamma = 0.0025, A = 1, B = 5, b = 2,
+              tau = 4, signum_TF = 1)) 
       
     data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.04))
   } else if (modus == "doseDependent") {
@@ -26,13 +23,14 @@ getExampleDf <- function(modus = "timeDependent"){
     doses <- c(2, 4, 6, 9)
     times <- length(doses)
     
+    # TODO
     vec <- c()
     for (dose in doses) {
       y <- NULL
       y <- getTransientFunctionResult(
         t = t, 
         d = dose,
-        par = c(
+        rtfPar = c(
           M_alpha = 1,
           h_alpha = 0.1,
           K_alpha = 0.03,
@@ -51,7 +49,6 @@ getExampleDf <- function(modus = "timeDependent"){
           b = 0.3,
           signum_TF = 1
         ), 
-        modus = modus,
         scale = FALSE)
       vec <- c(vec, y)
     }

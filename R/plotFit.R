@@ -52,8 +52,7 @@ plotFit <- function(par,
   
   if (modus == 'timeDependent') {
     RTFResVec <- getTransientFunctionResult(t = xi,
-                                            par = par,
-                                            modus = modus)
+                                            rtfPar = par)
     
     RTFResDf <- data.frame(t = xi,
                            y = RTFResVec,
@@ -66,15 +65,13 @@ plotFit <- function(par,
       parTrans[names(parTrans) == "A"] <- 0
     
     susOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                par = parSus,
-                                                modus = modus)
+                                                rtfPar = parSus)
     susOnlyResDf <- data.frame(t = xi,
                                y = susOnlyResVec,
                                Component = "Sustained")
     
     transOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                  par = parTrans,
-                                                  modus = modus)
+                                                  rtfPar = parTrans)
     
     transOnlyResDf <- data.frame(t = xi,
                                  y = transOnlyResVec,
@@ -90,11 +87,10 @@ plotFit <- function(par,
       RTFResVec <- NULL
       dose <- doses[i]
       
+      # TODO
       RTFResVec <- getTransientFunctionResult(
         t = xi,
-        d = dose,
-        par = par,
-        modus = modus
+        par = par
       )
       
       geom_line.lst <- append(geom_line.lst,

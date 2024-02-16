@@ -6,12 +6,8 @@
 \usage{
 getExampleDf(modus = "timeDependent")
 }
-\arguments{
-\item{modus}{Modus, "timeDependent" or 
-"doseDependent"}
-}
 \value{
-Dataframe with data following an RTF with predefined parameters plus
+Data frame with data following an RTF with predefined parameters plus
 some added noise.
 }
 \description{

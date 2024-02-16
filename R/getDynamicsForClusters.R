@@ -45,9 +45,7 @@ getDynamicsForClusters <- function(df, maxTime = 10) {
       id <- rownames(cluster)[rowId]
       functionResVec <- getTransientFunctionResult(
         t = xi,
-        d = 1,
-        par = row,
-        modus = "RetardedTransientDynamics")
+        rtfPar = row)
       
       geom_line.lst <- append(
         geom_line.lst, 

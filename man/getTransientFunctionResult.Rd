@@ -5,32 +5,22 @@
 \title{Calculate RTF results for multiple time points}
 \usage{
 getTransientFunctionResult(
-  par = c(),
+  rtfPar = c(),
   t = NULL,
-  modus = "timeDependent",
   scale = TRUE,
-  calcGradient = FALSE,
-  dpar_dparVorFix = NULL,
-  hillGradient = NULL
+  calcGradient = FALSE
 )
 }
 \arguments{
-\item{par}{Named vector of the parameter values used for RTF.}
+\item{rtfPar}{Named vector of the parameter values used for RTF.}
 
 \item{t}{Vector of time points}
-
-\item{modus}{String indicating if modus 'timeDependent' or
-'ImmediateResponseFunction' should be used}
 
 \item{scale}{Boolean, indicates if time dependent parameters t, tau,
 alpha, and gamma should be scaled}
 
 \item{calcGradient}{Boolean indicating if gradient should be calculated
 (Default: FALSE)}
-
-\item{dpar_dparVorFix}{description}
-
-\item{hillGradient}{description}
 }
 \value{
 Vector of predicted quantitative values resulting from applying RTF
@@ -40,29 +30,10 @@ with the specified parameters to time points given in t.
 Apply RTF with defined parameters for defined time points
 }
 \examples{
-par <- c(alpha = 1.00, gamma = 1.00, A = 1.05,
-         B = 3.05, b = -0.28, tau = -1)
-t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
+rtfPar <- c(alpha = 1.00, gamma = 1.00, A = 1.05,
+         B = 3.05, b = -0.28, tau = -1, signum_TF )
+t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57= 1, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
-# fixed <- c(signum_TF = 1, alpha = NA, gamma = 2.5, A = 3, B = NA,
-#          b = NA, tau = NA)
-modus <- "timeDependent"
-y <- getTransientFunctionResult(par = par,
-                           t = t,
-                           modus = modus)
+y <- getTransientFunctionResult(rtfPar = rtfPar, t = t)
 plot(t, y)
-
-# d = 4
-par = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
-        M_gamma = 1, h_gamma = 3, K_gamma = 2,
-        M_A = 4, h_A = 2, K_A = 1,
-        M_B = 2, h_B = 3, K_B = 1,
-        M_tau = 2, h_tau = 3, K_tau = 2, b = 1)
-t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
-       7.14, 7.85, 8.57, 9.28, 10)
-# fixed <- c(par * NA, signum_TF = 1, h_gamma = 4)
- y <- getTransientFunctionResult(par = par, # d = d,
-             t = t, 
-             # fixed = fixed, 
-             modus = "doseDependent")
 }
