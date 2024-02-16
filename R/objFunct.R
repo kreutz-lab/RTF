@@ -107,24 +107,44 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
     hillF <- hillGradient <- NULL
     if (optimObject$modus == "doseDependent") {
         hillF <- getHillResults(d = ds[id], params = par)
-        hillGradient <- getHillResults(d = ds[id],
-                                          params = par, calcGradient = TRUE)
+        dhillF_dpar <- getHillResults(d = ds[id],
+                                          params = par, calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
         hillF
+        # rtfPar <- .. hillF...
+        # drtfPar_dpar <- drtfPar_dhillF %*% dhillF_dpar
         for (name in names(hillF)) {
           par[names(hillF)[name]] <- hillF[[name]]
         }
     }
+    else{
+      rtfPar <- par
+      drtfPar_dpar <- ... # length(rtfPara) x length(par), length(par) so was wie 7
+      
+    }
     
-    res[ind] <- data$y[ind] - 
-      getTransientFunctionResult(
-        par = par[names(par) != "sigma"],
-        t = data$t[ind],
-        # d = ds[id],
-        # fixed = optimObject$fixed,
-        modus = optimObject$modus,
-        scale = TRUE,
-        dpar_dparVorFix = dpar_dparVorFix,
-        hillGradient = hillGradient)
+    yRtf <-       getTransientFunctionResult(
+      par = rtfPar,
+      t = data$t[ind],
+      # d = ds[id],
+      # fixed = optimObject$fixed,
+      modus = optimObject$modus,
+      scale = TRUE,
+      dpar_dparVorFix = dpar_dparVorFix)#,
+    #hillGradient = hillGradient)
+    
+    dyRtf_drtfPar <- getTransientFunctionResult(
+      par = rtfPar,
+      t = data$t[ind],
+      # d = ds[id],
+      # fixed = optimObject$fixed,
+      modus = optimObject$modus,
+      scale = TRUE,
+      dpar_dparVorFix = dpar_dparVorFix, calcGradient = T)
+    
+    dyRtf_par <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
+    
+    res[ind] <- data$y[ind] - yRtf  # entweder mit ind an die richtige Stelle schreiben oder mit yRtf mit rbind so zusammenbauen, dass es zu data$y passt (gleiche dosen und Zeiten in gleicher Zeile)
+    dres_dpar[ind,] <- - dyRtf_dpar 
     
     if (("sdExp" %in% colnames(data))) {
       if (id == 1)
@@ -133,6 +153,7 @@ objFunct <- function(par, data, optimObject, calcGradient=F) {
     } 
   }
   retval <- sum(-2 * log10(stats::dnorm(res, mean = 0, sd = sigma))) 
+  dretval_dpar <- 
   
   # retval <- retval + regularizationTerm 
   
