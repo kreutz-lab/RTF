@@ -7,6 +7,7 @@
 getTransientFunctionResult(
   rtfPar = c(),
   t = NULL,
+  signum_TF = 1,
   scale = TRUE,
   calcGradient = FALSE
 )
@@ -15,6 +16,8 @@ getTransientFunctionResult(
 \item{rtfPar}{Named vector of the parameter values used for RTF.}
 
 \item{t}{Vector of time points}
+
+\item{signum_TF}{Value of signum_TF (-1 or 1, Default: 1)}
 
 \item{scale}{Boolean, indicates if time dependent parameters t, tau,
 alpha, and gamma should be scaled}
@@ -34,6 +37,6 @@ rtfPar <- c(alpha = 1.00, gamma = 1.00, A = 1.05,
          B = 3.05, b = -0.28, tau = -1, signum_TF )
 t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57= 1, 4.28, 5, 5.71, 6.42,
              7.14, 7.85, 8.57, 9.28, 10)
-y <- getTransientFunctionResult(rtfPar = rtfPar, t = t)
+y <- getTransientFunctionResult(rtfPar = rtfPar, t = t, signum_TF = 1)
 plot(t, y)
 }

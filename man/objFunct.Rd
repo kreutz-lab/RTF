@@ -13,6 +13,9 @@ objFunct(par, data, optimObject, calcGradient = FALSE)
 value) and optionally 'sdExp' (standard deviation of the experimental data)}
 
 \item{optimObject}{optimObject}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated
+(Default: FALSE)}
 }
 \value{
 List of best set of parameters, optimization value, etc.

@@ -7,6 +7,8 @@
 #' taken of the model parameters.
 #' @param reverse Boolean indicating if 10^ should be taken instead of log10() 
 #' (Default: FALSE).
+#' @param calcGradient Boolean indicating if gradient should be calculated
+#' (Default: FALSE)
 #' @export applyLog10ForTakeLog10
 #' @examples
 #' data <- getExampleDf()
@@ -25,32 +27,30 @@
 #' applyLog10ForTakeLog10(x,takeLog10 = takeLog10)
 #' applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient=T)
 
-applyLog10ForTakeLog10 <- function(x, takeLog10, reverse = FALSE, calcGradient=F) {
+applyLog10ForTakeLog10 <- function(x = c(), takeLog10 = c(), reverse = FALSE, 
+                                   calcGradient = FALSE) {
   
   y <- x
-  dy_dx <- matrix(0,nrow=length(y),ncol=length(x))
+  dy_dx <- matrix(0, nrow = length(y), ncol = length(x))
   diag(dy_dx) <- 1
   diagAll <- diag(dy_dx)
   
   bol <- names(x) %in% names(which(takeLog10))
   
   if (reverse) {
-    y[bol] <-
-      10^x[bol]
-    if(calcGradient){
-      diagAll[bol] <- 10^x[bol]*log(10)
-      diag(dy_dx) <- diagAll
-    }
-    
+    y[bol] <- 10^x[bol]
+    if (calcGradient) diagAll[bol] <- 10^x[bol] * log(10)
   } else {
     y[bol] <- log10(x[bol])
-    if(calcGradient){
-      diagAll[bol] <- 1/(x[bol]*log(10))
-      diag(dy_dx) <- diagAll
-    }
+    if (calcGradient) diagAll[bol] <- 1 / (x[bol] * log(10))
   }
-  if(!calcGradient)
-    return(y)
-  else
-    return(dy_dx)
+  
+  if (calcGradient) {
+    diag(dy_dx) <- diagAll
+    colnames(dy_dx) <- names(x)
+    dy_dx
+  } else {
+    names(y) <- names(x)
+    y
+  }
 }

@@ -4,7 +4,12 @@
 \alias{applyLog10ForTakeLog10}
 \title{Take Log10(x) or 10^(x) for a vector x}
 \usage{
-applyLog10ForTakeLog10(x, takeLog10, reverse = FALSE, calcGradient = F)
+applyLog10ForTakeLog10(
+  x = c(),
+  takeLog10 = c(),
+  reverse = FALSE,
+  calcGradient = FALSE
+)
 }
 \arguments{
 \item{x}{Named vector with parameter values}
@@ -14,6 +19,9 @@ taken of the model parameters.}
 
 \item{reverse}{Boolean indicating if 10^ should be taken instead of log10() 
 (Default: FALSE).}
+
+\item{calcGradient}{Boolean indicating if gradient should be calculated
+(Default: FALSE)}
 }
 \value{
 Named vector where the parameters, which are

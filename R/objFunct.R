@@ -7,6 +7,8 @@
 #' @param data Data frame containing columns named 't' (time), 'y' (quantitative
 #' value) and optionally 'sdExp' (standard deviation of the experimental data)
 #' @param optimObject optimObject
+#' @param calcGradient Boolean indicating if gradient should be calculated
+#' (Default: FALSE)
 #' @export objFunct
 #' @examples
 #' data <- getExampleDf()
@@ -54,19 +56,36 @@
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- NULL
   
-  if (!is.na(optimObject$fixed[["sigma"]])) {
-    sigma <- optimObject$fixed[["sigma"]]
+  fixed <- optimObject[["fixed"]]
+  signum_TF <- fixed[["signum_TF"]]
+  if (!is.na(fixed[["sigma"]])) {
+    sigma <- fixed[["sigma"]]
   } else {
     sigma <- par[["sigma"]]
   }
+  
+  allParamNames <- setdiff(names(fixed), c("signum_TF", "sigma"))
+  rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
+  
+  fixed <- fixed[allParamNames]
+  par <- par[setdiff(names(par), "sigma")]
   
   data <- data[stats::complete.cases(data), ] 
   
   if ("d" %in% colnames(data)) {
     d <- data$d
   } else {
-    d <- NULL
+    d <- rep(1, nrow(data))
   }
+  
+  # Fixed parameters will overwrite the values in par
+  for (v in 1:length(fixed)) {
+    if (!is.na(fixed[[v]])) {
+      par[names(fixed)[v]] <- fixed[[v]]
+    }
+  }
+  par <- par[allParamNames] # Bring par in correct order
+  
   
   # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
   # upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
@@ -77,31 +96,22 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   #                             (((upperReg - lowerReg)^2) * 100))
   
   dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
-                                      reverse = TRUE, calcGradient = TRUE)
-  par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], reverse = TRUE)
+                                      reverse = TRUE, calcGradient = TRUE) # TODO
+  par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
+                                reverse = TRUE, calcGradient = FALSE)
   
   
-  # Fixed parameters will overwrite the values in par
   dparAfterFix_dpar <- matrix(0, nrow = length(par), ncol = length(par))
   rownames(dparAfterFix_dpar) <- colnames(dparAfterFix_dpar) <- names(par)
   diag(dparAfterFix_dpar) <- 1
-  
-  rtfParamNames <- c("A", "B", "alpha", "gamma", "tau", "signum_TF")
-  
-  overlap <- intersect(names(fixed[!is.na(fixed)]), names(par)) 
+  overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
   dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
   
-  for (v in 1:length(fixed)) {
-    if (!is.na(fixed[[v]])# & names(fixed)[v] %in% names(par)
-    ) {
-      # assign(names(fixed)[v], fixed[[v]])
-      par[names(fixed)[v]] <- fixed[[v]]
-    }
-  }
   
   ds <- unique(d)
-  res <- array(NA, dim = length(data$d))
-  for (id in 1:length(ds)) { # loop over all doses TODO
+  res <- array(NA, dim = length(d))
+  dres_dpar <- matrix(nrow = length(d), ncol = length(rtfParamNames))
+  for (id in 1:length(ds)) { # loop over all doses
     ind <- which(d == ds[id]) # indices where dose matches
     
     hillF <- hillGradient <- NULL
@@ -115,36 +125,36 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         for (name in names(hillF)) {
           par[names(hillF)[name]] <- hillF[[name]]
         }
-    }
-    else{
+    } else {
       rtfPar <- par
-      drtfPar_dpar <- ... # length(rtfPara) x length(par), length(par) so was wie 7
+      drtfPar_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
+      diag(drtfPar_dpar) <- 1 # length(rtfPara) x length(par), length(par) so was wie 7 
       
     }
     
     yRtf <- getTransientFunctionResult(
-      par = rtfPar,
+      rtfPar = rtfPar,
       t = data$t[ind],
-      modus = optimObject$modus,
+      signum_TF = signum_TF, 
       scale = TRUE, 
-      calcGradient = TRUE)
+      calcGradient = FALSE)
     
     dyRtf_drtfPar <- getTransientFunctionResult(
-      par = rtfPar,
+      rtfPar = rtfPar,
       t = data$t[ind],
-      modus = optimObject$modus,
+      signum_TF = signum_TF,
       scale = TRUE, 
       calcGradient = TRUE)
     
     # set derivates of fixed parameters to zero
-    dyRtf_par <- dyRtf_drtfPar %*% drtfPar_dpar %*% dparAfterFix_dpar # length(data$y) x length(par)
+    dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar %*% dparAfterFix_dpar # length(data$y) x length(par)
     
     res[ind] <- data$y[ind] - yRtf  # entweder mit ind an die richtige Stelle schreiben oder mit yRtf mit rbind so zusammenbauen, dass es zu data$y passt (gleiche dosen und Zeiten in gleicher Zeile)
-    dres_dpar[ind,] <- - dyRtf_dpar 
+    dres_dpar[ind,] <- -dyRtf_dpar 
     
     if (("sdExp" %in% colnames(data))) {
       if (id == 1)
-        sigma <- array(NA, dim = length(data$d))
+        sigma <- array(NA, dim = length(d))
       sigma[ind] <- data$sdExp[ind]
     } 
   }
