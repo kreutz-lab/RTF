@@ -51,6 +51,7 @@
 #'                             upper = optimObject.tmp$ub.vec,
 #'                             data = optimObject.tmp$data,
 #'                             optimObject = optimObject.tmp,
+#'                             calcGradient = TRUE,
 #'                             control = optimObject.tmp$control)
 
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
@@ -95,8 +96,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   # regularizationTerm <- sum(((par - meanReg)^2) /
   #                             (((upperReg - lowerReg)^2) * 100))
   
-  dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
-                                      reverse = TRUE, calcGradient = TRUE) # TODO
+  if (calcGradient) {
+    dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
+                                        reverse = TRUE, calcGradient = TRUE)
+  }
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
                                 reverse = TRUE, calcGradient = FALSE)
   
@@ -156,11 +159,39 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       if (id == 1)
         sigma <- array(NA, dim = length(d))
       sigma[ind] <- data$sdExp[ind]
-    } 
+      dretval_dsigma <- 0
+      dretval_dres <- sum((2*res[ind])/sigma[ind]^2)
+    } else {
+      dretval_dsigma <- 
+        sum(2 * sigma * exp(res[ind]^2 / (2 * sigma^2)) * 
+              (exp(-res[ind]^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
+                 (res[ind]^2 * exp(-res[ind]^2 / (2 * sigma^2))) / 
+                 (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2))
+      dretval_dres <- sum((2*res[ind])/sigma^2)
+    }
+    
+    
   }
-  retval <- sum(-2 * log10(stats::dnorm(res, mean = 0, sd = sigma))) 
-  dretval_dpar <- 
   
+  # stats::dnorm: (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
+  # retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
+  
+  
+
+  # >> diff(-2 * log((exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))), sigma)
+  #  2*sigma*exp(res^2/(2*sigma^2))*(exp(-res^2/(2*sigma^2))/(sigma^2*(2*pi)^(1/2)) - (res^2*exp(-res^2/(2*sigma^2)))/(sigma^4*(2*pi)^(1/2)))*(2*pi)^(1/2)
+  #>> diff(-2 * log((exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))), res)
+  #  (2*res)/sigma^2
+  
+  retval <- sum(-2 * log(
+    (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
+    )) 
+
+  
+  
+  dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar
+  
+  dretval_dpar <- dretval_dpar %*% dpar_dpar # account log-trsf
   # retval <- retval + regularizationTerm 
   
   if (retval > 10^20) {
