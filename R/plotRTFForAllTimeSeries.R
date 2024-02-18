@@ -9,6 +9,8 @@
 #' @param width Integer indicating page width
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
+#' @param plotFitsToSingleFileExtension Image file extension, if 
+#' plotFitsToSingleFile=TRUE (Default: jpg.)
 #' @param plotFitOnly Plot fit only without additional information as provided 
 #' using function plotRTF().
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
@@ -24,8 +26,14 @@
 plotRTFForAllTimeSeries <- function(res.lst, fileString = "", 
                                  height = 12, width = 10,
                                  plotFitsToSingleFile = TRUE,
+                                 plotFitsToSingleFileExtension = "jpg", 
                                  plotFitOnly = FALSE,
                                  plotAllPointsWaterfall = FALSE) {
+  
+  if (plotFitsToSingleFile & !(plotFitsToSingleFileExtension %in% 
+                               c("jpg", "png", "pdf", "svg"))) {
+    stop("plotFitsToSingleFileExtension should be one of the following: 'jpg', 'png', 'pdf', 'svg'.")
+  }
   
   if (plotFitsToSingleFile)
     grDevices::pdf(paste0("modelPlots_", fileString,".pdf"), height = height, 
@@ -34,10 +42,12 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
     el <- res.lst[[i]]
     title <- names(res.lst)[i]
     
-    if (!plotFitsToSingleFile)
-      grDevices::pdf(paste0("modelPlot_", gsub("/", "_", title),".pdf"), 
+    if (!plotFitsToSingleFile) {
+      grDevices::pdf(paste0("modelPlot_", gsub("/", "_", title),".", 
+                            plotFitsToSingleFileExtension), 
                      height = height, 
                      width = width)
+    }
     
     if (plotFitOnly) {
       optimObject <- el$finalModel

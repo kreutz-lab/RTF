@@ -10,6 +10,7 @@ plotRTFForAllTimeSeries(
   height = 12,
   width = 10,
   plotFitsToSingleFile = TRUE,
+  plotFitsToSingleFileExtension = "jpg",
   plotFitOnly = FALSE,
   plotAllPointsWaterfall = FALSE
 )
@@ -25,6 +26,9 @@ plotRTFForAllTimeSeries(
 
 \item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
 single file.}
+
+\item{plotFitsToSingleFileExtension}{Image file extension, if 
+plotFitsToSingleFile=TRUE (Default: jpg.)}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided 
 using function plotRTF().}

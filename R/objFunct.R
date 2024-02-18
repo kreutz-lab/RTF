@@ -160,14 +160,14 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         sigma <- array(NA, dim = length(d))
       sigma[ind] <- data$sdExp[ind]
       dretval_dsigma <- 0
-      dretval_dres <- sum((2*res[ind])/sigma[ind]^2)
+      dretval_dres <- sum((2 * res[ind]) / sigma[ind]^2)
     } else {
       dretval_dsigma <- 
         sum(2 * sigma * exp(res[ind]^2 / (2 * sigma^2)) * 
               (exp(-res[ind]^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
                  (res[ind]^2 * exp(-res[ind]^2 / (2 * sigma^2))) / 
                  (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2))
-      dretval_dres <- sum((2*res[ind])/sigma^2)
+      dretval_dres <- sum((2 * res[ind]) / sigma^2)
     }
     
     
@@ -175,8 +175,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   
   # stats::dnorm: (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
   # retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
-  
-  
 
   # >> diff(-2 * log((exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))), sigma)
   #  2*sigma*exp(res^2/(2*sigma^2))*(exp(-res^2/(2*sigma^2))/(sigma^2*(2*pi)^(1/2)) - (res^2*exp(-res^2/(2*sigma^2)))/(sigma^4*(2*pi)^(1/2)))*(2*pi)^(1/2)
@@ -186,8 +184,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- sum(-2 * log(
     (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
     )) 
-
-  
   
   dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar
   
