@@ -1,5 +1,4 @@
 
-setwd("/Users/ebrombacher/Documents/PhD/RTFLowDimensional/PEtab")
 library(plotly)
 library(RTF)
 
