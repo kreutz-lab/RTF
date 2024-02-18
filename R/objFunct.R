@@ -166,7 +166,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         sum(2 * sigma * exp(res[ind]^2 / (2 * sigma^2)) * 
               (exp(-res[ind]^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
                  (res[ind]^2 * exp(-res[ind]^2 / (2 * sigma^2))) / 
-                 (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2))
+                 (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)) 
+                # TODO
+                # NaN = Inf * 0, because 2 * sigma * exp(res[ind]^2 / (2 * sigma^2))
+                # can be Inf 
       dretval_dres <- sum((2 * res[ind]) / sigma^2)
     }
     
