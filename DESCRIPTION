@@ -14,7 +14,7 @@ Authors@R:
 Description: Fitting of retarded transient function to time resolved data.
 Imports: 
     stats, ggplot2, reshape2, readxl, patchwork, grDevices, dplyr, NbClust, 
-    umap, tibble
+    umap, tibble, plotly
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true

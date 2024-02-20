@@ -1,6 +1,6 @@
 
-library(plotly)
-library(RTF)
+# library(plotly)
+# library(RTF)
 
 # get molecular data
 load("almadenParams.rda")
@@ -31,7 +31,7 @@ dp$IMG_PATH2 <- sapply(dp$IMG_PATH, function(x) {base64enc::dataURI(file = x )})
 ############################
 # https://stackoverflow.com/a/77043374
 
-library(plotly)
+# library(plotly)
 
 d3 <- htmltools::htmlDependency(
   "d3", "7.8.5",
