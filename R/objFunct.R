@@ -57,6 +57,8 @@
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- NULL
   
+  parOrder <- names(par)
+  
   fixed <- optimObject[["fixed"]]
   signum_TF <- fixed[["signum_TF"]]
   if (!is.na(fixed[["sigma"]])) {
@@ -114,6 +116,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   ds <- unique(d)
   res <- array(NA, dim = length(d))
   dres_dpar <- matrix(nrow = length(d), ncol = length(rtfParamNames))
+  
+  dretval_dres <- matrix(nrow = length(d), ncol = 1)
   for (id in 1:length(ds)) { # loop over all doses
     ind <- which(d == ds[id]) # indices where dose matches
     
@@ -121,7 +125,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     if (optimObject$modus == "doseDependent") {
         hillF <- getHillResults(d = ds[id], params = par)
         dhillF_dpar <- getHillResults(d = ds[id],
-                                          params = par, calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
+                                      params = par,
+                                      calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
         hillF
         # rtfPar <- .. hillF...
         # drtfPar_dpar <- drtfPar_dhillF %*% dhillF_dpar
@@ -160,17 +165,20 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         sigma <- array(NA, dim = length(d))
       sigma[ind] <- data$sdExp[ind]
       dretval_dsigma <- 0
-      dretval_dres <- sum((2 * res[ind]) / sigma[ind]^2)
+      dretval_dres[ind,] <- sum((2 * res[ind]) / sigma[ind]^2)
     } else {
+      
+      tmp.res <- exp(res[ind]^2 / (2 * sigma^2))
+      tmp.res[is.infinite(tmp.res)] <- 10^20
       dretval_dsigma <- 
-        sum(2 * sigma * exp(res[ind]^2 / (2 * sigma^2)) * 
+        sum(2 * sigma * tmp.res * 
               (exp(-res[ind]^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
                  (res[ind]^2 * exp(-res[ind]^2 / (2 * sigma^2))) / 
                  (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)) 
                 # TODO
                 # NaN = Inf * 0, because 2 * sigma * exp(res[ind]^2 / (2 * sigma^2))
                 # can be Inf 
-      dretval_dres <- sum((2 * res[ind]) / sigma^2)
+      dretval_dres[ind,] <- sum((2 * res[ind]) / sigma^2) # TODO Correct with ind?
     }
     
     
@@ -188,9 +196,28 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
     )) 
   
-  dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar
+  dretval_dpar <- t(dretval_dres) %*% dres_dpar 
+  colnames(dretval_dpar) <- names(par)
   
-  dretval_dpar <- dretval_dpar %*% dpar_dpar # account log-trsf
+  dsigma_dpar <- t(array(0, dim = length(parOrder)))
+  colnames(dsigma_dpar) <- parOrder
+  dsigma_dpar[parOrder == "sigma"] <- 1
+  
+  v3 <- c(dretval_dpar[1,], (dretval_dsigma %*% dsigma_dpar)[1,])
+  dretval_dpar <- tapply(v3, names(v3), sum) # Sum elements of same name in  named vectors
+  dretval_dpar <- dretval_dpar[parOrder]
+  # dretval_dpar <- dretval_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar = 1 x length(par) mit 1 da wo names(par)=="sigma"
+  
+  colNamesdpar_dpar <- colnames(dpar_dpar) 
+  dpar_dpar2 <- cbind(dpar_dpar, rep(0, nrow(dpar_dpar)))
+  dpar_dpar2 <- rbind(dpar_dpar2, c(rep(0, ncol(dpar_dpar2) - 1), 1))
+  colnames(dpar_dpar2) <- c(colNamesdpar_dpar, "sigma")
+  
+  
+  rownames(dpar_dpar2) <- colnames(dpar_dpar2)
+  dpar_dpar2 <- dpar_dpar2[parOrder, parOrder]
+  
+  dretval_dpar <- dretval_dpar %*% dpar_dpar2 # account log-trsf, sigma by initiation is not logarithmized by initiation
   # retval <- retval + regularizationTerm 
   
   if (retval > 10^20) {
