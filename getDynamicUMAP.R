@@ -40,22 +40,24 @@ d3 <- htmltools::htmlDependency(
 )
 
 js <- '
-function(el) {
+function(el, x, data) {
   var tooltip = d3.select("#" + el.id + " .svg-container")
     .append("div")
     .attr("class", "my-custom-tooltip");
 
   el.on("plotly_hover", function(d) {
     var pt = d.points[0];
-    var x = pt.xaxis.range[0];
-    var y = pt.yaxis.range[1];
-    var xPixel = pt.xaxis.l2p(x) + pt.xaxis._offset;
-    var yPixel = pt.yaxis.l2p(y) + pt.yaxis._offset;
+    // var x = pt.xaxis.range[0];
+    // var y = pt.yaxis.range[1];
+    // var xPixel = pt.xaxis.l2p(x) + pt.xaxis._offset;
+    // var yPixel = pt.yaxis.l2p(y) + pt.yaxis._offset;
     var img = "<img src=\\\"" +  pt.customdata + "\\\" width=150>";
     tooltip.html(img)
       .style("position", "absolute")
-      .style("left", xPixel + "px")
-      .style("top", yPixel + "px");
+      // .style("left", xPixel + "px")
+      // .style("top", yPixel + "px");
+      .style("left", data.left + "px")
+      .style("top", data.top + "px");
     tooltip.transition()
       .duration(300)
       .style("opacity", 1);
@@ -101,7 +103,10 @@ if (colorID == "conditionID") {
                               text = ~speciesID) 
 }
 
-plt2 <- plt2 %>% htmlwidgets::onRender(js)
+# modify 'left' and 'top' to adjust position of image
+left <- 0
+top <- 0
+plt2 <- plt2 %>% htmlwidgets::onRender(js, data = list(left = left, top = top))
 
 plt2$dependencies <- c(plt2$dependencies, list(d3))
 
