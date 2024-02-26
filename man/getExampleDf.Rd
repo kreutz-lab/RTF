@@ -6,6 +6,10 @@
 \usage{
 getExampleDf(modus = "timeDependent")
 }
+\arguments{
+\item{modus}{String indicating modus. Either "timeDependent" or 
+"doseDependent". Default: "timeDependent"}
+}
 \value{
 Data frame with data following an RTF with predefined parameters plus
 some added noise.

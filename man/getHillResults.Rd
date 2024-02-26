@@ -29,10 +29,10 @@ Generate data frame for A, B, alpha, gamma, and
 tau for one or multiple defined doses
 }
 \examples{
-df <- getHillResults(d = c(2, 6),
+df <- getHillResults(d = 2,
                      params = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
                                 M_gamma = 1, h_gamma = 3, K_gamma = 2,
                                 M_A = 4, h_A = 2, K_A = 1,
                                 M_B = 2, h_B = 3, K_B = 1,
-                                M_tau = 2, h_tau = 3, K_tau = 2))
+                                M_tau = 2, h_tau = 3, K_tau = 2, b = 1))
 }

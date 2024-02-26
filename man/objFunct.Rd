@@ -25,11 +25,12 @@ See stats::optim for more details.
 Chi square optimization function
 }
 \examples{
-data <- getExampleDf()
+modus <- "doseDependent" # "timeDependent"
+data <- getExampleDf(modus = modus)
 optimObject.orig <- initializeOptimObject(data,
-                        modus = 'RetardedTransientDynamics')
+                        modus = modus)
 optimObject.orig$fixed[["signum_TF"]] <- 1
-optimObject.orig$fixed[["gamma"]] <- 2
+optimObject.orig$fixed[["M_gamma"]] <- 0.5 # optimObject.orig$fixed[["gamma"]] <- 2
 nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =
@@ -40,23 +41,71 @@ initialGuess.vec.lst <- getInitialGuessVec(
                             nInitialGuesses = nInitialGuesses
  )
 optimObject.tmp <- optimObject.orig
+paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
 
+pars.tmp <- c()
 # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
-for (el in
-      c("alpha", "gamma", "A", "B", "b", "tau", "sigma")){
-  if (!is.na(optimObject.tmp$fixed[[el]])){
-    optimObject.tmp$lb.vec <-
-         optimObject.tmp$lb.vec[-which(names(optimObject.tmp$lb.vec) == el)]
-    optimObject.tmp$ub.vec <-
-         optimObject.tmp$ub.vec[-which(names(optimObject.tmp$ub.vec) == el)]
-
+for (el in paramsToBeFitted) {
+  if (!is.na(optimObject.tmp$fixed[[el]])) {
+    nam <- names(pars.tmp)
+    pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
+    names(pars.tmp) <- c(nam, el)
+    optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[
+      -which(names(optimObject.tmp$lb.vec) == el)]
+    optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[
+      -which(names(optimObject.tmp$ub.vec) == el)]
+    
     # remove from each sublist in initialGuess.vec.lst
     initialGuess.vec.lst <- lapply(initialGuess.vec.lst,
-                                       function(x) x[-which(names(x) == el)])
+                                   function(x) x[-which(names(x) == el)])
   }
 }
 
+takeLog10 <- optimObject.tmp$takeLog10 
+
+lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
+upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
+
+# Take logarithm of fixed parameters for which takeLog10 = TRUE
+fixed <- optimObject.tmp$fixed
+intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), 
+                                        names(which(takeLog10)))
+fixedAndTakeLog10 <- rep(NA, length(takeLog10))
+names(fixedAndTakeLog10) <- names(takeLog10)
+fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE
+optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
+
 vec <- initialGuess.vec.lst[[1]]
+
+vec <- applyLog10ForTakeLog10(vec, takeLog10)
+parscale <- rep.int(1,length(vec))
+names(parscale) <- names(vec)
+rangeY <- max(optimObject.tmp$data$y, na.rm = TRUE) - 
+  min(optimObject.tmp$data$y, na.rm = TRUE)
+
+for (parameter in c("A", "B", "b", "sigma", "M_A", "M_B")) {
+  if (parameter \%in\% names(vec)) parscale[parameter] <- rangeY
+}
+
+if (optimObject.tmp$modus != "doseDependent") {
+  # ndeps
+  ndeps <- vec
+  for (paramName in names(ndeps)) {
+    if (takeLog10[[paramName]]) {
+    ndeps[[paramName]] <- min(1e-3, lower[[paramName]])
+    } else {
+      ndeps[[paramName]] <- min(
+        1e-3, (upper[[paramName]] - lower[[paramName]]) * 1e-5)
+    }
+  }
+  
+  optimObject.tmp$control <- append(optimObject.tmp$control,
+                                    list(parscale = parscale,
+                                         ndeps = ndeps))
+} else {
+  optimObject.tmp$control <- append(optimObject.tmp$control,
+                                    list(parscale = parscale))
+}
 
 optimResTmp <- stats::optim(par = vec,
                             fn = objFunct,

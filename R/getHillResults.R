@@ -16,7 +16,7 @@
 #' (Default: FALSE)
 #' @export getHillResults
 #' @examples
-#' df <- getHillResults(d = c(2, 6),
+#' df <- getHillResults(d = 2,
 #'                      params = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
 #'                                 M_gamma = 1, h_gamma = 3, K_gamma = 2,
 #'                                 M_A = 4, h_A = 2, K_A = 1,
@@ -68,7 +68,6 @@ getHillResults <- function(d = NULL,
     }
     drtfParams_dparams["b", "b"] <- 1
     
-    if (length(parOrder) > 0) drtfParams_dparams[]
     return(drtfParams_dparams)
     
   } else {

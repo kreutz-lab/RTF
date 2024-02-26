@@ -36,8 +36,7 @@ RTF with dose-response dependency
 'y' for the quantitative value, and 'd' for dose):
 
 ```
-data.doseResponse <- getExampleDf(
-                             modus = "doseDependent")
+data.doseResponse <- getExampleDf(modus = "doseDependent")
 plotData(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse, 
                           modus = "doseDependent",

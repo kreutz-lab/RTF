@@ -4,6 +4,8 @@
 #' predefined parameters plus some added noise.
 #' @return Data frame with data following an RTF with predefined parameters plus
 #' some added noise.
+#' @param modus String indicating modus. Either "timeDependent" or 
+#' "doseDependent". Default: "timeDependent"
 #' @export getExampleDf
 #' @examples
 #' getExampleDf()
@@ -26,30 +28,31 @@ getExampleDf <- function(modus = "timeDependent"){
     # TODO
     vec <- c()
     for (dose in doses) {
+      
+      par <- c(M_alpha = 1,
+               h_alpha = 0.1,
+               K_alpha = 0.03,
+               M_gamma = 0.5,
+               h_gamma = 0.2,
+               K_gamma = 0.01,
+               M_A = 1,
+               h_A = 10,
+               K_A = 0.2, 
+               M_B = 6 * dose,
+               h_B = 1.5,
+               K_B = 8,
+               M_tau = 4,
+               h_tau = 6, 
+               K_tau = 20,
+               b = 0.3)
+      rtfPar <- getHillResults(d = dose, params = par)
+      
       y <- NULL
       y <- getTransientFunctionResult(
         t = t, 
-        d = dose,
-        rtfPar = c(
-          M_alpha = 1,
-          h_alpha = 0.1,
-          K_alpha = 0.03,
-          M_gamma = 0.5,
-          h_gamma = 0.2,
-          K_gamma = 0.01,
-          M_A = 1,
-          h_A = 10,
-          K_A = 0.2, 
-          M_B = 6 * dose,
-          h_B = 1.5,
-          K_B = 8,
-          M_tau = 4,
-          h_tau = 6, 
-          K_tau = 20,
-          b = 0.3,
-          signum_TF = 1
-        ), 
-        scale = FALSE)
+        rtfPar = rtfPar,
+        scale = FALSE,
+        signum_TF = 1)
       vec <- c(vec, y)
     }
     
