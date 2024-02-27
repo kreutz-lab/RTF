@@ -218,7 +218,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   
   ds <- unique(d)
   res <- array(NA, dim = length(d))
-  dres_dpar <- matrix(nrow = length(d), ncol = length(rtfParamNames))
+  dres_dpar <- matrix(nrow = length(d), ncol = length(parOrder))
+  colnames(dres_dpar) <- names(parOrder)
   
   dretval_dres <- matrix(nrow = length(d), ncol = 1)
   for (id in 1:length(ds)) { # loop over all doses
@@ -231,11 +232,11 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
                                       params = par,
                                       calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
         # hillF
-        # rtfPar <- .. hillF... # TODO: rtfPar
-        # drtfPar_dpar <- drtfPar_dhillF %*% dhillF_dpar # TODO: drtfPar_dhillF
-        for (name in names(hillF)) {
-          par[names(hillF)[name]] <- hillF[[name]]
-        }
+        rtfPar <- hillF # TODO: rtfPar
+        drtfPar_dpar <- dhillF_dpar # drtfPar_dhillF %*% dhillF_dpar # TODO: drtfPar_dhillF
+        # for (name in names(hillF)) {
+        #   par[names(hillF)[name]] <- hillF[[name]]
+        # }
     } else {
       rtfPar <- par
       drtfPar_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
@@ -267,21 +268,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       if (id == 1)
         sigma <- array(NA, dim = length(d))
       sigma[ind] <- data$sdExp[ind]
-      dretval_dsigma <- 0
-      dretval_dres[ind,] <- sum((2 * res[ind]) / sigma[ind]^2)
-    } else {
-      
-      tmp.res <- exp(res[ind]^2 / (2 * sigma^2))
-      tmp.res[is.infinite(tmp.res)] <- 10^20
-      dretval_dsigma <- 
-        sum(2 * sigma * tmp.res * 
-              (exp(-res[ind]^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
-                 (res[ind]^2 * exp(-res[ind]^2 / (2 * sigma^2))) / 
-                 (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)) 
-                # TODO
-                # NaN = Inf * 0, because 2 * sigma * exp(res[ind]^2 / (2 * sigma^2))
-                # can be Inf 
-      dretval_dres[ind,] <- sum((2 * res[ind]) / sigma^2) # TODO Correct with ind?
     }
     
     
@@ -298,10 +284,25 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- sum(-2 * log(
     (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
     )) 
+  if (("sdExp" %in% colnames(data))) {
+    dretval_dsigma <- 0
+    dretval_dres <- sum((2 * res) / sigma^2)
+  } else {
+    exp_res <- exp(res^2 / (2 * sigma^2))
+    exp_res[is.infinite(exp_res)] <- 10^20
+    
+    dretval_dsigma <- 
+      sum(2 * sigma * exp_res * 
+            (exp(-res^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
+               (res^2 * exp(-res^2 / (2 * sigma^2))) / 
+               (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)) 
+    
+    dretval_dres <- sum((2 * res) / sigma^2) # TODO Correct with ind? muss 1 x length(res) sein
+  }
   
   ################################
   # TODO: Are the following lines correct?
-  dretval_dpar <- t(dretval_dres) %*% dres_dpar 
+  dretval_dpar <- dretval_dres %*% dres_dpar   #
   colnames(dretval_dpar) <- names(par)
   
   dsigma_dpar <- t(array(0, dim = length(parOrder)))
