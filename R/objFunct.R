@@ -206,6 +206,14 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     }
   }
   #par <- par[allParamNames] # Bring par in correct order
+  dparAfterFix_dpar <- matrix(0, nrow = length(par), ncol = length(parOrder))
+  rownames(dparAfterFix_dpar) <- names(par)
+  colnames(dparAfterFix_dpar) <- parOrder
+  for(name in parOrder)
+    dparAfterFix_dpar[name,name] <- 1
+  
+  #overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
+  #dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
   
   
   # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
@@ -224,12 +232,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
                                 reverse = TRUE, calcGradient = FALSE)
   
   
-  dparAfterFix_dpar <- matrix(0, nrow = length(par), ncol = length(par))
-  rownames(dparAfterFix_dpar) <- colnames(dparAfterFix_dpar) <- names(par)
-  diag(dparAfterFix_dpar) <- 1
-  overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
-  dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
-  
+    
   ds <- unique(d)
   res <- array(NA, dim = length(d))
   dres_dpar <- matrix(nrow = length(d), ncol = length(par))
@@ -280,7 +283,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     dyRtf_drtfPar <- dyRtf_drtfPar[, names(par)]
     
     # set derivates of fixed parameters to zero
-    dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar %*% dparAfterFix_dpar # length(data$y) x length(par)
+    dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
     
     res[ind] <- data$y[ind] - yRtf  # entweder mit ind an die richtige Stelle schreiben oder mit yRtf mit rbind so zusammenbauen, dass es zu data$y passt (gleiche dosen und Zeiten in gleicher Zeile)
     dres_dpar[ind,] <- -dyRtf_dpar 
@@ -326,7 +329,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   # TODO: Are the following lines correct?
   dretval_dpar <- dretval_dres %*% dres_dpar+ dretval_dsigmaRes %*% dsigmaRes_dpar 
   
-  dretval_dpar <- dretval_dpar %*% dpar_dpar
+  dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
+  dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
   
   # colnames(dretval_dpar) <- names(par)
   
