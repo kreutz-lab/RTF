@@ -185,11 +185,11 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     sigma <- par[["sigma"]]
   }
   
-  allParamNames <- setdiff(names(fixed), c("signum_TF", "sigma"))
-  rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
+  allParamNames <- setdiff(names(fixed), c("signum_TF"))
+  # rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
   
   fixed <- fixed[allParamNames]
-  par <- par[setdiff(names(par), "sigma")]
+  # par <- par[setdiff(names(par), "sigma")]
   
   data <- data[stats::complete.cases(data), ] 
   
@@ -205,7 +205,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       par[names(fixed)[v]] <- fixed[[v]]
     }
   }
-  par <- par[allParamNames] # Bring par in correct order
+  #par <- par[allParamNames] # Bring par in correct order
   
   
   # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
@@ -232,12 +232,12 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   
   ds <- unique(d)
   res <- array(NA, dim = length(d))
-  dres_dpar <- matrix(nrow = length(d), ncol = length(parOrder))
-  colnames(dres_dpar) <- names(parOrder)
+  dres_dpar <- matrix(nrow = length(d), ncol = length(par))
+  colnames(dres_dpar) <- names(par)
 
   sigmaRes <- array(NA, dim = length(d))
-  dsigmaRes_dpar <- matrix(0,nrow = length(d), ncol = length(parOrder))
-  colnames(dsigmaRes_dpar) <- names(parOrder)
+  dsigmaRes_dpar <- matrix(0,nrow = length(d), ncol = length(par))
+  colnames(dsigmaRes_dpar) <- names(par)
     
   dretval_dres <- matrix(nrow = length(d), ncol = 1)
   for (id in 1:length(ds)) { # loop over all doses
@@ -276,6 +276,9 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       scale = TRUE, 
       calcGradient = TRUE)
     
+    dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar)))
+    dyRtf_drtfPar <- dyRtf_drtfPar[, names(par)]
+    
     # set derivates of fixed parameters to zero
     dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar %*% dparAfterFix_dpar # length(data$y) x length(par)
     
@@ -287,7 +290,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     } 
     else{
       sigmaRes[ind] <- sigma
-      dsigmaRes_dpar[ind,parOrder=="sigma"] <- 1
+      dsigmaRes_dpar[ind, names(par) == "sigma"] <- 1
     }
     
   }
@@ -322,7 +325,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   ################################
   # TODO: Are the following lines correct?
   dretval_dpar <- dretval_dres %*% dres_dpar  + dretval_dsigmaRes %*% dsigmaRes_dpar 
-  colnames(dretval_dpar) <- parOrder
+  # colnames(dretval_dpar) <- names(par)
   
   # dsigma_dpar <- t(array(0, dim = length(parOrder)))
   # colnames(dsigma_dpar) <- parOrder
