@@ -307,7 +307,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
     )) 
   if (("sdExp" %in% colnames(data))) {
-    dretval_dsigmaRes <- matrix(0,nrow=1, ncol = length(sigmaRes))
+    dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
     dretval_dres <- (2 * res) / sigmaRes^2
   } else {
     exp_res <- exp(res^2 / (2 * sigmaRes^2))
@@ -324,7 +324,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   
   ################################
   # TODO: Are the following lines correct?
-  dretval_dpar <- dretval_dres %*% dres_dpar  + dretval_dsigmaRes %*% dsigmaRes_dpar 
+  dretval_dpar <- dretval_dres %*% dres_dpar+ dretval_dsigmaRes %*% dsigmaRes_dpar 
   # colnames(dretval_dpar) <- names(par)
   
   # dsigma_dpar <- t(array(0, dim = length(parOrder)))
