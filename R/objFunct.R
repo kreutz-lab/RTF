@@ -199,18 +199,19 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     d <- rep(1, nrow(data))
   }
   
+  parAfterFix <- par
   # Fixed parameters will overwrite the values in par
   for (v in 1:length(fixed)) {
     if (!is.na(fixed[[v]])) {
-      par[names(fixed)[v]] <- fixed[[v]]
+      parAfterFix[names(fixed)[v]] <- fixed[[v]]
     }
   }
   #par <- par[allParamNames] # Bring par in correct order
-  dparAfterFix_dpar <- matrix(0, nrow = length(par), ncol = length(parOrder))
-  rownames(dparAfterFix_dpar) <- names(par)
+  dparAfterFix_dpar <- matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
+  rownames(dparAfterFix_dpar) <- names(parAfterFix)
   colnames(dparAfterFix_dpar) <- parOrder
   for(name in parOrder)
-    dparAfterFix_dpar[name,name] <- 1
+    dparAfterFix_dpar[name, name] <- 1
   
   #overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
   #dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
@@ -225,22 +226,22 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   #                             (((upperReg - lowerReg)^2) * 100))
   
   #if (calcGradient) {
-    dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
+    dpar_dpar <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
                                         reverse = TRUE, calcGradient = TRUE)
   #}
-  par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
+    parAfterFix <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
                                 reverse = TRUE, calcGradient = FALSE)
   
   
     
   ds <- unique(d)
   res <- array(NA, dim = length(d))
-  dres_dpar <- matrix(nrow = length(d), ncol = length(par))
-  colnames(dres_dpar) <- names(par)
+  dres_dpar <- matrix(nrow = length(d), ncol = length(parAfterFix))
+  colnames(dres_dpar) <- names(parAfterFix)
 
   sigmaRes <- array(NA, dim = length(d))
-  dsigmaRes_dpar <- matrix(0,nrow = length(d), ncol = length(par))
-  colnames(dsigmaRes_dpar) <- names(par)
+  dsigmaRes_dpar <- matrix(0,nrow = length(d), ncol = length(parAfterFix))
+  colnames(dsigmaRes_dpar) <- names(parAfterFix)
     
   dretval_dres <- matrix(nrow = length(d), ncol = 1)
   for (id in 1:length(ds)) { # loop over all doses
@@ -248,9 +249,9 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     
     hillF <- hillGradient <- NULL
     if (optimObject$modus == "doseDependent") {
-        hillF <- getHillResults(d = ds[id], params = par)
+        hillF <- getHillResults(d = ds[id], params = parAfterFix)
         dhillF_dpar <- getHillResults(d = ds[id],
-                                      params = par,
+                                      params = parAfterFix,
                                       calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
         # hillF
         rtfPar <- hillF # TODO: rtfPar
@@ -259,7 +260,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         #   par[names(hillF)[name]] <- hillF[[name]]
         # }
     } else {
-      rtfPar <- par
+      rtfPar <- parAfterFix
       drtfPar_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
       diag(drtfPar_dpar) <- 1 # length(rtfPara) x length(par), length(par) so was wie 7 
       
@@ -280,7 +281,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       calcGradient = TRUE)
     
     dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar)))
-    dyRtf_drtfPar <- dyRtf_drtfPar[, names(par)]
+    dyRtf_drtfPar <- dyRtf_drtfPar[, names(parAfterFix)]
     
     # set derivates of fixed parameters to zero
     dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
@@ -293,7 +294,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     } 
     else{
       sigmaRes[ind] <- sigma
-      dsigmaRes_dpar[ind, names(par) == "sigma"] <- 1
+      dsigmaRes_dpar[ind, names(parAfterFix) == "sigma"] <- 1
     }
     
   }
