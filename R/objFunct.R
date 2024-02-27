@@ -1,8 +1,8 @@
-#' Chi square optimization function
+#' Log likelihood optimization function
 #'
-#' @description Chi square optimization function
-#' @return List of best set of parameters, optimization value, etc.
-#' See stats::optim for more details.
+#' @description Log likelihood optimization function
+#' @return Single optimization value if calcGradient = FALSE or named vector 
+#' with optimization value for each parameter if calcGradient = TRUE  
 #' @param par Initial values for the parameters to be optimized over.
 #' @param data Data frame containing columns named 't' (time), 'y' (quantitative
 #' value) and optionally 'sdExp' (standard deviation of the experimental data)
@@ -12,54 +12,66 @@
 #' @export objFunct
 #' @examples
 #' # modus "timeDependent"
-#' # optimObject.tmp <- list(
-#' #   data = structure(list(
-#' #     t = c(0, 0.7, 1.4, 2.1, 2.8, 3.5, 
-#' #           4.2, 4.9, 5.6, 6.3, 7, 7.7, 8.4, 9.1, 9.8, 10.5, 11.2, 11.9, 
-#' #           12.6, 13.3, 14, 14.7, 15.4, 16.1, 16.8), 
-#' #     y = c(2.01377848917595, 
-#' #           2.00723150384742, 1.95383023987706, 2.02401934780125, 1.99101642077785, 
-#' #           1.99438185391122, 1.96782895298547, 1.99232892596512, 2.04023699145328, 
-#' #           2.00987713004573, 2.04907131050778, 2.10220682031083, 2.0667888587053, 
-#' #           2.13146981736463, 2.13083497439212, 2.14307404336409, 2.16454894647236, 
-#' #           2.18975601505842, 2.21300572106394, 2.24987752491394, 2.18137275078123, 
-#' #           2.22381313982203, 2.28992651825763, 2.18074803633825, 2.29384492954725
-#' #     )), class = "data.frame", 
-#' #     row.names = c(NA, -25L)), 
-#' #   initialGuess.vec = 
-#' #     c(alpha = 0.0412393049421161, 
-#' #       gamma = 0.0412393049421161, A = 0.612026441406334, 
-#' #       B = 0.612026441406334, 
-#' #       b = 2.12383758471215, tau = -1.68, sigma = 0.0525708346158025
-#' #     ), 
-#' #   lb.vec = c(alpha = 0.000595238095238095, A = 0, B = 0, b = 1.95383023987706, 
-#' #              tau = -3.36, sigma = 0.000340014689670185), 
-#' #   ub.vec = c(alpha = 2.85714285714286, 
-#' #              A = 0.680029379340371, B = 0.680029379340371, b = 2.29384492954725, 
-#' #              tau = 15.12, sigma = 0.104801654541935), 
-#' #   fixed = c(alpha = NA, 
-#' #             gamma = 0.301029995663981, A = NA, B = NA, b = NA, tau = NA, 
-#' #             sigma = NA, signum_TF = 1), 
-#' #   takeLog10 = c(alpha = TRUE, gamma = TRUE, 
-#' #                 A = FALSE, B = FALSE, b = TRUE, tau = FALSE, sigma = FALSE), 
-#' #   positive.par.names = c("alpha", "gamma", "b"), modus = "timeDependent", 
-#' #   optimFunction = "logLikelihood", 
-#' #   control = 
-#' #     list(trace = 1, 
-#' #          maxit = 1000, factr = 1e+07, 
-#' #          parscale = c(alpha = 1, A = 0.340014689670185, B = 0.340014689670185, 
-#' #                       b = 0.340014689670185, 
-#' #                       tau = 1, sigma = 0.340014689670185), 
-#' #          ndeps = c(alpha = -3.22530928172586, 
-#' #                    A = 6.80029379340371e-06, B = 6.80029379340371e-06, b = 0.001, 
-#' #                    tau = 0.0001848, sigma = 1.04461639852265e-06)), 
-#' #   fitted = list())
-#' # 
-#' # vec <- c(alpha = -1.38468866303807, A = 0.612026441406334, B = 0.612026441406334, 
-#' #          b = 0.327121302070328, tau = -1.68, sigma = 0.0525708346158025)
+#' optimObject.timeDependent <- list(
+#' data = structure(list(
+#'      t = c(0, 0.7, 1.4, 2.1, 2.8, 3.5, 
+#'            4.2, 4.9, 5.6, 6.3, 7, 7.7, 8.4, 9.1, 9.8, 10.5, 11.2, 11.9, 
+#'            12.6, 13.3, 14, 14.7, 15.4, 16.1, 16.8), 
+#'      y = c(2.01377848917595, 
+#'            2.00723150384742, 1.95383023987706, 2.02401934780125, 1.99101642077785, 
+#'            1.99438185391122, 1.96782895298547, 1.99232892596512, 2.04023699145328, 
+#'            2.00987713004573, 2.04907131050778, 2.10220682031083, 2.0667888587053, 
+#'            2.13146981736463, 2.13083497439212, 2.14307404336409, 2.16454894647236, 
+#'            2.18975601505842, 2.21300572106394, 2.24987752491394, 2.18137275078123, 
+#'            2.22381313982203, 2.28992651825763, 2.18074803633825, 2.29384492954725
+#'      )), class = "data.frame", 
+#'      row.names = c(NA, -25L)), 
+#'    initialGuess.vec = 
+#'      c(alpha = 0.0412393049421161, 
+#'        gamma = 0.0412393049421161, A = 0.612026441406334, 
+#'        B = 0.612026441406334, 
+#'        b = 2.12383758471215, tau = -1.68, sigma = 0.0525708346158025
+#'      ), 
+#'    lb.vec = c(alpha = 0.000595238095238095, A = 0, B = 0, b = 1.95383023987706, 
+#'               tau = -3.36, sigma = 0.000340014689670185), 
+#'    ub.vec = c(alpha = 2.85714285714286, 
+#'               A = 0.680029379340371, B = 0.680029379340371, b = 2.29384492954725, 
+#'               tau = 15.12, sigma = 0.104801654541935), 
+#'    fixed = c(alpha = NA, 
+#'              gamma = 0.301029995663981, A = NA, B = NA, b = NA, tau = NA, 
+#'              sigma = NA, signum_TF = 1), 
+#'    takeLog10 = c(alpha = TRUE, gamma = TRUE, 
+#'                  A = FALSE, B = FALSE, b = TRUE, tau = FALSE, sigma = FALSE), 
+#'    positive.par.names = c("alpha", "gamma", "b"), modus = "timeDependent", 
+#'    optimFunction = "logLikelihood", 
+#'    control = 
+#'      list(trace = 1, 
+#'           maxit = 1000, factr = 1e+07, 
+#'           parscale = c(alpha = 1, A = 0.340014689670185, B = 0.340014689670185, 
+#'                        b = 0.340014689670185, 
+#'                        tau = 1, sigma = 0.340014689670185), 
+#'           ndeps = c(alpha = -3.22530928172586, 
+#'                     A = 6.80029379340371e-06, B = 6.80029379340371e-06, b = 0.001, 
+#'                     tau = 0.0001848, sigma = 1.04461639852265e-06)), 
+#'    fitted = list())
+#'  
+#'  vec.timeDependent <- c(alpha = -1.38468866303807, A = 0.612026441406334, 
+#'                        B = 0.612026441406334, 
+#'                        b = 0.327121302070328, 
+#'                        tau = -1.68, sigma = 0.0525708346158025)
+#'  optimRes.timeDependent <- stats::optim(par = vec.timeDependent,
+#'                             fn = objFunct,
+#'                             gr = objFunctGradient,
+#'                             method = "L-BFGS-B",
+#'                             lower = optimObject.timeDependent$lb.vec,
+#'                             upper = optimObject.timeDependent$ub.vec,
+#'                             data = optimObject.timeDependent$data,
+#'                             optimObject = optimObject.timeDependent,
+#'                             calcGradient = FALSE,
+#'                             control = optimObject.timeDependent$control)
 #' 
 #' # modus "doseDependent"
-#' optimObject.tmp <- list(
+#' optimObject.doseDependent <- list(
 #'   data = structure(list(
 #'     t = c(2, 0, 0.7, 1.4, 2.1, 2.8, 3.5, 
 #'           4.2, 4.9, 5.6, 6.3, 7, 7.7, 8.4, 9.1, 9.8, 10.5, 11.2, 11.9, 
@@ -138,25 +150,28 @@
 #'                    c(M_alpha = 1, h_alpha = 1, K_alpha = 1, h_gamma = 1, 
 #'                      K_gamma = 1, M_A = 10.6804921329188, h_A = 1, K_A = 1, 
 #'                      M_B = 10.6804921329188, h_B = 1, K_B = 1, M_tau = 1, 
-#'                      h_tau = 1, K_tau = 1, b = 10.6804921329188, sigma = 10.6804921329188
+#'                      h_tau = 1, K_tau = 1, b = 10.6804921329188, 
+#'                      sigma = 10.6804921329188
 #'                    )), fitted = list())
-#' vec <- c(M_alpha = -0.96213964303094, h_alpha = 0.5, K_alpha = 0.627636252551653, 
+#' vec.doseDependent <- c(M_alpha = -0.96213964303094, h_alpha = 0.5,
+#'          K_alpha = 0.627636252551653, 
 #'          h_gamma = 0.5, K_gamma = 0.627636252551653, M_A = 96.1244291962694, 
 #'          h_A = 0.740362689494244, K_A = 1.65417654187796, M_B = 96.1244291962694, 
 #'          h_B = 0.740362689494244, K_B = 1.65417654187796, M_tau = -1.68, 
 #'          h_tau = 0.740362689494244, K_tau = 1.65417654187796, b = 0.734178526526858, 
 #'          sigma = 1.07250964165806)
 #' 
-#' optimResTmp <- stats::optim(par = vec,
+#' optimRes.doseDependent <- stats::optim(par = vec.doseDependent,
 #'                             fn = objFunct,
+#'                             gr = objFunctGradient,
 #'                             method = "L-BFGS-B",
-#'                             lower = optimObject.tmp$lb.vec,
-#'                             upper = optimObject.tmp$ub.vec,
-#'                             data = optimObject.tmp$data,
-#'                             optimObject = optimObject.tmp,
-#'                             calcGradient = TRUE,
-#'                             control = optimObject.tmp$control)
-
+#'                             lower = optimObject.doseDependent$lb.vec,
+#'                             upper = optimObject.doseDependent$ub.vec,
+#'                             data = optimObject.doseDependent$data,
+#'                             optimObject = optimObject.doseDependent,
+#'                             calcGradient = FALSE,
+#'                             control = optimObject.doseDependent$control)
+    
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- NULL
   
@@ -214,7 +229,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   diag(dparAfterFix_dpar) <- 1
   overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
   dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
-  
   
   ds <- unique(d)
   res <- array(NA, dim = length(d))
