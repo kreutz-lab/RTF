@@ -25,14 +25,15 @@ getTransientFunctionResult <- function(rtfPar = c(),
                                        scale = TRUE, 
                                        calcGradient = FALSE) {
   
-  rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
+  # rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
+  # rtfPar <- rtfPar[rtfParamNames]
+  rtfParamNames <- names(rtfPar)
   
-  rtfPar <- rtfPar[rtfParamNames]
-  
-  if (length(rtfPar) < length(rtfParamNames)) {
+  if (length(setdiff(c("alpha", "gamma", "A", "B", "tau", "b"), 
+                     rtfParamNames)) > 0) {
     stop("Parameters alpha, gamma, A, B, tau, b need to be provided for getTransientFunctionResult().")
   }
-
+  
   for (v in 1:length(rtfPar)) assign(names(rtfPar)[v], rtfPar[[v]])
 
   if (scale) {
@@ -108,7 +109,7 @@ getTransientFunctionResult <- function(rtfPar = c(),
                                         ncol = length(nonLinTransformation))
     diag(dtransFunRes_dnonLinTrans) <- A * alpha * signum_TF * 
       exp(-alpha * nonLinTransformation) + B * gamma * signum_TF * 
-      exp(-gamma*nonLinTransformation) * 
+      exp(-gamma * nonLinTransformation) * 
       (exp(-alpha * nonLinTransformation) - 1) + 
       B * alpha * signum_TF * exp(-alpha * nonLinTransformation) * 
       exp(-gamma * nonLinTransformation)

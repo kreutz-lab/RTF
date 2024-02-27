@@ -56,10 +56,15 @@ getHillResults <- function(d = NULL,
     colnames(drtfParams_dparams) <- names(params)
     
     for (el in rtfParams) {
+      if (el == "tau") {
+        reciprocal <- TRUE
+      } else {
+        reciprocal <- FALSE
+      }
       del_dmhk <- hillEquation(d = d, M = get(paste0("M_", el)), 
                                h = get(paste0("h_", el)), 
                                K = get(paste0("K_", el)), 
-                               reciprocal = FALSE, 
+                               reciprocal = reciprocal, 
                                gradientNames = c("M","h","K"))
       
       drtfParams_dparams[el, paste0("M_", el)] <- del_dmhk[,"M"] # TODO: Bug: multiple rows corresponding to multiple doses

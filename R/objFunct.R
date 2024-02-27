@@ -280,8 +280,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       scale = TRUE, 
       calcGradient = TRUE)
     
-    dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar)))
-    dyRtf_drtfPar <- dyRtf_drtfPar[, names(parAfterFix)]
+    dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar))) # TODO
+    dyRtf_drtfPar <- dyRtf_drtfPar[, names(rtfPar)]
     
     # set derivates of fixed parameters to zero
     dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
