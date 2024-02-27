@@ -216,10 +216,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   # regularizationTerm <- sum(((par - meanReg)^2) /
   #                             (((upperReg - lowerReg)^2) * 100))
   
-  if (calcGradient) {
+  #if (calcGradient) {
     dpar_dpar <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
                                         reverse = TRUE, calcGradient = TRUE)
-  }
+  #}
   par <- applyLog10ForTakeLog10(par, optimObject[["takeLog10"]], 
                                 reverse = TRUE, calcGradient = FALSE)
   
@@ -325,6 +325,9 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   ################################
   # TODO: Are the following lines correct?
   dretval_dpar <- dretval_dres %*% dres_dpar+ dretval_dsigmaRes %*% dsigmaRes_dpar 
+  
+  dretval_dpar <- dretval_dpar %*% dpar_dpar
+  
   # colnames(dretval_dpar) <- names(par)
   
   # dsigma_dpar <- t(array(0, dim = length(parOrder)))
