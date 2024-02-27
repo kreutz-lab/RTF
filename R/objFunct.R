@@ -220,7 +220,11 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   res <- array(NA, dim = length(d))
   dres_dpar <- matrix(nrow = length(d), ncol = length(parOrder))
   colnames(dres_dpar) <- names(parOrder)
-  
+
+  sigmaRes <- array(NA, dim = length(d))
+  dsigmaRes_dpar <- matrix(0,nrow = length(d), ncol = length(parOrder))
+  colnames(dsigmaRes_dpar) <- names(parOrder)
+    
   dretval_dres <- matrix(nrow = length(d), ncol = 1)
   for (id in 1:length(ds)) { # loop over all doses
     ind <- which(d == ds[id]) # indices where dose matches
@@ -265,11 +269,12 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     dres_dpar[ind,] <- -dyRtf_dpar 
     
     if (("sdExp" %in% colnames(data))) {
-      if (id == 1)
-        sigma <- array(NA, dim = length(d))
-      sigma[ind] <- data$sdExp[ind]
+      sigmaRes[ind] <- data$sdExp[ind]
+    } 
+    else{
+      sigmaRes[ind] <- sigma
+      dsigmaRes_dpar[ind,parOrder=="sigma"] <- 1
     }
-    
     
   }
   
@@ -282,59 +287,62 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   #  (2*res)/sigma^2
   
   retval <- sum(-2 * log(
-    (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
+    (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
     )) 
   if (("sdExp" %in% colnames(data))) {
-    dretval_dsigma <- 0
-    dretval_dres <- sum((2 * res) / sigma^2)
+    dretval_dsigmaRes <- matrix(0,nrow=1, ncol = length(sigmaRes))
+    dretval_dres <- (2 * res) / sigmaRes^2
   } else {
-    exp_res <- exp(res^2 / (2 * sigma^2))
+    exp_res <- exp(res^2 / (2 * sigmaRes^2))
     exp_res[is.infinite(exp_res)] <- 10^20
     
-    dretval_dsigma <- 
-      sum(2 * sigma * exp_res * 
-            (exp(-res^2 / (2 * sigma^2)) / (sigma^2 * (2 * pi)^(1 / 2)) - 
-               (res^2 * exp(-res^2 / (2 * sigma^2))) / 
-               (sigma^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)) 
+    dretval_dsigmaRes <- 
+      2 * sigmaRes * exp_res * 
+            (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
+               (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
+               (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
     
-    dretval_dres <- sum((2 * res) / sigma^2) # TODO Correct with ind? muss 1 x length(res) sein
+    dretval_dres <- (2 * res) / sigmaRes^2 
   }
   
   ################################
   # TODO: Are the following lines correct?
-  dretval_dpar <- dretval_dres %*% dres_dpar   #
-  colnames(dretval_dpar) <- names(par)
+  dretval_dpar <- dretval_dres %*% dres_dpar  + dretval_dsigmaRes %*% dsigmaRes_dpar 
+  colnames(dretval_dpar) <- parOrder
   
-  dsigma_dpar <- t(array(0, dim = length(parOrder)))
-  colnames(dsigma_dpar) <- parOrder
-  dsigma_dpar[parOrder == "sigma"] <- 1
+  # dsigma_dpar <- t(array(0, dim = length(parOrder)))
+  # colnames(dsigma_dpar) <- parOrder
+  # dsigma_dpar[parOrder == "sigma"] <- 1
   
-  v3 <- c(dretval_dpar[1,], (dretval_dsigma %*% dsigma_dpar)[1,])
-  dretval_dpar <- tapply(v3, names(v3), sum) # Sum elements of same name in  named vectors
-  dretval_dpar <- dretval_dpar[parOrder]
-  # dretval_dpar <- dretval_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar = 1 x length(par) mit 1 da wo names(par)=="sigma"
+  # v3 <- c(dretval_dpar[1,], (dretval_dsigma %*% dsigma_dpar)[1,])
+  # dretval_dpar <- tapply(v3, names(v3), sum) # Sum elements of same name in  named vectors
+  # dretval_dpar <- dretval_dpar[parOrder]
+  # # dretval_dpar <- dretval_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar = 1 x length(par) mit 1 da wo names(par)=="sigma"
+  # 
+  # colNamesdpar_dpar <- colnames(dpar_dpar) 
+  # dpar_dpar2 <- cbind(dpar_dpar, rep(0, nrow(dpar_dpar)))
+  # dpar_dpar2 <- rbind(dpar_dpar2, c(rep(0, ncol(dpar_dpar2) - 1), 1))
+  # colnames(dpar_dpar2) <- c(colNamesdpar_dpar, "sigma")
+  # 
+  # rownames(dpar_dpar2) <- colnames(dpar_dpar2)
+  # dpar_dpar2 <- dpar_dpar2[parOrder, parOrder]
+  # 
+  # ##############################################
+  # 
+  # dretval_dpar <- dretval_dpar %*% dpar_dpar2 # account log-trsf, sigma by initiation is not logarithmized by initiation
+  # # retval <- retval + regularizationTerm 
+    
+  # if (retval > 10^20) {
+  #   print(par)
+  #   retval <- 10^20
+  #   # warning(paste0("objective function is infinite."))
+  # } else if (retval < -10^20) {
+  #   retval <- -10^20
+  # }
   
-  colNamesdpar_dpar <- colnames(dpar_dpar) 
-  dpar_dpar2 <- cbind(dpar_dpar, rep(0, nrow(dpar_dpar)))
-  dpar_dpar2 <- rbind(dpar_dpar2, c(rep(0, ncol(dpar_dpar2) - 1), 1))
-  colnames(dpar_dpar2) <- c(colNamesdpar_dpar, "sigma")
-  
-  
-  rownames(dpar_dpar2) <- colnames(dpar_dpar2)
-  dpar_dpar2 <- dpar_dpar2[parOrder, parOrder]
-  
-  ##############################################
-  
-  dretval_dpar <- dretval_dpar %*% dpar_dpar2 # account log-trsf, sigma by initiation is not logarithmized by initiation
-  # retval <- retval + regularizationTerm 
-  
-  if (retval > 10^20) {
-    print(par)
-    retval <- 10^20
-    # warning(paste0("objective function is infinite."))
-  } else if (retval < -10^20) {
-    retval <- -10^20
-  }
-  
-  return(retval)
+  if(calcGradient)
+    return(dretval_dpar)
+  else
+    return(retval)
 }
+
