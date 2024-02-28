@@ -47,9 +47,6 @@
 #'    control = 
 #'      list(trace = 1, 
 #'           maxit = 1000, factr = 1e+07, 
-#'           parscale = c(alpha = 1, A = 0.340014689670185, B = 0.340014689670185, 
-#'                        b = 0.340014689670185, 
-#'                        tau = 1, sigma = 0.340014689670185), 
 #'           ndeps = c(alpha = -3.22530928172586, 
 #'                     A = 6.80029379340371e-06, B = 6.80029379340371e-06, b = 0.001, 
 #'                     tau = 0.0001848, sigma = 1.04461639852265e-06)), 
@@ -145,14 +142,8 @@
 #'                          "K_gamma", "h_A", "K_A", "h_B", "K_B", "h_tau", 
 #'                          "K_tau", "b"), 
 #'   modus = "doseDependent", optimFunction = "logLikelihood", 
-#'   control = list(trace = 1, maxit = 1000, factr = 1e+07, 
-#'                  parscale = 
-#'                    c(M_alpha = 1, h_alpha = 1, K_alpha = 1, h_gamma = 1, 
-#'                      K_gamma = 1, M_A = 10.6804921329188, h_A = 1, K_A = 1, 
-#'                      M_B = 10.6804921329188, h_B = 1, K_B = 1, M_tau = 1, 
-#'                      h_tau = 1, K_tau = 1, b = 10.6804921329188, 
-#'                      sigma = 10.6804921329188
-#'                    )), fitted = list())
+#'   control = list(trace = 1, maxit = 1000, factr = 1e+07), 
+#'   fitted = list())
 #' vec.doseDependent <- c(M_alpha = -0.96213964303094, h_alpha = 0.5,
 #'          K_alpha = 0.627636252551653, 
 #'          h_gamma = 0.5, K_gamma = 0.627636252551653, M_A = 96.1244291962694, 
@@ -210,8 +201,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   dparAfterFix_dpar <- matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
   rownames(dparAfterFix_dpar) <- names(parAfterFix)
   colnames(dparAfterFix_dpar) <- parOrder
-  for(name in parOrder)
-    dparAfterFix_dpar[name, name] <- 1
+  for (name in parOrder) dparAfterFix_dpar[name, name] <- 1
   
   #overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
   #dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
@@ -247,7 +237,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   for (id in 1:length(ds)) { # loop over all doses
     ind <- which(d == ds[id]) # indices where dose matches
     
-    hillF <- hillGradient <- NULL
+    hillF <- NULL
     if (optimObject$modus == "doseDependent") {
         hillF <- getHillResults(d = ds[id], params = parAfterFix)
         dhillF_dpar <- getHillResults(d = ds[id],
@@ -328,7 +318,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   
   ################################
   # TODO: Are the following lines correct?
-  dretval_dpar <- dretval_dres %*% dres_dpar+ dretval_dsigmaRes %*% dsigmaRes_dpar 
+  dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
   
   dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
   dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
@@ -365,9 +355,11 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   #   retval <- -10^20
   # }
   
-  if(calcGradient)
-    return(dretval_dpar)
-  else
-    return(retval)
+  if (calcGradient) {
+    dretval_dpar
+  } else {
+    if (is.infinite(retval)) retval <- 10^20
+    retval
+  }
 }
 

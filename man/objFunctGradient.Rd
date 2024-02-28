@@ -4,7 +4,7 @@
 \alias{objFunctGradient}
 \title{Gradient of log likelihood optimization function}
 \usage{
-objFunctGradient(par, data, optimObject)
+objFunctGradient(par, data, optimObject, calcGradient)
 }
 \arguments{
 \item{par}{Initial values for the parameters to be optimized over.}
@@ -13,6 +13,9 @@ objFunctGradient(par, data, optimObject)
 value) and optionally 'sdExp' (standard deviation of the experimental data)}
 
 \item{optimObject}{optimObject}
+
+\item{calcGradient}{Placeholder so that stats::optim is not returning  the
+error 'Error in gr(par, ...) : unused argument (calcGradient = FALSE)'}
 }
 \value{
 Named vector with optimization value for each parameter

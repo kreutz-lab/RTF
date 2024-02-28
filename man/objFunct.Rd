@@ -61,9 +61,6 @@ data = structure(list(
    control = 
      list(trace = 1, 
           maxit = 1000, factr = 1e+07, 
-          parscale = c(alpha = 1, A = 0.340014689670185, B = 0.340014689670185, 
-                       b = 0.340014689670185, 
-                       tau = 1, sigma = 0.340014689670185), 
           ndeps = c(alpha = -3.22530928172586, 
                     A = 6.80029379340371e-06, B = 6.80029379340371e-06, b = 0.001, 
                     tau = 0.0001848, sigma = 1.04461639852265e-06)), 
@@ -159,14 +156,8 @@ optimObject.doseDependent <- list(
                          "K_gamma", "h_A", "K_A", "h_B", "K_B", "h_tau", 
                          "K_tau", "b"), 
   modus = "doseDependent", optimFunction = "logLikelihood", 
-  control = list(trace = 1, maxit = 1000, factr = 1e+07, 
-                 parscale = 
-                   c(M_alpha = 1, h_alpha = 1, K_alpha = 1, h_gamma = 1, 
-                     K_gamma = 1, M_A = 10.6804921329188, h_A = 1, K_A = 1, 
-                     M_B = 10.6804921329188, h_B = 1, K_B = 1, M_tau = 1, 
-                     h_tau = 1, K_tau = 1, b = 10.6804921329188, 
-                     sigma = 10.6804921329188
-                   )), fitted = list())
+  control = list(trace = 1, maxit = 1000, factr = 1e+07), 
+  fitted = list())
 vec.doseDependent <- c(M_alpha = -0.96213964303094, h_alpha = 0.5,
          K_alpha = 0.627636252551653, 
          h_gamma = 0.5, K_gamma = 0.627636252551653, M_A = 96.1244291962694, 
