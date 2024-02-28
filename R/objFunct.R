@@ -165,7 +165,6 @@
     
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   retval <- NULL
-  
   parOrder <- names(par)
   
   fixed <- optimObject[["fixed"]]
@@ -177,11 +176,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   }
   
   allParamNames <- setdiff(names(fixed), c("signum_TF"))
-  # rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
-  
   fixed <- fixed[allParamNames]
-  # par <- par[setdiff(names(par), "sigma")]
-  
   data <- data[stats::complete.cases(data), ] 
   
   if ("d" %in% colnames(data)) {
@@ -197,15 +192,11 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       parAfterFix[names(fixed)[v]] <- fixed[[v]]
     }
   }
-  #par <- par[allParamNames] # Bring par in correct order
+
   dparAfterFix_dpar <- matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
   rownames(dparAfterFix_dpar) <- names(parAfterFix)
   colnames(dparAfterFix_dpar) <- parOrder
   for (name in parOrder) dparAfterFix_dpar[name, name] <- 1
-  
-  #overlap <- intersect(names(fixed[!is.na(fixed)]), allParamNames) 
-  #dparAfterFix_dpar[names(par) %in% overlap, names(par) %in% overlap] <- 0
-  
   
   # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
   # upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
@@ -215,15 +206,13 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   # regularizationTerm <- sum(((par - meanReg)^2) /
   #                             (((upperReg - lowerReg)^2) * 100))
   
-  #if (calcGradient) {
-    dpar_dpar <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
-                                        reverse = TRUE, calcGradient = TRUE)
-  #}
-    parAfterFix <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
-                                reverse = TRUE, calcGradient = FALSE)
+
+  dpar_dpar <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
+                                      reverse = TRUE, calcGradient = TRUE)
+
+  parAfterFix <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
+                              reverse = TRUE, calcGradient = FALSE)
   
-  
-    
   ds <- unique(d)
   res <- array(NA, dim = length(d))
   dres_dpar <- matrix(nrow = length(d), ncol = length(parAfterFix))
@@ -242,18 +231,14 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         hillF <- getHillResults(d = ds[id], params = parAfterFix)
         dhillF_dpar <- getHillResults(d = ds[id],
                                       params = parAfterFix,
-                                      calcGradient = TRUE) # length(rtfPara) x length(par), hier length(par) so was wie 15
-        # hillF
-        rtfPar <- hillF # TODO: rtfPar
+                                      calcGradient = TRUE) # length(rtfPara) x length(par),  length(par) something like 15
+
+        rtfPar <- hillF
         drtfPar_dpar <- dhillF_dpar # drtfPar_dhillF %*% dhillF_dpar # TODO: drtfPar_dhillF
-        # for (name in names(hillF)) {
-        #   par[names(hillF)[name]] <- hillF[[name]]
-        # }
     } else {
       rtfPar <- parAfterFix
       drtfPar_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
-      diag(drtfPar_dpar) <- 1 # length(rtfPara) x length(par), length(par) so was wie 7 
-      
+      diag(drtfPar_dpar) <- 1 # length(rtfPara) x length(par), length(par) something like 7 
     }
     
     yRtf <- getTransientFunctionResult(
@@ -270,13 +255,13 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       scale = TRUE, 
       calcGradient = TRUE)
     
-    dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar))) # TODO
+    dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar)))
     dyRtf_drtfPar <- dyRtf_drtfPar[, names(rtfPar)]
     
     # set derivates of fixed parameters to zero
-    dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar  # length(data$y) x length(par)
+    dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar # length(data$y) x length(par)
     
-    res[ind] <- data$y[ind] - yRtf  # entweder mit ind an die richtige Stelle schreiben oder mit yRtf mit rbind so zusammenbauen, dass es zu data$y passt (gleiche dosen und Zeiten in gleicher Zeile)
+    res[ind] <- data$y[ind] - yRtf
     dres_dpar[ind,] <- -dyRtf_dpar 
     
     if (("sdExp" %in% colnames(data))) {
@@ -286,16 +271,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       sigmaRes[ind] <- sigma
       dsigmaRes_dpar[ind, names(parAfterFix) == "sigma"] <- 1
     }
-    
   }
-  
-  # stats::dnorm: (exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))
-  # retval <- sum(-2 * log(stats::dnorm(res, mean = 0, sd = sigma))) 
-
-  # >> diff(-2 * log((exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))), sigma)
-  #  2*sigma*exp(res^2/(2*sigma^2))*(exp(-res^2/(2*sigma^2))/(sigma^2*(2*pi)^(1/2)) - (res^2*exp(-res^2/(2*sigma^2)))/(sigma^4*(2*pi)^(1/2)))*(2*pi)^(1/2)
-  #>> diff(-2 * log((exp((-0.5 * (res / sigma)^2))) / (sigma * (2 * pi)^(0.5))), res)
-  #  (2*res)/sigma^2
   
   retval <- sum(-2 * log(
     (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
@@ -316,44 +292,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     dretval_dres <- (2 * res) / sigmaRes^2 
   }
   
-  ################################
-  # TODO: Are the following lines correct?
   dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
   
   dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
   dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
-  
-  # colnames(dretval_dpar) <- names(par)
-  
-  # dsigma_dpar <- t(array(0, dim = length(parOrder)))
-  # colnames(dsigma_dpar) <- parOrder
-  # dsigma_dpar[parOrder == "sigma"] <- 1
-  
-  # v3 <- c(dretval_dpar[1,], (dretval_dsigma %*% dsigma_dpar)[1,])
-  # dretval_dpar <- tapply(v3, names(v3), sum) # Sum elements of same name in  named vectors
-  # dretval_dpar <- dretval_dpar[parOrder]
-  # # dretval_dpar <- dretval_dpar + dretval_dsigma %*% dsigma_dpar # TODO dsigma_dpar = 1 x length(par) mit 1 da wo names(par)=="sigma"
-  # 
-  # colNamesdpar_dpar <- colnames(dpar_dpar) 
-  # dpar_dpar2 <- cbind(dpar_dpar, rep(0, nrow(dpar_dpar)))
-  # dpar_dpar2 <- rbind(dpar_dpar2, c(rep(0, ncol(dpar_dpar2) - 1), 1))
-  # colnames(dpar_dpar2) <- c(colNamesdpar_dpar, "sigma")
-  # 
-  # rownames(dpar_dpar2) <- colnames(dpar_dpar2)
-  # dpar_dpar2 <- dpar_dpar2[parOrder, parOrder]
-  # 
-  # ##############################################
-  # 
-  # dretval_dpar <- dretval_dpar %*% dpar_dpar2 # account log-trsf, sigma by initiation is not logarithmized by initiation
-  # # retval <- retval + regularizationTerm 
-    
-  # if (retval > 10^20) {
-  #   print(par)
-  #   retval <- 10^20
-  #   # warning(paste0("objective function is infinite."))
-  # } else if (retval < -10^20) {
-  #   retval <- -10^20
-  # }
   
   if (calcGradient) {
     dretval_dpar
