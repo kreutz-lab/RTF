@@ -24,27 +24,26 @@ getExampleDf <- function(modus = "timeDependent"){
     t <- seq(0, 17, 0.7)
     doses <- c(2, 4, 6, 9)
     times <- length(doses)
-    
-    # TODO
+
     vec <- c()
     for (dose in doses) {
       
-      par <- c(M_alpha = 1,
-               h_alpha = 0.1,
-               K_alpha = 0.03,
-               M_gamma = 0.5,
-               h_gamma = 0.2,
-               K_gamma = 0.01,
-               M_A = 1,
-               h_A = 10,
-               K_A = 0.2, 
-               M_B = 6 * dose,
-               h_B = 1.5,
-               K_B = 8,
-               M_tau = 4,
-               h_tau = 6, 
-               K_tau = 20,
-               b = 0.3)
+    par <- c(M_alpha = 1,
+             h_alpha = 0.1,
+             K_alpha = 0.03,
+             M_gamma = 0.5,
+             h_gamma = 0.2,
+             K_gamma = 0.01,
+             M_A = 1,
+             h_A = 10,
+             K_A = 0.2, 
+             M_B = 6 * dose,
+             h_B = 1.5,
+             K_B = 8,
+             M_tau = 4,
+             h_tau = 6, 
+             K_tau = 20,
+             b = 0.3)
       rtfPar <- getHillResults(d = dose, params = par)
       
       y <- NULL
@@ -60,7 +59,7 @@ getExampleDf <- function(modus = "timeDependent"){
     t <- rep(t, times)
     df <- data.frame(t = t, y = vec + stats::rnorm(length(t), 0, 0.2), 
                      d = d)
-    df <- rbind(c(t = 2, y= NA, d = 2), df)
+    df <- rbind(c(t = 2, y = NA, d = 2), df)
     df
   }
 }

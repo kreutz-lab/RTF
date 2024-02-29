@@ -293,7 +293,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   }
   
   dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
-  
   dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
   dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
   

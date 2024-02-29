@@ -42,8 +42,6 @@ plotFit <- function(par,
   if (is.null(t))
     stop("Please provide vector of time points or maximum time point.")
   
-  xi <- seq(min(t), max(t), length.out = 1000)
-  
   if (!is.null(d)) {
     doses <- sort(unique(d))
   } else {
@@ -51,8 +49,11 @@ plotFit <- function(par,
   }
   
   if (modus == 'timeDependent') {
+    
+    xi <- seq(min(t), max(t), length.out = 1000)
     RTFResVec <- getTransientFunctionResult(t = xi,
-                                            rtfPar = par)
+                                            rtfPar = par,
+                                            signum_TF = par[["signum_TF"]])
     
     RTFResDf <- data.frame(t = xi,
                            y = RTFResVec,
@@ -65,13 +66,15 @@ plotFit <- function(par,
       parTrans[names(parTrans) == "A"] <- 0
     
     susOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                rtfPar = parSus)
+                                                rtfPar = parSus,
+                                                signum_TF = parSus[["signum_TF"]])
     susOnlyResDf <- data.frame(t = xi,
                                y = susOnlyResVec,
                                Component = "Sustained")
     
     transOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                  rtfPar = parTrans)
+                                                  rtfPar = parTrans,
+                                                  signum_TF = parTrans[["signum_TF"]])
     
     transOnlyResDf <- data.frame(t = xi,
                                  y = transOnlyResVec,
@@ -86,18 +89,21 @@ plotFit <- function(par,
     for (i in seq(length(doses))) {
       RTFResVec <- NULL
       dose <- doses[i]
+      xi <- seq(min(t[d == dose]), max(t[d == dose]), length.out = 1000)
       
-      # TODO
+      rtfPar <- getHillResults(d = dose, params = par)
+      
       RTFResVec <- getTransientFunctionResult(
+        rtfPar = rtfPar,
         t = xi,
-        par = par
-      )
+        signum_TF = par[["signum_TF"]], 
+        scale = TRUE, # TODO TRUE or FALSE?
+        calcGradient = FALSE)
       
       geom_line.lst <- append(geom_line.lst,
                               list(data.frame(
                                 t = xi,
                                 y = RTFResVec,
-                                # d = rep(dose, times = length(xi))
                                 d = dose
                               )))
     }

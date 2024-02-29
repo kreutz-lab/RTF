@@ -191,12 +191,25 @@ plotRTF <-
       )
       
       ##################################################
-      d <- seq(0, max(data[["d"]]), length.out = 1000)
       
-      df <- getHillResults(d = d, params = par)
+      doses <- sort(unique(data[["d"]]))
+      doseSeries <- seq(0, max(doses), length.out = 1000)
       
-      df.long <- reshape2::melt(df, id.vars = c("d"))
-      doseParamPlot <- ggplot2::ggplot(df.long, ggplot2::aes(
+      hillsResLst <- list()
+      for (dose in doseSeries) {
+        RTFResVec <- getHillResults(d = dose, params = par)
+        
+        hillsResLst <- append(hillsResLst,
+                              list(c(d = dose, RTFResVec)))
+      }
+      
+      hillsResLst.df <- dplyr::bind_rows(hillsResLst)
+      
+      # d <- seq(0, max(data[["d"]]), length.out = 1000)
+      # df <- getHillResults(d = d, params = par)
+      
+      hillsResLst.df.long <- reshape2::melt(hillsResLst.df, id.vars = c("d"))
+      doseParamPlot <- ggplot2::ggplot(hillsResLst.df.long, ggplot2::aes(
         x = d, y = value, color = variable)) +
         ggplot2::geom_line() +
         ggplot2::xlab("Dose") +
