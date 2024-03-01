@@ -33,6 +33,11 @@
 #'  res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
 runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
+  # yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
+  # # bring data and parameters to scale 1
+  # scaleFactor <- 1/max(data$y)
+  # data$y <- data$y /scaleFactor
+  
   # currentBestRes <- NULL
   currentBestResValue <- NULL
   res.lst <- list()
@@ -83,7 +88,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     # parscale
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
-    parscale <- rep.int(1,length(vec))
+    parscale <- rep.int(1, length(vec))
     names(parscale) <- names(vec)
     rangeY <- max(optimObject.tmp$data$y, na.rm = TRUE) - 
       min(optimObject.tmp$data$y, na.rm = TRUE)
@@ -94,26 +99,9 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     # parscale <- parscale/1000
     
-    if (optimObject.tmp$modus != "doseDependent") {
-      # ndeps
-      ndeps <- vec
-      for (paramName in names(ndeps)) {
-        if (takeLog10[[paramName]]) {
-          ndeps[[paramName]] <- min(1e-3, lower[[paramName]])
-        } else {
-          ndeps[[paramName]] <- min(
-            1e-3, (upper[[paramName]] - lower[[paramName]]) * 1e-5)
-        }
-      }
-      
-      optimObject.tmp$control <- append(optimObject.tmp$control,
-                                        list(parscale = parscale,
-                                             ndeps = ndeps))
-    } else {
-      optimObject.tmp$control <- append(optimObject.tmp$control,
-                                        list(parscale = parscale))
-    }
-    
+    optimObject.tmp$control <- append(optimObject.tmp$control,
+                                      list(parscale = parscale))
+
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
                                 gr = objFunctGradient,
