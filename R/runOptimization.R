@@ -116,11 +116,13 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
+                                gr = objFunctGradient,
                                 method = "L-BFGS-B",
                                 lower = lower,
                                 upper = upper,
                                 data = optimObject.tmp$data,
                                 optimObject = optimObject.tmp,
+                                calcGradient = FALSE,
                                 control = optimObject.tmp$control)
     
     optimResTmp$par <- applyLog10ForTakeLog10(optimResTmp$par, 

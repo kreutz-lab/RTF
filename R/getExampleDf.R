@@ -16,10 +16,10 @@ getExampleDf <- function(modus = "timeDependent"){
     
     y <- getTransientFunctionResult(
       t = t,
-      rtfPar = c(alpha = 0.004, gamma = 0.0025, A = 1, B = 5, b = 2,
-              tau = 4, signum_TF = 1)) 
+      rtfPar = c(alpha = 0.4, gamma = 0.1, A = 5, B = 20, b = 2,
+                 tau = 3, signum_TF = 1)) 
       
-    data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.04))
+    data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.4))
   } else if (modus == "doseDependent") {
     t <- seq(0, 17, 0.7)
     doses <- c(2, 4, 6, 9)
