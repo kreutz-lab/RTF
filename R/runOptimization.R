@@ -33,15 +33,36 @@
 #'  res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
 runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
-  # yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
-  # # bring data and parameters to scale 1
-  # scaleFactor <- 1/max(data$y)
-  # data$y <- data$y /scaleFactor
-  
-  # currentBestRes <- NULL
   currentBestResValue <- NULL
   res.lst <- list()
   optimObject.tmp <- optimObject
+  
+  ##############################################################################
+  # Bring y data to range 0-10 and scale parameters accordingly, 
+  # as optimization works better on higher values
+  yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
+  scaleFactor <- 10/max(optimObject.tmp$data$y)
+  optimObject.tmp$data$y <- optimObject.tmp$data$y * scaleFactor
+  
+  optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) %in% yDependentPars] <-
+    optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) 
+                           %in% yDependentPars] * scaleFactor
+  
+  optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) %in% yDependentPars] <-
+    optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) 
+                           %in% yDependentPars] * scaleFactor
+  
+  optimObject.tmp$fixed[names(optimObject.tmp$fixed) %in% yDependentPars] <-
+    optimObject.tmp$fixed[names(optimObject.tmp$fixed) 
+                          %in% yDependentPars] * scaleFactor
+  
+  for (i in seq(length(initialGuess.vec.lst))) {
+    initialGuess.vec.lst[[i]][
+      names(initialGuess.vec.lst[[i]]) %in% yDependentPars] <- 
+      initialGuess.vec.lst[[i]][
+        names(initialGuess.vec.lst[[i]]) %in% yDependentPars] * scaleFactor
+  }
+  ##############################################################################
 
   paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
   pars.tmp <- c()
@@ -65,12 +86,6 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
   takeLog10 <- optimObject.tmp$takeLog10 
   
-  # applyLog10ForTakeLog10 <- function(x, takeLog10) {
-  #   x[names(x) %in% names(which(takeLog10))] <-
-  #     log10(x[names(x) %in% names(which(takeLog10))])
-  #   x
-  # }
-  
   lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
   upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
   
@@ -85,22 +100,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   
   for (vec in initialGuess.vec.lst) {
     print(vec)
-    
-    # parscale
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
-    parscale <- rep.int(1, length(vec))
-    names(parscale) <- names(vec)
-    rangeY <- max(optimObject.tmp$data$y, na.rm = TRUE) - 
-      min(optimObject.tmp$data$y, na.rm = TRUE)
-    
-    for (parameter in c("A", "B", "b", "sigma", "M_A", "M_B")) {
-      if (parameter %in% names(vec)) parscale[parameter] <- rangeY
-    }
-    
-    # parscale <- parscale/1000
-    
-    optimObject.tmp$control <- append(optimObject.tmp$control,
-                                      list(parscale = parscale))
 
     optimResTmp <- stats::optim(par = vec,
                                 fn = objFunct,
@@ -118,7 +118,10 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     vecOrder <- names(optimObject$fixed)
     parsFinal <- c(fixed[!is.na(fixed)], optimResTmp$par)[vecOrder]
+    parsFinal[names(parsFinal) %in% yDependentPars] <-  
+      parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
     optimResTmp$par <- parsFinal
+    
     value <- optimResTmp$value
 
     res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))

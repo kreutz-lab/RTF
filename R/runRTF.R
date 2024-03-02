@@ -38,7 +38,8 @@ runRTF <- function(data,
                    plotAllPointsWaterfall = FALSE,
                    control = list(trace = 1,
                                   maxit = 1000,
-                                  factr = 1e7)) {
+                                  factr = 1e7
+                                  )) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {
       modus <- 'doseDependent'
