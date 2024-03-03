@@ -44,8 +44,9 @@ getDynamicsForClusters <- function(df, maxTime = 10) {
       row <- cluster[rowId,]
       id <- rownames(cluster)[rowId]
       functionResVec <- getTransientFunctionResult(
+        rtfPar = row[colnames(row) != "signum_TF"],
         t = xi,
-        rtfPar = row)
+        signum_TF = row[["signum_TF"]])
       
       geom_line.lst <- append(
         geom_line.lst, 

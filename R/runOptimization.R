@@ -20,17 +20,17 @@
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'timeDependent')
-#' signum_TF <- 1
-#' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
+#' optimObject.orig$fixed[["signum_TF"]] <- 1
 #' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
 #'                             initialGuess.vec =
 #'                                           optimObject.orig$initialGuess.vec,
 #'                             lb.vec = optimObject.orig$lb.vec,
 #'                             ub.vec = optimObject.orig$ub.vec,
+#'                             takeLog10 = optimObject.orig$takeLog10,
 #'                             nInitialGuesses = nInitialGuesses
-#'  )
-#'  res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
+#' )
+#' res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
 runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   currentBestResValue <- NULL
@@ -41,7 +41,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   # Bring y data to range 0-10 and scale parameters accordingly, 
   # as optimization works better on higher values
   yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
-  scaleFactor <- 10/max(optimObject.tmp$data$y)
+  scaleFactor <- 10/max(optimObject.tmp$data$y, na.rm = TRUE)
   optimObject.tmp$data$y <- optimObject.tmp$data$y * scaleFactor
   
   optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) %in% yDependentPars] <-
@@ -102,18 +102,18 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     print(vec)
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
 
-    optimResTmp <- stats::optim(par = vec,
-                                fn = objFunct,
-                                gr = objFunctGradient,
-                                method = "L-BFGS-B",
-                                lower = lower,
-                                upper = upper,
-                                data = optimObject.tmp$data,
-                                optimObject = optimObject.tmp,
-                                calcGradient = FALSE,
-                                control = optimObject.tmp$control)
+    optimResTmp <- optimx::optimr(par = vec,
+                                  fn = objFunct,
+                                  gr = objFunctGradient,
+                                  method = "L-BFGS-B",
+                                  lower = lower,
+                                  upper = upper,
+                                  data = optimObject.tmp$data,
+                                  optimObject = optimObject.tmp,
+                                  calcGradient = FALSE,
+                                  control = optimObject.tmp$control)
     
-    optimResTmp$par <- applyLog10ForTakeLog10(optimResTmp$par, 
+    optimResTmp$par <- applyLog10ForTakeLog10(c(optimResTmp$par), 
                                               takeLog10, reverse = TRUE)
     
     vecOrder <- names(optimObject$fixed)
@@ -122,7 +122,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
       parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
     optimResTmp$par <- parsFinal
     
-    value <- optimResTmp$value
+    value <- c(optimResTmp$value)
 
     res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
 

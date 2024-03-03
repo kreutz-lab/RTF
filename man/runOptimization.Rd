@@ -33,15 +33,15 @@ Run optimization using stats::optim with method = "L-BFGS-B"
 data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'timeDependent')
-signum_TF <- 1
-optimObject.orig$fixed[["signum_TF"]] <- signum_TF
+optimObject.orig$fixed[["signum_TF"]] <- 1
 nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =
                                           optimObject.orig$initialGuess.vec,
                             lb.vec = optimObject.orig$lb.vec,
                             ub.vec = optimObject.orig$ub.vec,
+                            takeLog10 = optimObject.orig$takeLog10,
                             nInitialGuesses = nInitialGuesses
- )
- res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
+)
+res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 }

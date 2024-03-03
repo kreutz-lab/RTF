@@ -50,7 +50,7 @@ getLowDimensionalRTFPlots <- function(df, metaInfo,
       NbClust::NbClust(scale(df.umap.metaInfo[, c("UMAP1", "UMAP2")]), 
                        method = 'kmeans', index = 'all')$Best.partition)
   } else {
-    clustID <- as.factor(kmeans(scale(df.umap.metaInfo[, c("UMAP1", "UMAP2")]), 
+    clustID <- as.factor(stats::kmeans(scale(df.umap.metaInfo[, c("UMAP1", "UMAP2")]), 
                                 numClust)$cluster)
   }
   

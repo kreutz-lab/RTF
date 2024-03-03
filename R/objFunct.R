@@ -217,6 +217,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
   ds <- unique(d)
   res <- array(NA, dim = length(d))
   sigmaRes <- array(NA, dim = length(d))
+  hillHasNaNs <- FALSE
   
   if (calcGradient) {
     dres_dpar <- matrix(nrow = length(d), ncol = length(parAfterFix))
@@ -233,6 +234,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     
     if (optimObject$modus == "doseDependent") {
         hillF <- getHillResults(d = ds[id], params = parAfterFix)
+        if (sum(is.nan(hillF)) > 0) hillHasNaNs <- TRUE
         rtfPar <- hillF
         
         if (calcGradient) {
@@ -307,14 +309,21 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
     dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
     dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
+    
+    dretval_dpar <- dretval_dpar[1,]
   }
   
   # retval <- retval + regularizationTerm 
   
   if (calcGradient) {
+    # dretval_dpar[is.infinite(dretval_dpar)] <- 10^20
+    # if (hillHasNaNs) {
+    #   dretval_dpar <- rep(0, length(parOrder))
+    #   names(dretval_dpar) <- parOrder
+    # }
     dretval_dpar
   } else {
-    if (is.infinite(retval)) retval <- 10^20
+    if (is.infinite(retval) | hillHasNaNs) retval <- 10^20
     retval
   }
 }

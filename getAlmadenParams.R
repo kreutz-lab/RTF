@@ -7,7 +7,7 @@ almadenParams <-
   RTF::getParamsFromMultipleTimeSeries(
     almadenTimeSeries,
     fileString = fileString,
-    nInitialGuesses = 400
+    nInitialGuesses = 200
   )
 
 write.csv(almadenParams, "almadenParams.csv", row.names = FALSE)

@@ -22,10 +22,10 @@
 #' 
 #' x <- 1:3
 #' names(x) <- c("A","B","C")
-#' takeLog10 <- c(T,T,F)
+#' takeLog10 <- c(TRUE, TRUE, FALSE)
 #' names(takeLog10) <- names(x)
 #' applyLog10ForTakeLog10(x,takeLog10 = takeLog10)
-#' applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient=T)
+#' applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient = TRUE)
 
 applyLog10ForTakeLog10 <- function(x = c(), takeLog10 = c(), reverse = FALSE, 
                                    calcGradient = FALSE) {

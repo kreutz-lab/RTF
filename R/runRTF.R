@@ -22,7 +22,7 @@
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
 #' @param control List of control arguments passed to the function stats::optim
-#' (Default: list(trace = 1, maxit = 1000, factr = 1e7))
+#' (Default: list(trace = 1, maxit = 1000, factr = 1e3))
 #' @export runRTF
 #' @examples
 #' modus <- "timeDependent"
@@ -38,7 +38,7 @@ runRTF <- function(data,
                    plotAllPointsWaterfall = FALSE,
                    control = list(trace = 1,
                                   maxit = 1000,
-                                  factr = 1e7
+                                  factr = 1e3
                                   )) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {

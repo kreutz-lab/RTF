@@ -56,7 +56,7 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,
   if (plotAllPoints) {
     maxValue <- max(values[values < 10^20])
   } else {
-    maxValue <- median(values)
+    maxValue <- stats::median(values)
     if (maxValue == 10^20) maxValue <- max(values[values < 10^20])
   }
   
