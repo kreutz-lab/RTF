@@ -31,8 +31,7 @@ use the result for the negative sign.
 }
 \examples{
 data <- getExampleDf()
-optimObject.orig <- initializeOptimObject(
-                                  data, modus = 'RetardedTransientDynamics')
+optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 res.all.plusMinus <- getFittingResult(optimObject.orig)
 res <- selectBest(res.all.plusMinus)
 }

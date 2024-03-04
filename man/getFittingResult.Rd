@@ -41,8 +41,7 @@ Fits function for positive AND negative sign (signum_TF)
 }
 \examples{
 data <- getExampleDf()
-optimObject.orig <- initializeOptimObject(
-            data, modus = 'RetardedTransientDynamics')
+optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 res.all.plusMinus <- getFittingResult(
             optimObject.orig, 
             parStr = "signum_TF", parVals = c(-1, 1))
