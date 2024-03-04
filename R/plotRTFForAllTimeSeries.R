@@ -10,7 +10,7 @@
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitsToSingleFileExtension Image file extension, if 
-#' plotFitsToSingleFile=TRUE (Default: jpg.)
+#' plotFitsToSingleFile=TRUE (Default: jpeg.)
 #' @param plotFitOnly Plot fit only without additional information as provided 
 #' using function plotRTF().
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
@@ -23,16 +23,17 @@
 #' res.lst <- runRTFOnMultipleTimeSeries(df.multipleTimeSeries)
 #' plotRTFForAllTimeSeries(res.lst)
 
-plotRTFForAllTimeSeries <- function(res.lst, fileString = "", 
-                                 height = 12, width = 10,
-                                 plotFitsToSingleFile = TRUE,
-                                 plotFitsToSingleFileExtension = "jpg", 
-                                 plotFitOnly = FALSE,
-                                 plotAllPointsWaterfall = FALSE) {
+plotRTFForAllTimeSeries <- function(res.lst, 
+                                    fileString = "", 
+                                    height = 12, width = 10,
+                                    plotFitsToSingleFile = TRUE,
+                                    plotFitsToSingleFileExtension = "jpeg", 
+                                    plotFitOnly = FALSE,
+                                    plotAllPointsWaterfall = FALSE) {
   
   if (plotFitsToSingleFile & !(plotFitsToSingleFileExtension %in% 
-                               c("jpg", "png", "pdf", "svg"))) {
-    stop("plotFitsToSingleFileExtension should be one of the following: 'jpg', 'png', 'pdf', 'svg'.")
+                               c("jpeg", "png", "pdf", "svg"))) {
+    stop("plotFitsToSingleFileExtension should be one of the following: 'jpeg', 'png', 'pdf', 'svg'.")
   }
   
   if (plotFitsToSingleFile)
@@ -42,13 +43,6 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
     el <- res.lst[[i]]
     title <- names(res.lst)[i]
     
-    if (!plotFitsToSingleFile) {
-      grDevices::pdf(paste0("modelPlot_", gsub("/", "_", title),".", 
-                            plotFitsToSingleFileExtension), 
-                     height = height, 
-                     width = width)
-    }
-    
     if (plotFitOnly) {
       optimObject <- el$finalModel
       bestOptimResult <- optimObject$bestOptimResult
@@ -56,27 +50,34 @@ plotRTFForAllTimeSeries <- function(res.lst, fileString = "",
       value <- bestOptimResult$value
       data <- optimObject$data
       
-      
       plotTitle <- paste0(title, "; OptimValue: ", signif(value, 2),
                       "; ", 
                       paste(names(par), 
                             signif(par, 4), 
                             sep = ": ", collapse = ", "))
       plotTitle <- paste(strwrap(plotTitle, width = 70), collapse = "\n")
-      
-      print(plotFit(par = par,
+      plt <- plotFit(par = par,
               y = data$y, 
               t = data$t, 
-              modus = "RetardedTransientDynamics",
+              modus = "timeDependent",
               withData = TRUE,
-              title = plotTitle))
+              title = plotTitle)
+      
     } else {
-      print(plotRTF(el, plotTitle = title,
-                    plotAllPointsWaterfall = plotAllPointsWaterfall))
+      plt <- plotRTF(el, plotTitle = title,
+                    plotAllPointsWaterfall = plotAllPointsWaterfall)
     }
     
-    if (!plotFitsToSingleFile)
-      grDevices::dev.off()
+    if (!plotFitsToSingleFile) {
+      ggplot2::ggsave(file = paste0("modelPlot_", gsub("/", "_", title),".", 
+                             plotFitsToSingleFileExtension), 
+                      device = plotFitsToSingleFileExtension,
+                      plot = plt,
+                      height = height, 
+                      width = width)
+    } else {
+      print(plt)
+    }
   }
   
   if (plotFitsToSingleFile)

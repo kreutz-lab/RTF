@@ -20,8 +20,8 @@
 #' @examples
 #' data <- getExampleDf()
 #' optimObject <- initializeOptimObject(data,
-#'                                     modus = 'RetardedTransientDynamics',
-#'                                     takeLog10=FALSE)
+#'                                     modus = 'timeDependent',
+#'                                     takeLog10 = FALSE)
 #' positive.par.names <- getPositiveParNames(lb.vec = optimObject$lb.vec,
 #'                                           ub.vec = optimObject$ub.vec,
 #'                                           initialGuess.vec =

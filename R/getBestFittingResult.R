@@ -19,8 +19,7 @@
 #' @export getBestFittingResult
 #' @examples
 #' data <- getExampleDf()
-#' optimObject.orig <- initializeOptimObject(data,
-#'                                          modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' res.all.plus <- getBestFittingResult(
 #'         optimObject.orig, parStr = "signum_TF", parVal = 1)
 
@@ -34,10 +33,7 @@ getBestFittingResult <- function(
   res.pars <- optimObject.woptimRes$bestOptimResult$par
   value <- optimObject.woptimRes$bestOptimResult$value
   optimObject$fitted <- res.pars
-  # optimObject$fitted <- c(res.pars, parVal)
-  # names(optimObject$fitted) <- c(names(res.pars), parStr)
   optimObject$value <- value
-  #optimObject$bestFit.plot <- optim.res$bestFit.plot
   
   optimObject$optimResults <- optimObject.woptimRes$optimResults
   optimObject$bestOptimResult <- optimObject.woptimRes$bestOptimResult

@@ -20,8 +20,7 @@
 #' @export selectBest
 #' @examples
 #' data <- getExampleDf()
-#' optimObject.orig <- initializeOptimObject(
-#'                                   data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' res.all.plusMinus <- getFittingResult(optimObject.orig)
 #' res <- selectBest(res.all.plusMinus)
 
@@ -35,10 +34,5 @@ selectBest <- function(res) {
       bestVal <-  res[[resName]]$value
     }
   }
-  # if (res$plus1$value < res$minus1$value) {
-  #   res.best <- res[["plus1"]]
-  # } else {
-  #   res.best <- res[["minus1"]]
-  # }
   res.best
 }

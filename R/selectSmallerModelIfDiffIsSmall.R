@@ -20,7 +20,7 @@
 #' @export selectSmallerModelIfDiffIsSmall
 #' @examples
 #' data <- getExampleDf()
-#' modus <- "RetardedTransientDynamics"
+#' modus <- "timeDependent"
 #' optimObject.orig <- initializeOptimObject(data, modus = modus)
 #' res.all.plusMinus <- getFittingResult(optimObject.orig)
 #' res.all <- selectBest(res.all.plusMinus)

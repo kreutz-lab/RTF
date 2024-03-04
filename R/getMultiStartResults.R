@@ -19,8 +19,7 @@
 #' @export getMultiStartResults
 #' @examples
 #' data <- getExampleDf()
-#' optimObject.orig <- initializeOptimObject(
-#'                 data, modus = 'RetardedTransientDynamics')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' signum_TF <- 1
 #' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 100

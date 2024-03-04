@@ -18,7 +18,7 @@
 #' @examples
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
-#'                                          modus = 'RetardedTransientDynamics')
+#'                                          modus = 'timeDependent')
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 #' lb.vec <- optimObject.orig[["lb.vec"]]
 #' ub.vec <- optimObject.orig[["ub.vec"]]

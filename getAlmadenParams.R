@@ -7,7 +7,7 @@ almadenParams <-
   RTF::getParamsFromMultipleTimeSeries(
     almadenTimeSeries,
     fileString = fileString,
-    nInitialGuesses = 200
+    nInitialGuesses = 100
   )
 
 write.csv(almadenParams, "almadenParams.csv", row.names = FALSE)
@@ -19,6 +19,7 @@ RTF::plotRTFForAllTimeSeries(
   res.lst,
   fileString = fileString,
   plotFitsToSingleFile = FALSE,
+  plotFitsToSingleFileExtension = "jpeg",
   plotFitOnly = TRUE,
   height = 7,
   width = 7
