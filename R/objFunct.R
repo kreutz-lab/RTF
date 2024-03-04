@@ -234,7 +234,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     
     if (optimObject$modus == "doseDependent") {
         hillF <- getHillResults(d = ds[id], params = parAfterFix)
-        if (sum(is.nan(hillF)) > 0) hillHasNaNs <- TRUE
+        if (sum(is.nan(hillF)) > 0) {
+          hillHasNaNs <- TRUE
+        }
+        
         rtfPar <- hillF
         
         if (calcGradient) {
@@ -295,7 +298,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       dretval_dres <- (2 * res) / sigmaRes^2
     } else {
       exp_res <- exp(res^2 / (2 * sigmaRes^2))
-      exp_res[is.infinite(exp_res)] <- 10^20
+      exp_res[exp_res > 10^20] <- 10^20
       
       dretval_dsigmaRes <- 
         2 * sigmaRes * exp_res * 
@@ -323,7 +326,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     # }
     dretval_dpar
   } else {
-    if (is.infinite(retval) | hillHasNaNs) retval <- 10^20
+    # if (is.infinite(retval) | hillHasNaNs) retval <- 10^20
+    if (is.infinite(retval)) retval <- 10^20
     retval
   }
 }

@@ -102,7 +102,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     print(vec)
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
 
-    optimResTmp <- optimx::optimr(par = vec,
+    optimResTmp <- stats::optim(par = vec,
                                   fn = objFunct,
                                   gr = objFunctGradient,
                                   method = "L-BFGS-B",
