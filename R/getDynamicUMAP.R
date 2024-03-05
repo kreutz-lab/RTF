@@ -68,10 +68,12 @@ getDynamicUMAP <- function(timeSeries, param.df, res.lst,
   umapData <- plots[["umap.data"]]
   umapData$speciesID <- species
   
+  
+  tmpDir <- tempdir()
   plotRTFForAllTimeSeries(
     res.lst,
     fileString = "",
-    saveFolderPath = tempdir(),
+    saveFolderPath = tmpDir,
     plotFitsToSingleFile = FALSE,
     plotFitsToSingleFileExtension = "jpeg",
     plotFitOnly = TRUE,
@@ -81,7 +83,7 @@ getDynamicUMAP <- function(timeSeries, param.df, res.lst,
   
   umapData$speciesID_underscore <- gsub("/", "_", umapData$speciesID)
   umapData$IMG_PATH <- 
-    paste0(tempdir(), "/modelPlot_", umapData$speciesID_underscore, ".jpeg")
+    paste0(tmpDir, "/modelPlot_", umapData$speciesID_underscore, ".jpeg")
   umapData$IMG_PATH2 <- 
     sapply(umapData$IMG_PATH, function(x) {base64enc::dataURI(file = x )})
   
