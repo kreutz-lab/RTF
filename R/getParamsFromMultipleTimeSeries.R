@@ -45,6 +45,10 @@ getParamsFromMultipleTimeSeries <- function(df,
                                             plotFitsToSingleFile = TRUE,
                                             plotFitOnly = FALSE,
                                             plotAllPointsWaterfall = FALSE) {
+  
+  if (nchar(saveFolderPath) > 0 & grepl("/$", saveFolderPath))
+    saveFolderPath <- paste0(saveFolderPath, "/")
+  
   if (nchar(readInParamRdsFilePath) > 0) {
     res.lst <- readRDS(file = readInParamRdsFilePath)
   } else {

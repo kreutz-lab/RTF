@@ -34,6 +34,9 @@ plotRTFForAllTimeSeries <- function(res.lst,
                                     plotFitOnly = FALSE,
                                     plotAllPointsWaterfall = FALSE) {
   
+  if (nchar(saveFolderPath) > 0 & grepl("/$", saveFolderPath))
+    saveFolderPath <- paste0(saveFolderPath, "/")
+  
   if (plotFitsToSingleFile & !(plotFitsToSingleFileExtension %in% 
                                c("jpeg", "png", "pdf", "svg"))) {
     stop("plotFitsToSingleFileExtension should be one of the following: 'jpeg', 'png', 'pdf', 'svg'.")

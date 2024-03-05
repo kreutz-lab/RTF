@@ -73,7 +73,7 @@ metaInfo <- gsub(".*_", "", colNames)
 #   saveFolderPath = tempdir(),
 #   nInitialGuesses = 100
 # )
-# res.lst <- readRDS(file = paste0(tempdir(), fileString, ".RDS"))
+# res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 
 plt <- getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
                       res.lst = almadenResLst, 

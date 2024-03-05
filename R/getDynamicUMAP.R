@@ -46,7 +46,7 @@
 #' #   saveFolderPath = tempdir(),
 #' #   nInitialGuesses = 100
 #' # )
-#' # res.lst <- readRDS(file = paste0(tempdir(), fileString, ".RDS"))
+#' # res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 #' 
 #' plt <- getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
 #'                       res.lst = almadenResLst, 
@@ -81,7 +81,7 @@ getDynamicUMAP <- function(timeSeries, param.df, res.lst,
   
   umapData$speciesID_underscore <- gsub("/", "_", umapData$speciesID)
   umapData$IMG_PATH <- 
-    paste0(tempdir(), "modelPlot_", umapData$speciesID_underscore, ".jpeg")
+    paste0(tempdir(), "/modelPlot_", umapData$speciesID_underscore, ".jpeg")
   umapData$IMG_PATH2 <- 
     sapply(umapData$IMG_PATH, function(x) {base64enc::dataURI(file = x )})
   
