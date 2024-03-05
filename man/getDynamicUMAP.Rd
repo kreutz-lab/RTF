@@ -75,8 +75,8 @@ metaInfo <- gsub(".*_", "", colNames)
 # )
 # res.lst <- readRDS(file = paste0(tempdir(), fileString, ".RDS"))
 
-getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
-              res.lst = almadenResLst, 
-              species = species, metaInfo = metaInfo)
+plt <- getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
+                      res.lst = almadenResLst, 
+                      species = species, metaInfo = metaInfo)
 }
 }

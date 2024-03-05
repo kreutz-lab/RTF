@@ -48,9 +48,9 @@
 #' # )
 #' # res.lst <- readRDS(file = paste0(tempdir(), fileString, ".RDS"))
 #' 
-#' getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
-#'               res.lst = almadenResLst, 
-#'               species = species, metaInfo = metaInfo)
+#' plt <- getDynamicUMAP(timeSeries = timeSeries, param.df = almadenParams, 
+#'                       res.lst = almadenResLst, 
+#'                       species = species, metaInfo = metaInfo)
 #' }
 
 getDynamicUMAP <- function(timeSeries, param.df, res.lst, 
@@ -81,7 +81,7 @@ getDynamicUMAP <- function(timeSeries, param.df, res.lst,
   
   umapData$speciesID_underscore <- gsub("/", "_", umapData$speciesID)
   umapData$IMG_PATH <- 
-    paste0(tempdir(), "modelPlot_", umapData$speciesID_underscore, ".jpg")
+    paste0(tempdir(), "modelPlot_", umapData$speciesID_underscore, ".jpeg")
   umapData$IMG_PATH2 <- 
     sapply(umapData$IMG_PATH, function(x) {base64enc::dataURI(file = x )})
   
