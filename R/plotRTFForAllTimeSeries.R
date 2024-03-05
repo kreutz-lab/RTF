@@ -5,12 +5,14 @@
 #' @return pdf file, where each page corresponds to one time series.
 #' @param res.lst List with the RTF result for each time series
 #' @param fileString String that should be added to file name
+#' @param saveFolderPath Path of folder to where plots and rds files should be 
+#' saved. Default: current folder.
 #' @param height Integer indicating page height
 #' @param width Integer indicating page width
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitsToSingleFileExtension Image file extension, if 
-#' plotFitsToSingleFile=TRUE (Default: jpeg.)
+#' plotFitsToSingleFile=TRUE (Default: jpeg)
 #' @param plotFitOnly Plot fit only without additional information as provided 
 #' using function plotRTF().
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
@@ -25,6 +27,7 @@
 
 plotRTFForAllTimeSeries <- function(res.lst, 
                                     fileString = "", 
+                                    saveFolderPath = "",
                                     height = 12, width = 10,
                                     plotFitsToSingleFile = TRUE,
                                     plotFitsToSingleFileExtension = "jpeg", 
@@ -37,7 +40,8 @@ plotRTFForAllTimeSeries <- function(res.lst,
   }
   
   if (plotFitsToSingleFile)
-    grDevices::pdf(paste0("modelPlots_", fileString,".pdf"), height = height, 
+    grDevices::pdf(paste0(saveFolderPath, "modelPlots_", fileString,".pdf"), 
+                   height = height, 
                    width = width)
   for (i in seq(length(res.lst))) {
     el <- res.lst[[i]]
@@ -69,7 +73,8 @@ plotRTFForAllTimeSeries <- function(res.lst,
     }
     
     if (!plotFitsToSingleFile) {
-      ggplot2::ggsave(file = paste0("modelPlot_", gsub("/", "_", title),".", 
+      ggplot2::ggsave(file = paste0(saveFolderPath, "modelPlot_", 
+                                    gsub("/", "_", title),".", 
                              plotFitsToSingleFileExtension), 
                       device = plotFitsToSingleFileExtension,
                       plot = plt,

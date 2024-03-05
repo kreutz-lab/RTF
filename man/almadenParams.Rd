@@ -16,9 +16,11 @@ This example data frame containing the estimated RTF parameters for the
 'almadenTimeSeries' dataset, which is modelled using Data2Dynamics and is 
 based on the NFkB model of Almaden et al.
  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
-It has been generated as follows:
+It has been generated from a rds file returned from:
 data(almadenTimeSeries)
-strasenParams <- getParamsFromMultipleTimeSeries(strasenTimeSeries)
+getParamsFromMultipleTimeSeries(almadenTimeSeries, 
+                               fileString = "test",
+                               nInitialGuesses = 100)
 }
 \examples{
 data(almadenParams)

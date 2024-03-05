@@ -7,6 +7,7 @@
 plotRTFForAllTimeSeries(
   res.lst,
   fileString = "",
+  saveFolderPath = "",
   height = 12,
   width = 10,
   plotFitsToSingleFile = TRUE,
@@ -20,6 +21,9 @@ plotRTFForAllTimeSeries(
 
 \item{fileString}{String that should be added to file name}
 
+\item{saveFolderPath}{Path of folder to where plots and rds files should be 
+saved. Default: current folder.}
+
 \item{height}{Integer indicating page height}
 
 \item{width}{Integer indicating page width}
@@ -28,7 +32,7 @@ plotRTFForAllTimeSeries(
 single file.}
 
 \item{plotFitsToSingleFileExtension}{Image file extension, if 
-plotFitsToSingleFile=TRUE (Default: jpeg.)}
+plotFitsToSingleFile=TRUE (Default: jpeg)}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided 
 using function plotRTF().}

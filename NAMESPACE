@@ -3,6 +3,7 @@
 export(applyLog10ForTakeLog10)
 export(getBestFittingResult)
 export(getData)
+export(getDynamicUMAP)
 export(getDynamicsForClusters)
 export(getExampleDf)
 export(getFittingResult)

@@ -25,9 +25,9 @@ groups.}
 
 \item{maxTime}{Time point up to which the dynamics should be plotted.}
 
-\item{numClust}{(Optional) Number of clusters. If not specified, number of
-clusters will be detrmined automatically using the function 
-NbClust::NbClust().}
+\item{numClust}{(Optional) Integer indicating the number of clusters used 
+for k-means clustering. If not specified, number of clusters will be 
+determined automatically using the function NbClust::NbClust().}
 }
 \value{
 List containing UMAP plot colored by meta info ('umap.metaInfo'), 

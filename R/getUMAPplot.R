@@ -1,6 +1,7 @@
-#' Generate UMAP plot based on the RTF parameters to multiple time series
+#' Generates UMAP plot based on the RTF parameters for multiple time series
 #'
-#' @description RTF parameters to multiple time series
+#' @description Generates UMAP plot based on the RTF parameters for multiple 
+#' time series
 #' @return ggplot2 object of UMAP plot ('plot')
 #' @param df Data frame containing columns corresponding to the values for each
 #' RTF parameter as well as a column indicating how the data points in the UMAP

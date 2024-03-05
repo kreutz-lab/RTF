@@ -16,9 +16,9 @@
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
 #' @param maxTime Time point up to which the dynamics should be plotted.
-#' @param numClust (Optional) Number of clusters. If not specified, number of
-#' clusters will be detrmined automatically using the function 
-#' NbClust::NbClust().
+#' @param numClust (Optional) Integer indicating the number of clusters used 
+#' for k-means clustering. If not specified, number of clusters will be 
+#' determined automatically using the function NbClust::NbClust().
 #' @export getLowDimensionalRTFPlots
 #' @importFrom dplyr %>%
 #' @examples

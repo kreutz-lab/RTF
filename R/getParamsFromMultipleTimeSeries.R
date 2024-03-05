@@ -16,6 +16,8 @@
 #' already been determined previously, the path of the resulting .rds file can
 #' be specified  using readInParamRdsFilePath, so that the time-intensive
 #' calculation of the RTF parameter does not have to be repreated a second time.
+#' @param saveFolderPath Path of folder to where plots and rds files should be 
+#' saved. Default: current folder.
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
@@ -37,6 +39,7 @@ getParamsFromMultipleTimeSeries <- function(df,
                                             doRTFPlots = TRUE,
                                             fileString = "lowDimRTF",
                                             readInParamRdsFilePath = "",
+                                            saveFolderPath = "",
                                             modelReduction = FALSE,
                                             nInitialGuesses = 200,
                                             plotFitsToSingleFile = TRUE,
@@ -54,12 +57,13 @@ getParamsFromMultipleTimeSeries <- function(df,
   
   if (nchar(fileString) > 0) {
     if (nchar(readInParamRdsFilePath) == 0)
-      saveRDS(res.lst, file = paste0(fileString, ".RDS"))
+      saveRDS(res.lst, file = paste0(saveFolderPath, fileString, ".RDS"))
     
     if (doRTFPlots)
       plotRTFForAllTimeSeries(
         res.lst,
         fileString = fileString,
+        saveFolderPath = saveFolderPath,
         plotFitsToSingleFile = plotFitsToSingleFile,
         plotFitOnly = plotFitOnly,
         plotAllPointsWaterfall = plotAllPointsWaterfall

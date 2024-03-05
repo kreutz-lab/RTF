@@ -2,7 +2,7 @@
 % Please edit documentation in R/getUMAPplot.R
 \name{getUMAPplot}
 \alias{getUMAPplot}
-\title{Generate UMAP plot based on the RTF parameters to multiple time series}
+\title{Generates UMAP plot based on the RTF parameters for multiple time series}
 \usage{
 getUMAPplot(
   df,
@@ -34,7 +34,8 @@ plot}
 ggplot2 object of UMAP plot ('plot')
 }
 \description{
-RTF parameters to multiple time series
+Generates UMAP plot based on the RTF parameters for multiple 
+time series
 }
 \examples{
 data(strasenParams)

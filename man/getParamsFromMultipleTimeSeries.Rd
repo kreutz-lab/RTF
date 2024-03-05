@@ -9,6 +9,7 @@ getParamsFromMultipleTimeSeries(
   doRTFPlots = TRUE,
   fileString = "lowDimRTF",
   readInParamRdsFilePath = "",
+  saveFolderPath = "",
   modelReduction = FALSE,
   nInitialGuesses = 200,
   plotFitsToSingleFile = TRUE,
@@ -31,6 +32,9 @@ readInParamRdsFilePath is defined no .rds file will be created.}
 already been determined previously, the path of the resulting .rds file can
 be specified  using readInParamRdsFilePath, so that the time-intensive
 calculation of the RTF parameter does not have to be repreated a second time.}
+
+\item{saveFolderPath}{Path of folder to where plots and rds files should be 
+saved. Default: current folder.}
 
 \item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
