@@ -12,6 +12,7 @@ getDynamic2DPlot(
   species,
   res.lst,
   metaInfo = c(),
+  plotLines = TRUE,
   positionLeft = 0,
   positionTop = 0
 )
@@ -33,6 +34,9 @@ dim1Vec and dim2Vec.}
 \item{metaInfo}{(Optional) Vector specifying  meta information for
 each time series. Needs to have the same length as the number of rows of 
 param.df.}
+
+\item{plotLines}{Boolean indicating if lines should be plotted between 
+species of the same name (Default: TRUE)}
 
 \item{positionLeft}{Integer specifying the horizontal position of the subplot 
 (Default: 0)}

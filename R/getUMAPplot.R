@@ -8,11 +8,14 @@
 #' plot should be colored (name of this column given by 'groupColName').
 #' @param groupColName String with the column name of the groups based on which 
 #' the data points of the UMAP plot should be colored.
+#' @param takeRank Boolean indicating if rank should be used for UMAP instead 
+#' of absolute value
 #' @param alpha Alpha value (between 0 and 1) of the data points in the UMAP 
 #' plot
 #' @param size Size of the data points in the UMAP plot
 #' @param ellipse Boolean indicating if ellipse should be drawn
 #' @param ellipseLevel The level at which to draw an ellipse (between 0 and 1)
+#' @param seed Seed
 #' @export getUMAPplot
 #' @importFrom dplyr %>%
 #' @examples
@@ -25,18 +28,28 @@
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 
-getUMAPplot <- function(df, groupColName = "",
+getUMAPplot <- function(df, groupColName = "", takeRank = TRUE,
                         alpha = 0.3, size = 0.8, 
-                        ellipse = TRUE, ellipseLevel = 0.68) {
+                        ellipse = TRUE, ellipseLevel = 0.68, seed = 111) {
   # set.seed(142)
   
   tryCatch({
-    umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
-      dplyr::select(-!!groupColName) %>% 
-      dplyr::select_if(~ !any(is.na(.))) %>%
-      tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
-      scale() %>%
-      umap::umap(n_components = 3, preserve.seed = TRUE)
+    if (takeRank) {
+      umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
+        dplyr::select(-!!groupColName) %>% 
+        dplyr::select_if(~ !any(is.na(.))) %>%
+        tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
+        dplyr::mutate_all(rank) %>%
+        umap::umap(n_components = 3, preserve.seed = TRUE, random_state = seed)
+    } else {
+      umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
+        dplyr::select(-!!groupColName) %>% 
+        dplyr::select_if(~ !any(is.na(.))) %>%
+        tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
+        scale() %>%
+        umap::umap(n_components = 3, preserve.seed = TRUE, random_state = seed)
+    }
+
   }
   , error = function(e) {
     stop(paste0(e, " Too few time series to run Low dimensional RTF analysis."))

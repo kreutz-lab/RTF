@@ -7,10 +7,12 @@
 getUMAPplot(
   df,
   groupColName = "",
+  takeRank = TRUE,
   alpha = 0.3,
   size = 0.8,
   ellipse = TRUE,
-  ellipseLevel = 0.68
+  ellipseLevel = 0.68,
+  seed = 111
 )
 }
 \arguments{
@@ -21,6 +23,9 @@ plot should be colored (name of this column given by 'groupColName').}
 \item{groupColName}{String with the column name of the groups based on which 
 the data points of the UMAP plot should be colored.}
 
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
+of absolute value}
+
 \item{alpha}{Alpha value (between 0 and 1) of the data points in the UMAP 
 plot}
 
@@ -29,6 +34,8 @@ plot}
 \item{ellipse}{Boolean indicating if ellipse should be drawn}
 
 \item{ellipseLevel}{The level at which to draw an ellipse (between 0 and 1)}
+
+\item{seed}{Seed}
 }
 \value{
 ggplot2 object of UMAP plot ('plot')

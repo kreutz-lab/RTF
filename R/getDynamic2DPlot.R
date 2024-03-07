@@ -17,6 +17,8 @@
 #' @param metaInfo (Optional) Vector specifying  meta information for
 #' each time series. Needs to have the same length as the number of rows of 
 #' param.df.
+#' @param plotLines Boolean indicating if lines should be plotted between 
+#' species of the same name (Default: TRUE)
 #' @param positionLeft Integer specifying the horizontal position of the subplot 
 #' (Default: 0)
 #' @param positionTop Integer specifying the vertical position of the subplot 
@@ -70,6 +72,7 @@ getDynamic2DPlot <- function(dim1Vec,
                              species,
                              res.lst, 
                              metaInfo = c(), 
+                             plotLines = TRUE,
                              positionLeft = 0, 
                              positionTop = 0) {
   
@@ -132,12 +135,16 @@ getDynamic2DPlot <- function(dim1Vec,
     df <- data.frame(df, metaInfo = metaInfo)
   } 
   
-  plt <- plotly::plot_ly(data = df) %>%
-    # Add line connecting two points of same species
-    plotly::add_trace(
-      x = ~Dim1, y = ~Dim2, split = ~species, opacity = 0.2,
-      line = list(color = "black"),
-      type = "scatter", mode = "lines", showlegend = FALSE, inherit = FALSE)
+  plt <- plotly::plot_ly(data = df) 
+  
+  if (plotLines) {
+    plt <- plt %>%
+      # Add line connecting two points of same species
+      plotly::add_trace(
+        x = ~Dim1, y = ~Dim2, split = ~species, opacity = 0.2,
+        line = list(color = "black"),
+        type = "scatter", mode = "lines", showlegend = FALSE, inherit = FALSE)
+  }
   
   if (length(metaInfo) == 0) {
     plt <- plt %>%  plotly::add_trace(
@@ -166,6 +173,9 @@ getDynamic2DPlot <- function(dim1Vec,
     js, data = list(left = positionLeft, top = positionTop))
   
   plt$dependencies <- c(plt$dependencies, list(d3))
+  
+  # Delete temporary directory content
+  unlink(dir(path = tmpDir, full.names = TRUE), recursive = TRUE)
   
   plt
 }
