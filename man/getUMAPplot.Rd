@@ -24,7 +24,7 @@ plot should be colored (name of this column given by 'groupColName').}
 the data points of the UMAP plot should be colored.}
 
 \item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
-of absolute value}
+of absolute value (Default: TRUE)}
 
 \item{alpha}{Alpha value (between 0 and 1) of the data points in the UMAP 
 plot}

@@ -9,7 +9,7 @@
 #' @param groupColName String with the column name of the groups based on which 
 #' the data points of the UMAP plot should be colored.
 #' @param takeRank Boolean indicating if rank should be used for UMAP instead 
-#' of absolute value
+#' of absolute value (Default: TRUE)
 #' @param alpha Alpha value (between 0 and 1) of the data points in the UMAP 
 #' plot
 #' @param size Size of the data points in the UMAP plot
