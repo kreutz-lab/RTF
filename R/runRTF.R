@@ -78,6 +78,8 @@ runRTF <- function(data,
   res <- selectBest(res.all.plusMinus)
   
   optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
+  optimParamsFullModel <- optimParamsFullModel[names(optimParamsFullModel) !=
+                                                 "signum_TF"]
   intermediateResults <- list()
   
   if (modelReduction) {
@@ -136,53 +138,44 @@ runRTF <- function(data,
         bZero = res.bZero.plusMinus
       )
     } else {
-      params <- setdiff(names(optimObject.orig[["lb.vec"]]), "sigma")
+      RTFparams <- c("alpha", "gamma", "A", "B", "tau")
       statLst <- list()
       statObjLst <- list()
-      for (param in params) {
-        print(param)
+      
+      for (RTFparam in RTFparams) {
+        print(RTFparam)
         optimObjectTmp <- optimObject.orig
         optimObjectTmp$initialGuess.vec <- optimParamsFullModel
         
-        # if parameters with reciprocal hill (equationhillEquationReciprocal)
-        # set fixed to upper bound
-        if (param %in% c("M_tau", "K_tau")) {
-          optimObjectTmp$fixed[[param]] <-
-            optimObjectTmp[["ub.vec"]][
-              names(optimObjectTmp[["ub.vec"]]) == param]
-        } else {
-          # optimObjectTmp$positive.par.names <-
-          #   setdiff(optimObjectTmp$positive.par.names, param)
-          optimObjectTmp[["takeLog10"]][
-            names(optimObjectTmp[["takeLog10"]]) == param] <- FALSE
-          optimObjectTmp$fixed[[param]] <- 0
-        }
+        optimObjectTmp$fixed[[paste0("h_", RTFparam)]] <- 1
+        
+        optimObjectTmp[["takeLog10"]][
+          names(optimObjectTmp[["takeLog10"]]) == paste0("K_", RTFparam)] <- FALSE
+        optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- 0
+
         
         res.param.fixed <- getFittingResult(optimObjectTmp,
                                             nInitialGuesses = nInitialGuesses)
         res.fixed <- selectBest(res.param.fixed)
         
-        LRstat <- res.fixed$value / res$value
         difference <-  res.fixed$value - res$value
-        df <-
-          sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
-        pVal <-
-          stats::pchisq(difference, df = df, lower.tail = FALSE)
+        df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
+        pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
         statLst <- append(statLst,
                           list(list(
-                            param = param,
-                            df = sum(is.na(res.fixed[["fixed"]])),
-                            LRstat = LRstat,
+                            RTFparam = RTFparam,
+                            df = df,
+                            LRTstat = difference,
                             pVal = pVal
                           )))
         statObjLst <- append(statObjLst, list(res.fixed))
       }
-      names(statLst) <- names(statObjLst) <- params
+      names(statLst) <- names(statObjLst) <- RTFparams
       
       grDevices::pdf(
         file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf",
-        width = 12,
-        height = 10)
+        width = 10,
+        height = 8)
       for (i in seq(length(statObjLst))) {
         optimResTmpLstValuesAll <- unlist(
           lapply(statObjLst[[i]][["optimResults"]], function(x)
@@ -219,5 +212,4 @@ runRTF <- function(data,
       intermediateResults = intermediateResults
     )
   )
-  
 }
