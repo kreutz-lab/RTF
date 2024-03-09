@@ -8,7 +8,6 @@ runRTF(
   data,
   modus = NULL,
   optimFunction = "logLikelihood",
-  modelReduction = TRUE,
   nInitialGuesses = 100,
   plotAllPointsWaterfall = FALSE,
   control = list(trace = 1, maxit = 1000, factr = 1000)
@@ -28,9 +27,6 @@ and else 'timeDependent'.}
 \item{optimFunction}{String indicating the optimization function which
 should be used (Default: "logLikelihood")}
 
-\item{modelReduction}{Boolean indicating of model reduction should be
-performed (Default: TRUE)}
-
 \item{nInitialGuesses}{Integer indicating number of initial guesses
 (Default: 100)}
 
@@ -42,9 +38,8 @@ If FALSE, all values up to the median of those values are plotted.}
 (Default: list(trace = 1, maxit = 1000, factr = 1e3))}
 }
 \value{
-List of the final RTF model (finalModel), the optimized parameters
-(finalParams), the plot of the final model (finalPlot), as well as the
-intermediate results (intermediateResults).
+List of the final RTF model (finalModel) and the optimized parameters
+(finalParams).
 }
 \description{
 Run RTF

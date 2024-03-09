@@ -1,9 +1,8 @@
 #' Run RTF
 #'
 #' @description Run RTF
-#' @return List of the final RTF model (finalModel), the optimized parameters
-#' (finalParams), the plot of the final model (finalPlot), as well as the
-#' intermediate results (intermediateResults).
+#' @return List of the final RTF model (finalModel) and the optimized parameters
+#' (finalParams).
 #' @param data Data frame containing columns named 't' (time) and
 #' 'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
 #' 't', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD')
@@ -14,8 +13,6 @@
 #' and else 'timeDependent'.
 #' @param optimFunction String indicating the optimization function which
 #' should be used (Default: "logLikelihood")
-#' @param modelReduction Boolean indicating of model reduction should be
-#' performed (Default: TRUE)
 #' @param nInitialGuesses Integer indicating number of initial guesses
 #' (Default: 100)
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
@@ -33,7 +30,6 @@
 runRTF <- function(data,
                    modus = NULL,
                    optimFunction = "logLikelihood",
-                   modelReduction = TRUE,
                    nInitialGuesses = 100,
                    plotAllPointsWaterfall = FALSE,
                    control = list(trace = 1,
@@ -77,122 +73,6 @@ runRTF <- function(data,
                                         nInitialGuesses = nInitialGuesses)
   res <- selectBest(res.all.plusMinus)
   
-  optimParamsFullModel <- res[["bestOptimResult"]][["par"]]
-  optimParamsFullModel <- optimParamsFullModel[names(optimParamsFullModel) !=
-                                                 "signum_TF"]
-  intermediateResults <- list()
-  
-  if (modelReduction) {
-    if (modus != "doseDependent") {
-      #  MODEL REDUCTION
-      # 1. Testing whether there is time retardation,
-      # i.e., if tau parameter is significantly different from the lower bound.
-      #  If not significant, tau is set to the lower bound which is
-      # tau = −2 by default.
-      optimObjectTmp <- optimObject.orig
-      
-      optimObjectTmp[["takeLog10"]][
-        names(optimObjectTmp[["takeLog10"]]) == "tau"] <- FALSE
-      
-      optimObjectTmp$fixed[["tau"]] <-
-        optimObject.orig$lb.vec[["tau"]]
-      res.tauLB.plusMinus <- getFittingResult(optimObjectTmp,
-                                              nInitialGuesses = nInitialGuesses)
-      res.tauLB <- selectBest(res.tauLB.plusMinus)
-      res <- selectSmallerModelIfDiffIsSmall(res, res.tauLB)
-      
-      # 2. Testing whether the model is in agreement with a constant.
-      # If not significant, we set A = B = 0.
-      optimObjectTmp2 <- res
-      # optimObjectTmp2$positive.par.names <-
-      #   setdiff(optimObjectTmp2$positive.par.names, c("A", "B"))
-      
-      optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in%
-                                       c("A", "B")] <- FALSE
-      
-      optimObjectTmp2$fixed[["A"]] <-
-        optimObjectTmp2$fixed[["B"]] <- 0
-      res.constant.plusMinus <- getFittingResult(
-        optimObjectTmp2, nInitialGuesses = nInitialGuesses)
-      res.constant <- selectBest(res.constant.plusMinus)
-      res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
-      
-      # 3. Testing whether the offset b is significantly different from zero.
-      # If not significant, we set b = 0.
-      optimObjectTmp3 <- res
-      # optimObjectTmp3$positive.par.names <-
-      #   setdiff(optimObjectTmp3$positive.par.names, "b")
-      
-      optimObjectTmp3[["takeLog10"]][
-        names(optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
-      optimObjectTmp3$fixed[["b"]] <- 0
-      res.bZero.plusMinus <- getFittingResult(optimObjectTmp3,
-                                              nInitialGuesses = nInitialGuesses)
-      res.bZero <- selectBest(res.bZero.plusMinus)
-      res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
-      
-      intermediateResults <- list(
-        fullModel = res.all.plusMinus,
-        tauFixed = res.tauLB.plusMinus,
-        Constant = res.constant.plusMinus,
-        bZero = res.bZero.plusMinus
-      )
-    } else {
-      RTFparams <- c("alpha", "gamma", "A", "B", "tau")
-      statLst <- list()
-      statObjLst <- list()
-      
-      for (RTFparam in RTFparams) {
-        print(RTFparam)
-        optimObjectTmp <- optimObject.orig
-        optimObjectTmp$initialGuess.vec <- optimParamsFullModel
-        
-        optimObjectTmp$fixed[[paste0("h_", RTFparam)]] <- 1
-        
-        optimObjectTmp[["takeLog10"]][
-          names(optimObjectTmp[["takeLog10"]]) == paste0("K_", RTFparam)] <- FALSE
-        optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- 0
-
-        
-        res.param.fixed <- getFittingResult(optimObjectTmp,
-                                            nInitialGuesses = nInitialGuesses)
-        res.fixed <- selectBest(res.param.fixed)
-        
-        difference <-  res.fixed$value - res$value
-        df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
-        pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
-        statLst <- append(statLst,
-                          list(list(
-                            RTFparam = RTFparam,
-                            df = df,
-                            LRTstat = difference,
-                            pVal = pVal
-                          )))
-        statObjLst <- append(statObjLst, list(res.fixed))
-      }
-      names(statLst) <- names(statObjLst) <- RTFparams
-      
-      grDevices::pdf(
-        file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf",
-        width = 10,
-        height = 8)
-      for (i in seq(length(statObjLst))) {
-        optimResTmpLstValuesAll <- unlist(
-          lapply(statObjLst[[i]][["optimResults"]], function(x)
-            unlist(x[["optimRes"]][grep("value", names(x[["optimRes"]]))])))
-        print(plotWaterfallPlot(optimResTmpLstValuesAll, 
-                                plotAllPoints = plotAllPointsWaterfall) +
-                ggplot2::ggtitle(names(statObjLst)[i]))
-      }
-      grDevices::dev.off()
-      
-      statLst.df <- do.call(rbind, lapply(statLst, data.frame))
-      utils::write.csv(statLst.df,
-                       "doseResponseRTF_parameter_significanceTable.csv",
-                       row.names = FALSE)
-    }
-  }
-  
   finalParams <- res$fitted
   
   print("The parameters of the best fit are:")
@@ -206,10 +86,6 @@ runRTF <- function(data,
   print(res[["bestOptimResult"]][["value"]])
   
   return(
-    list(
-      finalModel = res,
-      finalParams = finalParams,
-      intermediateResults = intermediateResults
-    )
+    list(finalModel = res, finalParams = finalParams)
   )
 }

@@ -29,6 +29,9 @@ data <- getExampleDf()
 plotData(data)
 res <- runRTF(data, modus = "timeDependent")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+
+# Subsequently, you can perform model reduction
+res.reduced <- modelReduction(res)
 ```
 
 RTF with dose-response dependency
@@ -39,8 +42,7 @@ RTF with dose-response dependency
 data.doseResponse <- getExampleDf(modus = "doseDependent")
 plotData(data.doseResponse)
 res.doseResponse <- runRTF(data.doseResponse, 
-                          modus = "doseDependent",
-                          modelReduction = FALSE)
+                          modus = "doseDependent")
 plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
 
 plotFit(par = res.doseResponse[["finalParams"]],
@@ -50,13 +52,15 @@ plotFit(par = res.doseResponse[["finalParams"]],
                  modus = 'doseDependent',
                  withData = TRUE,
                  title = " ")
+                 
+res.doseResponse.reduced <- modelReduction(res.doseResponse)
 ```
 
 Low-dimensional representation of RTF parameters of 20 or more time series: 
 
 ```
-data(strasenTimeSeries)
-df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
+data(almadenTimeSeries)
+df.multipleTimeSeries <- almadenTimeSeries[, 1:20]
 colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
 metaInfo <- sub("_[^_]+$", "", colNames)
 res <- getLowDimensionalRTF(df.multipleTimeSeries,

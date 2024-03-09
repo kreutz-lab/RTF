@@ -24,9 +24,9 @@ runRTFOnMultipleTimeSeries <- function(df,
   for (colIdx in 2:ncol(df)) {
     df.tmp <- data.frame(t = df$time, 
                      y = df[, colIdx])
-    res <- runRTF(data = df.tmp, 
-                  modelReduction = modelReduction, 
+    res <- runRTF(data = df.tmp,
                   nInitialGuesses = nInitialGuesses)
+    if (modelReduction) res <- modelReduction(res)
     res.lst <- append(res.lst, list(res))
   }
   names(res.lst) <- colNames
