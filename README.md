@@ -31,7 +31,7 @@ res <- runRTF(data, modus = "timeDependent")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
 
 # Subsequently, you can perform model reduction
-res.reduced <- modelReduction(res)
+res.reduced <- modelReduction(res$finalModel)
 ```
 
 RTF with dose-response dependency
@@ -53,7 +53,7 @@ plotFit(par = res.doseResponse[["finalParams"]],
                  withData = TRUE,
                  title = " ")
                  
-res.doseResponse.reduced <- modelReduction(res.doseResponse)
+res.doseResponse.reduced <- modelReduction(res.doseResponse$finalModel)
 ```
 
 Low-dimensional representation of RTF parameters of 20 or more time series: 
