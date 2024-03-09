@@ -59,8 +59,8 @@ res.doseResponse.reduced <- modelReduction(res.doseResponse)
 Low-dimensional representation of RTF parameters of 20 or more time series: 
 
 ```
-data(almadenTimeSeries)
-df.multipleTimeSeries <- almadenTimeSeries[, 1:20]
+data(strasenTimeSeries)
+df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
 metaInfo <- sub("_[^_]+$", "", colNames)
 res <- getLowDimensionalRTF(df.multipleTimeSeries,
