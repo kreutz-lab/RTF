@@ -27,7 +27,7 @@
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF (Default: 200).
+#' RTF (Default: 100).
 #' @param saveToFile Boolean indicating if results should be saved to file
 #' @param numClust (Optional) Number of clusters. If not specified, number of
 #' clusters will be detrmined automatically using the function
@@ -45,6 +45,7 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export getLowDimensionalRTF
 #' @examples
+#' \dontrun{
 #' data(strasenTimeSeries)
 #' df <- strasenTimeSeries[, 1:20]
 #' colNames <- colnames(df[2:ncol(df)])
@@ -53,6 +54,7 @@
 #'                             metaInfo = metaInfo,
 #'                             fileString = "strasen_subset",
 #'                             metaInfoName = "species", saveToFile = FALSE)
+#' }
 
 getLowDimensionalRTF <- function(df,
                                  metaInfo = c(),
@@ -63,7 +65,7 @@ getLowDimensionalRTF <- function(df,
                                  plotWidth = 22,
                                  readInParamRdsFilePath = "",
                                  modelReduction = FALSE,
-                                 nInitialGuesses = 200,
+                                 nInitialGuesses = 100,
                                  saveToFile = TRUE,
                                  numClust = NULL,
                                  param.df = NULL,

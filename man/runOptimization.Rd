@@ -17,8 +17,7 @@ the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
 of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 if log10 is applied to bounds ('takeLog10'), the parameters having no
 negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
-modus ('modus'), and a list of values of fitted parameters ('fitted').
-optimObject$fixed[["signum_TF"]] has to be set to 1 or -1}
+modus ('modus'), and a list of values of fitted parameters ('fitted').}
 
 \item{objFunct}{Name of the objective function}
 }
@@ -33,7 +32,6 @@ Run optimization using stats::optim with method = "L-BFGS-B"
 data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'timeDependent')
-optimObject.orig$fixed[["signum_TF"]] <- 1
 nInitialGuesses <- 100
 initialGuess.vec.lst <- getInitialGuessVec(
                             initialGuess.vec =

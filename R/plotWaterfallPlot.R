@@ -18,11 +18,8 @@
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(
 #'                         data, modus = 'timeDependent')
-#' signum_TF <- 1
-#' optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 #' nInitialGuesses <- 100
-#' res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
-#'                     nInitialGuesses)
+#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, nInitialGuesses)
 #' 
 #' optimResults <- res.lst.wFinal$optimResults
 #' 
@@ -62,7 +59,7 @@ plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,
   
   gg <- ggplot2::ggplot(data = df,
                         ggplot2::aes(x = idx, y = value, color = col)) +
-    ggplot2::geom_point() +
+    ggplot2::geom_point(size = 0.5) +
     # geom_line() +
     ggplot2::labs(x = 'Index', y = 'Value') +
     ggplot2::scale_colour_manual(values = c("#000000",  "#FF0000")) +

@@ -31,11 +31,8 @@ can be highlighted using the argument 'idxCurrentFit'.
 data <- getExampleDf()
 optimObject.orig <- initializeOptimObject(
                         data, modus = 'timeDependent')
-signum_TF <- 1
-optimObject.orig$fixed[["signum_TF"]] <- signum_TF
 nInitialGuesses <- 100
-res.lst.wFinal <- getMultiStartResults(optimObject.orig, objFunct,
-                    nInitialGuesses)
+res.lst.wFinal <- getInitialGuessResults(optimObject.orig, nInitialGuesses)
 
 optimResults <- res.lst.wFinal$optimResults
 

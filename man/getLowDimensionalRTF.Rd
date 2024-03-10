@@ -15,7 +15,7 @@ getLowDimensionalRTF(
   plotWidth = 22,
   readInParamRdsFilePath = "",
   modelReduction = FALSE,
-  nInitialGuesses = 200,
+  nInitialGuesses = 100,
   saveToFile = TRUE,
   numClust = NULL,
   param.df = NULL,
@@ -53,7 +53,7 @@ calculation of the RTF parameter does not have to be repreated a second time.}
 performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating the number of initial guesses for
-RTF (Default: 200).}
+RTF (Default: 100).}
 
 \item{saveToFile}{Boolean indicating if results should be saved to file}
 
@@ -88,6 +88,7 @@ Generates low-dimensional representation of the RTF parameters
 of multiple time series.
 }
 \examples{
+\dontrun{
 data(strasenTimeSeries)
 df <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df[2:ncol(df)])
@@ -96,4 +97,5 @@ res <- getLowDimensionalRTF(df,
                             metaInfo = metaInfo,
                             fileString = "strasen_subset",
                             metaInfoName = "species", saveToFile = FALSE)
+}
 }

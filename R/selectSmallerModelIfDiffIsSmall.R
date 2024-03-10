@@ -22,14 +22,12 @@
 #' data <- getExampleDf()
 #' modus <- "timeDependent"
 #' optimObject.orig <- initializeOptimObject(data, modus = modus)
-#' res.all.plusMinus <- getFittingResult(optimObject.orig)
-#' res.all <- selectBest(res.all.plusMinus)
+#' res.all <- getInitialGuessResults(optimObject.orig)
 #' optimObjectTmp <- optimObject.orig
 #' optimObjectTmp$positive.par.names <-
 #'                       setdiff(optimObjectTmp$positive.par.names, "tau")
 #' optimObjectTmp$fixed[["tau"]] <- optimObject.orig$lb.vec[["tau"]]
-#' res.tauLB.plusMinus <- getFittingResult(optimObjectTmp)
-#' res.tauLB <- selectBest(res.tauLB.plusMinus)
+#' res.tauLB <- getInitialGuessResults(optimObjectTmp)
 #' res <- selectSmallerModelIfDiffIsSmall(res.all, res.tauLB)
 
 selectSmallerModelIfDiffIsSmall <- function(res, res.smallerModel) {

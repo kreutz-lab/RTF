@@ -13,14 +13,12 @@
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
 #' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
 #' modus ('modus'), and a list of values of fitted parameters ('fitted').
-#' optimObject$fixed[["signum_TF"]] has to be set to 1 or -1
 #' @param objFunct Name of the objective function
 #' @export runOptimization
 #' @examples
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'timeDependent')
-#' optimObject.orig$fixed[["signum_TF"]] <- 1
 #' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
 #'                             initialGuess.vec =
@@ -102,7 +100,9 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     print(vec)
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
 
-    optimResTmp <- stats::optim(par = vec,
+    for (signumTF in c(-1, 1)) {
+      optimObject.tmp$fixed[["signum_TF"]] <- signumTF
+      optimResTmp <- stats::optim(par = vec,
                                   fn = objFunct,
                                   gr = objFunctGradient,
                                   method = "L-BFGS-B",
@@ -112,28 +112,31 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
                                   optimObject = optimObject.tmp,
                                   calcGradient = FALSE,
                                   control = optimObject.tmp$control)
-    
-    optimResTmp$par <- applyLog10ForTakeLog10(c(optimResTmp$par), 
-                                              takeLog10, reverse = TRUE)
-    
-    vecOrder <- names(optimObject$fixed)
-    parsFinal <- c(fixed[!is.na(fixed)], optimResTmp$par)[vecOrder]
-    parsFinal[names(parsFinal) %in% yDependentPars] <-  
-      parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
-    optimResTmp$par <- parsFinal
-    
-    value <- c(optimResTmp$value)
-
-    res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
-
-    if (is.null(currentBestResValue)) {
-      currentBestResValue <- value
-      optimRes <- optimResTmp
-    }
-
-    if (value < currentBestResValue) {
-      currentBestResValue <- value
-      optimRes <- optimResTmp
+      
+      optimResTmp$par <- applyLog10ForTakeLog10(c(optimResTmp$par), 
+                                                takeLog10, reverse = TRUE)
+      
+      vecOrder <- names(optimObject$fixed)
+      parsFinal <- c(fixed[!is.na(fixed) & names(fixed) != "signum_TF"], 
+                     signum_TF = signumTF,
+                     optimResTmp$par)[vecOrder]
+      parsFinal[names(parsFinal) %in% yDependentPars] <-  
+        parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
+      optimResTmp$par <- parsFinal
+      
+      value <- c(optimResTmp$value)
+  
+      res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
+  
+      if (is.null(currentBestResValue)) {
+        currentBestResValue <- value
+        optimRes <- optimResTmp
+      }
+  
+      if (value < currentBestResValue) {
+        currentBestResValue <- value
+        optimRes <- optimResTmp
+      }
     }
   }
 

@@ -1,6 +1,6 @@
-#' Generate plots
+#' Generate plots of RTF results
 #'
-#' @description Plot fitting results for optimObjects of modus
+#' @description Plot RTF results for optimObjects of modus
 #' "timeDependent" or "doseDependent"
 #' @return ggplot object
 #' @param optimObject optimObject containing elements "finalModel" and "modus"
@@ -10,24 +10,20 @@
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
 #' if fileNamePrefix is given. Only relevant for "timeDependent"
 #' modus. (Default: TRUE)
-#' using function plotRTF().
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTF
 #' @examples
-#' data.doseResponse <- getExampleDf(
-#'                             modus = "doseDependent")
-#' plotData(data.doseResponse)
-#' res.doseResponse <- runRTF(data.doseResponse)
-#' plotRTF(res.doseResponse, plotAllFits = FALSE)
+#' data <- getExampleDf(modus = "timeDependent")
+#' res <- runRTF(data)
+#' plotRTF(res, plotAllFits = FALSE)
 
-plotRTF <-
-  function(optimObject,
-           fileNamePrefix = "",
-           plotTitle = "",
-           plotAllFits = TRUE,
-           plotAllPointsWaterfall = FALSE) {
+plotRTF <- function(optimObject,
+                    fileNamePrefix = "",
+                    plotTitle = "",
+                    plotAllFits = TRUE,
+                    plotAllPointsWaterfall = FALSE) {
     optimObject <- optimObject$finalModel
     
     saveToFile <- nchar(fileNamePrefix) > 0

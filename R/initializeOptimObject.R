@@ -170,8 +170,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
                            initialGuess.vec = initialGuess.vec,
                            lb.vec = lb.vec,
                            ub.vec = ub.vec,
-                           fixed = stats::setNames(
-                             rep(NA, length(lb.vec)), names(lb.vec)),
+                           fixed = c(stats::setNames(
+                             rep(NA, length(lb.vec)), names(lb.vec)), 
+                             signum_TF = 1),
                            takeLog10 = stats::setNames(
                              rep(FALSE, length(lb.vec)), names(lb.vec)),
                            positive.par.names = NULL,

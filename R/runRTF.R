@@ -57,7 +57,6 @@ runRTF <- function(data,
     stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
   }
   
-  
   optimObject.orig <- initializeOptimObject(data,
                                             modus = modus,
                                             optimFunction = optimFunction,
@@ -69,9 +68,8 @@ runRTF <- function(data,
     optimObject.orig$fixed[[el]] <- optimObject.orig$lb.vec[[el]]
   }
   
-  res.all.plusMinus <- getFittingResult(optimObject.orig,
-                                        nInitialGuesses = nInitialGuesses)
-  res <- selectBest(res.all.plusMinus)
+  res <- getInitialGuessResults(
+    optimObject.orig, nInitialGuesses = nInitialGuesses)
   
   finalParams <- res$fitted
   

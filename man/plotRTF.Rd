@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotRTF.R
 \name{plotRTF}
 \alias{plotRTF}
-\title{Generate plots}
+\title{Generate plots of RTF results}
 \usage{
 plotRTF(
   optimObject,
@@ -22,8 +22,7 @@ file, otherwise they will be plotted directly. Default is empty string.}
 
 \item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
 if fileNamePrefix is given. Only relevant for "timeDependent"
-modus. (Default: TRUE)
-using function plotRTF().}
+modus. (Default: TRUE)}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
 plotted in waterfall plot (Default: FALSE). 
@@ -33,13 +32,11 @@ If FALSE, all values up to the median of those values are plotted.}
 ggplot object
 }
 \description{
-Plot fitting results for optimObjects of modus
+Plot RTF results for optimObjects of modus
 "timeDependent" or "doseDependent"
 }
 \examples{
-data.doseResponse <- getExampleDf(
-                            modus = "doseDependent")
-plotData(data.doseResponse)
-res.doseResponse <- runRTF(data.doseResponse)
-plotRTF(res.doseResponse, plotAllFits = FALSE)
+data <- getExampleDf(modus = "timeDependent")
+res <- runRTF(data)
+plotRTF(res, plotAllFits = FALSE)
 }

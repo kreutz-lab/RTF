@@ -38,8 +38,8 @@ modelReduction <- function(res,
     optimObjectTmp[["takeLog10"]][
       names(optimObjectTmp[["takeLog10"]]) == "tau"] <- FALSE
     optimObjectTmp$fixed[["tau"]] <- res.orig$lb.vec[["tau"]]
-    res.tauLB <- selectBest(getFittingResult(
-      optimObjectTmp, nInitialGuesses = nInitialGuesses))
+    res.tauLB <- getInitialGuessResults(
+      optimObjectTmp, nInitialGuesses = nInitialGuesses)
     res <- selectSmallerModelIfDiffIsSmall(res, res.tauLB)
     
     # 2. Testing whether the model is in agreement with a constant.
@@ -48,8 +48,8 @@ modelReduction <- function(res,
     optimObjectTmp2[["takeLog10"]][names(optimObjectTmp2[["takeLog10"]]) %in%
                                      c("A", "B")] <- FALSE
     optimObjectTmp2$fixed[["A"]] <- optimObjectTmp2$fixed[["B"]] <- 0
-    res.constant <- selectBest(getFittingResult(
-      optimObjectTmp2, nInitialGuesses = nInitialGuesses))
+    res.constant <- getInitialGuessResults(
+      optimObjectTmp2, nInitialGuesses = nInitialGuesses)
     res <- selectSmallerModelIfDiffIsSmall(res, res.constant)
     
     # 3. Testing whether the offset b is significantly different from zero.
@@ -58,8 +58,8 @@ modelReduction <- function(res,
     optimObjectTmp3[["takeLog10"]][
       names(optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
     optimObjectTmp3$fixed[["b"]] <- 0
-    res.bZero <- selectBest(getFittingResult(
-      optimObjectTmp3,nInitialGuesses = nInitialGuesses))
+    res.bZero <- getInitialGuessResults(
+      optimObjectTmp3,nInitialGuesses = nInitialGuesses)
     res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
     
     finalParams <- res$fitted
@@ -91,10 +91,8 @@ modelReduction <- function(res,
         names(optimObjectTmp[["takeLog10"]]) == paste0("K_", RTFparam)] <- FALSE
       optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- 0
       
-      
-      res.param.fixed <- getFittingResult(optimObjectTmp,
+      res.fixed <- getInitialGuessResults(optimObjectTmp,
                                           nInitialGuesses = nInitialGuesses)
-      res.fixed <- selectBest(res.param.fixed)
       
       difference <-  res.fixed$value - res$value
       df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
@@ -109,20 +107,6 @@ modelReduction <- function(res,
       statObjLst <- append(statObjLst, list(res.fixed))
     }
     names(statLst) <- names(statObjLst) <- RTFparams
-    
-    # grDevices::pdf(
-    #   file = "doseResponseRTF_parameter_waterfallPlots_forSignificanceTable.pdf",
-    #   width = 10,
-    #   height = 8)
-    # for (i in seq(length(statObjLst))) {
-    #   optimResTmpLstValuesAll <- unlist(
-    #     lapply(statObjLst[[i]][["optimResults"]], function(x)
-    #       unlist(x[["optimRes"]][grep("value", names(x[["optimRes"]]))])))
-    #   print(plotWaterfallPlot(optimResTmpLstValuesAll, 
-    #                           plotAllPoints = plotAllPointsWaterfall) +
-    #           ggplot2::ggtitle(names(statObjLst)[i]))
-    # }
-    # grDevices::dev.off()
     
     reductionResults <- do.call(rbind, lapply(statLst, data.frame))
   }
