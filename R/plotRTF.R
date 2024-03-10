@@ -49,24 +49,17 @@ plotRTF <- function(optimObject,
     ############################################################################
     waterfallPlot <- parDistributionPlot <- NA
     
-    optimResults.optimRes <- lapply(optimResults, function(x) {
-      tmp <- unlist(x[grep("optimRes", names(x))], recursive = FALSE)
-      names(tmp) <- sub("optimRes.", "", names(tmp))
+    optimResTmpLstParsAll <- lapply(optimResults, function(x) {
+      tmp <- unlist(x[grep("par", names(x))])
+      names(tmp) <- sub("par.", "", names(tmp))
       tmp
     })
     
-    optimResTmpLstParsAll <-
-      lapply(optimResults.optimRes, function(x) {
-        tmp <- unlist(x[grep("par", names(x))])
-        names(tmp) <- sub("par.", "", names(tmp))
-        tmp
-      })
-    
     ############################################################################
     
-    optimResTmpLstValuesAll <- unlist(lapply(optimResults.optimRes, function(x)
-      unlist(x[grep("value",
-                    names(x))])))
+    optimResTmpLstValuesAll <- unlist(lapply(optimResults, function(x) {
+      unlist(x[grep("value", names(x))])
+    }))
     
     waterfallPlot <- plotWaterfallPlot(optimResTmpLstValuesAll, 
                                        plotAllPoints = plotAllPointsWaterfall)

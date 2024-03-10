@@ -7,24 +7,19 @@
 sortListByValue(lst)
 }
 \arguments{
-\item{lst}{List with sublists, of which the first element has to contain
-parameter 'value', according to which the sublists will be sorted}
+\item{lst}{List with sublists, each of which needs to contain
+parameter 'value', according to which the sublists will be sorted.}
 }
 \value{
-List sorted according to the parameter 'value' in the first element
-of each sublist in ascending order.
+List sorted according to the parameter 'value' in ascending order.
 }
 \description{
 Sorts a list of sublists in ascending order according to
-parameter 'value' in the first element of each sublist.
+parameter 'value'.
 }
 \examples{
-res.lst <- list(list(optimRes = list(str = "res1", value = -20),
-                    gg = ggplot2::ggplot() + ggplot2::ggtitle("res1")),
-               list(optimRes = list(str = "res2", value = -45),
-                   gg = ggplot2::ggplot() + ggplot2::ggtitle("res2")),
-               list(optimRes = list(str = "res3", value = 8),
-                    gg = ggplot2::ggplot() + ggplot2::ggtitle("res3"))
-           )
-res.lst.sorted <- sortListByValue(res.lst)
+lst <- list(optimRes = list(str = "res1", value = -20),
+                optimRes = list(str = "res2", value = -45),
+                optimRes = list(str = "res3", value = 8))
+lst.sorted <- sortListByValue(lst)
 }

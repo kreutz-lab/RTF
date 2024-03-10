@@ -111,5 +111,9 @@ modelReduction <- function(res,
     reductionResults <- do.call(rbind, lapply(statLst, data.frame))
   }
   
+  if (all(res.orig$finalParams == reductionResults$finalParams)) {
+    warning("No model reduction indicated. Full model is retained.")
+  }
+  
   reductionResults
 }

@@ -126,7 +126,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
       
       value <- c(optimResTmp$value)
   
-      res.lst <- append(res.lst, list(list(optimRes = optimResTmp)))
+      res.lst <- append(res.lst, list(optimResTmp))
   
       if (is.null(currentBestResValue)) {
         currentBestResValue <- value
