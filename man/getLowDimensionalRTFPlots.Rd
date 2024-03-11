@@ -8,6 +8,7 @@ getLowDimensionalRTFPlots(
   df,
   metaInfo,
   metaInfoName,
+  takeRank,
   maxTime = 10,
   numClust = NULL
 )
@@ -22,6 +23,9 @@ time series.}
 groups.}
 
 \item{metaInfoName}{String of the name of the meta information.}
+
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
+of absolute value (Default: TRUE)}
 
 \item{maxTime}{Time point up to which the dynamics should be plotted.}
 

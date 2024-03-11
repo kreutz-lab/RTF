@@ -15,6 +15,8 @@
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
+#' @param takeRank Boolean indicating if rank should be used for UMAP instead 
+#' of absolute value (Default: TRUE)
 #' @param maxTime Time point up to which the dynamics should be plotted.
 #' @param numClust (Optional) Integer indicating the number of clusters used 
 #' for k-means clustering. If not specified, number of clusters will be 
@@ -30,15 +32,19 @@
 #'                                 metaInfoName = metaInfoName,
 #'                                 maxTime = 10)
 
-getLowDimensionalRTFPlots <- function(df, metaInfo, 
-                                      metaInfoName, maxTime = 10,
+getLowDimensionalRTFPlots <- function(df, 
+                                      metaInfo, 
+                                      metaInfoName, 
+                                      takeRank,
+                                      maxTime = 10,
                                       numClust = NULL) {
   params <- colnames(df)
   df.wMetaInfo <- data.frame(df, metaInfo)
   colnames(df.wMetaInfo) <- c(colnames(df), metaInfoName)
   gg.umap.metaInfo <- getUMAPplot(df.wMetaInfo, 
-                                   groupColName = metaInfoName, 
-                                   alpha = 1, size = 1.5)
+                                  groupColName = metaInfoName, 
+                                  takeRank = takeRank,
+                                  alpha = 1, size = 1.5)
   umap.metaInfo <- gg.umap.metaInfo +
     ggplot2::ggtitle(metaInfoName) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
@@ -55,7 +61,9 @@ getLowDimensionalRTFPlots <- function(df, metaInfo,
   }
   
   gg.umap.cluster <- getUMAPplot(data.frame(cbind(df, clustID)), 
-                          groupColName = "clustID", alpha = 1, size = 1.5)
+                                 groupColName = "clustID", 
+                                 takeRank = takeRank,
+                                 alpha = 1, size = 1.5)
   umap.cluster <- gg.umap.cluster +
     ggplot2::ggtitle("Clusters") + 
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
