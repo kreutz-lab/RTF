@@ -35,7 +35,7 @@
 getLowDimensionalRTFPlots <- function(df, 
                                       metaInfo, 
                                       metaInfoName, 
-                                      takeRank,
+                                      takeRank = TRUE,
                                       maxTime = 10,
                                       numClust = NULL) {
   params <- colnames(df)

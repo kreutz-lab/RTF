@@ -19,10 +19,10 @@
 #' param.df.
 #' @param plotLines Boolean indicating if lines should be plotted between 
 #' species of the same name (Default: TRUE)
-#' @param positionLeft Integer specifying the horizontal position of the subplot 
-#' (Default: 0)
-#' @param positionTop Integer specifying the vertical position of the subplot 
-#' (Default: 0)
+#' @param hRatio Float between 0 and 1 indicating where subplot should be placed
+#' horizontally in relation to plot width (Default: 0).
+#' @param vRatio Float between 0 and 1 indicating where subplot should be placed
+#' vertically in relation to plot height (Default: 0).
 #' @export getDynamic2DPlot
 #' @examples
 #' \dontrun{
@@ -62,7 +62,9 @@
 #'                         ID = ID,
 #'                         species = species,
 #'                         res.lst = almadenResLst,
-#'                         metaInfo = conditionID # alternatively: clustID
+#'                         metaInfo = conditionID, # alternatively: clustID
+#'                         hRatio = 0.4, 
+#'                         vRatio = 0
 #' )
 #' }
 
@@ -73,8 +75,8 @@ getDynamic2DPlot <- function(dim1Vec,
                              res.lst, 
                              metaInfo = c(), 
                              plotLines = TRUE,
-                             positionLeft = 0, 
-                             positionTop = 0) {
+                             hRatio = 0, 
+                             vRatio = 0) {
   
   df <- data.frame(Dim1 = dim1Vec, Dim2 = dim2Vec, ID = ID, species = species)
   tmpDir <- tempdir()
@@ -113,10 +115,12 @@ getDynamic2DPlot <- function(dim1Vec,
     el.on("plotly_hover", function(d) {
       var pt = d.points[0];
       var img = "<img src=\\\"" +  pt.customdata + "\\\" width=150>";
+      var h = window.innerHeight;
+      var w = window.innerWidth;
       tooltip.html(img)
         .style("position", "absolute")
-        .style("left", data.left + "px")
-        .style("top", data.top + "px");
+        .style("left", (data.hRatio * w) + "px")
+        .style("top", (data.vRatio * h) + "px");
       tooltip.transition()
         .duration(300)
         .style("opacity", 1);
@@ -170,7 +174,7 @@ getDynamic2DPlot <- function(dim1Vec,
   
   # modify 'left' and 'top' to adjust position of image
   plt <- plt %>% htmlwidgets::onRender(
-    js, data = list(left = positionLeft, top = positionTop))
+    js, data = list(hRatio = hRatio, vRatio = vRatio))
   
   plt$dependencies <- c(plt$dependencies, list(d3))
   

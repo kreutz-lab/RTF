@@ -8,7 +8,7 @@ getLowDimensionalRTFPlots(
   df,
   metaInfo,
   metaInfoName,
-  takeRank,
+  takeRank = TRUE,
   maxTime = 10,
   numClust = NULL
 )
