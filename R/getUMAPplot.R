@@ -8,8 +8,10 @@
 #' plot should be colored (name of this column given by 'groupColName').
 #' @param groupColName String with the column name of the groups based on which 
 #' the data points of the UMAP plot should be colored.
-#' @param takeRank Boolean indicating if rank should be used for UMAP instead 
-#' of absolute value (Default: TRUE)
+#' @param takeRank Boolean indicating if RTF parameters should be scaled
+#'  (Default: TRUE)
+#' @param scaled Boolean indicating if values should be scaled for the time 
+#' series in a cluster (Default: TRUE). Only relevant if takeRank = FALSE.
 #' @param alpha Alpha value (between 0 and 1) of the data points in the UMAP 
 #' plot
 #' @param size Size of the data points in the UMAP plot
@@ -28,25 +30,31 @@
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 
-getUMAPplot <- function(df, groupColName = "", takeRank = TRUE,
+getUMAPplot <- function(df, groupColName = "", 
+                        takeRank = TRUE, scaled = TRUE,
                         alpha = 0.3, size = 0.8, 
                         ellipse = TRUE, ellipseLevel = 0.68, seed = 111) {
   # set.seed(142)
-  
+  # Option scale
   tryCatch({
     if (takeRank) {
       umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
         dplyr::select(-!!groupColName) %>% 
         dplyr::select_if(~ !any(is.na(.))) %>%
         tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
+        dplyr::mutate_all(signif, 3) %>%
         dplyr::mutate_all(rank) %>%
         umap::umap(n_components = 3, preserve.seed = TRUE, random_state = seed)
     } else {
       umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
         dplyr::select(-!!groupColName) %>% 
         dplyr::select_if(~ !any(is.na(.))) %>%
-        tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
-        scale() %>%
+        tibble::remove_rownames() %>% 
+        tibble::column_to_rownames("ID") 
+      
+      if (scaled) umap_fit <- umap_fit %>% scale() 
+      
+      umap_fit <- umap_fit %>%
         umap::umap(n_components = 3, preserve.seed = TRUE, random_state = seed)
     }
 
