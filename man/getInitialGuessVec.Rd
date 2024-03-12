@@ -23,8 +23,8 @@ model parameter}
 \item{takeLog10}{Vector of booleans indicating if log10 is/should be taken
 of the model parameters.}
 
-\item{nInitialGuesses}{Integer corresponding to number of initial guesses
-(Default: 100)}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(in addition to the default initial guess) (Default: 100).}
 }
 \value{
 List of default initial guess for each model parameter

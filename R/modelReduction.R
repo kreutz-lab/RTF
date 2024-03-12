@@ -3,8 +3,9 @@
 #' @description Run model reduction on full RTF model
 #' @return RTF model after model reduction
 #' @param res Full RTF model, i.e., generated without fixed parameters
-#' @param nInitialGuesses Integer indicating number of initial guesses
-#' (Default: 100)
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (in addition to the default initial guess) used both for a signum_TF of -1 
+#' and 1 (Default: 100).
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
@@ -59,7 +60,7 @@ modelReduction <- function(res,
       names(optimObjectTmp3[["takeLog10"]]) == "b"] <- FALSE
     optimObjectTmp3$fixed[["b"]] <- 0
     res.bZero <- getInitialGuessResults(
-      optimObjectTmp3,nInitialGuesses = nInitialGuesses)
+      optimObjectTmp3, nInitialGuesses = nInitialGuesses)
     res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
     
     finalParams <- res$fitted

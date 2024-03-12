@@ -13,8 +13,8 @@ getDynamic2DPlot(
   res.lst,
   metaInfo = c(),
   plotLines = TRUE,
-  positionLeft = 0,
-  positionTop = 0
+  hRatio = 0,
+  vRatio = 0
 )
 }
 \arguments{
@@ -38,11 +38,11 @@ param.df.}
 \item{plotLines}{Boolean indicating if lines should be plotted between 
 species of the same name (Default: TRUE)}
 
-\item{positionLeft}{Integer specifying the horizontal position of the subplot 
-(Default: 0)}
+\item{hRatio}{Float between 0 and 1 indicating where subplot should be placed
+horizontally in relation to plot width (Default: 0).}
 
-\item{positionTop}{Integer specifying the vertical position of the subplot 
-(Default: 0)}
+\item{vRatio}{Float between 0 and 1 indicating where subplot should be placed
+vertically in relation to plot height (Default: 0).}
 }
 \value{
 Plotly object of the dynamic 2D plot.
@@ -91,7 +91,9 @@ plt <- getDynamic2DPlot(dim1Vec = df.umapData$UMAP1,
                         ID = ID,
                         species = species,
                         res.lst = almadenResLst,
-                        metaInfo = conditionID # alternatively: clustID
+                        metaInfo = conditionID, # alternatively: clustID
+                        hRatio = 0.4, 
+                        vRatio = 0
 )
 }
 }

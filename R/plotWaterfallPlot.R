@@ -18,9 +18,8 @@
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(
 #'                         data, modus = 'timeDependent')
-#' nInitialGuesses <- 100
-#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, nInitialGuesses)
-#' 
+#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, 
+#'                                          nInitialGuesses = 100)
 #' optimResults <- res.lst.wFinal$optimResults
 #' 
 #' optimResults.optimRes <- lapply(optimResults, function(x) {

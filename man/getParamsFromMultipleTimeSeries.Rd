@@ -11,7 +11,7 @@ getParamsFromMultipleTimeSeries(
   readInParamRdsFilePath = "",
   saveFolderPath = "",
   modelReduction = FALSE,
-  nInitialGuesses = 200,
+  nInitialGuesses = 100,
   plotFitsToSingleFile = TRUE,
   plotFitOnly = FALSE,
   plotAllPointsWaterfall = FALSE
@@ -39,8 +39,9 @@ saved. Default: current folder.}
 \item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
 
-\item{nInitialGuesses}{Integer indicating the number of initial guesses for
-RTF (Default: 200).}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(in addition to the default initial guess) used both for a signum_TF of -1 
+and 1 (Default: 100).}
 
 \item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
 single file.}

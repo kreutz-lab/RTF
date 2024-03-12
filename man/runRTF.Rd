@@ -10,7 +10,8 @@ runRTF(
   optimFunction = "logLikelihood",
   nInitialGuesses = 100,
   plotAllPointsWaterfall = FALSE,
-  control = list(trace = 1, maxit = 1000, factr = 1000)
+  control = list(trace = 1, maxit = 1000, factr = 1000),
+  resOld = NULL
 )
 }
 \arguments{
@@ -27,8 +28,9 @@ and else 'timeDependent'.}
 \item{optimFunction}{String indicating the optimization function which
 should be used (Default: "logLikelihood")}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses
-(Default: 100)}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(in addition to the default initial guess) used both for a signum_TF of -1 
+and 1 (Default: 100).}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
 plotted in waterfall plot (Default: FALSE). 
@@ -36,6 +38,9 @@ If FALSE, all values up to the median of those values are plotted.}
 
 \item{control}{List of control arguments passed to the function stats::optim
 (Default: list(trace = 1, maxit = 1000, factr = 1e3))}
+
+\item{resOld}{(Optional) Result of a previous runRTF run, with which results 
+of current run will be combined}
 }
 \value{
 List of the final RTF model (finalModel) and the optimized parameters

@@ -4,7 +4,7 @@
 \alias{runRTFOnMultipleTimeSeries}
 \title{Run RTF on multiple times series}
 \usage{
-runRTFOnMultipleTimeSeries(df, modelReduction = FALSE, nInitialGuesses = 200)
+runRTFOnMultipleTimeSeries(df, modelReduction = FALSE, nInitialGuesses = 100)
 }
 \arguments{
 \item{df}{Data frame with the first column named 'time'
@@ -14,8 +14,9 @@ corresponding to the different time series.}
 \item{modelReduction}{Boolean indicating if model reduction should be 
 performed for RTF}
 
-\item{nInitialGuesses}{Integer indicating the number of initial guesses for
-RTF (Default: 200)}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(in addition to the default initial guess) used both for a signum_TF of -1 
+and 1 (Default: 100).}
 }
 \value{
 List with the RTF result for each time series

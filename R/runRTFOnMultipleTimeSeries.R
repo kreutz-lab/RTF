@@ -8,8 +8,9 @@
 #' corresponding to the different time series.
 #' @param modelReduction Boolean indicating if model reduction should be 
 #' performed for RTF
-#' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF (Default: 200)
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (in addition to the default initial guess) used both for a signum_TF of -1 
+#' and 1 (Default: 100).
 #' @export runRTFOnMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
@@ -18,7 +19,7 @@
 
 runRTFOnMultipleTimeSeries <- function(df, 
                                       modelReduction = FALSE,
-                                      nInitialGuesses = 200) {
+                                      nInitialGuesses = 100) {
   colNames <- colnames(df[2:ncol(df)])
   res.lst <- list()
   for (colIdx in 2:ncol(df)) {

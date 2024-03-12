@@ -17,8 +17,9 @@ negative values in initialGuess.vec, lb.vec, and ub.vec
 ('positive.par.names'),
 modus ('modus'), and a list of values of fitted parameters ('fitted')}
 
-\item{nInitialGuesses}{Integer corresponding to number of initial guesses 
-(Default: 100)}
+\item{nInitialGuesses}{Integer indicating number of initial guesses 
+(in addition to the default initial guess) used both for a signum_TF of -1 
+and 1 (Default: 100).}
 }
 \value{
 optimObject including fitting result of the best

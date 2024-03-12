@@ -26,8 +26,9 @@
 #' calculation of the RTF parameter does not have to be repreated a second time.
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
-#' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF (Default: 100).
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (in addition to the default initial guess) used both for a signum_TF of -1 
+#' and 1 (Default: 100).
 #' @param saveToFile Boolean indicating if results should be saved to file
 #' @param numClust (Optional) Number of clusters. If not specified, number of
 #' clusters will be detrmined automatically using the function

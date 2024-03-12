@@ -12,8 +12,8 @@
 #' @param ub.vec Vector of the upper bounds for each model parameter
 #' @param takeLog10 Vector of booleans indicating if log10 is/should be taken
 #' of the model parameters.
-#' @param nInitialGuesses Integer corresponding to number of initial guesses
-#'  (Default: 100)
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (in addition to the default initial guess) (Default: 100).
 #' @export getInitialGuessVec
 #' @examples
 #' data <- getExampleDf()

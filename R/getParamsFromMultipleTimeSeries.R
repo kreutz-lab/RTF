@@ -20,8 +20,9 @@
 #' saved. Default: current folder.
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
-#' @param nInitialGuesses Integer indicating the number of initial guesses for
-#' RTF (Default: 200).
+#' @param nInitialGuesses Integer indicating number of initial guesses 
+#' (in addition to the default initial guess) used both for a signum_TF of -1 
+#' and 1 (Default: 100).
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitOnly Plot fit only without additional information as provided
@@ -41,7 +42,7 @@ getParamsFromMultipleTimeSeries <- function(df,
                                             readInParamRdsFilePath = "",
                                             saveFolderPath = "",
                                             modelReduction = FALSE,
-                                            nInitialGuesses = 200,
+                                            nInitialGuesses = 100,
                                             plotFitsToSingleFile = TRUE,
                                             plotFitOnly = FALSE,
                                             plotAllPointsWaterfall = FALSE) {

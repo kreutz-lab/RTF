@@ -19,14 +19,13 @@
 #' data <- getExampleDf()
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'timeDependent')
-#' nInitialGuesses <- 100
 #' initialGuess.vec.lst <- getInitialGuessVec(
 #'                             initialGuess.vec =
 #'                                           optimObject.orig$initialGuess.vec,
 #'                             lb.vec = optimObject.orig$lb.vec,
 #'                             ub.vec = optimObject.orig$ub.vec,
 #'                             takeLog10 = optimObject.orig$takeLog10,
-#'                             nInitialGuesses = nInitialGuesses
+#'                             nInitialGuesses = 100
 #' )
 #' res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
