@@ -23,7 +23,7 @@
 #' horizontally in relation to plot width (Default: 0).
 #' @param vRatio Float between 0 and 1 indicating where subplot should be placed
 #' vertically in relation to plot height (Default: 0).
-#' @export getDynamic2DPlot
+#' @export plotDynamic2DPlot
 #' @examples
 #' \dontrun{
 #' data(almadenTimeSeries)
@@ -46,7 +46,7 @@
 #' # res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 #' 
 #' numClust <- NULL
-#' plots <- getLowDimensionalRTFPlots(
+#' plots <- plotLowDimensionalRTF(
 #'   df = almadenParams,
 #'   metaInfo = species, 
 #'   metaInfoName = "species",
@@ -57,7 +57,7 @@
 #' df.umapData <- plots[["umap.data"]]
 #' clustID <- df.umapData$clustID
 #' ID <- row.names(df.umapData)
-#' plt <- getDynamic2DPlot(dim1Vec = df.umapData$UMAP1,
+#' plt <- plotDynamic2DPlot(dim1Vec = df.umapData$UMAP1,
 #'                         dim2Vec = df.umapData$UMAP2,
 #'                         ID = ID,
 #'                         species = species,
@@ -68,7 +68,7 @@
 #' )
 #' }
 
-getDynamic2DPlot <- function(dim1Vec,
+plotDynamic2DPlot <- function(dim1Vec,
                              dim2Vec,
                              ID,
                              species,
@@ -81,7 +81,7 @@ getDynamic2DPlot <- function(dim1Vec,
   df <- data.frame(Dim1 = dim1Vec, Dim2 = dim2Vec, ID = ID, species = species)
   tmpDir <- tempdir()
   
-  plotRTFForAllTimeSeries(
+  plotRTFOnMultipleTimeSeries(
     res.lst,
     fileString = "",
     saveFolderPath = tmpDir,

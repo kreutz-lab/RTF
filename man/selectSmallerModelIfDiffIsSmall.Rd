@@ -31,7 +31,7 @@ value of the optimization measure is not significant for Chi-square
 significance test.
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 modus <- "timeDependent"
 optimObject.orig <- initializeOptimObject(data, modus = modus)
 res.all <- getInitialGuessResults(optimObject.orig)

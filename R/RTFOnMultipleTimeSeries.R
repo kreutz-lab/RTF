@@ -11,13 +11,13 @@
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
 #' and 1 (Default: 100).
-#' @export runRTFOnMultipleTimeSeries
+#' @export RTFOnMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
 #' df <- strasenTimeSeries[, 1:3]
-#' res.lst <- runRTFOnMultipleTimeSeries(df)
+#' res.lst <- RTFOnMultipleTimeSeries(df)
 
-runRTFOnMultipleTimeSeries <- function(df, 
+RTFOnMultipleTimeSeries <- function(df, 
                                       modelReduction = FALSE,
                                       nInitialGuesses = 100) {
   colNames <- colnames(df[2:ncol(df)])
@@ -25,7 +25,7 @@ runRTFOnMultipleTimeSeries <- function(df,
   for (colIdx in 2:ncol(df)) {
     df.tmp <- data.frame(t = df$time, 
                      y = df[, colIdx])
-    res <- runRTF(data = df.tmp,
+    res <- RTF(data = df.tmp,
                   nInitialGuesses = nInitialGuesses)
     if (modelReduction) res <- modelReduction(res)
     res.lst <- append(res.lst, list(res))

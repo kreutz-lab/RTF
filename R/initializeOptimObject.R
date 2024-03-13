@@ -19,7 +19,7 @@
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
 #' @export initializeOptimObject
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' optimObject <- initializeOptimObject(data, modus = 'timeDependent')
 
 initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood", 

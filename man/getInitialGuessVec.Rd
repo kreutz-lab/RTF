@@ -37,7 +37,7 @@ a defined number of further initial guesses lying in between the lower and
 upper bound of each model parameter
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'timeDependent')
 initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]

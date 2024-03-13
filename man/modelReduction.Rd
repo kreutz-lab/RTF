@@ -25,8 +25,8 @@ Run model reduction on full RTF model
 }
 \examples{
 modus <- "timeDependent"
-data <- getExampleDf()
+data <- getSimData()
 plotData(data)
-res <- runRTF(data, modus = modus)
+res <- RTF(data, modus = modus)
 res.reduced <- modelReduction(res$finalModel)
 }

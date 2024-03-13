@@ -6,11 +6,11 @@
 #' some added noise.
 #' @param modus String indicating modus. Either "timeDependent" or 
 #' "doseDependent". Default: "timeDependent"
-#' @export getExampleDf
+#' @export getSimData
 #' @examples
-#' getExampleDf()
+#' getSimData()
 
-getExampleDf <- function(modus = "timeDependent"){
+getSimData <- function(modus = "timeDependent"){
   if (modus == "timeDependent") {
     t <- seq(0, 17, 0.7)
     

@@ -21,6 +21,6 @@ list of RTF results.
 \examples{
 data(strasenTimeSeries)
 df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
-res.lst <- runRTFOnMultipleTimeSeries(df.multipleTimeSeries)
+res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
 param.df <- getParamDf(res.lst)
 }

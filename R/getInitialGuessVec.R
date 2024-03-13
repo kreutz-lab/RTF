@@ -16,7 +16,7 @@
 #' (in addition to the default initial guess) (Default: 100).
 #' @export getInitialGuessVec
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' optimObject.orig <- initializeOptimObject(data,
 #'                                          modus = 'timeDependent')
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]

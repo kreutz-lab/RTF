@@ -40,6 +40,6 @@ modus ('modus'), and a list of values of fitted parameters ('fitted')
 Initializes OptimObject
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject <- initializeOptimObject(data, modus = 'timeDependent')
 }

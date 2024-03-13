@@ -19,7 +19,7 @@
 #' fitting.
 #' @export selectSmallerModelIfDiffIsSmall
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' modus <- "timeDependent"
 #' optimObject.orig <- initializeOptimObject(data, modus = modus)
 #' res.all <- getInitialGuessResults(optimObject.orig)

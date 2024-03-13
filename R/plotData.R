@@ -6,7 +6,7 @@
 #' @param data Data frame with columns t, y, and d (optional)
 #' @export plotData
 #' @examples
-#' data.doseResponse <- getExampleDf(modus = "doseDependent")
+#' data.doseResponse <- getSimData(modus = "doseDependent")
 #' plotData(data.doseResponse)
 
 plotData <- function(data) {

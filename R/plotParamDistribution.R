@@ -6,7 +6,7 @@
 #' @param df.parameterValues.long Data frame of the parameter values which
 #' have been determined by each of the fits. Two columnns: parameter name
 #' ('variable'), value of parameter ('value').
-#' @export plotParameterDistribution
+#' @export plotParamDistribution
 #' @examples
 #' parameters <- c("par1", "par2", "par3", "par4", "par5")
 #' means <- c(0.5, 2.3, 1.2, 6.5, 4.1)
@@ -18,9 +18,9 @@
 #'  values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
 #' }
 #' df.parameterValues.long <- data.frame(variable = rep(parameters, each = nFits), value = values)
-#' gg.paramDistr <- plotParameterDistribution(df.parameterValues.long)
+#' gg.paramDistr <- plotParamDistribution(df.parameterValues.long)
 
-plotParameterDistribution <- function(df.parameterValues.long) {
+plotParamDistribution <- function(df.parameterValues.long) {
   ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
     ggplot2::geom_histogram(alpha = 0.6) +
     ggplot2::theme_bw() +

@@ -18,7 +18,7 @@
 #' @param ellipse Boolean indicating if ellipse should be drawn
 #' @param ellipseLevel The level at which to draw an ellipse (between 0 and 1)
 #' @param seed Seed
-#' @export getUMAPplot
+#' @export plotUMAP
 #' @importFrom dplyr %>%
 #' @examples
 #' data(strasenParams)
@@ -26,11 +26,11 @@
 #' metaInfoName <- "species"
 #' param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 #' colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
-#' gg.umap.metaInfo <- getUMAPplot(df = param.df.wMetaInfo,
+#' gg.umap.metaInfo <- plotUMAP(df = param.df.wMetaInfo,
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 
-getUMAPplot <- function(df, groupColName = "", 
+plotUMAP <- function(df, groupColName = "", 
                         takeRank = TRUE, scaled = TRUE,
                         alpha = 0.3, size = 0.8, 
                         ellipse = TRUE, ellipseLevel = 0.68, seed = 111) {

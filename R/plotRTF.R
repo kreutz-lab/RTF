@@ -15,8 +15,8 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTF
 #' @examples
-#' data <- getExampleDf(modus = "timeDependent")
-#' res <- runRTF(data)
+#' data <- getSimData(modus = "timeDependent")
+#' res <- RTF(data)
 #' plotRTF(res, plotAllFits = FALSE)
 
 plotRTF <- function(optimObject,
@@ -138,7 +138,7 @@ plotRTF <- function(optimObject,
     optimResTmpLstParsAll.df.long <-
       reshape2::melt(optimResTmpLstParsAll.df)
     parDistributionPlot <-
-      plotParameterDistribution(optimResTmpLstParsAll.df.long)
+      plotParamDistribution(optimResTmpLstParsAll.df.long)
     
     ############################################################################
     

@@ -44,20 +44,20 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
-#' @export getLowDimensionalRTF
+#' @export lowDimensionalRTF
 #' @examples
 #' \dontrun{
 #' data(strasenTimeSeries)
 #' df <- strasenTimeSeries[, 1:20]
 #' colNames <- colnames(df[2:ncol(df)])
 #' metaInfo <- species <- sub("_[^_]+$", "", colNames)
-#' res <- getLowDimensionalRTF(df,
+#' res <- lowDimensionalRTF(df,
 #'                             metaInfo = metaInfo,
 #'                             fileString = "strasen_subset",
 #'                             metaInfoName = "species", saveToFile = FALSE)
 #' }
 
-getLowDimensionalRTF <- function(df,
+lowDimensionalRTF <- function(df,
                                  metaInfo = c(),
                                  metaInfoName = "species",
                                  metaInfoSecondRow = FALSE,
@@ -97,7 +97,7 @@ getLowDimensionalRTF <- function(df,
     )
   }
   
-  plotsLst <- getLowDimensionalRTFPlots(
+  plotsLst <- plotLowDimensionalRTF(
     param.df,
     metaInfo,
     metaInfoName,

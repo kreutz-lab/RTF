@@ -18,14 +18,14 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
-#' @export plotRTFForAllTimeSeries
+#' @export plotRTFOnMultipleTimeSeries
 #' @examples
 #' data(strasenTimeSeries)
 #' df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
-#' res.lst <- runRTFOnMultipleTimeSeries(df.multipleTimeSeries)
-#' plotRTFForAllTimeSeries(res.lst)
+#' res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
+#' plotRTFOnMultipleTimeSeries(res.lst)
 
-plotRTFForAllTimeSeries <- function(res.lst, 
+plotRTFOnMultipleTimeSeries <- function(res.lst, 
                                     fileString = "", 
                                     saveFolderPath = "",
                                     height = 12, width = 10,

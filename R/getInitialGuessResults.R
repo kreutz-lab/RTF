@@ -17,7 +17,7 @@
 #' and 1 (Default: 100).
 #' @export getInitialGuessResults
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' res.all <- getInitialGuessResults( optimObject.orig)
 

@@ -36,7 +36,7 @@ Plot RTF results for optimObjects of modus
 "timeDependent" or "doseDependent"
 }
 \examples{
-data <- getExampleDf(modus = "timeDependent")
-res <- runRTF(data)
+data <- getSimData(modus = "timeDependent")
+res <- RTF(data)
 plotRTF(res, plotAllFits = FALSE)
 }

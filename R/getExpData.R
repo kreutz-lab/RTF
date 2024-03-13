@@ -1,4 +1,4 @@
-#' Generate data frame for RTF
+#' Generate data frame from experimental data for RTF
 #'
 #' @description Generate data frame containing all columns needed for RTF
 #' @return Data frame containing columns named 't' (time) and
@@ -18,22 +18,17 @@
 #' @param sdExpCol If file is provided, sdExpCol can be used to explicitly
 #' define the column with the standard deviation of the experimental data. If
 #' not provided the standard deviation will be estimated during fitting.
-#' @export getData
+#' @export getExpData
 #' @examples
-#' data <- getData()
-#' # data <- getData(file="ExampleData.xls", tCol="time",
+#' data <- getExpData()
+#' # data <- getExpData(file="ExampleData.xls", tCol="time",
 #' # quantCols=c("Replikat1", "Replikat2", "Replikat3"))
 
-getData <- function(file="", tCol="", quantCols=c(), sdExpCol = ""){
-  if (file == "") {
-    # Simulate data
-    nrows <- 20
-    signal <- function(x) {x*(x-.9)^2}
-    t <- stats::runif(nrows, 0, 1)
-    y <- signal(t) + stats::rnorm(length(t), 0, 0.025)
-    sdExp <- abs(stats::runif(nrows, 0, 0.002)*y)
-    data <- data.frame(t = t, y = y)
-  } else {
+getExpData <- function(file = "", tCol = "", quantCols = c(), sdExpCol = ""){
+  # if (file == "") {
+  #   # # Simulate data
+
+  # } else {
     if (grepl("\\.csv$", file)){
       data <- utils::read.csv(file)
     } else if (grepl("\\.xls$", file) | grepl("\\.xlsx$", file)){
@@ -71,7 +66,7 @@ getData <- function(file="", tCol="", quantCols=c(), sdExpCol = ""){
 
     # else it is assumed that table has the following column order:
     # one time column, quantitative columns
-  }
+  # }
   data <- data[order(data$t, data$y),]
   data
 }

@@ -30,7 +30,7 @@ Named vector where the parameters, which are
 Take Log10(x) or 10^(x) for a vector x
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'timeDependent')
 initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]

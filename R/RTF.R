@@ -21,25 +21,25 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @param control List of control arguments passed to the function stats::optim
 #' (Default: list(trace = 1, maxit = 1000, factr = 1e3))
-#' @param resOld (Optional) Result of a previous runRTF run, with which results 
+#' @param resOld (Optional) Result of a previous RTF run, with which results 
 #' of current run will be combined
-#' @export runRTF
+#' @export RTF
 #' @examples
 #' modus <- "timeDependent"
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' plotData(data)
-#' res <- runRTF(data, modus = modus)
+#' res <- RTF(data, modus = modus)
 
-runRTF <- function(data,
-                   modus = NULL,
-                   optimFunction = "logLikelihood",
-                   nInitialGuesses = 100,
-                   plotAllPointsWaterfall = FALSE,
-                   control = list(trace = 1,
-                                  maxit = 1000,
-                                  factr = 1e3
-                                  ),
-                   resOld = NULL) {
+RTF <- function(data,
+                modus = NULL,
+                optimFunction = "logLikelihood",
+                nInitialGuesses = 100,
+                plotAllPointsWaterfall = FALSE,
+                control = list(trace = 1,
+                               maxit = 1000,
+                               factr = 1e3
+                ),
+                resOld = NULL) {
   if (is.null(modus)) {
     if (("d" %in% names(data))) {
       modus <- 'doseDependent'

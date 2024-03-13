@@ -29,7 +29,7 @@ and best optimization result ('bestOptimResult')
 Run optimization using stats::optim with method = "L-BFGS-B"
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject.orig <- initializeOptimObject(data,
                                          modus = 'timeDependent')
 initialGuess.vec.lst <- getInitialGuessVec(

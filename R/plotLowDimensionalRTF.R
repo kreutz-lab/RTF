@@ -21,18 +21,18 @@
 #' @param numClust (Optional) Integer indicating the number of clusters used 
 #' for k-means clustering. If not specified, number of clusters will be 
 #' determined automatically using the function NbClust::NbClust().
-#' @export getLowDimensionalRTFPlots
+#' @export plotLowDimensionalRTF
 #' @importFrom dplyr %>%
 #' @examples
 #' data(strasenParams)
 #' metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
 #' metaInfoName <- "species"
-#' res <- getLowDimensionalRTFPlots(df = strasenParams,
+#' res <- plotLowDimensionalRTF(df = strasenParams,
 #'                                 metaInfo = metaInfo,
 #'                                 metaInfoName = metaInfoName,
 #'                                 maxTime = 10)
 
-getLowDimensionalRTFPlots <- function(df, 
+plotLowDimensionalRTF <- function(df, 
                                       metaInfo, 
                                       metaInfoName, 
                                       takeRank = TRUE,
@@ -41,7 +41,7 @@ getLowDimensionalRTFPlots <- function(df,
   params <- colnames(df)
   df.wMetaInfo <- data.frame(df, metaInfo)
   colnames(df.wMetaInfo) <- c(colnames(df), metaInfoName)
-  gg.umap.metaInfo <- getUMAPplot(df.wMetaInfo, 
+  gg.umap.metaInfo <- plotUMAP(df.wMetaInfo, 
                                   groupColName = metaInfoName, 
                                   takeRank = takeRank,
                                   alpha = 1, size = 1.5)
@@ -60,7 +60,7 @@ getLowDimensionalRTFPlots <- function(df,
                                 numClust)$cluster)
   }
   
-  gg.umap.cluster <- getUMAPplot(data.frame(cbind(df, clustID)), 
+  gg.umap.cluster <- plotUMAP(data.frame(cbind(df, clustID)), 
                                  groupColName = "clustID", 
                                  takeRank = takeRank,
                                  alpha = 1, size = 1.5)
@@ -84,7 +84,7 @@ getLowDimensionalRTFPlots <- function(df,
   umap.data.selected <- umap.data %>% 
     dplyr::select(clustID, !!params) %>%
     reshape2::melt(id.vars = c("clustID"))
-  parDistribution <- plotParDistributionForClusters(
+  parDistribution <- plotParamDistributionForClusters(
     umap.data.selected, clusterColName = "clustID") +
     ggplot2::ggtitle("Parameters") + 
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))

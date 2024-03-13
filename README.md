@@ -21,14 +21,18 @@ RTF with no dose-response dependency
 'y' for the quantitative value):
 
 ```
-# data <- getData(file="LDH_WT.xlsx", tCol="time", 
+# data <- getExpData(file="LDH_WT.xlsx", tCol="time", 
 #                 quantCols=c("Replikat1", "Replikat2", "Replikat3"))
-# data <- getData()
 
-data <- getExampleDf()
+data <- getSimData()
 plotData(data)
-res <- runRTF(data, modus = "timeDependent")
+res <- RTF(data, modus = "timeDependent")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+
+# A result of RTF() can be complemented with new results of RTF() on the same
+# dataset
+resOld <- res
+res <- RTF(data, modus = "timeDependent", resOld = resOld)
 
 # Subsequently, you can perform model reduction
 res.reduced <- modelReduction(res$finalModel)
@@ -39,19 +43,19 @@ RTF with dose-response dependency
 'y' for the quantitative value, and 'd' for dose):
 
 ```
-data.doseResponse <- getExampleDf(modus = "doseDependent")
+data.doseResponse <- getSimData(modus = "doseDependent")
 plotData(data.doseResponse)
-res.doseResponse <- runRTF(data.doseResponse, 
+res.doseResponse <- RTF(data.doseResponse, 
                           modus = "doseDependent")
 plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
 
 plotFit(par = res.doseResponse[["finalParams"]],
-                 y = data.doseResponse$y, 
-                 t = data.doseResponse$t, 
-                 d = data.doseResponse$d, 
-                 modus = 'doseDependent',
-                 withData = TRUE,
-                 title = " ")
+        y = data.doseResponse$y, 
+        t = data.doseResponse$t, 
+        d = data.doseResponse$d, 
+        modus = 'doseDependent',
+        withData = TRUE,
+        title = " ")
                  
 res.doseResponse.reduced <- modelReduction(res.doseResponse$finalModel)
 ```
@@ -63,9 +67,9 @@ data(strasenTimeSeries)
 df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
 metaInfo <- sub("_[^_]+$", "", colNames)
-res <- getLowDimensionalRTF(df.multipleTimeSeries,
-                            metaInfo = metaInfo, 
-                            metaInfoName = "species",
-                            fileString = "strasen_subset")
+res <- lowDimensionalRTF(df.multipleTimeSeries,
+                         metaInfo = metaInfo, 
+                         metaInfoName = "species",
+                         fileString = "strasen_subset")
 
 ```

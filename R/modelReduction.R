@@ -12,9 +12,9 @@
 #' @export modelReduction
 #' @examples
 #' modus <- "timeDependent"
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' plotData(data)
-#' res <- runRTF(data, modus = modus)
+#' res <- RTF(data, modus = modus)
 #' res.reduced <- modelReduction(res$finalModel)
 
 modelReduction <- function(res, 

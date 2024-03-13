@@ -29,7 +29,7 @@ all three vectors, which needs to be indicated by the respective parameter
 name being included in the vector 'positive.par.names' of the OptimObject.
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject <- initializeOptimObject(data,
                                     modus = 'timeDependent',
                                     takeLog10 = FALSE)

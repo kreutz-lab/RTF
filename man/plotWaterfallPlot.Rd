@@ -28,7 +28,7 @@ Generate waterfall plot of all fits. Optionally a specific fit
 can be highlighted using the argument 'idxCurrentFit'.
 }
 \examples{
-data <- getExampleDf()
+data <- getSimData()
 optimObject.orig <- initializeOptimObject(
                         data, modus = 'timeDependent')
 res.lst.wFinal <- getInitialGuessResults(optimObject.orig, 

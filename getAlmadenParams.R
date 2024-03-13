@@ -16,7 +16,7 @@ save(almadenParams, file = "almadenParams.rda", version = 2)
 almadenResLst <- readRDS(file = paste0(fileString, ".RDS"))
 save(almadenResLst, file = "almadenResLst.rda", version = 2)
 
-RTF::plotRTFForAllTimeSeries(
+RTF::plotRTFForAllTimeSeries( # later called plotRTFOnMultipleTimeSeries
   almadenResLst,
   fileString = fileString,
   plotFitsToSingleFile = FALSE,

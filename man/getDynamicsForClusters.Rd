@@ -2,7 +2,7 @@
 % Please edit documentation in R/getDynamicsForClusters.R
 \name{getDynamicsForClusters}
 \alias{getDynamicsForClusters}
-\title{Plot time series dynamics separated by cluster}
+\title{Get time series dynamics plots separated by cluster}
 \usage{
 getDynamicsForClusters(df, maxTime = 10)
 }
@@ -29,15 +29,16 @@ metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
 metaInfoName <- "species"
 param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
-gg.umap.metaInfo <- getUMAPplot(param.df.wMetaInfo,
+gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
                                 groupColName = metaInfoName,
                                 alpha = 1, size = 1.5)
 df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 clustID <- as.factor(
 NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
                  method = 'complete', index = 'all')$Best.partition)
-gg.umap.cluster <- getUMAPplot(data.frame(cbind(strasenParams, clustID)),
-                               groupColName = "clustID", alpha = 1, size = 1.5)
+gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
+                               groupColName = "clustID", alpha = 1, 
+                               size = 1.5)
 df.umap.cluster <- gg.umap.cluster[["data"]]
 df <- data.frame(cbind(
   df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],

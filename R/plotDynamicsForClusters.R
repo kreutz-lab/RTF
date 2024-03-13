@@ -1,7 +1,8 @@
-#' Plot the dynamics of time series devided by cluster
+#' Plot the scaled or unscaled dynamics of time series divided by cluster
 #'
-#' @description Plots the dynamics of time series devided by clusters.
-#' @return ggplot2 object with the dynamics plots devided by cluster.
+#' @description Plots the scaled or unscaled dynamics of time series divided 
+#' by cluster
+#' @return ggplot2 object with the dynamics plots divided by cluster.
 #' @param df Data frame 'df' of the dynamics with columns 't' (time),
 #'  'y' (value), 'id' (time series name), 'cluster' (cluster ID). 
 #' @param scaled Boolean indicating if values should be scaled for the time 
@@ -14,14 +15,14 @@
 #' metaInfoName <- "species"
 #' param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 #' colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
-#' gg.umap.metaInfo <- getUMAPplot(param.df.wMetaInfo,
+#' gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 #' df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 #' clustID <- as.factor(
 #' NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
 #'                  method = 'complete', index = 'all')$Best.partition)
-#' gg.umap.cluster <- getUMAPplot(data.frame(cbind(strasenParams, clustID)),
+#' gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
 #'                                groupColName = "clustID", alpha = 1, size = 1.5)
 #' df.umap.cluster <- gg.umap.cluster[["data"]]
 #' df <- data.frame(cbind(

@@ -8,7 +8,7 @@
 #' parameters ('variable'), and value for the parameter of a specific cluster 
 #' ('value') as columns.
 #' @param clusterColName Name of the column containing the cluster IDs.
-#' @export plotParDistributionForClusters
+#' @export plotParamDistributionForClusters
 #' @importFrom dplyr %>%
 #' @examples
 #' data(strasenParams)
@@ -17,14 +17,14 @@
 #' metaInfoName <- "species"
 #' param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 #' colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
-#' gg.umap.metaInfo <- getUMAPplot(param.df.wMetaInfo,
+#' gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 #' df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 #' clustID <- as.factor(
 #' NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
 #'                  method = 'complete', index = 'all')$Best.partition)
-#' gg.umap.cluster <- getUMAPplot(data.frame(cbind(strasenParams, clustID)),
+#' gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
 #'                                groupColName = "clustID", alpha = 1, 
 #'                                size = 1.5)
 #' df.umap.cluster <- gg.umap.cluster[["data"]]
@@ -37,10 +37,10 @@
 #' umap.data.selected <- umap.data %>%
 #'   dplyr::select(clustID, !!params) %>%
 #'   reshape2::melt(id.vars = c("clustID"))
-#' parDistribution <- plotParDistributionForClusters(umap.data.selected,
+#' parDistribution <- plotParamDistributionForClusters(umap.data.selected,
 #'                                                   clusterColName = "clustID")
 
-plotParDistributionForClusters <- function(clust.df, 
+plotParamDistributionForClusters <- function(clust.df, 
                                            clusterColName = "") {
   params <- unique(clust.df$variable)
   nparams <- length(params)

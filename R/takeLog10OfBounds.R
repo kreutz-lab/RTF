@@ -18,7 +18,7 @@
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
 #' @export takeLog10OfBounds
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' optimObject <- initializeOptimObject(data,
 #'                                     modus = 'timeDependent',
 #'                                     takeLog10 = FALSE)

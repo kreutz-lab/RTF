@@ -53,7 +53,7 @@ getParamsFromMultipleTimeSeries <- function(df,
   if (nchar(readInParamRdsFilePath) > 0) {
     res.lst <- readRDS(file = readInParamRdsFilePath)
   } else {
-    res.lst <- runRTFOnMultipleTimeSeries(
+    res.lst <- RTFOnMultipleTimeSeries(
       df = df,
       modelReduction = modelReduction,
       nInitialGuesses = nInitialGuesses
@@ -65,7 +65,7 @@ getParamsFromMultipleTimeSeries <- function(df,
       saveRDS(res.lst, file = paste0(saveFolderPath, fileString, ".RDS"))
     
     if (doRTFPlots)
-      plotRTFForAllTimeSeries(
+      plotRTFOnMultipleTimeSeries(
         res.lst,
         fileString = fileString,
         saveFolderPath = saveFolderPath,

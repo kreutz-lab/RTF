@@ -15,7 +15,7 @@
 #' are plotted.
 #' @export plotWaterfallPlot
 #' @examples
-#' data <- getExampleDf()
+#' data <- getSimData()
 #' optimObject.orig <- initializeOptimObject(
 #'                         data, modus = 'timeDependent')
 #' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, 
