@@ -27,8 +27,9 @@ the data points of the UMAP plot should be colored.}
 \item{takeRank}{Boolean indicating if RTF parameters should be scaled
 (Default: TRUE)}
 
-\item{scaled}{Boolean indicating if values should be scaled for the time 
-series in a cluster (Default: TRUE). Only relevant if takeRank = FALSE.}
+\item{scaled}{Boolean indicating if values used for UMAP should be scaled 
+for the time series in a cluster (Default: TRUE). Only relevant if 
+takeRank = FALSE.}
 
 \item{alpha}{Alpha value (between 0 and 1) of the data points in the UMAP 
 plot}
@@ -51,7 +52,7 @@ time series
 \examples{
 data(strasenParams)
 metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
-metaInfoName <- "species"
+metaInfoName <- "Species"
 param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
 gg.umap.metaInfo <- plotUMAP(df = param.df.wMetaInfo,

@@ -16,7 +16,10 @@
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
 #' @param takeRank Boolean indicating if rank should be used for UMAP instead 
-#' of absolute value (Default: TRUE)
+#' of absolute value (Default: FALSE)
+#' @param scaled Boolean indicating if values used for UMAP should be scaled 
+#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' takeRank = FALSE.
 #' @param maxTime Time point up to which the dynamics should be plotted.
 #' @param numClust (Optional) Integer indicating the number of clusters used 
 #' for k-means clustering. If not specified, number of clusters will be 
@@ -26,25 +29,27 @@
 #' @examples
 #' data(strasenParams)
 #' metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
-#' metaInfoName <- "species"
+#' metaInfoName <- "Species"
 #' res <- plotLowDimensionalRTF(df = strasenParams,
-#'                                 metaInfo = metaInfo,
-#'                                 metaInfoName = metaInfoName,
-#'                                 maxTime = 10)
+#'                              metaInfo = metaInfo,
+#'                              metaInfoName = metaInfoName,
+#'                              maxTime = 10)
 
 plotLowDimensionalRTF <- function(df, 
-                                      metaInfo, 
-                                      metaInfoName, 
-                                      takeRank = TRUE,
-                                      maxTime = 10,
-                                      numClust = NULL) {
+                                  metaInfo, 
+                                  metaInfoName, 
+                                  takeRank = FALSE,
+                                  scaled = TRUE,
+                                  maxTime = 10,
+                                  numClust = NULL) {
   params <- colnames(df)
   df.wMetaInfo <- data.frame(df, metaInfo)
   colnames(df.wMetaInfo) <- c(colnames(df), metaInfoName)
-  gg.umap.metaInfo <- plotUMAP(df.wMetaInfo, 
-                                  groupColName = metaInfoName, 
-                                  takeRank = takeRank,
-                                  alpha = 1, size = 1.5)
+  gg.umap.metaInfo <- plotUMAP(df = df.wMetaInfo, 
+                               groupColName = metaInfoName, 
+                               takeRank = takeRank,
+                               scaled = scaled,
+                               alpha = 1, size = 1.5)
   umap.metaInfo <- gg.umap.metaInfo +
     ggplot2::ggtitle(metaInfoName) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
@@ -60,10 +65,11 @@ plotLowDimensionalRTF <- function(df,
                                 numClust)$cluster)
   }
   
-  gg.umap.cluster <- plotUMAP(data.frame(cbind(df, clustID)), 
-                                 groupColName = "clustID", 
-                                 takeRank = takeRank,
-                                 alpha = 1, size = 1.5)
+  gg.umap.cluster <- plotUMAP(df = data.frame(cbind(df, clustID)), 
+                              groupColName = "clustID", 
+                              takeRank = takeRank,
+                              scaled = scaled,
+                              alpha = 1, size = 1.5)
   umap.cluster <- gg.umap.cluster +
     ggplot2::ggtitle("Clusters") + 
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))

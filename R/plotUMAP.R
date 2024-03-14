@@ -10,8 +10,9 @@
 #' the data points of the UMAP plot should be colored.
 #' @param takeRank Boolean indicating if RTF parameters should be scaled
 #'  (Default: TRUE)
-#' @param scaled Boolean indicating if values should be scaled for the time 
-#' series in a cluster (Default: TRUE). Only relevant if takeRank = FALSE.
+#' @param scaled Boolean indicating if values used for UMAP should be scaled 
+#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' takeRank = FALSE.
 #' @param alpha Alpha value (between 0 and 1) of the data points in the UMAP 
 #' plot
 #' @param size Size of the data points in the UMAP plot
@@ -23,17 +24,19 @@
 #' @examples
 #' data(strasenParams)
 #' metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
-#' metaInfoName <- "species"
+#' metaInfoName <- "Species"
 #' param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 #' colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
 #' gg.umap.metaInfo <- plotUMAP(df = param.df.wMetaInfo,
 #'                                 groupColName = metaInfoName,
 #'                                 alpha = 1, size = 1.5)
 
-plotUMAP <- function(df, groupColName = "", 
-                        takeRank = TRUE, scaled = TRUE,
-                        alpha = 0.3, size = 0.8, 
-                        ellipse = TRUE, ellipseLevel = 0.68, seed = 111) {
+plotUMAP <- function(df, 
+                     groupColName = "", 
+                     takeRank = TRUE, 
+                     scaled = TRUE,
+                     alpha = 0.3, size = 0.8, 
+                     ellipse = TRUE, ellipseLevel = 0.68, seed = 111) {
   # set.seed(142)
   # Option scale
   tryCatch({
@@ -62,14 +65,7 @@ plotUMAP <- function(df, groupColName = "",
   , error = function(e) {
     stop(paste0(e, " Too few time series to run Low dimensional RTF analysis."))
   })
-  
-  # umap_fit <- df %>% dplyr::mutate(ID = dplyr::row_number())  %>%
-  #   dplyr::select(-!!groupColName) %>% 
-  #   dplyr::select_if(~ !any(is.na(.))) %>%
-  #   tibble::remove_rownames() %>% tibble::column_to_rownames("ID") %>%
-  #   scale() %>%
-  #   umap::umap(n_components = 3, preserve.seed = TRUE)
-  
+
   groupVec <- df[[groupColName]]
   umap_df <- umap_fit$layout %>%
     as.data.frame() %>%

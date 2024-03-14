@@ -14,6 +14,11 @@
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
+#' @param takeRank Boolean indicating if rank should be used for UMAP instead 
+#' of absolute value (Default: TRUE)
+#' @param scaled Boolean indicating if values used for UMAP should be scaled 
+#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' takeRank = FALSE.
 #' @param metaInfoSecondRow Boolean indicating if second row contains the meta
 #' info.
 #' @param fileString String the output files should contain.
@@ -33,10 +38,11 @@
 #' @param numClust (Optional) Number of clusters. If not specified, number of
 #' clusters will be detrmined automatically using the function
 #' NbClust::NbClust().
-#' @param param.df (Optional) Data frame with the RTF parameter values.
+#' @param param.data (Optional) If a data frame with the RTF parameter values 
+#' already available, you can provide it here for saving time.
 #' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 #' represent the different RTF parameters. The rows correspond to the different
-#' time series.
+#' time series. 
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned as a
 #' single file.
 #' @param plotFitOnly Plot fit only without additional information as provided
@@ -51,28 +57,32 @@
 #' df <- strasenTimeSeries[, 1:20]
 #' colNames <- colnames(df[2:ncol(df)])
 #' metaInfo <- species <- sub("_[^_]+$", "", colNames)
-#' res <- lowDimensionalRTF(df,
-#'                             metaInfo = metaInfo,
-#'                             fileString = "strasen_subset",
-#'                             metaInfoName = "species", saveToFile = FALSE)
+#' res <- lowDimensionalRTF(df = df,
+#'                          metaInfo = metaInfo,
+#'                          fileString = "strasen_subset",
+#'                          metaInfoName = "Species", saveToFile = FALSE)
+#' ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
+#'                width = 10, height = 30)
 #' }
 
 lowDimensionalRTF <- function(df,
-                                 metaInfo = c(),
-                                 metaInfoName = "species",
-                                 metaInfoSecondRow = FALSE,
-                                 fileString = "lowDimRTF",
-                                 plotItemHeight = 9,
-                                 plotWidth = 22,
-                                 readInParamRdsFilePath = "",
-                                 modelReduction = FALSE,
-                                 nInitialGuesses = 50,
-                                 saveToFile = TRUE,
-                                 numClust = NULL,
-                                 param.df = NULL,
-                                 plotFitsToSingleFile = TRUE,
-                                 plotFitOnly = FALSE,
-                                 plotAllPointsWaterfall = FALSE) {
+                              metaInfo = c(),
+                              metaInfoName = "Species",
+                              takeRank = TRUE,
+                              scaled = TRUE,
+                              metaInfoSecondRow = FALSE,
+                              fileString = "lowDimRTF",
+                              plotItemHeight = 9,
+                              plotWidth = 22,
+                              readInParamRdsFilePath = "",
+                              modelReduction = FALSE,
+                              nInitialGuesses = 50,
+                              saveToFile = TRUE,
+                              numClust = NULL,
+                              param.data = NULL,
+                              plotFitsToSingleFile = TRUE,
+                              plotFitOnly = FALSE,
+                              plotAllPointsWaterfall = FALSE) {
   if (metaInfoSecondRow & length(metaInfo) == 0) {
     metaInfo <- as.character(unlist(df[1, 2:ncol(df)]))
     df <- df[-1,]
@@ -84,9 +94,9 @@ lowDimensionalRTF <- function(df,
     warning("Please provide meta information of size #columns-1 .")
   }
   
-  if (is.null(param.df)) {
-    param.df <- getParamsFromMultipleTimeSeries(
-      df,
+  if (is.null(param.data)) {
+    param.data <- getParamsFromMultipleTimeSeries(
+      df = df,
       fileString = fileString,
       readInParamRdsFilePath = readInParamRdsFilePath,
       modelReduction = modelReduction,
@@ -98,9 +108,11 @@ lowDimensionalRTF <- function(df,
   }
   
   plotsLst <- plotLowDimensionalRTF(
-    param.df,
-    metaInfo,
-    metaInfoName,
+    df = param.data,
+    metaInfo = metaInfo,
+    metaInfoName = metaInfoName,
+    takeRank = takeRank,
+    scaled = scaled,
     maxTime = max(df$time),
     numClust = numClust
   )
@@ -145,7 +157,7 @@ lowDimensionalRTF <- function(df,
       limitsize = FALSE
     )
     
-    utils::write.csv(param.df,
+    utils::write.csv(param.data,
                      file = paste0("param_", fileString, ".csv"),
                      row.names = TRUE)
     utils::write.csv(plotsLst[["umap.data"]],
@@ -159,7 +171,7 @@ lowDimensionalRTF <- function(df,
   }
   
   list(
-    param.data = param.df,
+    param.data = param.data,
     umap.data = plotsLst[["umap.data"]],
     dynamics.data = plotsLst[["dynamics.data"]],
     plots = plotsCombined

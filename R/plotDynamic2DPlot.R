@@ -45,13 +45,12 @@
 #' # )
 #' # res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 #' 
-#' numClust <- NULL
 #' plots <- plotLowDimensionalRTF(
 #'   df = almadenParams,
 #'   metaInfo = species, 
-#'   metaInfoName = "species",
+#'   metaInfoName = "Species",
 #'   maxTime = max(timeSeries$time),
-#'   numClust = numClust
+#'   numClust = NULL
 #' )
 #'     
 #' df.umapData <- plots[["umap.data"]]

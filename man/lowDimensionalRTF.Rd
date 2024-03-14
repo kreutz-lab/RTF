@@ -8,7 +8,9 @@ time series}
 lowDimensionalRTF(
   df,
   metaInfo = c(),
-  metaInfoName = "species",
+  metaInfoName = "Species",
+  takeRank = TRUE,
+  scaled = TRUE,
   metaInfoSecondRow = FALSE,
   fileString = "lowDimRTF",
   plotItemHeight = 9,
@@ -18,7 +20,7 @@ lowDimensionalRTF(
   nInitialGuesses = 50,
   saveToFile = TRUE,
   numClust = NULL,
-  param.df = NULL,
+  param.data = NULL,
   plotFitsToSingleFile = TRUE,
   plotFitOnly = FALSE,
   plotAllPointsWaterfall = FALSE
@@ -33,6 +35,13 @@ corresponding to the different time series.}
 groups.}
 
 \item{metaInfoName}{String of the name of the meta information.}
+
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
+of absolute value (Default: TRUE)}
+
+\item{scaled}{Boolean indicating if values used for UMAP should be scaled 
+for the time series in a cluster (Default: TRUE). Only relevant if 
+takeRank = FALSE.}
 
 \item{metaInfoSecondRow}{Boolean indicating if second row contains the meta
 info.}
@@ -62,7 +71,8 @@ and 1 (Default: 50).}
 clusters will be detrmined automatically using the function
 NbClust::NbClust().}
 
-\item{param.df}{(Optional) Data frame with the RTF parameter values.
+\item{param.data}{(Optional) If a data frame with the RTF parameter values 
+already available, you can provide it here for saving time.
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
 time series.}
@@ -94,9 +104,11 @@ data(strasenTimeSeries)
 df <- strasenTimeSeries[, 1:20]
 colNames <- colnames(df[2:ncol(df)])
 metaInfo <- species <- sub("_[^_]+$", "", colNames)
-res <- lowDimensionalRTF(df,
-                            metaInfo = metaInfo,
-                            fileString = "strasen_subset",
-                            metaInfoName = "species", saveToFile = FALSE)
+res <- lowDimensionalRTF(df = df,
+                         metaInfo = metaInfo,
+                         fileString = "strasen_subset",
+                         metaInfoName = "Species", saveToFile = FALSE)
+ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
+               width = 10, height = 30)
 }
 }

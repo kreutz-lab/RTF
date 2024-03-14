@@ -8,7 +8,8 @@ plotLowDimensionalRTF(
   df,
   metaInfo,
   metaInfoName,
-  takeRank = TRUE,
+  takeRank = FALSE,
+  scaled = TRUE,
   maxTime = 10,
   numClust = NULL
 )
@@ -25,7 +26,11 @@ groups.}
 \item{metaInfoName}{String of the name of the meta information.}
 
 \item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
-of absolute value (Default: TRUE)}
+of absolute value (Default: FALSE)}
+
+\item{scaled}{Boolean indicating if values used for UMAP should be scaled 
+for the time series in a cluster (Default: TRUE). Only relevant if 
+takeRank = FALSE.}
 
 \item{maxTime}{Time point up to which the dynamics should be plotted.}
 
@@ -48,9 +53,9 @@ parameters
 \examples{
 data(strasenParams)
 metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
-metaInfoName <- "species"
+metaInfoName <- "Species"
 res <- plotLowDimensionalRTF(df = strasenParams,
-                                metaInfo = metaInfo,
-                                metaInfoName = metaInfoName,
-                                maxTime = 10)
+                             metaInfo = metaInfo,
+                             metaInfoName = metaInfoName,
+                             maxTime = 10)
 }
