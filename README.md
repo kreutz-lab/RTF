@@ -17,10 +17,10 @@ library(RTF)
 ```
 
 ### Time-dependent RTF
-(Input data frame should contain the columns 't' for time and 
+Input data frame should contain the columns 't' for time and 
 'y' for the quantitative value. 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
-the experimental data.):
+the experimental data.
 
 ```
 data <- getSimData()
@@ -41,10 +41,10 @@ res.reduced <- modelReduction(res$finalModel)
 ```
 
 ### Dose-dependent RTF
-(Input data frame should contain the columns 't' for time, 
+Input data frame should contain the columns 't' for time, 
 'y' for the quantitative value, and 'd' for dose. 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
-the experimental data.):
+the experimental data.
 
 ```
 data.doseResponse <- getSimData(modus = "doseDependent")
@@ -66,8 +66,8 @@ plotFit(par = res.doseResponse[["finalParams"]],
 res.doseResponse.reduced <- modelReduction(res.doseResponse$finalModel)
 ```
 
-Low-dimensional representation of RTF parameters of 20 or more time series: 
-
+### Low-dimensional representation of RTF parameters of 20 or more time series 
+(Currently only possible for time-dependent RTF parameters)
 ```
 data(strasenTimeSeries)
 df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
