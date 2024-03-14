@@ -16,7 +16,7 @@ library(RTF)
 
 ```
 
-Time-dependent RTF
+### Time-dependent RTF
 (Input data frame should contain the columns 't' for time and 
 'y' for the quantitative value. 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
@@ -40,7 +40,7 @@ res <- RTF(data, modus = "timeDependent", resOld = resOld)
 res.reduced <- modelReduction(res$finalModel)
 ```
 
-Dose-dependent RTF
+### Dose-dependent RTF
 (Input data frame should contain the columns 't' for time, 
 'y' for the quantitative value, and 'd' for dose. 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
