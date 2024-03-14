@@ -5,7 +5,7 @@
 #' with optimization value for each parameter if calcGradient = TRUE  
 #' @param par Initial values for the parameters to be optimized over.
 #' @param data Data frame containing columns named 't' (time), 'y' (quantitative
-#' value) and optionally 'sdExp' (standard deviation of the experimental data)
+#' value) and optionally 'sigmaExp' (standard error of the experimental data)
 #' @param optimObject optimObject
 #' @param calcGradient Boolean indicating if gradient should be calculated
 #' (Default: FALSE)
@@ -164,20 +164,26 @@
 #'                             control = optimObject.doseDependent$control)
     
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
+
   retval <- NULL
   parOrder <- names(par)
+
+  data <- data[stats::complete.cases(data), ] 
   
   fixed <- optimObject[["fixed"]]
   signum_TF <- fixed[["signum_TF"]]
-  if (!is.na(fixed[["sigma"]])) {
-    sigma <- fixed[["sigma"]]
+  if ("sigmaExp" %in% colnames(data)) {
+    sigma <- data$sigmaExp
   } else {
-    sigma <- par[["sigma"]]
+    if (!is.na(fixed[["sigma"]])) {
+      sigma <- fixed[["sigma"]]
+    } else {
+      sigma <- par[["sigma"]]
+    }
   }
   
   allParamNames <- setdiff(names(fixed), c("signum_TF"))
   fixed <- fixed[allParamNames]
-  data <- data[stats::complete.cases(data), ] 
   
   if ("d" %in% colnames(data)) {
     d <- data$d
@@ -192,17 +198,10 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       parAfterFix[names(fixed)[v]] <- fixed[[v]]
     }
   }
-    
-  # lowerReg <- applyLog10ForTakeLog10(optimObject$lb.vec, optimObject$takeLog10)
-  # upperReg <- applyLog10ForTakeLog10(optimObject$ub.vec, optimObject$takeLog10)
-  # lowerReg <- lowerReg[names(par)]
-  # upperReg <- upperReg[names(par)]
-  # meanReg <- rowMeans(cbind(lowerReg, upperReg), na.rm = TRUE)
-  # regularizationTerm <- sum(((par - meanReg)^2) /
-  #                             (((upperReg - lowerReg)^2) * 100))
   
   if (calcGradient) {
-    dparAfterFix_dpar <- matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
+    dparAfterFix_dpar <- 
+      matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
     rownames(dparAfterFix_dpar) <- names(parAfterFix)
     colnames(dparAfterFix_dpar) <- parOrder
     for (name in parOrder) dparAfterFix_dpar[name, name] <- 1
@@ -280,20 +279,24 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     
     res[ind] <- data$y[ind] - yRtf
     
-    if (("sdExp" %in% colnames(data))) {
-      sigmaRes[ind] <- data$sdExp[ind]
+    if (("sigmaExp" %in% colnames(data))) {
+      sigmaRes[ind] <- sigma[ind] 
     } else{
       sigmaRes[ind] <- sigma
       if (calcGradient) dsigmaRes_dpar[ind, names(parAfterFix) == "sigma"] <- 1
     }
   }
   
-  retval <- sum(-2 * log(
-    (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
-    )) 
+  #likelihood <- (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)) )
+  #likelihood[likelihood>1e20] <- 1e20 # prevent -Inf of log(likelihood) due to round errors, i.e. rounding to zero
+  # if (("sigmaExp" %in% colnames(data))) 
+  #   retval <- sum( (res / sigmaRes)^2 ) 
+  # else
+  retval <- 
+    sum(-2 * (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)))) 
   
   if (calcGradient) {
-    if (("sdExp" %in% colnames(data))) {
+    if (("sigmaExp" %in% colnames(data))) {
       dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
       dretval_dres <- (2 * res) / sigmaRes^2
     } else {
@@ -309,24 +312,17 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
       dretval_dres <- (2 * res) / sigmaRes^2 
     }
     
-    dretval_dpar <- dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
+    dretval_dpar <- 
+      dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
     dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
     dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
     
     dretval_dpar <- dretval_dpar[1,]
   }
   
-  # retval <- retval + regularizationTerm 
-  
   if (calcGradient) {
-    # dretval_dpar[is.infinite(dretval_dpar)] <- 10^20
-    # if (hillHasNaNs) {
-    #   dretval_dpar <- rep(0, length(parOrder))
-    #   names(dretval_dpar) <- parOrder
-    # }
     dretval_dpar
   } else {
-    # if (is.infinite(retval) | hillHasNaNs) retval <- 10^20
     if (is.infinite(retval)) retval <- 10^20
     retval
   }

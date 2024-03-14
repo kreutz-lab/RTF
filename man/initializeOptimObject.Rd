@@ -42,4 +42,8 @@ Initializes OptimObject
 \examples{
 data <- getSimData()
 optimObject <- initializeOptimObject(data, modus = 'timeDependent')
+
+data.doseResponse <- getSimData("doseDependent")
+optimObject.dose <- initializeOptimObject(data.doseResponse, 
+                    modus = 'doseDependent')
 }

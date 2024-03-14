@@ -17,7 +17,9 @@ RTF(
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and
 'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
-'t', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD')}
+'t', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD'). 
+Optionally, a column 'sigmaExp' can be provided with the standard error of 
+the experimental data.}
 
 \item{modus}{String indicating if modus 'timeDependent' ('TD') or
 'doseDependent' ('DD') should be used.

@@ -21,6 +21,10 @@
 #' @examples
 #' data <- getSimData()
 #' optimObject <- initializeOptimObject(data, modus = 'timeDependent')
+#' 
+#' data.doseResponse <- getSimData("doseDependent")
+#' optimObject.dose <- initializeOptimObject(data.doseResponse, 
+#'                     modus = 'doseDependent')
 
 initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood", 
                                   control = list(trace = 1, maxit = 1000,
@@ -160,7 +164,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
     
   }
   
-  if ("sdExp" %in% colnames(data)){
+  if ("sigmaExp" %in% colnames(data)) {
     lb.vec <- lb.vec[names(lb.vec) != "sigma"]
     ub.vec <- ub.vec[names(ub.vec) != "sigma"]
     initialGuess.vec <- initialGuess.vec[names(initialGuess.vec) != "sigma"]

@@ -10,7 +10,7 @@ objFunctGradient(par, data, optimObject, calcGradient)
 \item{par}{Initial values for the parameters to be optimized over.}
 
 \item{data}{Data frame containing columns named 't' (time), 'y' (quantitative
-value) and optionally 'sdExp' (standard deviation of the experimental data)}
+value) and optionally 'sigmaExp' (standard error of the experimental data)}
 
 \item{optimObject}{optimObject}
 

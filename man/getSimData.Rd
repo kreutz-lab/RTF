@@ -2,20 +2,26 @@
 % Please edit documentation in R/getSimData.R
 \name{getSimData}
 \alias{getSimData}
-\title{Generate example data frame for defined RTF parameters}
+\title{Simulate example data frame for defined RTF parameters}
 \usage{
-getSimData(modus = "timeDependent")
+getSimData(modus = "timeDependent", noise = NULL, numDoses = 4)
 }
 \arguments{
 \item{modus}{String indicating modus. Either "timeDependent" or 
 "doseDependent". Default: "timeDependent"}
+
+\item{noise}{Noise to be added to added. Default for modus = "timeDependent" 
+is 0.4 for modus = "doseDependent" 0.02.}
+
+\item{numDoses}{(Only relevant if modus = "doseDependent") Number of distinct
+doses to be simulated.}
 }
 \value{
 Data frame with data following an RTF with predefined parameters plus
 some added noise.
 }
 \description{
-Generates an example dataframe with data following an RTF with
+Simulate an example data frame with data following an RTF with
 predefined parameters plus some added noise.
 }
 \examples{

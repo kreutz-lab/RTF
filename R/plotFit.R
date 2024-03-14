@@ -115,6 +115,7 @@ plotFit <- function(par,
     ggplot2::theme_bw()
   
   if (length(doses) > 1) {
+    geom_line.df <- geom_line.df[order(geom_line.df$d),]
     gg <- gg + ggplot2::geom_line(data = geom_line.df,
                                   ggplot2::aes(
                                     x = t,
@@ -123,7 +124,7 @@ plotFit <- function(par,
                                   )) +
       ggplot2::theme(legend.position = "bottom",
                      legend.title = ggplot2::element_blank()) +
-      ggplot2::scale_color_brewer()
+      ggplot2::scale_colour_viridis_d(direction = -1)
     if (withData) {
       gg <- gg + ggplot2::geom_point(
         data = data.frame(t = t, y = y),

@@ -16,15 +16,17 @@ library(RTF)
 
 ```
 
-RTF with no dose-response dependency
+Time-dependent RTF
 (Input data frame should contain the columns 't' for time and 
-'y' for the quantitative value):
+'y' for the quantitative value. 
+Optionally, a column 'sigmaExp' can be provided with the standard error of 
+the experimental data.):
 
 ```
-# data <- getExpData(file="LDH_WT.xlsx", tCol="time", 
-#                 quantCols=c("Replikat1", "Replikat2", "Replikat3"))
-
 data <- getSimData()
+# data <- openxlsx::read.xlsx(
+#      system.file("extdata", "ExampleDataTimeDependent.xlsx", package = "RTF"))
+
 plotData(data)
 res <- RTF(data, modus = "timeDependent")
 plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
@@ -38,15 +40,19 @@ res <- RTF(data, modus = "timeDependent", resOld = resOld)
 res.reduced <- modelReduction(res$finalModel)
 ```
 
-RTF with dose-response dependency
+Dose-dependent RTF
 (Input data frame should contain the columns 't' for time, 
-'y' for the quantitative value, and 'd' for dose):
+'y' for the quantitative value, and 'd' for dose. 
+Optionally, a column 'sigmaExp' can be provided with the standard error of 
+the experimental data.):
 
 ```
 data.doseResponse <- getSimData(modus = "doseDependent")
+# data.doseResponse <- openxlsx::read.xlsx(
+#      system.file("extdata", "ExampleDataDoseDependent.xlsx", package = "RTF"))
+
 plotData(data.doseResponse)
-res.doseResponse <- RTF(data.doseResponse, 
-                          modus = "doseDependent")
+res.doseResponse <- RTF(data.doseResponse, modus = "doseDependent")
 plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
 
 plotFit(par = res.doseResponse[["finalParams"]],

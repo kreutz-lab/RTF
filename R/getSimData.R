@@ -1,16 +1,29 @@
-#' Generate example data frame for defined RTF parameters
+#' Simulate example data frame for defined RTF parameters
 #'
-#' @description Generates an example dataframe with data following an RTF with
+#' @description Simulate an example data frame with data following an RTF with
 #' predefined parameters plus some added noise.
 #' @return Data frame with data following an RTF with predefined parameters plus
 #' some added noise.
 #' @param modus String indicating modus. Either "timeDependent" or 
 #' "doseDependent". Default: "timeDependent"
+#' @param noise Noise to be added to added. Default for modus = "timeDependent" 
+#' is 0.4 for modus = "doseDependent" 0.02.
+#' @param numDoses (Only relevant if modus = "doseDependent") Number of distinct
+#' doses to be simulated.
 #' @export getSimData
 #' @examples
 #' getSimData()
 
-getSimData <- function(modus = "timeDependent"){
+getSimData <- function(modus = "timeDependent", noise = NULL, numDoses = 4) {
+  
+  if (is.null(noise)) {
+    if (modus == "timeDependent") {
+      noise <- 0.4
+    } else if (modus == "doseDependent") {
+      noise <- 0.02
+    }
+  }
+  
   if (modus == "timeDependent") {
     t <- seq(0, 17, 0.7)
     
@@ -19,10 +32,10 @@ getSimData <- function(modus = "timeDependent"){
       rtfPar = c(alpha = 0.4, gamma = 0.1, A = 5, B = 20, b = 2,
                  tau = 3, signum_TF = 1)) 
       
-    data.frame(t = t, y = y + stats::rnorm(length(t), 0, 0.4))
+    data.frame(t = t, y = y + stats::rnorm(length(t), 0, noise))
   } else if (modus == "doseDependent") {
     t <- seq(0, 17, 0.7)
-    doses <- c(2, 4, 6, 9)
+    doses <- seq(numDoses)
     times <- length(doses)
 
     vec <- c()
@@ -60,7 +73,8 @@ getSimData <- function(modus = "timeDependent"){
     
     d <- rep(doses, each = length(t))
     t <- rep(t, times)
-    df <- data.frame(t = t, y = vec + stats::rnorm(length(t), 0, 0.02), 
+    df <- data.frame(t = t, y = vec + 
+                       stats::rnorm(length(t), 0, noise), 
                      d = d)
     df <- rbind(c(t = 2, y = NA, d = 2), df)
     df

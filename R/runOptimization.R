@@ -41,6 +41,10 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   scaleFactor <- 10/max(optimObject.tmp$data$y, na.rm = TRUE)
   optimObject.tmp$data$y <- optimObject.tmp$data$y * scaleFactor
   
+  if ("sigmaExp" %in% colnames(optimObject.tmp$data)) {
+    optimObject.tmp$data$sigmaExp <- optimObject.tmp$data$sigmaExp * scaleFactor
+  }
+
   optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) %in% yDependentPars] <-
     optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) 
                            %in% yDependentPars] * scaleFactor
