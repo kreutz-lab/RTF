@@ -4,7 +4,7 @@
 \alias{getInitialGuessResults}
 \title{Fit function for initial guesses}
 \usage{
-getInitialGuessResults(optimObject, nInitialGuesses = 100)
+getInitialGuessResults(optimObject, nInitialGuesses = 50)
 }
 \arguments{
 \item{optimObject}{optimObject, which is a list containing input data frame
@@ -19,7 +19,7 @@ modus ('modus'), and a list of values of fitted parameters ('fitted')}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
 (in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 100).}
+and 1 (Default: 50).}
 }
 \value{
 optimObject including fitting result of the best

@@ -9,7 +9,7 @@ getInitialGuessVec(
   lb.vec,
   ub.vec,
   takeLog10,
-  nInitialGuesses = 100
+  nInitialGuesses = 50
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ model parameter}
 of the model parameters.}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
-(in addition to the default initial guess) (Default: 100).}
+(in addition to the default initial guess) (Default: 50).}
 }
 \value{
 List of default initial guess for each model parameter

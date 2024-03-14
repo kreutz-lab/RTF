@@ -4,7 +4,7 @@
 \alias{RTFOnMultipleTimeSeries}
 \title{Run RTF on multiple times series}
 \usage{
-RTFOnMultipleTimeSeries(df, modelReduction = FALSE, nInitialGuesses = 100)
+RTFOnMultipleTimeSeries(df, modelReduction = FALSE, nInitialGuesses = 50)
 }
 \arguments{
 \item{df}{Data frame with the first column named 'time'
@@ -16,7 +16,7 @@ performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
 (in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 100).}
+and 1 (Default: 50).}
 }
 \value{
 List with the RTF result for each time series

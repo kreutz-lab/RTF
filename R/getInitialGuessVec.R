@@ -13,7 +13,7 @@
 #' @param takeLog10 Vector of booleans indicating if log10 is/should be taken
 #' of the model parameters.
 #' @param nInitialGuesses Integer indicating number of initial guesses 
-#' (in addition to the default initial guess) (Default: 100).
+#' (in addition to the default initial guess) (Default: 50).
 #' @export getInitialGuessVec
 #' @examples
 #' data <- getSimData()
@@ -32,7 +32,7 @@ getInitialGuessVec <- function(initialGuess.vec,
                                lb.vec,
                                ub.vec,
                                takeLog10,
-                               nInitialGuesses = 100) {
+                               nInitialGuesses = 50) {
   # For 50 different random initial guesses between bounds
   initialGuess.vec.lst <- list()
   initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- initialGuess.vec

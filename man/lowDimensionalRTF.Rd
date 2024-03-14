@@ -15,7 +15,7 @@ lowDimensionalRTF(
   plotWidth = 22,
   readInParamRdsFilePath = "",
   modelReduction = FALSE,
-  nInitialGuesses = 100,
+  nInitialGuesses = 50,
   saveToFile = TRUE,
   numClust = NULL,
   param.df = NULL,
@@ -54,7 +54,7 @@ performed for RTF}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
 (in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 100).}
+and 1 (Default: 50).}
 
 \item{saveToFile}{Boolean indicating if results should be saved to file}
 

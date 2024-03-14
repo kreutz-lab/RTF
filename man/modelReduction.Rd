@@ -4,14 +4,14 @@
 \alias{modelReduction}
 \title{Run model reduction on full RTF model}
 \usage{
-modelReduction(res, nInitialGuesses = 100, plotAllPointsWaterfall = FALSE)
+modelReduction(res, nInitialGuesses = 50, plotAllPointsWaterfall = FALSE)
 }
 \arguments{
 \item{res}{Full RTF model, i.e., generated without fixed parameters}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
 (in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 100).}
+and 1 (Default: 50).}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
 plotted in waterfall plot (Default: FALSE). 

@@ -287,27 +287,28 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     }
   }
   
-  #likelihood <- (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)) )
-  #likelihood[likelihood>1e20] <- 1e20 # prevent -Inf of log(likelihood) due to round errors, i.e. rounding to zero
-  # if (("sigmaExp" %in% colnames(data))) 
-  #   retval <- sum( (res / sigmaRes)^2 ) 
-  # else
+  # retval <- sum(-2 * log(
+  #  (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
+  # )) 
+  
   retval <- 
-    sum(-2 * (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)))) 
+     sum(-2 * (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)))) 
   
   if (calcGradient) {
     if (("sigmaExp" %in% colnames(data))) {
       dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
       dretval_dres <- (2 * res) / sigmaRes^2
     } else {
-      exp_res <- exp(res^2 / (2 * sigmaRes^2))
-      exp_res[exp_res > 10^20] <- 10^20
+      # exp_res <- exp(res^2 / (2 * sigmaRes^2))
+      # exp_res[exp_res > 10^20] <- 10^20
+      # 
+      # dretval_dsigmaRes <- 
+      #   2 * sigmaRes * exp_res * 
+      #   (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
+      #      (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
+      #      (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
       
-      dretval_dsigmaRes <- 
-        2 * sigmaRes * exp_res * 
-        (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
-           (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
-           (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
+      dretval_dsigmaRes <- -(2 * res^2) / sigmaRes^3 - 1 / sigmaRes
       
       dretval_dres <- (2 * res) / sigmaRes^2 
     }

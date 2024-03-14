@@ -32,7 +32,7 @@ data <- getSimData()
 optimObject.orig <- initializeOptimObject(
                         data, modus = 'timeDependent')
 res.lst.wFinal <- getInitialGuessResults(optimObject.orig, 
-                                         nInitialGuesses = 100)
+                                         nInitialGuesses = 50)
 optimResults <- res.lst.wFinal$optimResults
 
 optimResults.optimRes <- lapply(optimResults, function(x) {

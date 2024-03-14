@@ -4,7 +4,7 @@
 \alias{getSimData}
 \title{Simulate example data frame for defined RTF parameters}
 \usage{
-getSimData(modus = "timeDependent", noise = NULL, numDoses = 4)
+getSimData(modus = "timeDependent", noise = NULL, numDoses = 7)
 }
 \arguments{
 \item{modus}{String indicating modus. Either "timeDependent" or 

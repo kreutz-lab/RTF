@@ -5,7 +5,7 @@
 #' @param res Full RTF model, i.e., generated without fixed parameters
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
-#' and 1 (Default: 100).
+#' and 1 (Default: 50).
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
@@ -18,7 +18,7 @@
 #' res.reduced <- modelReduction(res$finalModel)
 
 modelReduction <- function(res, 
-                           nInitialGuesses = 100, 
+                           nInitialGuesses = 50, 
                            plotAllPointsWaterfall = FALSE) {
   modus <- res[["modus"]]
   res.orig <- res

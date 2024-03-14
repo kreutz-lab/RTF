@@ -14,14 +14,14 @@
 #' modus ('modus'), and a list of values of fitted parameters ('fitted')
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
-#' and 1 (Default: 100).
+#' and 1 (Default: 50).
 #' @export getInitialGuessResults
 #' @examples
 #' data <- getSimData()
 #' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' res.all <- getInitialGuessResults( optimObject.orig)
 
-getInitialGuessResults <- function(optimObject, nInitialGuesses = 100) {
+getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {
   for (pname in names(optimObject$initialGuess.vec)) {
     # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
     # is fixed but is not listed in lb.vec, ub.vec, and initialGuess.vec

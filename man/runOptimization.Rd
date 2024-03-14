@@ -38,7 +38,7 @@ initialGuess.vec.lst <- getInitialGuessVec(
                             lb.vec = optimObject.orig$lb.vec,
                             ub.vec = optimObject.orig$ub.vec,
                             takeLog10 = optimObject.orig$takeLog10,
-                            nInitialGuesses = 100
+                            nInitialGuesses = 50
 )
 res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 }

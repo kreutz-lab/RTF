@@ -70,7 +70,7 @@ conditionID <- gsub(".*_", "", colNames)
 #   almadenTimeSeries,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
-#   nInitialGuesses = 100
+#   nInitialGuesses = 50
 # )
 # res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 

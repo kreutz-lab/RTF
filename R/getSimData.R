@@ -14,7 +14,7 @@
 #' @examples
 #' getSimData()
 
-getSimData <- function(modus = "timeDependent", noise = NULL, numDoses = 4) {
+getSimData <- function(modus = "timeDependent", noise = NULL, numDoses = 7) {
   
   if (is.null(noise)) {
     if (modus == "timeDependent") {
