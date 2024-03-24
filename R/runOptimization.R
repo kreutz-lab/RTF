@@ -99,6 +99,10 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE
   optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
   
+  
+  if (optimObject.tmp$modus == "doseDependent")
+    optimObject.tmp$data$d[optimObject.tmp$data$d == 0] <- .Machine$double.xmin
+  
   for (vec in initialGuess.vec.lst) {
     print(vec)
     vec <- applyLog10ForTakeLog10(vec, takeLog10)

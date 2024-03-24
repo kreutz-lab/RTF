@@ -90,7 +90,8 @@ modelReduction <- function(res,
       
       optimObjectTmp[["takeLog10"]][
         names(optimObjectTmp[["takeLog10"]]) == paste0("K_", RTFparam)] <- FALSE
-      optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- 0
+      optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- .Machine$double.xmin 
+      # Not set to 0 because for gradient calculation log(K) is calculated
       
       res.fixed <- getInitialGuessResults(optimObjectTmp,
                                           nInitialGuesses = nInitialGuesses)
