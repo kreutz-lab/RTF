@@ -72,7 +72,7 @@ modelReduction <- function(res,
       sep = ": ",
       collapse = ", "
     ))
-    print("OptimValue:")
+    print("Likelihood value:")
     print(res[["bestOptimResult"]][["value"]])
     
     reductionResults <- list(finalModel = res, finalParams = finalParams)
@@ -90,7 +90,8 @@ modelReduction <- function(res,
       
       optimObjectTmp[["takeLog10"]][
         names(optimObjectTmp[["takeLog10"]]) == paste0("K_", RTFparam)] <- FALSE
-      optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <- .Machine$double.xmin 
+      optimObjectTmp$fixed[[paste0("K_", RTFparam)]] <-  
+        .Machine$double.xmin  # min(optimObjectTmp$data$d[optimObjectTmp$data$d > 0]) / 10 
       # Not set to 0 because for gradient calculation log(K) is calculated
       
       res.fixed <- getInitialGuessResults(optimObjectTmp,

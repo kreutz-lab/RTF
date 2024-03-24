@@ -76,7 +76,7 @@ plotRTF <- function(optimObject,
           value <- optimResTmpLstValuesAll[[i]]
           
           title <- paste0(
-            "OptimValue: ",
+            "Likelihood value: ",
             signif(value, 2),
             "; ",
             paste(
@@ -143,7 +143,7 @@ plotRTF <- function(optimObject,
     ############################################################################
     
     title <- paste0(
-      "OptimValue: ",
+      "Likelihood value: ",
       signif(bestOptimResult$value, 2),
       "; ",
       paste(
@@ -202,7 +202,7 @@ plotRTF <- function(optimObject,
         x = d, y = value, color = variable)) +
         ggplot2::geom_line() +
         ggplot2::xlab("Dose") +
-        ggplot2::ylab("Value") +
+        ggplot2::ylab("Parameter value") +
         # ggplot2::ggtitle(title) +
         ggplot2::theme_bw() +
         ggplot2::theme(legend.position = "bottom",

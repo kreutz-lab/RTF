@@ -99,7 +99,7 @@ RTF <- function(data,
     sep = ": ",
     collapse = ", "
   ))
-  print("OptimValue:")
+  print("Likelihood value:")
   print(res[["bestOptimResult"]][["value"]])
   
   return(

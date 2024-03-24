@@ -57,7 +57,7 @@ plotRTFOnMultipleTimeSeries <- function(res.lst,
       value <- bestOptimResult$value
       data <- optimObject$data
       
-      plotTitle <- paste0(title, "; OptimValue: ", signif(value, 2),
+      plotTitle <- paste0(title, "; Likelihood value: ", signif(value, 2),
                       "; ", 
                       paste(names(par), 
                             signif(par, 4), 
