@@ -30,5 +30,6 @@ plotParamDistribution <- function(df.parameterValues.long) {
       strip.text.x = ggplot2::element_text(size = 8)
     ) +
     ggplot2::facet_wrap(~variable, scales = "free") +
+    ggplot2::xlab("Value") +
     ggplot2::ylab("Count")
 }
