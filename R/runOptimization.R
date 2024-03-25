@@ -100,13 +100,47 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
   optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
   
   
-  if (optimObject.tmp$modus == "doseDependent")
-    optimObject.tmp$data$d[optimObject.tmp$data$d == 0] <- .Machine$double.xmin
+  if (optimObject.tmp$modus == "doseDependent") {
+    ds <- sort(unique(optimObject.tmp$data$d))
+    if (length(ds) == 1) {
+      warning("Please provide at least two different doses.")
+    } else {
+      secondHighestD <- ds[2]
+      optimObject.tmp$data$d[optimObject.tmp$data$d == 0] <- 
+        secondHighestD / 1000
+    }
+  }
   
   for (vec in initialGuess.vec.lst) {
     print(vec)
     vec <- applyLog10ForTakeLog10(vec, takeLog10)
-
+    
+    ############################################################################
+    # Replace 0 because for gradient calculation log(K) is calculated
+    if (optimObject.tmp$modus == "doseDependent" &
+        length(ds) > 1) {
+      RTFparams <- c("alpha", "gamma", "A", "B", "tau")
+      
+      for (RTFparam in RTFparams) {
+        KRTFparam <- paste0("K_", RTFparam)
+        if (KRTFparam %in% names(vec)) {
+          if (vec[KRTFparam] == 0) {
+            vec[KRTFparam] <- secondHighestD / 100000
+          } 
+        }
+        
+        if (KRTFparam %in% 
+            names(optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)])) {
+          if (optimObject.tmp$fixed[
+            !is.na(optimObject.tmp$fixed)][KRTFparam] == 0) {
+            optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)][KRTFparam] <- 
+              secondHighestD / 100000
+          } 
+        }
+      }
+    }
+    ############################################################################
+    
     for (signumTF in c(-1, 1)) {
       optimObject.tmp$fixed[["signum_TF"]] <- signumTF
       optimResTmp <- stats::optim(par = vec,

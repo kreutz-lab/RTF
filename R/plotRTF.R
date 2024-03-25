@@ -197,22 +197,54 @@ plotRTF <- function(optimObject,
       # d <- seq(0, max(data[["d"]]), length.out = 1000)
       # df <- getHillResults(d = d, params = par)
       
+      # Group1: A, B, b
+      # Group2: alpha, gamma, tau
+      
       hillsResLst.df.long <- reshape2::melt(hillsResLst.df, id.vars = c("d"))
-      doseParamPlot <- ggplot2::ggplot(hillsResLst.df.long, ggplot2::aes(
-        x = d, y = value, color = variable)) +
-        ggplot2::geom_line() +
+      
+      hillsResLst.df.long$Group <- 2
+      hillsResLst.df.long[
+        hillsResLst.df.long$variable %in% c("A", "B", "b"),]$Group <- 1
+      
+      doseParamPlot1 <- ggplot2::ggplot(
+        hillsResLst.df.long[hillsResLst.df.long$Group == 1,], 
+        ggplot2::aes(x = d, y = value, color = variable)) +
+        ggplot2::geom_line(ggplot2::aes(linetype = variable, 
+                                        color = variable)) +
         ggplot2::xlab("Dose") +
         ggplot2::ylab("Parameter value") +
         # ggplot2::ggtitle(title) +
         ggplot2::theme_bw() +
         ggplot2::theme(legend.position = "bottom",
-                       legend.title = ggplot2::element_blank())
+                       legend.title = ggplot2::element_blank()) +
+        ggplot2::scale_colour_manual(
+          values = c(A = "#004949", B = "#db6d00", b = "#b66dff")) +
+        ggplot2::scale_linetype_manual(
+          values = c(A = "twodash", B = "dotted", b = "longdash"))
       
-      bestFit.plot <- patchwork::wrap_plots(doseParamPlot,
-                                            bestFitWDataPlot,
-                                            waterfallPlot,
-                                            parDistributionPlot,
-                                            ncol = numCol)
+      doseParamPlot2 <- ggplot2::ggplot(
+        hillsResLst.df.long[hillsResLst.df.long$Group == 2,], 
+        ggplot2::aes(x = d, y = value, color = variable)) +
+        ggplot2::geom_line(ggplot2::aes(linetype = variable, 
+                                        color = variable)) +
+        ggplot2::xlab("Dose") +
+        ggplot2::ylab("Parameter value") +
+        # ggplot2::ggtitle(title) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(legend.position = "bottom",
+                       legend.title = ggplot2::element_blank()) +
+        ggplot2::scale_colour_manual(
+          values = c(alpha = "#920000", gamma = "#ff6db6", tau = "#006ddb")) +
+        ggplot2::scale_linetype_manual(
+          values=c(alpha = "twodash", gamma = "dotted", tau = "longdash"))
+      
+      bestFit.plot <- patchwork::wrap_plots(
+        bestFitWDataPlot,
+        patchwork::wrap_plots(
+          doseParamPlot1, doseParamPlot2, nrow = 1),
+        waterfallPlot,
+        parDistributionPlot,
+        ncol = numCol)
     }
     
     ############################################################################
