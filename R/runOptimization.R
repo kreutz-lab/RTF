@@ -117,25 +117,26 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     
     ############################################################################
     # Replace 0 because for gradient calculation log(K) is calculated
-    if (optimObject.tmp$modus == "doseDependent" &
-        length(ds) > 1) {
-      RTFparams <- c("alpha", "gamma", "A", "B", "tau")
-      
-      for (RTFparam in RTFparams) {
-        KRTFparam <- paste0("K_", RTFparam)
-        if (KRTFparam %in% names(vec)) {
-          if (vec[KRTFparam] == 0) {
-            vec[KRTFparam] <- secondHighestD / 100000
-          } 
-        }
+    if (optimObject.tmp$modus == "doseDependent") {
+      if (length(ds) > 1) {
+        RTFparams <- c("alpha", "gamma", "A", "B", "tau")
         
-        if (KRTFparam %in% 
-            names(optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)])) {
-          if (optimObject.tmp$fixed[
-            !is.na(optimObject.tmp$fixed)][KRTFparam] == 0) {
-            optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)][KRTFparam] <- 
-              secondHighestD / 100000
-          } 
+        for (RTFparam in RTFparams) {
+          KRTFparam <- paste0("K_", RTFparam)
+          if (KRTFparam %in% names(vec)) {
+            if (vec[KRTFparam] == 0) {
+              vec[KRTFparam] <- secondHighestD / 100000
+            } 
+          }
+          
+          if (KRTFparam %in% 
+              names(optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)])) {
+            if (optimObject.tmp$fixed[
+              !is.na(optimObject.tmp$fixed)][KRTFparam] == 0) {
+              optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)][KRTFparam] <- 
+                secondHighestD / 100000
+            } 
+          }
         }
       }
     }

@@ -1,17 +1,19 @@
 #' Fit function for initial guesses
 #'
 #' @description Fits function for initial guesses
-#' @return optimObject including fitting result of the best
-#' fit ('fitted'), optimization measure value of this fit ('value').
+#' @return optimObject including the fitting result of the best fit ('fitted'), 
+#' list of the stats::optim results for all initial guesses ('optimResults'), 
+#' the stats::optim result of the best fit ('bestOptimResult'), 
+#' and the likelihood value of the best fit ('value').
 #' @param optimObject optimObject, which is a list containing input data frame
-#' with time resolved data ('data'),
-#' the vector of initial guesses ('initialGuess.vec'), of lower bounds
-#' ('lb.vec'),
-#' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
-#' if log10 is applied to bounds ('takeLog10'), the parameters having no
-#' negative values in initialGuess.vec, lb.vec, and ub.vec
-#' ('positive.par.names'),
-#' modus ('modus'), and a list of values of fitted parameters ('fitted')
+#' with time resolved data ('data'), the vector of initial guesses 
+#' ('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'),
+#' vector of fixed parameters ('fixed'), if log10 is applied to bounds 
+#' ('takeLog10'), the parameters having no negative values in initialGuess.vec, 
+#' lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), 
+#' likelihood function for the parameter optimization ('optimFunction'), 
+#' list of control parameters passed to stats::optim ('control'),
+#' and a list of values of fitted parameters ('fitted', can be empty). 
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
 #' and 1 (Default: 50).
@@ -19,7 +21,7 @@
 #' @examples
 #' data <- getSimData()
 #' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
-#' res.all <- getInitialGuessResults( optimObject.orig)
+#' res.all <- getInitialGuessResults(optimObject.orig)
 
 getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {
   for (pname in names(optimObject$initialGuess.vec)) {

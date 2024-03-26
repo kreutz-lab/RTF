@@ -2,13 +2,13 @@
 % Please edit documentation in R/getHillResults.R
 \name{getHillResults}
 \alias{getHillResults}
-\title{Generate data frame for A, B, alpha, gamma, and tau for
- one or multiple defined doses}
+\title{Get RTF parameters (A, B, alpha, gamma, and tau) for a defined dose by 
+applying Hill equations}
 \usage{
 getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 }
 \arguments{
-\item{d}{Dose given as single value or a vector}
+\item{d}{Numeric value corresponding to a dose}
 
 \item{params}{Named vector containing the parameters 
 'M_alpha', 'h_alpha', 'K_alpha', 
@@ -20,13 +20,11 @@ getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 (Default: FALSE)}
 }
 \value{
-Data frame with the caclulated A, B, alpha, gamma, and 
-tau, where each row corresponds to the dose procided as a single value or
-a vector.
+Named vector of the calculated RTF parameters for the provided dose.
 }
 \description{
-Generate data frame for A, B, alpha, gamma, and 
-tau for one or multiple defined doses
+Get RTF parameters (A, B, alpha, gamma, and tau) for a defined 
+dose by applying Hill equations
 }
 \examples{
 df <- getHillResults(d = 2,

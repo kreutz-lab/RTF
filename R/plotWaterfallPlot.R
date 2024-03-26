@@ -3,9 +3,9 @@
 #' @description Generate waterfall plot of all fits. Optionally a specific fit
 #' can be highlighted using the argument 'idxCurrentFit'.
 #' @return ggplot object of the waterfall plot
-#' @param waterfallValues List of optimization measures or, if idxCurrentFit is
-#'  given, Dataframe with columns indicating for each fit "value" 
-#'  (optimization measure), "idx" (position of a fit in the sequence
+#' @param waterfallValues List of likelihood values or, if idxCurrentFit is
+#'  given, data frame with columns indicating for each fit "value" 
+#'  (likelihood value), "idx" (position of a fit in the sequence
 #' of ordered values), "col" (HEX values for color that should be given to each
 #'  fit)
 #' @param idxCurrentFit Index indicating the position of the fit in the

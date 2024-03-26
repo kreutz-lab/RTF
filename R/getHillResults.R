@@ -1,12 +1,10 @@
-#' Generate data frame for A, B, alpha, gamma, and tau for
-#'  one or multiple defined doses
+#' Get RTF parameters (A, B, alpha, gamma, and tau) for a defined dose by 
+#' applying Hill equations 
 #'
-#' @description Generate data frame for A, B, alpha, gamma, and 
-#' tau for one or multiple defined doses
-#' @return Data frame with the caclulated A, B, alpha, gamma, and 
-#' tau, where each row corresponds to the dose procided as a single value or
-#' a vector.
-#' @param d Dose given as single value or a vector
+#' @description Get RTF parameters (A, B, alpha, gamma, and tau) for a defined 
+#' dose by applying Hill equations
+#' @return Named vector of the calculated RTF parameters for the provided dose.
+#' @param d Numeric value corresponding to a dose
 #' @param params Named vector containing the parameters 
 #' 'M_alpha', 'h_alpha', 'K_alpha', 
 #' 'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 

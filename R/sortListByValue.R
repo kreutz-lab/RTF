@@ -1,4 +1,4 @@
-#' Sort sublists by optimization measure value
+#' Sort sublists by likelihood value
 #'
 #' @description Sorts a list of sublists in ascending order according to
 #' parameter 'value'.
@@ -8,8 +8,8 @@
 #' @export sortListByValue
 #' @examples
 #' lst <- list(optimRes = list(str = "res1", value = -20),
-#'                 optimRes = list(str = "res2", value = -45),
-#'                 optimRes = list(str = "res3", value = 8))
+#'             optimRes = list(str = "res2", value = -45),
+#'             optimRes = list(str = "res3", value = 8))
 #' lst.sorted <- sortListByValue(lst)
 
 sortListByValue <- function(lst) {

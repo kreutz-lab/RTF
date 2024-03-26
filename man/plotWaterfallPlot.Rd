@@ -7,9 +7,9 @@
 plotWaterfallPlot(waterfallValues, idxCurrentFit = NULL, plotAllPoints = FALSE)
 }
 \arguments{
-\item{waterfallValues}{List of optimization measures or, if idxCurrentFit is
- given, Dataframe with columns indicating for each fit "value" 
- (optimization measure), "idx" (position of a fit in the sequence
+\item{waterfallValues}{List of likelihood values or, if idxCurrentFit is
+ given, data frame with columns indicating for each fit "value" 
+ (likelihood value), "idx" (position of a fit in the sequence
 of ordered values), "col" (HEX values for color that should be given to each
  fit)}
 

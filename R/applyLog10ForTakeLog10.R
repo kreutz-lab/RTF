@@ -11,15 +11,6 @@
 #' (Default: FALSE)
 #' @export applyLog10ForTakeLog10
 #' @examples
-#' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(data,
-#'                                          modus = 'timeDependent')
-#' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
-#' lb.vec <- optimObject.orig[["lb.vec"]]
-#' takeLog10 <- optimObject.orig[["takeLog10"]]
-#' applyLog10ForTakeLog10(lb.vec, takeLog10) 
-#' 
-#' 
 #' x <- 1:3
 #' names(x) <- c("A","B","C")
 #' takeLog10 <- c(TRUE, TRUE, FALSE)

@@ -30,15 +30,6 @@ Named vector where the parameters, which are
 Take Log10(x) or 10^(x) for a vector x
 }
 \examples{
-data <- getSimData()
-optimObject.orig <- initializeOptimObject(data,
-                                         modus = 'timeDependent')
-initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
-lb.vec <- optimObject.orig[["lb.vec"]]
-takeLog10 <- optimObject.orig[["takeLog10"]]
-applyLog10ForTakeLog10(lb.vec, takeLog10) 
-
-
 x <- 1:3
 names(x) <- c("A","B","C")
 takeLog10 <- c(TRUE, TRUE, FALSE)

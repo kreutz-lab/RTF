@@ -2,7 +2,7 @@
 % Please edit documentation in R/sortListByValue.R
 \name{sortListByValue}
 \alias{sortListByValue}
-\title{Sort sublists by optimization measure value}
+\title{Sort sublists by likelihood value}
 \usage{
 sortListByValue(lst)
 }
@@ -19,7 +19,7 @@ parameter 'value'.
 }
 \examples{
 lst <- list(optimRes = list(str = "res1", value = -20),
-                optimRes = list(str = "res2", value = -45),
-                optimRes = list(str = "res3", value = 8))
+            optimRes = list(str = "res2", value = -45),
+            optimRes = list(str = "res3", value = 8))
 lst.sorted <- sortListByValue(lst)
 }

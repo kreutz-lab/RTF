@@ -15,20 +15,21 @@ fitting.}
 }
 \value{
 optimObject of the smaller model if for the bigger and smaller model
-there is no significance difference in the values of the optimization
-measure achieved through fitting.
-An optimObject is a list containing input data frame with time
-resolved data ('data'), the vector of initial guesses ('initialGuess.vec'),
-of lower bounds ('lb.vec'), of upper bounds ('ub.vec'), vector of fixed
-parameters ('fixed'), if log10 is applied to bounds ('takeLog10'),
-the parameters having no negative values in initialGuess.vec, lb.vec,
-and ub.vec ('positive.par.names'), modus ('modus'), and a list of values of
-fitted parameters ('fitted').
+there is no significance difference in the likelihood values achieved 
+through fitting.
+An optimObject is a list containing input data frame
+with time resolved data ('data'), the vector of initial guesses 
+('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'),
+vector of fixed parameters ('fixed'), if log10 is applied to bounds 
+('takeLog10'), the parameters having no negative values in initialGuess.vec, 
+lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), 
+likelihood function for the parameter optimization ('optimFunction'), 
+list of control parameters passed to stats::optim ('control'),
+and a list of values of fitted parameters ('fitted', can be empty).
 }
 \description{
 Model reduction: Select smaller model if the difference in the
-value of the optimization measure is not significant for Chi-square
-significance test.
+likelihood value is not significant for Chi-square significance test.
 }
 \examples{
 data <- getSimData()
