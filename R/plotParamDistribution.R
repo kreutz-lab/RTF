@@ -29,9 +29,11 @@ plotParamDistribution <- function(df.parameterValues.long) {
     ggplot2::theme(
       legend.position = "none",
       panel.spacing = ggplot2::unit(0.1, "lines"),
-      strip.text.x = ggplot2::element_text(size = 8)
+      strip.text.x = ggplot2::element_text(size = 8),
+      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)
     ) +
     ggplot2::facet_wrap(~variable, scales = "free") +
     ggplot2::xlab("Value") +
     ggplot2::ylab("Count")
 }
+
