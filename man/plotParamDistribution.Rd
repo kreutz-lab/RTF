@@ -4,12 +4,16 @@
 \alias{plotParamDistribution}
 \title{Plot histograms of fitted parameters}
 \usage{
-plotParamDistribution(df.parameterValues.long)
+plotParamDistribution(df.parameterValues.long, xLabelSize = 5, yLabelSize = 5)
 }
 \arguments{
 \item{df.parameterValues.long}{Data frame of the parameter values which
 have been determined by each of the fits. Two columnns: parameter name
 ('variable'), value of parameter ('value').}
+
+\item{xLabelSize}{Numeric value of x-axis label sizes.}
+
+\item{yLabelSize}{Numeric value of y-axis label sizes.}
 }
 \value{
 ggplot object of the histograms of the all parameters resulting
