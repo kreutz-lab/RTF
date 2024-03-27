@@ -13,7 +13,6 @@ devtools::install_github("kreutz-lab/RTF")
 ## Examples
 ```
 library(RTF)
-
 ```
 
 ### Time-dependent RTF
@@ -23,21 +22,24 @@ Optionally, a column 'sigmaExp' can be provided with the standard error of
 the experimental data.
 
 ```
-data <- getSimData()
-# data <- openxlsx::read.xlsx(
+data.timeDependent <- getSimData()
+# data.timeDependent <- openxlsx::read.xlsx(
 #      system.file("extdata", "ExampleDataTimeDependent.xlsx", package = "RTF"))
 
-plotData(data)
-res <- RTF(data, modus = "timeDependent")
-plotRTF(optimObject = res, fileNamePrefix = "finalModel", plotAllFits = TRUE)
+plotData(data.timeDependent)
+res.timeDependent <- RTF(data, modus = "timeDependent")
+plotRTF(optimObject = res.timeDependent, 
+        fileNamePrefix = "finalModel", 
+        plotAllFits = TRUE)
 
 # A result of RTF() can be complemented with new results of RTF() on the same
 # dataset
-resOld <- res
-res <- RTF(data, modus = "timeDependent", resOld = resOld)
+resOld.timeDependent <- res.timeDependent
+res <- RTF(data.timeDependent, modus = "timeDependent", 
+          resOld = resOld.timeDependent)
 
 # Subsequently, you can perform model reduction
-res.reduced <- modelReduction(res$finalModel)
+res.timeDependent.reduced <- modelReduction(res.timeDependent$finalModel)
 ```
 
 ### Dose-dependent RTF
@@ -47,23 +49,23 @@ Optionally, a column 'sigmaExp' can be provided with the standard error of
 the experimental data.
 
 ```
-data.doseResponse <- getSimData(modus = "doseDependent")
-# data.doseResponse <- openxlsx::read.xlsx(
+data.doseDependent <- getSimData(modus = "doseDependent")
+# data.doseDependent <- openxlsx::read.xlsx(
 #      system.file("extdata", "ExampleDataDoseDependent.xlsx", package = "RTF"))
 
-plotData(data.doseResponse)
-res.doseResponse <- RTF(data.doseResponse, modus = "doseDependent")
-plotRTF(res.doseResponse, fileNamePrefix = "doseResponseFinalModel")
+plotData(data.doseDependent)
+res.doseDependent <- RTF(data.doseDependent, modus = "doseDependent")
+plotRTF(res.doseDependent, fileNamePrefix = "doseDependentFinalModel")
 
-plotFit(par = res.doseResponse[["finalParams"]],
-        y = data.doseResponse$y, 
-        t = data.doseResponse$t, 
-        d = data.doseResponse$d, 
+plotFit(par = res.doseDependent[["finalParams"]],
+        y = data.doseDependent$y, 
+        t = data.doseDependent$t, 
+        d = data.doseDependent$d, 
         modus = 'doseDependent',
         withData = TRUE,
         title = " ")
                  
-res.doseResponse.reduced <- modelReduction(res.doseResponse$finalModel)
+res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 ```
 
 ### Low-dimensional representation of RTF parameters of 20 or more time series 
