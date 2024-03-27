@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotDynamicsForClusters.R
 \name{plotDynamicsForClusters}
 \alias{plotDynamicsForClusters}
-\title{Plot the scaled or unscaled dynamics of time series divided by cluster}
+\title{Plot the scaled or unscaled dynamics of multiple time series separated by 
+cluster}
 \usage{
 plotDynamicsForClusters(df, scaled = TRUE)
 }
@@ -14,11 +15,11 @@ plotDynamicsForClusters(df, scaled = TRUE)
 series in a cluster.}
 }
 \value{
-ggplot2 object with the dynamics plots divided by cluster.
+ggplot2 object with the dynamics plots separated by cluster.
 }
 \description{
-Plots the scaled or unscaled dynamics of time series divided 
-by cluster
+Plots the scaled or unscaled dynamics of multiple time series 
+separated by cluster
 }
 \examples{
 data(strasenParams)
@@ -31,7 +32,7 @@ gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
                              alpha = 1, size = 1.5)
 df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 clustID <- as.factor(
-NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
+                 NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
                  method = 'complete', index = 'all')$Best.partition)
 gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
                             groupColName = "clustID", alpha = 1, size = 1.5)
@@ -40,7 +41,7 @@ df <- data.frame(cbind(
   df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
   metaInfo, strasenParams))
 colnames(df) <- c("UMAP1", "UMAP2", "clustID",
-                         metaInfoName, colnames(strasenParams))
+                   metaInfoName, colnames(strasenParams))
 df.byCluster <- split(df, df$clustID)
 xi <- seq(0, 10, length.out = 1000)
 geom_line.lst <- list()

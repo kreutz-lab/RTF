@@ -1,7 +1,9 @@
 #' Run model reduction on full RTF model
 #'
 #' @description Run model reduction on full RTF model
-#' @return RTF model after model reduction
+#' @return RTF model after model reduction for time-dependent RTF, and a data
+#' frame indicating dose-dependency of each RTF parameter for dose-dependent 
+#' RTF.
 #' @param res Full RTF model, i.e., generated without fixed parameters
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
@@ -11,11 +13,21 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export modelReduction
 #' @examples
+#' # Time-dependent RTF
 #' modus <- "timeDependent"
-#' data <- getSimData()
+#' data <- getSimData(modus = modus)
 #' plotData(data)
 #' res <- RTF(data, modus = modus)
 #' res.reduced <- modelReduction(res$finalModel)
+#' 
+#' \dontrun{
+#' # Dose-dependent RTF
+#' modus <- "doseDependent"
+#' data.dose <- getSimData(modus = modus)
+#' plotData(data.dose)
+#' res.dose <- RTF(data.dose, modus = modus)
+#' df.dose <- modelReduction(res.dose$finalModel)
+#' }
 
 modelReduction <- function(res, 
                            nInitialGuesses = 50, 

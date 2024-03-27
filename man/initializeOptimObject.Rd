@@ -29,21 +29,25 @@ should be used (Default: "logLikelihood")}
 }
 \value{
 Initialized OptimObject, which is a list containing input data frame
- with time resolved data ('data'),
-the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
-of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
-if log10 is applied to bounds ('takeLog10'), the parameters having no
-negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
-modus ('modus'), and a list of values of fitted parameters ('fitted')
+with time resolved data ('data'), the vector of initial guesses 
+('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'),
+vector of fixed parameters ('fixed'), if log10 is applied to bounds 
+('takeLog10'), the parameters having no negative values in initialGuess.vec, 
+lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), 
+likelihood function for the parameter optimization ('optimFunction'), 
+list of control parameters passed to stats::optim ('control'),
+and a list of values of fitted parameters ('fitted').
 }
 \description{
 Initializes OptimObject
 }
 \examples{
+# Modus: time-dependent
 data <- getSimData()
-optimObject <- initializeOptimObject(data, modus = 'timeDependent')
+optimObject.timeDep <- initializeOptimObject(data, modus = 'timeDependent')
 
+# Modus: dose-dependent
 data.doseResponse <- getSimData("doseDependent")
-optimObject.dose <- initializeOptimObject(data.doseResponse, 
-                    modus = 'doseDependent')
+optimObject.doseDep <- initializeOptimObject(data.doseResponse, 
+                                             modus = 'doseDependent')
 }

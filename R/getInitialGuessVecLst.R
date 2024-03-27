@@ -1,10 +1,10 @@
 #' Get list of initial guesses
 #'
-#' @description Get list of default initial guess for each model parameter and
-#' a defined number of further initial guesses lying in between the lower and
-#' upper bound of each model parameter
-#' @return List of default initial guess for each model parameter
-#' a defined number of further initial guesses lying in between the lower and
+#' @description Get list of the default initial guess for each model parameter 
+#' and a defined number of further initial guesses lying between the lower 
+#' and upper bound of each model parameter
+#' @return List of the default initial guess for each model parameter and
+#' a defined number of further initial guesses lying between the lower and
 #' upper bound of each model parameter
 #' @param initialGuess.vec Vector of the default initial guesses for each
 #' model parameter
@@ -14,21 +14,18 @@
 #' of the model parameters.
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) (Default: 50).
-#' @export getInitialGuessVec
+#' @export getInitialGuessVecLst
 #' @examples
 #' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(data,
-#'                                          modus = 'timeDependent')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
 #' initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 #' lb.vec <- optimObject.orig[["lb.vec"]]
 #' ub.vec <- optimObject.orig[["ub.vec"]]
 #' takeLog10 <- optimObject.orig[["takeLog10"]]
-#' nInitialGuesses <- 100
-#' initialGuess.vec.lst <- getInitialGuessVec(
-#'                           initialGuess.vec, lb.vec, ub.vec, takeLog10,
-#'                           nInitialGuesses)
+#' initialGuess.vec.lst <- getInitialGuessVecLst(
+#'                           initialGuess.vec, lb.vec, ub.vec, takeLog10)
 
-getInitialGuessVec <- function(initialGuess.vec,
+getInitialGuessVecLst <- function(initialGuess.vec,
                                lb.vec,
                                ub.vec,
                                takeLog10,

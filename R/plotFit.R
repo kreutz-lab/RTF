@@ -1,7 +1,9 @@
-#' Plot RTF together with experimental data points
+#' Plot RTF, optionally together with experimental data points
 #'
-#' @description Plot RTF together with experimental data points
-#' @return ggplot object showing RTF together with experimental data points
+#' @description Plot RTF, optionally together with experimental data points. 
+#' In addition, the sustained and transient part of the RTF are plotted.
+#' @return ggplot object showing RTF, if withData = TRUE together with 
+#' experimental data points
 #' @param par Vector containing
 #' alpha, gamma, A, B, b, tau, and signum_TF (modus
 #' 'timeDependent') or

@@ -1,7 +1,6 @@
 #' Generate plots of RTF results
 #'
-#' @description Plot RTF results for optimObjects of modus
-#' "timeDependent" or "doseDependent"
+#' @description Plot RTF results
 #' @return ggplot object
 #' @param optimObject optimObject containing elements "finalModel" and "modus"
 #' @param fileNamePrefix File name prefix. If length>0 plots will be written to

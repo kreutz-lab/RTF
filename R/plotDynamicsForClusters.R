@@ -1,8 +1,9 @@
-#' Plot the scaled or unscaled dynamics of time series divided by cluster
+#' Plot the scaled or unscaled dynamics of multiple time series separated by 
+#' cluster
 #'
-#' @description Plots the scaled or unscaled dynamics of time series divided 
-#' by cluster
-#' @return ggplot2 object with the dynamics plots divided by cluster.
+#' @description Plots the scaled or unscaled dynamics of multiple time series 
+#' separated by cluster
+#' @return ggplot2 object with the dynamics plots separated by cluster.
 #' @param df Data frame 'df' of the dynamics with columns 't' (time),
 #'  'y' (value), 'id' (time series name), 'cluster' (cluster ID). 
 #' @param scaled Boolean indicating if values should be scaled for the time 
@@ -20,7 +21,7 @@
 #'                              alpha = 1, size = 1.5)
 #' df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 #' clustID <- as.factor(
-#' NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
+#'                  NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
 #'                  method = 'complete', index = 'all')$Best.partition)
 #' gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
 #'                             groupColName = "clustID", alpha = 1, size = 1.5)
@@ -29,7 +30,7 @@
 #'   df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
 #'   metaInfo, strasenParams))
 #' colnames(df) <- c("UMAP1", "UMAP2", "clustID",
-#'                          metaInfoName, colnames(strasenParams))
+#'                    metaInfoName, colnames(strasenParams))
 #' df.byCluster <- split(df, df$clustID)
 #' xi <- seq(0, 10, length.out = 1000)
 #' geom_line.lst <- list()
@@ -70,7 +71,7 @@ plotDynamicsForClusters <- function(df, scaled = TRUE) {
       ggplot2::theme_bw() +
       ggplot2::geom_line() +
       ggplot2::ggtitle(paste0("Cluster ", clustID)) + 
-      ggplot2::theme(legend.direction ='horizontal', 
+      ggplot2::theme(legend.direction = 'horizontal', 
                      legend.position = 'bottom',
                      legend.text = ggplot2::element_text(size = 7)) +
       ggplot2::scale_color_discrete(name = '') 

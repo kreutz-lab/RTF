@@ -19,10 +19,10 @@ performed for RTF}
 and 1 (Default: 50).}
 }
 \value{
-List with the RTF result for each time series
+List with the RTF result for each time series.
 }
 \description{
-Runs RTF on multiple columns corresponding to different times 
+Runs RTF on multiple columns corresponding to different time 
 series.
 }
 \examples{

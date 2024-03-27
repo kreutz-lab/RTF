@@ -1,4 +1,5 @@
-#' Log10-transform parameters
+#' Log10-transform initial guesses, lower bounds, and upper bounds ('ub.vec') 
+#' of OptimObject
 #'
 #' @description Replace the parameter values of vector of initial guesses
 #' ('initialGuess.vec'), of lower bounds ('lb.vec'),
@@ -6,16 +7,16 @@
 #' Only those parameter values are replaced which have values bigger than 0 in
 #' all three vectors, which needs to be indicated by the respective parameter
 #' name being included in the vector 'positive.par.names' of the OptimObject.
-#' @return OptimObject with  values of vector of initial guesses
+#' @return OptimObject with values of vector of initial guesses
 #' ('initialGuess.vec'), of lower bounds ('lb.vec'),
 #' of upper bounds ('ub.vec') of OptimObject being log10 transformed.
 #' @param optimObject OptimObject, which is a list containing input data frame
-#'  with time resolved data ('data'),
-#' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
-#' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
-#' if log10 is applied to bounds ('takeLog10'), the parameters having no
-#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
-#' modus ('modus'), and a list of values of fitted parameters ('fitted')
+#' with time resolved data ('data'), the vector of initial guesses 
+#' ('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'), 
+#' vector of fixed parameters ('fixed'), if log10 is applied to bounds 
+#' ('takeLog10'), the parameters having no negative values in initialGuess.vec, 
+#' lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), and a list of 
+#' values of fitted parameters ('fitted')
 #' @export takeLog10OfBounds
 #' @examples
 #' data <- getSimData()

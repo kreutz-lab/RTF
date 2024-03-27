@@ -23,12 +23,11 @@ the experimental data.}
 
 \item{modus}{String indicating if modus 'timeDependent' ('TD') or
 'doseDependent' ('DD') should be used.
-If no modus is provided default setting are
-'doseDependent' if column with name 'd' is present
-and else 'timeDependent'.}
+If no modus is provided default setting are 'doseDependent' if column with 
+name 'd' is present and else 'timeDependent'.}
 
 \item{optimFunction}{String indicating the optimization function which
-should be used (Default: "logLikelihood")}
+should be used (Default: 'logLikelihood')}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
 (in addition to the default initial guess) used both for a signum_TF of -1 
@@ -45,15 +44,18 @@ If FALSE, all values up to the median of those values are plotted.}
 of current run will be combined}
 }
 \value{
-List of the final RTF model (finalModel) and the optimized parameters
-(finalParams).
+List of the final RTF model ('finalModel') and the optimized 
+parameters ('finalParams').
 }
 \description{
 Run RTF
 }
 \examples{
-modus <- "timeDependent"
+# Time-dependent RTF
 data <- getSimData()
-plotData(data)
-res <- RTF(data, modus = modus)
+res <- RTF(data, modus = "timeDependent")
+
+# Dose-dependent RTF
+data <- getSimData(modus = "doseDependent")
+res <- RTF(data, modus = "doseDependent")
 }

@@ -1,7 +1,8 @@
-#' Generate plots of low dimensional representation of RTF parameters
+#' Generate plots of low-dimensional representation of multiple time series, 
+#' which is based on the RTF parameters of those time series.
 #'
-#' @description Generates plots of low dimensional representation of RTF 
-#' parameters
+#' @description Generates plots of low-dimensional representation of multiple 
+#' time series, which is based on the RTF parameters of those time series.
 #' @return List containing UMAP plot colored by meta info ('umap.metaInfo'), 
 #' UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter 
 #' distribution ('parDistribution'), unscaled dynamics plots 

@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotLowDimensionalRTF.R
 \name{plotLowDimensionalRTF}
 \alias{plotLowDimensionalRTF}
-\title{Generate plots of low dimensional representation of RTF parameters}
+\title{Generate plots of low-dimensional representation of multiple time series, 
+which is based on the RTF parameters of those time series.}
 \usage{
 plotLowDimensionalRTF(
   df,
@@ -47,8 +48,8 @@ UMAP result data frame ('umap.data'), and data frame with the dynamics values
 ('dynamics.data')
 }
 \description{
-Generates plots of low dimensional representation of RTF 
-parameters
+Generates plots of low-dimensional representation of multiple 
+time series, which is based on the RTF parameters of those time series.
 }
 \examples{
 data(strasenParams)

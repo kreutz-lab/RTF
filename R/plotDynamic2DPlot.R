@@ -38,7 +38,7 @@
 #' # # a RDS with the final models, which is needed later on
 #' # fileString <- "testFile"
 #' # param.df <- getParamsFromMultipleTimeSeries(
-#' #   almadenTimeSeries,
+#' #   df = almadenTimeSeries,
 #' #   fileString = fileString,
 #' #   saveFolderPath = tempdir(),
 #' #   nInitialGuesses = 50

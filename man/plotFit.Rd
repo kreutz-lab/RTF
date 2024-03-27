@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotFit.R
 \name{plotFit}
 \alias{plotFit}
-\title{Plot RTF together with experimental data points}
+\title{Plot RTF, optionally together with experimental data points}
 \usage{
 plotFit(
   par,
@@ -46,10 +46,12 @@ experimental data frame)}
 \item{pointSize}{Point size}
 }
 \value{
-ggplot object showing RTF together with experimental data points
+ggplot object showing RTF, if withData = TRUE together with 
+experimental data points
 }
 \description{
-Plot RTF together with experimental data points
+Plot RTF, optionally together with experimental data points. 
+In addition, the sustained and transient part of the RTF are plotted.
 }
 \examples{
 gg <- plotFit(

@@ -2,8 +2,8 @@
 % Please edit documentation in R/lowDimensionalRTF.R
 \name{lowDimensionalRTF}
 \alias{lowDimensionalRTF}
-\title{Generate low-dimensional representation of the RTF parameters of multiple
-time series}
+\title{Generate low-dimensional representation of multiple time series based on 
+their RTF parameters}
 \usage{
 lowDimensionalRTF(
   df,
@@ -90,13 +90,12 @@ If FALSE, all values up to the median of those values are plotted.}
 \value{
 List with data frame of RTF parameters for each time series
 ('param.data'), data frame of UMAP results ('umap.data'), data frame of
-dynamics per cluster ('dynamics.data'), and ggplot2 object of combined
-result plots ('plots'). Function also saves those objects to files if
-saveToFile=TRUE.
+dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
+('plots'). Function also saves those objects to files if saveToFile=TRUE.
 }
 \description{
-Generates low-dimensional representation of the RTF parameters
-of multiple time series.
+Generates low-dimensional representation of multiple time series
+ based on their RTF parameters.
 }
 \examples{
 \dontrun{

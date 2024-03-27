@@ -5,9 +5,9 @@
 #' @return Data frame with data following an RTF with predefined parameters plus
 #' some added noise.
 #' @param modus String indicating modus. Either "timeDependent" or 
-#' "doseDependent". Default: "timeDependent"
-#' @param noise Noise to be added to added. Default for modus = "timeDependent" 
-#' is 0.4 for modus = "doseDependent" 0.02.
+#' "doseDependent" (Default: "timeDependent").
+#' @param noise Noise to be added. Default for modus = "timeDependent" is 0.4,
+#'  for modus = "doseDependent" 0.02.
 #' @param numDoses (Only relevant if modus = "doseDependent") Number of distinct
 #' doses to be simulated.
 #' @export getSimData

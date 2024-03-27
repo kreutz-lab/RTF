@@ -7,32 +7,31 @@
 runOptimization(initialGuess.vec.lst, optimObject, objFunct)
 }
 \arguments{
-\item{initialGuess.vec.lst}{List of default initial guess for each model parameter
-a defined number of further initial guesses lying in between the lower and
-upper bound of each model parameter}
+\item{initialGuess.vec.lst}{List of default initial guess for each model
+parameter a defined number of further initial guesses lying between the lower 
+and upper bound of each model parameter.}
 
 \item{optimObject}{optimObject, which is a list containing input data frame 
 with time resolved data ('data'),
-the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
-of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
+the vector of initial guesses ('initialGuess.vec'), of lower bounds 
+('lb.vec'), of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 if log10 is applied to bounds ('takeLog10'), the parameters having no
 negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
 modus ('modus'), and a list of values of fitted parameters ('fitted').}
 
-\item{objFunct}{Name of the objective function}
+\item{objFunct}{Name of the objective function.}
 }
 \value{
-List of with optimization results('optimResults')
-and best optimization result ('bestOptimResult')
+List of with optimization results ('optimResults') and best 
+optimization result ('bestOptimResult').
 }
 \description{
-Run optimization using stats::optim with method = "L-BFGS-B"
+Run optimization using stats::optim with method = "L-BFGS-B".
 }
 \examples{
 data <- getSimData()
-optimObject.orig <- initializeOptimObject(data,
-                                         modus = 'timeDependent')
-initialGuess.vec.lst <- getInitialGuessVec(
+optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+initialGuess.vec.lst <- getInitialGuessVecLst(
                             initialGuess.vec =
                                           optimObject.orig$initialGuess.vec,
                             lb.vec = optimObject.orig$lb.vec,

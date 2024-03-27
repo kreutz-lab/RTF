@@ -1,7 +1,7 @@
-#' Generate data frame containing the RTF parameters for each time series.
+#' Generate data frame containing the RTF parameters for multiple time series.
 #'
-#' @description Generate data frame of RTF parameters for each time series from
-#' list of RTF results.
+#' @description Generate data frame containing the RTF parameters for multiple 
+#' time series from list of RTF results.
 #' @return Data frame containing the RTF parameters for each time 
 #' series, where the rows correspond to the different time series and 
 #' the columns to the RTF parameters.
@@ -23,6 +23,6 @@ getParamDf <- function(res.lst) {
   param.df <- param.df[row.names(param.df) != "sigma", ]
   
   param.df <- data.frame(t(param.df))
-  param.df <- param.df[, apply(param.df, 2, stats::var, na.rm=TRUE) != 0]
+  param.df <- param.df[, apply(param.df, 2, stats::var, na.rm = TRUE) != 0]
   param.df
 }

@@ -24,9 +24,6 @@ getTransientFunctionResult <- function(rtfPar = c(),
                                        signum_TF = 1,
                                        scale = TRUE, 
                                        calcGradient = FALSE) {
-  
-  # rtfParamNames <- c("alpha", "gamma", "A", "B", "b", "tau")
-  # rtfPar <- rtfPar[rtfParamNames]
   rtfParamNames <- names(rtfPar)
   
   if (length(setdiff(c("alpha", "gamma", "A", "B", "tau", "b"), 
@@ -37,9 +34,9 @@ getTransientFunctionResult <- function(rtfPar = c(),
   for (v in 1:length(rtfPar)) assign(names(rtfPar)[v], rtfPar[[v]])
 
   if (scale) {
-    scaleRes <- scaleTimeParameter(timeParam = t, maxVal = 10 / max(t))
+    scaleRes <- multiplyTimeParamsByFactor(timeParam = t, factorVal = 10 / max(t))
     t_prime <- scaleRes$timeParam
-    maxVal <- scaleRes$maxVal
+    factorVal <- scaleRes$factorVal
   } else {
     t_prime <- t
   }
@@ -50,19 +47,19 @@ getTransientFunctionResult <- function(rtfPar = c(),
       dparScaled_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
       diag(dparScaled_dpar) <- 1
       
-      dtau_dtau <- scaleTimeParameter(
+      dtau_dtau <- multiplyTimeParamsByFactor(
         timeParam = c(tau = tau), 
-        maxVal = maxVal, 
+        factorVal = factorVal, 
         gradientNames = "tau")$timeParam
       
-      dalpha_dalpha <- scaleTimeParameter(
+      dalpha_dalpha <- multiplyTimeParamsByFactor(
         timeParam = c(alpha = alpha), 
-        maxVal = 1 / maxVal, 
+        factorVal = 1 / factorVal, 
         gradientNames = "alpha")$timeParam
       
-      dgamma_dgamma <- scaleTimeParameter(
+      dgamma_dgamma <- multiplyTimeParamsByFactor(
         timeParam = c(gamma = gamma), 
-        maxVal = 1 / maxVal, 
+        factorVal = 1 / factorVal, 
         gradientNames = "gamma")$timeParam
       
       rownames(dparScaled_dpar) <- rtfParamNames
@@ -73,12 +70,12 @@ getTransientFunctionResult <- function(rtfPar = c(),
       dparScaled_dpar["gamma","gamma"] <- dgamma_dgamma
     }
 
-    tau <- scaleTimeParameter(timeParam = c(tau = tau), 
-                              maxVal = maxVal)$timeParam
-    alpha <- scaleTimeParameter(
-      timeParam = c(alpha = alpha), maxVal = 1 / maxVal)$timeParam
-    gamma <- scaleTimeParameter(
-      timeParam = c(gamma = gamma), maxVal = 1 / maxVal)$timeParam
+    tau <- multiplyTimeParamsByFactor(timeParam = c(tau = tau), 
+                              factorVal = factorVal)$timeParam
+    alpha <- multiplyTimeParamsByFactor(
+      timeParam = c(alpha = alpha), factorVal = 1 / factorVal)$timeParam
+    gamma <- multiplyTimeParamsByFactor(
+      timeParam = c(gamma = gamma), factorVal = 1 / factorVal)$timeParam
   } else {
     if (calcGradient) {
       dparScaled_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))

@@ -1,6 +1,6 @@
 #' Generate waterfall plot of all fits
 #'
-#' @description Generate waterfall plot of all fits. Optionally a specific fit
+#' @description Generate waterfall plot of all fits. Optionally, a specific fit
 #' can be highlighted using the argument 'idxCurrentFit'.
 #' @return ggplot object of the waterfall plot
 #' @param waterfallValues List of likelihood values or, if idxCurrentFit is
@@ -16,20 +16,13 @@
 #' @export plotWaterfallPlot
 #' @examples
 #' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(
-#'                         data, modus = 'timeDependent')
-#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig, 
+#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+#' res.lst.wFinal <- getInitialGuessResults(optimObject.orig,
 #'                                          nInitialGuesses = 50)
 #' optimResults <- res.lst.wFinal$optimResults
-#' 
-#' optimResults.optimRes <- lapply(optimResults, function(x) {
-#'   tmp <- unlist(x[grep("optimRes", names(x))], recursive = FALSE)
-#'   names(tmp) <- sub("optimRes.", "", names(tmp))
-#'   tmp
-#' })
-#' 
-#' optimResTmpLstValuesAll <- unlist(
-#'   lapply(optimResults.optimRes, function(x) unlist(x[grep("value",names(x))])))
+#' optimResTmpLstValuesAll <- unlist(lapply(optimResults, function(x) {
+#'   unlist(x[grep("value", names(x))])
+#' }))
 #' gg <- plotWaterfallPlot(optimResTmpLstValuesAll)
 
 plotWaterfallPlot <- function(waterfallValues, idxCurrentFit = NULL,

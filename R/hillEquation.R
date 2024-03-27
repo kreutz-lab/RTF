@@ -1,7 +1,9 @@
 #' Calculate Hill equation
 #'
-#' @description Calculates Hill equation
-#' @return Hill equation result value
+#' @description Calculates Hill equation results for specified values of
+#' dose ('d'), maximum value ('M'), Hill coefficient ('h'), and half-maximum 
+#' quantity ('K').
+#' @return Hill equation result
 #' @param d Dose
 #' @param M Maximum value
 #' @param h Hill coefficient
@@ -10,20 +12,21 @@
 #' reciprocal parameter
 #' @param gradientNames  names of parameters for which derivatives are 
 #' calculated. "M","h","K" should be part of it.
-#' If provided, then derivatives are calculated instead of the hillEquation 
-#' itself
-#' @param minval (optional) Numeric, defines the lowest value the result can 
+#' If provided, then derivatives are calculated instead of the hill equation 
+#' itself.
+#' @param minval (Optional) Numeric, defines the lowest value the result can 
 #' acquire. Only relevant if reciprocal = TRUE.
 #' @export hillEquation
 #' @examples
 #' hillEquation(d = 20, M = 5, h = 3, K = 4)
-#' hillEquation(d = 1:20, M = 5, h = 3, K = 4, gradientNames = c("A","B","M","h","K","alpha"))
+#' hillEquation(d = 1:20, M = 5, h = 3, K = 4, 
+#'              gradientNames = c("A", "B", "M", "h", "K", "alpha"))
 
 hillEquation <- function(d, M, h, K, reciprocal = FALSE,
                          gradientNames = c(), minval = NULL){
   
-  if(length(gradientNames) > 0)
-    if(length(setdiff(c("h","M","K"), gradientNames))>0)
+  if (length(gradientNames) > 0)
+    if (length(setdiff(c("h","M","K"), gradientNames)) > 0)
       warning("gradientNames does not contain all parameters (h,M,K)")
   
   if (reciprocal) {
@@ -58,7 +61,7 @@ hillEquation <- function(d, M, h, K, reciprocal = FALSE,
     }
   }
   
-  if (length(gradientNames)>0) 
+  if (length(gradientNames) > 0) 
     return(dresult_dMhp)
   else
     return(result)

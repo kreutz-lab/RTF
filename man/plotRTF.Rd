@@ -32,8 +32,7 @@ If FALSE, all values up to the median of those values are plotted.}
 ggplot object
 }
 \description{
-Plot RTF results for optimObjects of modus
-"timeDependent" or "doseDependent"
+Plot RTF results
 }
 \examples{
 data <- getSimData(modus = "timeDependent")

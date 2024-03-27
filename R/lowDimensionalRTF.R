@@ -1,13 +1,11 @@
-#' Generate low-dimensional representation of the RTF parameters of multiple
-#' time series
-#'
-#' @description Generates low-dimensional representation of the RTF parameters
-#' of multiple time series.
+#' Generate low-dimensional representation of multiple time series based on 
+#' their RTF parameters
+#' @description Generates low-dimensional representation of multiple time series
+#'  based on their RTF parameters.
 #' @return List with data frame of RTF parameters for each time series
 #' ('param.data'), data frame of UMAP results ('umap.data'), data frame of
-#' dynamics per cluster ('dynamics.data'), and ggplot2 object of combined
-#' result plots ('plots'). Function also saves those objects to files if
-#' saveToFile=TRUE.
+#' dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
+#' ('plots'). Function also saves those objects to files if saveToFile=TRUE.
 #' @param df Data frame with the first column named 'time'
 #' defining the different time points and all the following columns
 #' corresponding to the different time series.

@@ -1,8 +1,8 @@
 #' Run RTF on multiple times series
 #'
-#' @description Runs RTF on multiple columns corresponding to different times 
+#' @description Runs RTF on multiple columns corresponding to different time 
 #' series.
-#' @return List with the RTF result for each time series
+#' @return List with the RTF result for each time series.
 #' @param df Data frame with the first column named 'time'
 #' defining the different time points and all the following columns 
 #' corresponding to the different time series.

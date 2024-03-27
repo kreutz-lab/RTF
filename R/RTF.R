@@ -1,8 +1,8 @@
 #' Run RTF
 #'
 #' @description Run RTF
-#' @return List of the final RTF model (finalModel) and the optimized parameters
-#' (finalParams).
+#' @return List of the final RTF model ('finalModel') and the optimized 
+#' parameters ('finalParams').
 #' @param data Data frame containing columns named 't' (time) and
 #' 'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
 #' 't', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD'). 
@@ -10,11 +10,10 @@
 #' the experimental data.
 #' @param modus String indicating if modus 'timeDependent' ('TD') or
 #' 'doseDependent' ('DD') should be used.
-#' If no modus is provided default setting are
-#' 'doseDependent' if column with name 'd' is present
-#' and else 'timeDependent'.
+#' If no modus is provided default setting are 'doseDependent' if column with 
+#' name 'd' is present and else 'timeDependent'.
 #' @param optimFunction String indicating the optimization function which
-#' should be used (Default: "logLikelihood")
+#' should be used (Default: 'logLikelihood')
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
 #' and 1 (Default: 50).
@@ -27,10 +26,13 @@
 #' of current run will be combined
 #' @export RTF
 #' @examples
-#' modus <- "timeDependent"
+#' # Time-dependent RTF
 #' data <- getSimData()
-#' plotData(data)
-#' res <- RTF(data, modus = modus)
+#' res <- RTF(data, modus = "timeDependent")
+#' 
+#' # Dose-dependent RTF
+#' data <- getSimData(modus = "doseDependent")
+#' res <- RTF(data, modus = "doseDependent")
 
 RTF <- function(data,
                 modus = NULL,

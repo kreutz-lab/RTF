@@ -2,7 +2,7 @@
 % Please edit documentation in R/getParamDf.R
 \name{getParamDf}
 \alias{getParamDf}
-\title{Generate data frame containing the RTF parameters for each time series.}
+\title{Generate data frame containing the RTF parameters for multiple time series.}
 \usage{
 getParamDf(res.lst)
 }
@@ -15,8 +15,8 @@ series, where the rows correspond to the different time series and
 the columns to the RTF parameters.
 }
 \description{
-Generate data frame of RTF parameters for each time series from
-list of RTF results.
+Generate data frame containing the RTF parameters for multiple 
+time series from list of RTF results.
 }
 \examples{
 data(strasenTimeSeries)

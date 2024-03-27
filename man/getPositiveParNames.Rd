@@ -2,7 +2,7 @@
 % Please edit documentation in R/getPositiveParNames.R
 \name{getPositiveParNames}
 \alias{getPositiveParNames}
-\title{Get names if parameters having no negative values}
+\title{Get names of parameters having no negative values}
 \usage{
 getPositiveParNames(lb.vec, ub.vec, initialGuess.vec)
 }
@@ -11,7 +11,8 @@ getPositiveParNames(lb.vec, ub.vec, initialGuess.vec)
 
 \item{ub.vec}{Named vector of upper bound for each model parameter}
 
-\item{initialGuess.vec}{Named vector of initial guesses for each model parameter}
+\item{initialGuess.vec}{Named vector of initial guesses for each model 
+parameter}
 }
 \value{
 Vector of parameters having no negative values in
@@ -19,10 +20,10 @@ initialGuess.vec, lb.vec, and ub.vec
 }
 \description{
 Returns the names of parameters having no negative values in
-initialGuess.vec, lb.vec, and ub.vec
+initialGuess.vec, lb.vec, and ub.vec.
 }
 \examples{
-len = 20
+len <- 20
 lb.vec <- rnorm(len)
 ub.vec <- lb.vec + runif(len, 0, 2)
 initialGuess.vec <- runif(len, lb.vec, ub.vec)

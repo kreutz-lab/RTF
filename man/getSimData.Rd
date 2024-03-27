@@ -8,10 +8,10 @@ getSimData(modus = "timeDependent", noise = NULL, numDoses = 7)
 }
 \arguments{
 \item{modus}{String indicating modus. Either "timeDependent" or 
-"doseDependent". Default: "timeDependent"}
+"doseDependent" (Default: "timeDependent").}
 
-\item{noise}{Noise to be added to added. Default for modus = "timeDependent" 
-is 0.4 for modus = "doseDependent" 0.02.}
+\item{noise}{Noise to be added. Default for modus = "timeDependent" is 0.4,
+for modus = "doseDependent" 0.02.}
 
 \item{numDoses}{(Only relevant if modus = "doseDependent") Number of distinct
 doses to be simulated.}

@@ -28,6 +28,8 @@ for (i in 1:length(parameters)) {
  parameter <- parameters[i]
  values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
 }
-df.parameterValues.long <- data.frame(variable = rep(parameters, each = nFits), value = values)
+df.parameterValues.long <- data.frame(
+  variable = rep(parameters, each = nFits), 
+  value = values)
 gg.paramDistr <- plotParamDistribution(df.parameterValues.long)
 }

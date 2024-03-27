@@ -2,12 +2,14 @@
 #'
 #' @description Initializes OptimObject
 #' @return Initialized OptimObject, which is a list containing input data frame
-#'  with time resolved data ('data'),
-#' the vector of initial guesses ('initialGuess.vec'), of lower bounds ('lb.vec'),
-#' of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
-#' if log10 is applied to bounds ('takeLog10'), the parameters having no
-#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
-#' modus ('modus'), and a list of values of fitted parameters ('fitted')
+#' with time resolved data ('data'), the vector of initial guesses 
+#' ('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'),
+#' vector of fixed parameters ('fixed'), if log10 is applied to bounds 
+#' ('takeLog10'), the parameters having no negative values in initialGuess.vec, 
+#' lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), 
+#' likelihood function for the parameter optimization ('optimFunction'), 
+#' list of control parameters passed to stats::optim ('control'),
+#' and a list of values of fitted parameters ('fitted'). 
 #' @param data Data frame containing columns named 't' (time) and 'y'
 #' (quantitative value)
 #' @param modus String indicating if modus 'timeDependent' or
@@ -19,17 +21,22 @@
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
 #' @export initializeOptimObject
 #' @examples
+#' # Modus: time-dependent
 #' data <- getSimData()
-#' optimObject <- initializeOptimObject(data, modus = 'timeDependent')
+#' optimObject.timeDep <- initializeOptimObject(data, modus = 'timeDependent')
 #' 
+#' # Modus: dose-dependent
 #' data.doseResponse <- getSimData("doseDependent")
-#' optimObject.dose <- initializeOptimObject(data.doseResponse, 
-#'                     modus = 'doseDependent')
+#' optimObject.doseDep <- initializeOptimObject(data.doseResponse, 
+#'                                              modus = 'doseDependent')
 
 initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood", 
                                   control = list(trace = 1, maxit = 1000,
                                                  factr = 1e7), 
                                   takeLog10 = TRUE) {
+  
+  data.orig <- data
+  data <- data[stats::complete.cases(data), ] 
   
   mintVal <- min(data$t)
   if (mintVal > 0) {
@@ -170,7 +177,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
     initialGuess.vec <- initialGuess.vec[names(initialGuess.vec) != "sigma"]
   }
   
-  optimObject.orig <- list(data = data,
+  optimObject.orig <- list(data = data.orig,
                            initialGuess.vec = initialGuess.vec,
                            lb.vec = lb.vec,
                            ub.vec = ub.vec,

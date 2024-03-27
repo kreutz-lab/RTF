@@ -34,7 +34,7 @@ getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {
         optimObject$fixed[pname]
   }
 
-  initialGuess.vec.lst <- getInitialGuessVec(
+  initialGuess.vec.lst <- getInitialGuessVecLst(
     initialGuess.vec = optimObject$initialGuess.vec,
     lb.vec = optimObject$lb.vec,
     ub.vec = optimObject$ub.vec,
