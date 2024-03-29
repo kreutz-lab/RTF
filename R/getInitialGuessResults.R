@@ -20,7 +20,7 @@
 #' @export getInitialGuessResults
 #' @examples
 #' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
 #' res.all <- getInitialGuessResults(optimObject.orig)
 
 getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {

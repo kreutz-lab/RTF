@@ -38,7 +38,7 @@ and upper bound of each model parameter
 }
 \examples{
 data <- getSimData()
-optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
 initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 lb.vec <- optimObject.orig[["lb.vec"]]
 ub.vec <- optimObject.orig[["ub.vec"]]

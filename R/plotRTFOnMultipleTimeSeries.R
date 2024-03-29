@@ -1,6 +1,6 @@
 #' Generate plots based on the list of RTF parameters to multiple time series
 #'
-#' @description Generates plots using plotRTF based on the RTF paramaters 
+#' @description Generates plots using plotRTF based on the RTF parameters 
 #' derived for each of multiple time series. 
 #' @return pdf file, where each page corresponds to one time series.
 #' @param res.lst List with the RTF result for each time series
@@ -66,7 +66,7 @@ plotRTFOnMultipleTimeSeries <- function(res.lst,
       plt <- plotFit(par = par,
               y = data$y, 
               t = data$t, 
-              modus = "timeDependent",
+              modus = "singleDose",
               withData = TRUE,
               title = plotTitle)
       

@@ -21,7 +21,7 @@ file, otherwise they will be plotted directly. Default is empty string.}
 \item{plotTitle}{Title of the plot (Default is no title).}
 
 \item{plotAllFits}{Boolean indicating if all fits should be plotted. Only use
-if fileNamePrefix is given. Only relevant for "timeDependent"
+if fileNamePrefix is given. Only relevant for "singleDose"
 modus. (Default: TRUE)}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
@@ -35,7 +35,7 @@ ggplot object
 Plot RTF results
 }
 \examples{
-data <- getSimData(modus = "timeDependent")
+data <- getSimData(modus = "singleDose")
 res <- RTF(data)
 plotRTF(res, plotAllFits = FALSE)
 }

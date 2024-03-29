@@ -5,7 +5,7 @@
 \title{Run RTF}
 \usage{
 RTF(
-  data,
+  df,
   modus = NULL,
   optimFunction = "logLikelihood",
   nInitialGuesses = 50,
@@ -15,16 +15,16 @@ RTF(
 )
 }
 \arguments{
-\item{data}{Data frame containing columns named 't' (time) and
-'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
+\item{df}{Data frame containing columns named 't' (time) and
+'y' (quantitative value) for modus = 'singleDose' ('SD'), and columns 
 't', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD'). 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
 the experimental data.}
 
-\item{modus}{String indicating if modus 'timeDependent' ('TD') or
+\item{modus}{String indicating if modus 'singleDose' ('SD') or
 'doseDependent' ('DD') should be used.
 If no modus is provided default setting are 'doseDependent' if column with 
-name 'd' is present and else 'timeDependent'.}
+name 'd' is present and else 'singleDose'.}
 
 \item{optimFunction}{String indicating the optimization function which
 should be used (Default: 'logLikelihood')}
@@ -51,9 +51,9 @@ parameters ('finalParams').
 Run RTF
 }
 \examples{
-# Time-dependent RTF
+# Single-dose RTF
 data <- getSimData()
-res <- RTF(data, modus = "timeDependent")
+res <- RTF(data, modus = "singleDose")
 
 # Dose-dependent RTF
 data <- getSimData(modus = "doseDependent")

@@ -9,7 +9,7 @@ takeLog10OfBounds(optimObject)
 }
 \arguments{
 \item{optimObject}{OptimObject, which is a list containing input data frame
-with time resolved data ('data'), the vector of initial guesses 
+with time-resolved data ('data'), the vector of initial guesses 
 ('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'), 
 vector of fixed parameters ('fixed'), if log10 is applied to bounds 
 ('takeLog10'), the parameters having no negative values in initialGuess.vec, 
@@ -32,7 +32,7 @@ name being included in the vector 'positive.par.names' of the OptimObject.
 \examples{
 data <- getSimData()
 optimObject <- initializeOptimObject(data,
-                                    modus = 'timeDependent',
+                                    modus = 'singleDose',
                                     takeLog10 = FALSE)
 positive.par.names <- getPositiveParNames(lb.vec = optimObject$lb.vec,
                                           ub.vec = optimObject$ub.vec,

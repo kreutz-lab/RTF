@@ -15,31 +15,31 @@ devtools::install_github("kreutz-lab/RTF")
 library(RTF)
 ```
 
-### Time-dependent RTF
+### Single-dose RTF
 Input data frame should contain the columns 't' for time and 
 'y' for the quantitative value. 
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
 the experimental data.
 
 ```
-data.timeDependent <- getSimData()
-# data.timeDependent <- openxlsx::read.xlsx(
-#      system.file("extdata", "ExampleDataTimeDependent.xlsx", package = "RTF"))
+data.singleDose <- getSimData()
+# data.singleDose <- openxlsx::read.xlsx(
+#      system.file("extdata", "ExampleDataSingleDose.xlsx", package = "RTF"))
 
-plotData(data.timeDependent)
-res.timeDependent <- RTF(data, modus = "timeDependent")
-plotRTF(optimObject = res.timeDependent, 
+plotData(data.singleDose)
+res.singleDose <- RTF(data.singleDose, modus = "singleDose")
+plotRTF(optimObject = res.singleDose, 
         fileNamePrefix = "finalModel", 
         plotAllFits = TRUE)
+        
+# Subsequently, you can perform model reduction
+res.singleDose.reduced <- modelReduction(res.singleDose$finalModel)
 
 # A result of RTF() can be complemented with new results of RTF() on the same
 # dataset
-resOld.timeDependent <- res.timeDependent
-res <- RTF(data.timeDependent, modus = "timeDependent", 
-          resOld = resOld.timeDependent)
-
-# Subsequently, you can perform model reduction
-res.timeDependent.reduced <- modelReduction(res.timeDependent$finalModel)
+resOld.singleDose <- res.singleDose
+resNew.singleDose <- RTF(data.singleDose, modus = "singleDose", 
+          resOld = resOld.singleDose)
 ```
 
 ### Dose-dependent RTF
@@ -69,7 +69,7 @@ res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 ```
 
 ### Low-dimensional representation of RTF parameters of 20 or more time series 
-(Currently only possible for time-dependent RTF parameters)
+(Currently only possible for single-dose RTF parameters)
 ```
 data(strasenTimeSeries)
 df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
@@ -111,6 +111,9 @@ conditionID <- gsub(".*_", "", colNames)
 # )
 # res.lst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
 
+colNames <- colnames(timeSeries[2:ncol(timeSeries)])
+species <- sub("_[^_]+$", "", colNames)
+
 plots <- plotLowDimensionalRTF(
   df = almadenParams,
   metaInfo = species, 
@@ -131,4 +134,7 @@ plt <- plotDynamic2DPlot(dim1Vec = df.umapData$UMAP1,
                          hRatio = 0.4, 
                          vRatio = 0
 )
+
+# Save to html file
+htmlwidgets::saveWidget(plt, "dynamicPlot.html")
 ```

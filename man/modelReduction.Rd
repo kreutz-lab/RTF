@@ -18,7 +18,7 @@ plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
-RTF model after model reduction for time-dependent RTF, and a data
+RTF model after model reduction for single-dose RTF, and a data
 frame indicating dose-dependency of each RTF parameter for dose-dependent 
 RTF.
 }
@@ -26,8 +26,8 @@ RTF.
 Run model reduction on full RTF model
 }
 \examples{
-# Time-dependent RTF
-modus <- "timeDependent"
+# Single-dose RTF
+modus <- "singleDose"
 data <- getSimData(modus = modus)
 plotData(data)
 res <- RTF(data, modus = modus)

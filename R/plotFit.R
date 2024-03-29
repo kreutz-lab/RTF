@@ -5,21 +5,18 @@
 #' @return ggplot object showing RTF, if withData = TRUE together with 
 #' experimental data points
 #' @param par Vector containing
-#' alpha, gamma, A, B, b, tau, and signum_TF (modus
-#' 'timeDependent') or
+#' alpha, gamma, A, B, b, tau, and signum_TF (modus 'singleDose') or
 #' M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma,
-#' M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus
-#' 'doseDependent').
+#' M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 'doseDependent').
 #' @param withData Boolean indicating if data should be added to fit line
-#' @param modus Modus ('timeDependent' or
-#' 'doseDependent')
+#' @param modus Modus ('singleDose' or 'doseDependent')
 #' @param y Experimental outcome for time points (corresponds to y column in
 #' experimental data frame)
 #' @param t Time points
 #' @param d Dose (obligatory for 'doseDependent')
 #' @param title Plot title
 #' @param pointAlpha Transparency of points
-#' @param lineAlpha For modus 'timeDependent': Transparency of lines
+#' @param lineAlpha For modus 'singleDose': Transparency of lines
 #' @param pointSize Point size
 #' @export plotFit
 #' @examples
@@ -33,7 +30,7 @@
 
 plotFit <- function(par,
                     withData = FALSE,
-                    modus = "timeDependent",
+                    modus = "singleDose",
                     y = NULL,
                     t = NULL,
                     d = NULL,
@@ -50,7 +47,7 @@ plotFit <- function(par,
     doses <- 1
   }
   
-  if (modus == 'timeDependent') {
+  if (modus == 'singleDose') {
     
     xi <- seq(min(t), max(t), length.out = 1000)
     RTFResVec <- getTransientFunctionResult(t = xi,

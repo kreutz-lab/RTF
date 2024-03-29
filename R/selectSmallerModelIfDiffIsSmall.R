@@ -5,7 +5,7 @@
 #' @return optimObject of the smaller model if for the bigger and smaller model
 #' there is no significant difference in the likelihood values achieved 
 #' through fitting.
-#' An optimObject is a list containing input data frame with time resolved 
+#' An optimObject is a list containing input data frame with time-resolved 
 #' data ('data'), the vector of initial guesses ('initialGuess.vec'), of lower 
 #' bounds ('lb.vec'), of upper bounds ('ub.vec'), vector of fixed parameters 
 #' ('fixed'), if log10 is applied to bounds ('takeLog10'), the parameters 
@@ -21,7 +21,7 @@
 #' @export selectSmallerModelIfDiffIsSmall
 #' @examples
 #' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(data, modus = "timeDependent")
+#' optimObject.orig <- initializeOptimObject(data, modus = "singleDose")
 #' res.all <- getInitialGuessResults(optimObject.orig)
 #' optimObjectTmp <- optimObject.orig
 #' optimObjectTmp$positive.par.names <-

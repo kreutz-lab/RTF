@@ -6,7 +6,7 @@
 #' @param rtfPar Named vector of the parameter values used for RTF.
 #' @param t Vector of time points
 #' @param signum_TF Value of signum_TF (-1 or 1, Default: 1)
-#' @param scale Boolean, indicates if time dependent parameters t, tau,
+#' @param scale Boolean, indicates if time-dependent parameters t, tau,
 #' alpha, and gamma should be scaled
 #' @param calcGradient Boolean indicating if gradient should be calculated
 #' (Default: FALSE)

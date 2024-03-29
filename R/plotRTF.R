@@ -7,14 +7,14 @@
 #' file, otherwise they will be plotted directly. Default is empty string.
 #' @param plotTitle Title of the plot (Default is no title).
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
-#' if fileNamePrefix is given. Only relevant for "timeDependent"
+#' if fileNamePrefix is given. Only relevant for "singleDose"
 #' modus. (Default: TRUE)
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTF
 #' @examples
-#' data <- getSimData(modus = "timeDependent")
+#' data <- getSimData(modus = "singleDose")
 #' res <- RTF(data)
 #' plotRTF(res, plotAllFits = FALSE)
 
@@ -39,7 +39,7 @@ plotRTF <- function(optimObject,
     par <- bestOptimResult$par
     
     numCol <- 1
-    if (modus == "timeDependent") {
+    if (modus == "singleDose") {
       height <- 12
     } else if (modus == "doseDependent") {
       height <- 17
@@ -86,7 +86,7 @@ plotRTF <- function(optimObject,
             )
           )
           title <- paste(strwrap(title, width = 80), collapse = "\n")
-          if (modus == "timeDependent") {
+          if (modus == "singleDose") {
             gg <- plotFit(
               par = pars,
               y = data$y,
@@ -154,7 +154,7 @@ plotRTF <- function(optimObject,
     )
     title <- paste(strwrap(title, width = 100), collapse = "\n")
     
-    if (modus == "timeDependent") {
+    if (modus == "singleDose") {
       RTFComponentsPlot <- plotFit(
         par = par,
         y = data$y,

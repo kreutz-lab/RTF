@@ -7,7 +7,7 @@
 plotFit(
   par,
   withData = FALSE,
-  modus = "timeDependent",
+  modus = "singleDose",
   y = NULL,
   t = NULL,
   d = NULL,
@@ -19,16 +19,13 @@ plotFit(
 }
 \arguments{
 \item{par}{Vector containing
-alpha, gamma, A, B, b, tau, and signum_TF (modus
-'timeDependent') or
+alpha, gamma, A, B, b, tau, and signum_TF (modus 'singleDose') or
 M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma,
-M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus
-'doseDependent').}
+M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 'doseDependent').}
 
 \item{withData}{Boolean indicating if data should be added to fit line}
 
-\item{modus}{Modus ('timeDependent' or
-'doseDependent')}
+\item{modus}{Modus ('singleDose' or 'doseDependent')}
 
 \item{y}{Experimental outcome for time points (corresponds to y column in
 experimental data frame)}
@@ -41,7 +38,7 @@ experimental data frame)}
 
 \item{pointAlpha}{Transparency of points}
 
-\item{lineAlpha}{For modus 'timeDependent': Transparency of lines}
+\item{lineAlpha}{For modus 'singleDose': Transparency of lines}
 
 \item{pointSize}{Point size}
 }

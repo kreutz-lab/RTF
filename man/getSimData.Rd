@@ -4,13 +4,13 @@
 \alias{getSimData}
 \title{Simulate example data frame for defined RTF parameters}
 \usage{
-getSimData(modus = "timeDependent", noise = NULL, numDoses = 7)
+getSimData(modus = "singleDose", noise = NULL, numDoses = 7)
 }
 \arguments{
-\item{modus}{String indicating modus. Either "timeDependent" or 
-"doseDependent" (Default: "timeDependent").}
+\item{modus}{String indicating modus. Either "singleDose" or 
+"doseDependent" (Default: "singleDose").}
 
-\item{noise}{Noise to be added. Default for modus = "timeDependent" is 0.4,
+\item{noise}{Noise to be added. Default for modus = "singleDose" is 0.4,
 for modus = "doseDependent" 0.02.}
 
 \item{numDoses}{(Only relevant if modus = "doseDependent") Number of distinct

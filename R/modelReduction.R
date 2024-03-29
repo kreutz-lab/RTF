@@ -1,7 +1,7 @@
 #' Run model reduction on full RTF model
 #'
 #' @description Run model reduction on full RTF model
-#' @return RTF model after model reduction for time-dependent RTF, and a data
+#' @return RTF model after model reduction for single-dose RTF, and a data
 #' frame indicating dose-dependency of each RTF parameter for dose-dependent 
 #' RTF.
 #' @param res Full RTF model, i.e., generated without fixed parameters
@@ -13,8 +13,8 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export modelReduction
 #' @examples
-#' # Time-dependent RTF
-#' modus <- "timeDependent"
+#' # Single-dose RTF
+#' modus <- "singleDose"
 #' data <- getSimData(modus = modus)
 #' plotData(data)
 #' res <- RTF(data, modus = modus)
@@ -89,6 +89,9 @@ modelReduction <- function(res,
     
     reductionResults <- list(finalModel = res, finalParams = finalParams)
     
+    if (all(res.orig$finalParams == reductionResults$finalParams)) {
+      warning("No model reduction indicated. Full model is retained.")
+    }
   } else {
     RTFparams <- c("alpha", "gamma", "A", "B", "tau")
     statLst <- list()
@@ -123,10 +126,5 @@ modelReduction <- function(res,
     
     reductionResults <- do.call(rbind, lapply(statLst, data.frame))
   }
-  
-  if (all(res.orig$finalParams == reductionResults$finalParams)) {
-    warning("No model reduction indicated. Full model is retained.")
-  }
-  
   reductionResults
 }

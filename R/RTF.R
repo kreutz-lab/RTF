@@ -3,15 +3,15 @@
 #' @description Run RTF
 #' @return List of the final RTF model ('finalModel') and the optimized 
 #' parameters ('finalParams').
-#' @param data Data frame containing columns named 't' (time) and
-#' 'y' (quantitative value) for modus = 'timeDependent' ('TD'), and columns 
+#' @param df Data frame containing columns named 't' (time) and
+#' 'y' (quantitative value) for modus = 'singleDose' ('SD'), and columns 
 #' 't', 'y', and 'd' (dose) for modus = 'doseDependent' ('DD'). 
 #' Optionally, a column 'sigmaExp' can be provided with the standard error of 
 #' the experimental data.
-#' @param modus String indicating if modus 'timeDependent' ('TD') or
+#' @param modus String indicating if modus 'singleDose' ('SD') or
 #' 'doseDependent' ('DD') should be used.
 #' If no modus is provided default setting are 'doseDependent' if column with 
-#' name 'd' is present and else 'timeDependent'.
+#' name 'd' is present and else 'singleDose'.
 #' @param optimFunction String indicating the optimization function which
 #' should be used (Default: 'logLikelihood')
 #' @param nInitialGuesses Integer indicating number of initial guesses 
@@ -26,15 +26,15 @@
 #' of current run will be combined
 #' @export RTF
 #' @examples
-#' # Time-dependent RTF
+#' # Single-dose RTF
 #' data <- getSimData()
-#' res <- RTF(data, modus = "timeDependent")
+#' res <- RTF(data, modus = "singleDose")
 #' 
 #' # Dose-dependent RTF
 #' data <- getSimData(modus = "doseDependent")
 #' res <- RTF(data, modus = "doseDependent")
 
-RTF <- function(data,
+RTF <- function(df,
                 modus = NULL,
                 optimFunction = "logLikelihood",
                 nInitialGuesses = 50,
@@ -45,27 +45,27 @@ RTF <- function(data,
                 ),
                 resOld = NULL) {
   if (is.null(modus)) {
-    if (("d" %in% names(data))) {
+    if (("d" %in% names(df))) {
       modus <- 'doseDependent'
     } else {
-      modus <- 'timeDependent'
+      modus <- 'singleDose'
     }
   } else {
-    if (modus == 'TD')
-      modus <- 'timeDependent'
+    if (modus == 'SD')
+      modus <- 'singleDose'
     if (modus == 'DD')
       modus <- 'doseDependent'
   }
   
   if (modus != "doseDependent" &
-      !all(c("t", "y") %in% names(data))) {
+      !all(c("t", "y") %in% names(df))) {
     stop("Input data frame needs to contain the columns 't' and 'y'.")
   } else if (modus == "doseDependent" &
-             !all(c("t", "y", "d") %in% names(data))) {
+             !all(c("t", "y", "d") %in% names(df))) {
     stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
   }
   
-  optimObject.orig <- initializeOptimObject(data,
+  optimObject.orig <- initializeOptimObject(df,
                                             modus = modus,
                                             optimFunction = optimFunction,
                                             control = control)

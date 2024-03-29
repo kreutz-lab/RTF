@@ -16,7 +16,7 @@
 #' @export plotWaterfallPlot
 #' @examples
 #' data <- getSimData()
-#' optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+#' optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
 #' res.lst.wFinal <- getInitialGuessResults(optimObject.orig,
 #'                                          nInitialGuesses = 50)
 #' optimResults <- res.lst.wFinal$optimResults

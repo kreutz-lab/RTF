@@ -4,9 +4,9 @@
 #' predefined parameters plus some added noise.
 #' @return Data frame with data following an RTF with predefined parameters plus
 #' some added noise.
-#' @param modus String indicating modus. Either "timeDependent" or 
-#' "doseDependent" (Default: "timeDependent").
-#' @param noise Noise to be added. Default for modus = "timeDependent" is 0.4,
+#' @param modus String indicating modus. Either "singleDose" or 
+#' "doseDependent" (Default: "singleDose").
+#' @param noise Noise to be added. Default for modus = "singleDose" is 0.4,
 #'  for modus = "doseDependent" 0.02.
 #' @param numDoses (Only relevant if modus = "doseDependent") Number of distinct
 #' doses to be simulated.
@@ -14,17 +14,17 @@
 #' @examples
 #' getSimData()
 
-getSimData <- function(modus = "timeDependent", noise = NULL, numDoses = 7) {
+getSimData <- function(modus = "singleDose", noise = NULL, numDoses = 7) {
   
   if (is.null(noise)) {
-    if (modus == "timeDependent") {
+    if (modus == "singleDose") {
       noise <- 0.4
     } else if (modus == "doseDependent") {
       noise <- 0.02
     }
   }
   
-  if (modus == "timeDependent") {
+  if (modus == "singleDose") {
     t <- seq(0, 17, 0.7)
     
     y <- getTransientFunctionResult(

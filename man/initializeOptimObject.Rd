@@ -14,16 +14,16 @@ initializeOptimObject(
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and 'y'
-(quantitative value)}
+(quantitative value).}
 
-\item{modus}{String indicating if modus 'timeDependent' or
-'doseDependent' should be used}
+\item{modus}{String indicating if modus 'singleDose' or 'doseDependent' 
+should be used.}
 
 \item{optimFunction}{String indicating the optimization function which 
-should be used (Default: "logLikelihood")}
+should be used (Default: "logLikelihood").}
 
 \item{control}{List of control arguments passed to the function stats::optim 
-(Default: list(trace = 1, maxit = 1000, factr = 1e7))}
+(Default: list(trace = 1, maxit = 1000, factr = 1e7)).}
 
 \item{takeLog10}{Boolean value indicating if log10 of bounds should be applied}
 }
@@ -42,11 +42,11 @@ and a list of values of fitted parameters ('fitted').
 Initializes OptimObject
 }
 \examples{
-# Modus: time-dependent
+# Modus: Single-dose RTF
 data <- getSimData()
-optimObject.timeDep <- initializeOptimObject(data, modus = 'timeDependent')
+optimObject.singleDose <- initializeOptimObject(data, modus = 'singleDose')
 
-# Modus: dose-dependent
+# Modus: Dose-dependent RTF
 data.doseResponse <- getSimData("doseDependent")
 optimObject.doseDep <- initializeOptimObject(data.doseResponse, 
                                              modus = 'doseDependent')

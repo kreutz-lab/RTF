@@ -19,7 +19,7 @@ getTransientFunctionResult(
 
 \item{signum_TF}{Value of signum_TF (-1 or 1, Default: 1)}
 
-\item{scale}{Boolean, indicates if time dependent parameters t, tau,
+\item{scale}{Boolean, indicates if time-dependent parameters t, tau,
 alpha, and gamma should be scaled}
 
 \item{calcGradient}{Boolean indicating if gradient should be calculated

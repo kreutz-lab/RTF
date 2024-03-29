@@ -25,8 +25,8 @@ with optimization value for each parameter if calcGradient = TRUE
 Log likelihood optimization function
 }
 \examples{
-# modus "timeDependent"
-optimObject.timeDependent <- list(
+# modus "singleDose"
+optimObject.singleDose <- list(
 data = structure(list(
      t = c(0, 0.7, 1.4, 2.1, 2.8, 3.5, 
            4.2, 4.9, 5.6, 6.3, 7, 7.7, 8.4, 9.1, 9.8, 10.5, 11.2, 11.9, 
@@ -56,7 +56,7 @@ data = structure(list(
              sigma = NA, signum_TF = 1), 
    takeLog10 = c(alpha = TRUE, gamma = TRUE, 
                  A = FALSE, B = FALSE, b = TRUE, tau = FALSE, sigma = FALSE), 
-   positive.par.names = c("alpha", "gamma", "b"), modus = "timeDependent", 
+   positive.par.names = c("alpha", "gamma", "b"), modus = "singleDose", 
    optimFunction = "logLikelihood", 
    control = 
      list(trace = 1, 
@@ -66,20 +66,20 @@ data = structure(list(
                     tau = 0.0001848, sigma = 1.04461639852265e-06)), 
    fitted = list())
  
- vec.timeDependent <- c(alpha = -1.38468866303807, A = 0.612026441406334, 
+ vec.singleDose <- c(alpha = -1.38468866303807, A = 0.612026441406334, 
                        B = 0.612026441406334, 
                        b = 0.327121302070328, 
                        tau = -1.68, sigma = 0.0525708346158025)
- optimRes.timeDependent <- stats::optim(par = vec.timeDependent,
+ optimRes.singleDose <- stats::optim(par = vec.singleDose,
                             fn = objFunct,
                             gr = objFunctGradient,
                             method = "L-BFGS-B",
-                            lower = optimObject.timeDependent$lb.vec,
-                            upper = optimObject.timeDependent$ub.vec,
-                            data = optimObject.timeDependent$data,
-                            optimObject = optimObject.timeDependent,
+                            lower = optimObject.singleDose$lb.vec,
+                            upper = optimObject.singleDose$ub.vec,
+                            data = optimObject.singleDose$data,
+                            optimObject = optimObject.singleDose,
                             calcGradient = FALSE,
-                            control = optimObject.timeDependent$control)
+                            control = optimObject.singleDose$control)
 
 # modus "doseDependent"
 optimObject.doseDependent <- list(

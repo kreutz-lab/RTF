@@ -32,6 +32,6 @@ Fits function for initial guesses
 }
 \examples{
 data <- getSimData()
-optimObject.orig <- initializeOptimObject(data, modus = 'timeDependent')
+optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
 res.all <- getInitialGuessResults(optimObject.orig)
 }

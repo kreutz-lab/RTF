@@ -4,19 +4,19 @@ library(RTF)
 SE <- function(x) sd(x)/3
 
 ################################################################################
-# Example dataset for time-dependent RTF
-replicate1 <- getSimData(modus = "timeDependent", noise = 0.8)
-replicate2 <- getSimData(modus = "timeDependent", noise = 0.8)
-replicate3 <- getSimData(modus = "timeDependent", noise = 0.8)
+# Example dataset for single-dose RTF
+replicate1 <- getSimData(modus = "singleDose", noise = 0.8)
+replicate2 <- getSimData(modus = "singleDose", noise = 0.8)
+replicate3 <- getSimData(modus = "singleDose", noise = 0.8)
 
-exampleDataTimeDependent <- data.frame(
+exampleDataSingleDose <- data.frame(
   t = replicate1$t, 
   y = apply(data.frame(replicate1$y, replicate2$y, replicate3$y), 1, mean),
   sigmaExp = apply(data.frame(replicate1$y, replicate2$y, replicate3$y), 1, SE)
   )
 
 openxlsx::write.xlsx(
-  x = exampleDataTimeDependent, file = "ExampleDataTimeDependent.xlsx")
+  x = exampleDataSingleDose, file = "ExampleDataSingleDose.xlsx")
 
 ################################################################################
 # Example dataset for dose-dependent RTF

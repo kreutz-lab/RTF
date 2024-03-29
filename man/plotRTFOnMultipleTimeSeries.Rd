@@ -45,7 +45,7 @@ If FALSE, all values up to the median of those values are plotted.}
 pdf file, where each page corresponds to one time series.
 }
 \description{
-Generates plots using plotRTF based on the RTF paramaters 
+Generates plots using plotRTF based on the RTF parameters 
 derived for each of multiple time series.
 }
 \examples{
