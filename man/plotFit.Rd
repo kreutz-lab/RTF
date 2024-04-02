@@ -38,7 +38,7 @@ experimental data frame)}
 
 \item{pointAlpha}{Transparency of points}
 
-\item{lineAlpha}{For modus 'singleDose': Transparency of lines}
+\item{lineAlpha}{For modus 'singleDose': Transparency of line}
 
 \item{pointSize}{Point size}
 }

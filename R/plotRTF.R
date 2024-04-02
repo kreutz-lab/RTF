@@ -233,9 +233,9 @@ plotRTF <- function(optimObject,
         ggplot2::theme(legend.position = "bottom",
                        legend.title = ggplot2::element_blank()) +
         ggplot2::scale_colour_manual(
-          values = c(alpha = "#920000", gamma = "#ff6db6", tau = "#006ddb")) +
+          values = c(alpha = "#490092", gamma = "#ff6db6", tau = "#006ddb")) +
         ggplot2::scale_linetype_manual(
-          values=c(alpha = "twodash", gamma = "dotted", tau = "longdash"))
+          values = c(alpha = "twodash", gamma = "dotted", tau = "longdash"))
       
       bestFit.plot <- patchwork::wrap_plots(
         bestFitWDataPlot,

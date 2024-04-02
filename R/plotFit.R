@@ -16,7 +16,7 @@
 #' @param d Dose (obligatory for 'doseDependent')
 #' @param title Plot title
 #' @param pointAlpha Transparency of points
-#' @param lineAlpha For modus 'singleDose': Transparency of lines
+#' @param lineAlpha For modus 'singleDose': Transparency of line
 #' @param pointSize Point size
 #' @export plotFit
 #' @examples
@@ -60,28 +60,33 @@ plotFit <- function(par,
     
     # Only Signal_sus: B = 0
     # Only Signal_trans: A = 0
-    parSus <- parTrans <- par
-    parSus[names(parSus) == "B"] <-
-      parTrans[names(parTrans) == "A"] <- 0
+    parSus <-  parTrans <- par
+    parSus[names(parSus) %in% c("B", "b")] <- 
+      parTrans[names(parTrans) %in% c("A", "b")] <- 0
     
-    susOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                rtfPar = parSus,
-                                                signum_TF = parSus[["signum_TF"]])
+    susOnlyResVec <- getTransientFunctionResult(
+      t = xi,
+      rtfPar = parSus,
+      signum_TF = parSus[["signum_TF"]])
+    
     susOnlyResDf <- data.frame(t = xi,
                                y = susOnlyResVec,
                                Component = "Sustained")
     
-    transOnlyResVec <- getTransientFunctionResult(t = xi,
-                                                  rtfPar = parTrans,
-                                                  signum_TF = parTrans[["signum_TF"]])
+    bOnlyResDf <- data.frame(t = xi,
+                             y = rep(par[["b"]], length(xi)),
+                             Component = "b")
     
-    transOnlyResDf <- data.frame(t = xi,
-                                 y = transOnlyResVec,
-                                 Component = "Transient")
+    transOnlyResVec <- getTransientFunctionResult(
+      t = xi,
+      rtfPar = parTrans,
+      signum_TF = parTrans[["signum_TF"]])
     
-    geom_line.df <- do.call("rbind", list(RTFResDf,
-                                          susOnlyResDf,
-                                          transOnlyResDf))
+    geom_line.df <- data.frame(t = xi,
+                               Sustained = susOnlyResVec,
+                               Transient = transOnlyResVec,
+                               b = rep(par[["b"]], length(xi)),
+                               RTF = RTFResVec)
     
   } else if (modus == 'doseDependent') {
     geom_line.lst <- list()
@@ -110,17 +115,16 @@ plotFit <- function(par,
     geom_line.df <- dplyr::bind_rows(geom_line.lst)
   }
   
-  gg <- ggplot2::ggplot() +
-    ggplot2::theme_bw()
-  
   if (length(doses) > 1) {
     geom_line.df <- geom_line.df[order(geom_line.df$d),]
-    gg <- gg + ggplot2::geom_line(data = geom_line.df,
-                                  ggplot2::aes(
-                                    x = t,
-                                    y = y,
-                                    color = factor(d)
-                                  )) +
+    gg <- ggplot2::ggplot(data = geom_line.df,
+                          ggplot2::aes(
+                            x = t,
+                            y = y,
+                            color = factor(d)
+                          )) +
+      ggplot2::theme_bw() + 
+      ggplot2::geom_line() +
       ggplot2::theme(legend.position = "bottom",
                      legend.title = ggplot2::element_blank()) +
       ggplot2::scale_colour_viridis_d(direction = -1)
@@ -137,31 +141,18 @@ plotFit <- function(par,
       )
     }
   } else {
-    gg <- gg +
-      ggplot2::geom_line(
-        data = geom_line.df,
-        ggplot2::aes(
-          x = t,
-          y = y,
-          color = factor(Component),
-          size = factor(Component)
-        ),
-        alpha = lineAlpha
-      ) +
-      ggplot2::scale_colour_manual(values = c(
-        RTF = "black",
-        Transient = "blue",
-        Sustained = "#339999"
-      )) +
-      ggplot2::scale_size_manual(values = c(
-        RTF = 2,
-        Transient = 1,
-        Sustained = 1
-      )) +
-      ggplot2::theme(legend.position = "bottom",
-                     legend.title = ggplot2::element_blank()) +
-      ggplot2::guides(colour = ggplot2::guide_legend(
-        override.aes = list(alpha = lineAlpha)))
+    
+    gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
+      ggplot2::theme_bw() +
+      ggplot2::geom_ribbon(ggplot2::aes(
+        ymin = b + Sustained, ymax = b + Sustained + Transient), 
+        fill = "#2C77BF", alpha = .5) +
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = b, ymax = b + Sustained), 
+                           fill = "#6DBCC3", alpha = .5) +
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = min(0, b), ymax = max(0, b)), 
+                           fill = "grey22", alpha = .5) +
+      ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) 
+    
     if (withData) {
       gg <- gg + ggplot2::geom_point(
         data = data.frame(t = t, y = y),
