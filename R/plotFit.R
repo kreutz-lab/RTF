@@ -60,23 +60,16 @@ plotFit <- function(par,
     
     # Only Signal_sus: B = 0
     # Only Signal_trans: A = 0
-    parSus <-  parTrans <- par
-    parSus[names(parSus) == "B"] <- 
-      parTrans[names(parTrans) == "A"] <- 0
+    parSus <- par
+    parSus[names(parSus) == "B"] <- 0
     
     susOnlyResVec <- getTransientFunctionResult(
       t = xi,
       rtfPar = parSus,
       signum_TF = parSus[["signum_TF"]])
     
-    transOnlyResVec <- getTransientFunctionResult(
-      t = xi,
-      rtfPar = parTrans,
-      signum_TF = parTrans[["signum_TF"]])
-    
     geom_line.df <- data.frame(t = xi,
                                Sustained = susOnlyResVec,
-                               Transient = transOnlyResVec,
                                RTF = RTFResVec)
     
   } else if (modus == 'doseDependent') {
@@ -102,7 +95,6 @@ plotFit <- function(par,
                                 d = dose
                               )))
     }
-    
     geom_line.df <- dplyr::bind_rows(geom_line.lst)
   }
   
@@ -132,8 +124,6 @@ plotFit <- function(par,
       )
     }
   } else {
-    
-    
     if (par[["signum_TF"]] == 1) {
       limit <- min(geom_line.df$RTF)
     } else if (par[["signum_TF"]] == -1) {
@@ -142,9 +132,8 @@ plotFit <- function(par,
     
     gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
       ggplot2::theme_bw() +
-      ggplot2::geom_ribbon(ggplot2::aes(
-        ymin = Sustained, ymax = RTF), 
-        fill = "#2C77BF", alpha = .5) +
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = Sustained, ymax = RTF), 
+                           fill = "#2C77BF", alpha = .5) +
       ggplot2::geom_ribbon(ggplot2::aes(ymin = limit, ymax = Sustained), 
                            fill = "#6DBCC3", alpha = .5) +
       ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) 
