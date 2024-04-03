@@ -61,21 +61,13 @@ plotFit <- function(par,
     # Only Signal_sus: B = 0
     # Only Signal_trans: A = 0
     parSus <-  parTrans <- par
-    parSus[names(parSus) %in% c("B", "b")] <- 
-      parTrans[names(parTrans) %in% c("A", "b")] <- 0
+    parSus[names(parSus) == "B"] <- 
+      parTrans[names(parTrans) == "A"] <- 0
     
     susOnlyResVec <- getTransientFunctionResult(
       t = xi,
       rtfPar = parSus,
       signum_TF = parSus[["signum_TF"]])
-    
-    susOnlyResDf <- data.frame(t = xi,
-                               y = susOnlyResVec,
-                               Component = "Sustained")
-    
-    bOnlyResDf <- data.frame(t = xi,
-                             y = rep(par[["b"]], length(xi)),
-                             Component = "b")
     
     transOnlyResVec <- getTransientFunctionResult(
       t = xi,
@@ -85,7 +77,6 @@ plotFit <- function(par,
     geom_line.df <- data.frame(t = xi,
                                Sustained = susOnlyResVec,
                                Transient = transOnlyResVec,
-                               b = rep(par[["b"]], length(xi)),
                                RTF = RTFResVec)
     
   } else if (modus == 'doseDependent') {
@@ -142,15 +133,20 @@ plotFit <- function(par,
     }
   } else {
     
+    
+    if (par[["signum_TF"]] == 1) {
+      limit <- min(geom_line.df$RTF)
+    } else if (par[["signum_TF"]] == -1) {
+      limit <- max(geom_line.df$RTF)
+    }
+    
     gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
       ggplot2::theme_bw() +
       ggplot2::geom_ribbon(ggplot2::aes(
-        ymin = b + Sustained, ymax = b + Sustained + Transient), 
+        ymin = Sustained, ymax = RTF), 
         fill = "#2C77BF", alpha = .5) +
-      ggplot2::geom_ribbon(ggplot2::aes(ymin = b, ymax = b + Sustained), 
+      ggplot2::geom_ribbon(ggplot2::aes(ymin = limit, ymax = Sustained), 
                            fill = "#6DBCC3", alpha = .5) +
-      ggplot2::geom_ribbon(ggplot2::aes(ymin = min(0, b), ymax = max(0, b)), 
-                           fill = "grey22", alpha = .5) +
       ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) 
     
     if (withData) {

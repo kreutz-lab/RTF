@@ -177,7 +177,7 @@ plotDynamic2DPlot <- function(dim1Vec,
   
   plt$dependencies <- c(plt$dependencies, list(d3))
   
-  # Delete temporary directory content
+  ## Delete temporary directory content
   unlink(dir(path = tmpDir, full.names = TRUE), recursive = TRUE)
   
   plt

@@ -132,8 +132,7 @@ plt <- plotDynamic2DPlot(dim1Vec = df.umapData$UMAP1,
                          res.lst = almadenResLst,
                          metaInfo = conditionID, # alternatively: clustID
                          hRatio = 0.4, 
-                         vRatio = 0
-)
+                         vRatio = 0)
 
 # Save to html file
 htmlwidgets::saveWidget(plt, "dynamicPlot.html")
