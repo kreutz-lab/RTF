@@ -133,10 +133,11 @@ plotFit <- function(par,
     gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
       ggplot2::theme_bw() +
       ggplot2::geom_ribbon(ggplot2::aes(ymin = Sustained, ymax = RTF), 
-                           fill = "#2C77BF", alpha = .5) +
+                           fill = "#7F7F7F", alpha = .5) +
       ggplot2::geom_ribbon(ggplot2::aes(ymin = limit, ymax = Sustained), 
-                           fill = "#6DBCC3", alpha = .5) +
-      ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) 
+                           fill = "#262626", alpha = .5) +
+      ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) +
+      ggplot2::ylab("y")
     
     if (withData) {
       gg <- gg + ggplot2::geom_point(

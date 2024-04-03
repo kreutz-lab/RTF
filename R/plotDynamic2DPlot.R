@@ -162,7 +162,7 @@ plotDynamic2DPlot <- function(dim1Vec,
       hoverinfo = ~ID, customdata = ~IMG_PATH2,
       text = ~ID,
       marker = list(color = ifelse(
-        df$metaInfo == unique(df$metaInfo)[1], "red", "blue"))) 
+        df$metaInfo == unique(df$metaInfo)[1], "#D82632", "#290AD8"))) 
   } else {
     plt <- plt %>%  plotly::add_trace(
       x = ~Dim1, y = ~Dim2, color = ~metaInfo, 
