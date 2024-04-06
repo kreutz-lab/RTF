@@ -45,7 +45,7 @@ RTF <- function(df,
                 ),
                 resOld = NULL) {
   if (is.null(modus)) {
-    if (("d" %in% names(df))) {
+    if (("d" %in% names(df)) & length(unique(df$d)) > 1) {
       modus <- 'doseDependent'
     } else {
       modus <- 'singleDose'
