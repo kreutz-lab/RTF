@@ -2,11 +2,11 @@
 #' classes
 #'
 #' This example data frame containing the estimated RTF parameters for the 
-#' 'strasenTimeSeries' dataset, which is based on
-#' Strasen et al. (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
+#' 'strasen' dataset, which is based on Strasen et al. 
+#' (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
 #' It has been generated as follows:
-#' data(strasenTimeSeries)
-#' res.lst <- RTFOnMultipleTimeSeries(strasenTimeSeries)
+#' data(strasen)
+#' res.lst <- RTFOnMultipleTimeSeries(strasen)
 #' strasenParams <- getParamDf(res.lst)
 #'
 #' @docType data

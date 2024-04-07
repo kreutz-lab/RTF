@@ -26,7 +26,7 @@ Runs RTF on multiple columns corresponding to different time
 series.
 }
 \examples{
-data(strasenTimeSeries)
-df <- strasenTimeSeries[, 1:3]
+data(strasen)
+df <- strasen[, 1:3]
 res.lst <- RTFOnMultipleTimeSeries(df)
 }

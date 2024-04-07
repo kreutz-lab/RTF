@@ -99,8 +99,8 @@ Generates low-dimensional representation of multiple time series
 }
 \examples{
 \dontrun{
-data(strasenTimeSeries)
-df <- strasenTimeSeries[, 1:20]
+data(strasen)
+df <- strasen[, 1:20]
 colNames <- colnames(df[2:ncol(df)])
 metaInfo <- species <- sub("_[^_]+$", "", colNames)
 res <- lowDimensionalRTF(df = df,

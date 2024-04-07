@@ -5,8 +5,8 @@
 #' Almaden et al.
 #'  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
 #' It has been generated as follows:
-#' data(almadenTimeSeries)
-#' almadenParams <- getParamsFromMultipleTimeSeries(almadenTimeSeries, 
+#' data(almaden)
+#' almadenParams <- getParamsFromMultipleTimeSeries(almaden, 
 #'                                                  nInitialGuesses = 100)
 #'
 #' @docType data

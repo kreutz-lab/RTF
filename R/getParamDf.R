@@ -8,8 +8,8 @@
 #' @param res.lst List with the RTF result for each time series 
 #' @export getParamDf
 #' @examples
-#' data(strasenTimeSeries)
-#' df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
+#' data(strasen)
+#' df.multipleTimeSeries <- strasen[, 1:3]
 #' res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
 #' param.df <- getParamDf(res.lst)
 

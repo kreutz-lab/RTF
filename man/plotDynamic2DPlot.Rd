@@ -55,10 +55,10 @@ displayed in an additional smaller subplot.
 }
 \examples{
 \dontrun{
-data(almadenTimeSeries)
+data(almaden)
 data(almadenParams)
 data(almadenResLst)
-timeSeries <- almadenTimeSeries # first column needs to be "time"
+timeSeries <- almaden # first column needs to be "time"
 colNames <- colnames(timeSeries[2:ncol(timeSeries)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
@@ -69,7 +69,7 @@ conditionID <- gsub(".*_", "", colNames)
 # # available as an example (data(almadenResLst)).
 # fileString <- "almadenExampleFile"
 # param.df <- getParamsFromMultipleTimeSeries(
-#   df = almadenTimeSeries,
+#   df = almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
 #   nInitialGuesses = 50

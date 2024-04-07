@@ -19,8 +19,8 @@ Generate data frame containing the RTF parameters for multiple
 time series from list of RTF results.
 }
 \examples{
-data(strasenTimeSeries)
-df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
+data(strasen)
+df.multipleTimeSeries <- strasen[, 1:3]
 res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
 param.df <- getParamDf(res.lst)
 }

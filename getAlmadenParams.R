@@ -1,11 +1,11 @@
 library(RTF)
 
-data(almadenTimeSeries)
+data(almaden)
 fileString <- "almaden"
 
 almadenParams <-
   RTF::getParamsFromMultipleTimeSeries(
-    almadenTimeSeries,
+    almaden,
     fileString = fileString,
     nInitialGuesses = 100
   )

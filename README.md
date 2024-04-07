@@ -71,8 +71,8 @@ res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 ### Low-dimensional representation of RTF parameters of 20 or more time series 
 (Currently only possible for single-dose RTF parameters)
 ```
-data(strasenTimeSeries)
-df.multipleTimeSeries <- strasenTimeSeries[, 1:20]
+data(strasen)
+df.multipleTimeSeries <- strasen[, 1:20]
 colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
 metaInfo <- sub("_[^_]+$", "", colNames)
 res <- lowDimensionalRTF(df.multipleTimeSeries,
@@ -92,10 +92,10 @@ the plotDynamic2DPlot can be used.
 By hovering over a point the corresponding time-resolved behavior is 
 displayed in an additional smaller subplot.
 ```
-data(almadenTimeSeries)
+data(almaden)
 data(almadenParams)
 data(almadenResLst)
-timeSeries <- almadenTimeSeries # first column needs to be "time"
+timeSeries <- almaden # first column needs to be "time"
 colNames <- colnames(timeSeries[2:ncol(timeSeries)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
@@ -106,7 +106,7 @@ conditionID <- gsub(".*_", "", colNames)
 # # available as an example (data(almadenResLst)).
 # fileString <- "almadenExampleFile"
 # param.df <- getParamsFromMultipleTimeSeries(
-#   almadenTimeSeries,
+#   almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
 #   nInitialGuesses = 50

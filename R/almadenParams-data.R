@@ -2,12 +2,12 @@
 #' NFkB pathway components
 #'
 #' This example data frame containing the estimated RTF parameters for the 
-#' 'almadenTimeSeries' dataset, which is modelled using Data2Dynamics and is 
+#' 'almaden' dataset, which is modelled using Data2Dynamics and is 
 #' based on the NFkB model of Almaden et al.
 #'  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
 #' It has been generated from a rds file returned from:
-#' data(almadenTimeSeries)
-#' getParamsFromMultipleTimeSeries(almadenTimeSeries, 
+#' data(almaden)
+#' getParamsFromMultipleTimeSeries(almaden, 
 #'                                fileString = "test",
 #'                                nInitialGuesses = 100)
 #'

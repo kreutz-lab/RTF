@@ -1,7 +1,7 @@
 Package: RTF
 Type: Package
 Title: Retarded Transient Function
-Version: 0.1.84
+Version: 0.1.85
 Authors@R: 
   person("Clemens","Kreutz",
   email = "clemens.kreutz@uniklinik-freiburg.de",

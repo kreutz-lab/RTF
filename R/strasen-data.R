@@ -26,7 +26,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(strasenTimeSeries)
+#' @usage data(strasen)
 #'
 #' @keywords datasets
 #'
@@ -39,5 +39,5 @@
 #' \href{https://jjj.bio.vu.nl/models/experiments/strasen2018_fig5a/}
 #' {JWS Online}
 #' @examples
-#' data(strasenTimeSeries)
-"strasenTimeSeries"
+#' data(strasen)
+"strasen"

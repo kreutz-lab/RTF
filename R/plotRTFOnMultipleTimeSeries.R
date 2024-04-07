@@ -20,8 +20,8 @@
 #' If FALSE, all values up to the median of those values are plotted.
 #' @export plotRTFOnMultipleTimeSeries
 #' @examples
-#' data(strasenTimeSeries)
-#' df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
+#' data(strasen)
+#' df.multipleTimeSeries <- strasen[, 1:3]
 #' res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
 #' plotRTFOnMultipleTimeSeries(res.lst)
 

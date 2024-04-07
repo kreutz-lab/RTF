@@ -13,8 +13,8 @@
 #' and 1 (Default: 50).
 #' @export RTFOnMultipleTimeSeries
 #' @examples
-#' data(strasenTimeSeries)
-#' df <- strasenTimeSeries[, 1:3]
+#' data(strasen)
+#' df <- strasen[, 1:3]
 #' res.lst <- RTFOnMultipleTimeSeries(df)
 
 RTFOnMultipleTimeSeries <- function(df,

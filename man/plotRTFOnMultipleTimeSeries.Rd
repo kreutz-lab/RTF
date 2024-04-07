@@ -49,8 +49,8 @@ Generates plots using plotRTF based on the RTF parameters
 derived for each of multiple time series.
 }
 \examples{
-data(strasenTimeSeries)
-df.multipleTimeSeries <- strasenTimeSeries[, 1:3]
+data(strasen)
+df.multipleTimeSeries <- strasen[, 1:3]
 res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
 plotRTFOnMultipleTimeSeries(res.lst)
 }

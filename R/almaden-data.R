@@ -6,7 +6,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(almadenTimeSeries)
+#' @usage data(almaden)
 #'
 #' @keywords datasets
 #'
@@ -21,5 +21,5 @@
 #' (\href{https://doi.org/10.1093/bioinformatics/btv405})
 #'
 #' @examples
-#' data(almadenTimeSeries)
-"almadenTimeSeries"
+#' data(almaden)
+"almaden"

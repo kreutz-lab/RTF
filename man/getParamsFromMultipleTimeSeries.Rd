@@ -63,7 +63,7 @@ Get RTF parameters for multiple time series specified in
 data frame.
 }
 \examples{
-data(strasenTimeSeries)
-df <- strasenTimeSeries[, 1:3]
+data(strasen)
+df <- strasen[, 1:3]
 param.df <- getParamsFromMultipleTimeSeries(df)
 }
