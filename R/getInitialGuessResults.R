@@ -24,31 +24,31 @@
 #' res.all <- getInitialGuessResults(optimObject.orig)
 
 getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {
-  for (pname in names(optimObject$initialGuess.vec)) {
-    # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
-    # is fixed but is not listed in lb.vec, ub.vec, and initialGuess.vec
-    if (!is.na(optimObject$fixed[pname]))
-      optimObject$initialGuess.vec[pname] <-
-        optimObject$lb.vec[pname] <-
-        optimObject$ub.vec[pname] <-
-        optimObject$fixed[pname]
-  }
-
-  initialGuess.vec.lst <- getInitialGuessVecLst(
-    initialGuess.vec = optimObject$initialGuess.vec,
-    lb.vec = optimObject$lb.vec,
-    ub.vec = optimObject$ub.vec,
-    takeLog10 = optimObject$takeLog10,
-    nInitialGuesses = nInitialGuesses)
-  
-  initialGuessResults <-
-    runOptimization(initialGuess.vec.lst, optimObject, objFunct)
-  
-  optimObject$optimResults <- initialGuessResults[["optimResults"]]
-  
-  optimObject$bestOptimResult <- initialGuessResults[["bestOptimResult"]]
-  optimObject$fitted <- optimObject$bestOptimResult$par
-  optimObject$value <- optimObject$bestOptimResult$value
-  
-  optimObject
+    for (pname in names(optimObject$initialGuess.vec)) {
+        # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
+        # is fixed but is not listed in lb.vec, ub.vec, and initialGuess.vec
+        if (!is.na(optimObject$fixed[pname]))
+            optimObject$initialGuess.vec[pname] <-
+                optimObject$lb.vec[pname] <-
+                optimObject$ub.vec[pname] <-
+                optimObject$fixed[pname]
+    }
+    
+    initialGuess.vec.lst <- getInitialGuessVecLst(
+        initialGuess.vec = optimObject$initialGuess.vec,
+        lb.vec = optimObject$lb.vec,
+        ub.vec = optimObject$ub.vec,
+        takeLog10 = optimObject$takeLog10,
+        nInitialGuesses = nInitialGuesses)
+    
+    initialGuessResults <-
+        runOptimization(initialGuess.vec.lst, optimObject, objFunct)
+    
+    optimObject$optimResults <- initialGuessResults[["optimResults"]]
+    
+    optimObject$bestOptimResult <- initialGuessResults[["bestOptimResult"]]
+    optimObject$fitted <- optimObject$bestOptimResult$par
+    optimObject$value <- optimObject$bestOptimResult$value
+    
+    optimObject
 }

@@ -5,7 +5,7 @@
 \title{Generate plots based on the list of RTF parameters to multiple time series}
 \usage{
 plotRTFOnMultipleTimeSeries(
-  res.lst,
+  RTFmodelLst,
   fileString = "",
   saveFolderPath = "",
   height = 12,
@@ -17,7 +17,7 @@ plotRTFOnMultipleTimeSeries(
 )
 }
 \arguments{
-\item{res.lst}{List with the RTF result for each time series}
+\item{RTFmodelLst}{List with the RTF result for each time series}
 
 \item{fileString}{String that should be added to file name}
 
@@ -28,8 +28,8 @@ saved. Default: current folder.}
 
 \item{width}{Integer indicating page width}
 
-\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
-single file.}
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned 
+as a single file.}
 
 \item{plotFitsToSingleFileExtension}{Image file extension, if 
 plotFitsToSingleFile=TRUE (Default: jpeg)}
@@ -51,6 +51,6 @@ derived for each of multiple time series.
 \examples{
 data(strasen)
 df.multipleTimeSeries <- strasen[, 1:3]
-res.lst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
-plotRTFOnMultipleTimeSeries(res.lst)
+RTFmodelLst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
+plotRTFOnMultipleTimeSeries(RTFmodelLst)
 }

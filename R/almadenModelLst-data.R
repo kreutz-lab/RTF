@@ -6,12 +6,13 @@
 #'  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
 #' It has been generated as follows:
 #' data(almaden)
-#' almadenParams <- getParamsFromMultipleTimeSeries(almaden, 
-#'                                                  nInitialGuesses = 100)
+#' params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+#'                                               nInitialGuesses = 100)
+#' almadenModelLst <- params.lst[["RTFmodelLst"]]
 #'
 #' @docType data
 #'
-#' @usage data(almadenResLst)
+#' @usage data(almadenModelLst)
 #'
 #' @keywords datasets
 #'
@@ -26,5 +27,5 @@
 #' (\href{https://doi.org/10.1093/bioinformatics/btv405})
 #'
 #' @examples
-#' data(almadenResLst)
-"almadenResLst"
+#' data(almadenModelLst)
+"almadenModelLst"

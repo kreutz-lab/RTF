@@ -56,27 +56,26 @@
 #' plot.scaled <- plotDynamicsForClusters(df, scaled = TRUE)
 
 plotDynamicsForClusters <- function(df, scaled = TRUE) {
-  
-  if (scaled) {
-    df <- df %>% dplyr::group_by(id, cluster) %>% 
-      dplyr::mutate(y = scale(y))
-  }
-  
-  clusterIds <- sort(unique(df$cluster))
-  gg.cluster.lst <- list()
-  for (clustID in clusterIds) {
-    gg <- ggplot2::ggplot(
-      data = df %>% dplyr::filter(cluster == clustID),
-      ggplot2::aes(x = t, y = y, color = id)) +
-      ggplot2::theme_bw() +
-      ggplot2::geom_line() +
-      ggplot2::ggtitle(paste0("Cluster ", clustID)) + 
-      ggplot2::theme(legend.direction = 'horizontal', 
-                     legend.position = 'bottom',
-                     legend.text = ggplot2::element_text(size = 7)) +
-      ggplot2::scale_color_discrete(name = '') 
-    gg.cluster.lst <- append(gg.cluster.lst, list(gg))
-  }
-  names(gg.cluster.lst) <- clusterIds
-  patchwork::wrap_plots(gg.cluster.lst, ncol = 3)
+    
+    if (scaled) {
+        df <- df %>% dplyr::group_by(id, cluster) %>% 
+            dplyr::mutate(y = scale(y))
+    }
+    
+    clusterIds <- sort(unique(df$cluster))
+    gg.cluster.lst <- list()
+    for (clustID in clusterIds) {
+        gg <- ggplot2::ggplot(data = df %>% dplyr::filter(cluster == clustID),
+                              ggplot2::aes(x = t, y = y, color = id)) +
+            ggplot2::theme_bw() +
+            ggplot2::geom_line() +
+            ggplot2::ggtitle(paste0("Cluster ", clustID)) + 
+            ggplot2::theme(legend.direction = 'horizontal', 
+                           legend.position = 'bottom',
+                           legend.text = ggplot2::element_text(size = 7)) +
+            ggplot2::scale_color_discrete(name = '') 
+        gg.cluster.lst <- append(gg.cluster.lst, list(gg))
+    }
+    names(gg.cluster.lst) <- clusterIds
+    patchwork::wrap_plots(gg.cluster.lst, ncol = 3)
 }

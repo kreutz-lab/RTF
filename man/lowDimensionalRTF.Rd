@@ -9,8 +9,10 @@ lowDimensionalRTF(
   df,
   metaInfo = c(),
   metaInfoName = "Species",
-  takeRank = TRUE,
+  takeRank = FALSE,
   scaled = TRUE,
+  dimX = 1,
+  dimY = 2,
   metaInfoSecondRow = FALSE,
   fileString = "lowDimRTF",
   plotItemHeight = 9,
@@ -21,15 +23,24 @@ lowDimensionalRTF(
   saveToFile = TRUE,
   numClust = NULL,
   param.data = NULL,
+  RTFmodelLst = NULL,
   plotFitsToSingleFile = TRUE,
   plotFitOnly = FALSE,
-  plotAllPointsWaterfall = FALSE
+  plotAllPointsWaterfall = FALSE,
+  seed = 111,
+  alphaUMAP = 1,
+  sizeUMAP = 1.5,
+  doPlotInteractiveUMAP = FALSE,
+  conditions = c(),
+  species = c(),
+  plotLines = TRUE,
+  hRatio = 0,
+  vRatio = 0
 )
 }
 \arguments{
-\item{df}{Data frame with the first column named 'time'
-defining the different time points and all the following columns
-corresponding to the different time series.}
+\item{df}{Data frame with the first column corresponding to the time points 
+and all the following columns corresponding to the different time series.}
 
 \item{metaInfo}{String of the column name with meta information (.e.g.
 groups.}
@@ -37,11 +48,17 @@ groups.}
 \item{metaInfoName}{String of the name of the meta information.}
 
 \item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
-of absolute value (Default: TRUE)}
+of absolute value (Default: FALSE)}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
 for the time series in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
+
+\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
+the x axis (Default: 1).}
+
+\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted 
+on the y axis (Default: 2).}
 
 \item{metaInfoSecondRow}{Boolean indicating if second row contains the meta
 info.}
@@ -72,13 +89,18 @@ clusters will be detrmined automatically using the function
 NbClust::NbClust().}
 
 \item{param.data}{(Optional) If a data frame with the RTF parameter values 
-already available, you can provide it here for saving time.
+is already available, you can provide it here for saving time.
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
 time series.}
 
-\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
-single file.}
+\item{RTFmodelLst}{(Optional) If a list with the RTF result for each time series 
+calculated, e.g. using the function getParamsFromMultipleTimeSeries() 
+or lowDimensionalRTF() is already available, you can provide it here for 
+saving time.}
+
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned 
+as a single file.}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
@@ -86,12 +108,47 @@ using function plotRTF().}
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
 plotted in waterfall plot (Default: FALSE). 
 If FALSE, all values up to the median of those values are plotted.}
+
+\item{seed}{Seed for UMAP.}
+
+\item{alphaUMAP}{Alpha value (between 0 and 1) of the data points in the 
+static UMAP plot (Default: 1).}
+
+\item{sizeUMAP}{Size of the data points in the static UMAP plot 
+(Default: 1.5).}
+
+\item{doPlotInteractiveUMAP}{Boolean indicating if interactive UMAP should be
+generated (Default: FALSE).}
+
+\item{conditions}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
+Vector specifying the condition for each time series. If plotLines = TRUE,
+number of different conditions may not exceed 2.}
+
+\item{species}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
+Vector with names of molecular species for each time series. Needs to be 
+provided in plotLines = TRUE.}
+
+\item{plotLines}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
+Boolean indicating if lines should be plotted between species of the same 
+name (Default: TRUE). Can only be plotted if there are at most two time 
+series per molecular species.}
+
+\item{hRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
+Float between 0 and 1 indicating where subplot should be placed
+horizontally in relation to plot width (Default: 0).}
+
+\item{vRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
+Float between 0 and 1 indicating where subplot should be placed
+vertically in relation to plot height (Default: 0).}
 }
 \value{
 List with data frame of RTF parameters for each time series
-('param.data'), data frame of UMAP results ('umap.data'), data frame of
-dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
-('plots'). Function also saves those objects to files if saveToFile=TRUE.
+('param.data'), a list with the RTF result for each time series 
+('RTFmodelLst'), data frame of UMAP results ('umap.data'), data frame of
+dynamics per cluster ('dynamics.data'), ggplot2 plots of the results 
+('staticPlots'), and a plotly object of the interactive UMAP plot 
+('interactiveUMAP'). Function also saves those objects to files if 
+saveToFile=TRUE.
 }
 \description{
 Generates low-dimensional representation of multiple time series
@@ -106,8 +163,10 @@ metaInfo <- species <- sub("_[^_]+$", "", colNames)
 res <- lowDimensionalRTF(df = df,
                          metaInfo = metaInfo,
                          fileString = "strasen_subset",
-                         metaInfoName = "Species", saveToFile = FALSE)
-ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
+                         metaInfoName = "Species", 
+                         saveToFile = FALSE,
+                         doPlotInteractiveUMAP = FALSE)
+ggplot2::ggsave(filename = "test.pdf", plot = res[["staticPlots"]],
                width = 10, height = 30)
 }
 }

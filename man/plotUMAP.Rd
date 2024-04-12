@@ -7,8 +7,10 @@
 plotUMAP(
   df,
   groupColName = "",
-  takeRank = TRUE,
+  takeRank = FALSE,
   scaled = TRUE,
+  dimX = 1,
+  dimY = 2,
   alpha = 0.3,
   size = 0.8,
   ellipse = TRUE,
@@ -24,12 +26,18 @@ plot should be colored (name of this column given by 'groupColName').}
 \item{groupColName}{String with the column name of the groups based on which 
 the data points of the UMAP plot should be colored.}
 
-\item{takeRank}{Boolean indicating if RTF parameters should be scaled
-(Default: TRUE)}
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
+of absolute value (Default: FALSE).}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
 for the time series in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
+
+\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
+the x axis (Default: 1).}
+
+\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted 
+on the y axis (Default: 2).}
 
 \item{alpha}{Alpha value (between 0 and 1) of the data points in the UMAP 
 plot}

@@ -38,121 +38,122 @@ plotFit <- function(par,
                     pointAlpha = 0.5,
                     lineAlpha = 0.5,
                     pointSize = 0.75) {
-  if (is.null(t))
-    stop("Please provide vector of time points or maximum time point.")
-  
-  if (!is.null(d)) {
-    doses <- sort(unique(d))
-  } else {
-    doses <- 1
-  }
-  
-  if (modus == 'singleDose') {
+    if (is.null(t))
+        stop("Please provide vector of time points or maximum time point.")
     
-    xi <- seq(min(t), max(t), length.out = 1000)
-    RTFResVec <- getTransientFunctionResult(t = xi,
-                                            rtfPar = par,
-                                            signum_TF = par[["signum_TF"]])
-    
-    RTFResDf <- data.frame(t = xi,
-                           y = RTFResVec,
-                           Component = "RTF")
-    
-    # Only Signal_sus: B = 0
-    # Only Signal_trans: A = 0
-    parSus <- par
-    parSus[names(parSus) == "B"] <- 0
-    
-    susOnlyResVec <- getTransientFunctionResult(
-      t = xi,
-      rtfPar = parSus,
-      signum_TF = parSus[["signum_TF"]])
-    
-    geom_line.df <- data.frame(t = xi,
-                               Sustained = susOnlyResVec,
-                               RTF = RTFResVec)
-    
-  } else if (modus == 'doseDependent') {
-    geom_line.lst <- list()
-    for (i in seq(length(doses))) {
-      RTFResVec <- NULL
-      dose <- doses[i]
-      xi <- seq(min(t[d == dose]), max(t[d == dose]), length.out = 1000)
-      
-      rtfPar <- getHillResults(d = dose, params = par)
-      
-      RTFResVec <- getTransientFunctionResult(
-        rtfPar = rtfPar,
-        t = xi,
-        signum_TF = par[["signum_TF"]], 
-        scale = TRUE, # TODO TRUE or FALSE?
-        calcGradient = FALSE)
-      
-      geom_line.lst <- append(geom_line.lst,
-                              list(data.frame(
-                                t = xi,
-                                y = RTFResVec,
-                                d = dose
-                              )))
-    }
-    geom_line.df <- dplyr::bind_rows(geom_line.lst)
-  }
-  
-  if (length(doses) > 1) {
-    geom_line.df <- geom_line.df[order(geom_line.df$d),]
-    gg <- ggplot2::ggplot(data = geom_line.df,
-                          ggplot2::aes(
-                            x = t,
-                            y = y,
-                            color = factor(d)
-                          )) +
-      ggplot2::theme_bw() + 
-      ggplot2::geom_line() +
-      ggplot2::theme(legend.position = "bottom",
-                     legend.title = ggplot2::element_blank()) +
-      ggplot2::scale_colour_viridis_d(direction = -1)
-    if (withData) {
-      gg <- gg + ggplot2::geom_point(
-        data = data.frame(t = t, y = y),
-        ggplot2::aes(
-          x = t,
-          y = y,
-          color = factor(d)
-        ),
-        alpha = pointAlpha,
-        size = pointSize
-      )
-    }
-  } else {
-    if (par[["signum_TF"]] == 1) {
-      limit <- min(geom_line.df$RTF)
-    } else if (par[["signum_TF"]] == -1) {
-      limit <- max(geom_line.df$RTF)
+    if (!is.null(d)) {
+        doses <- sort(unique(d))
+    } else {
+        doses <- 1
     }
     
-    gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
-      ggplot2::theme_bw() +
-      ggplot2::geom_ribbon(ggplot2::aes(ymin = Sustained, ymax = RTF), 
-                           fill = "#7F7F7F", alpha = .5) +
-      ggplot2::geom_ribbon(ggplot2::aes(ymin = limit, ymax = Sustained), 
-                           fill = "#262626", alpha = .5) +
-      ggplot2::geom_line(ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) +
-      ggplot2::ylab("y")
-    
-    if (withData) {
-      gg <- gg + ggplot2::geom_point(
-        data = data.frame(t = t, y = y),
-        ggplot2::aes(x = t, y = y),
-        alpha = pointAlpha,
-        size = pointSize
-      )
+    if (modus == 'singleDose') {
+        
+        xi <- seq(min(t), max(t), length.out = 1000)
+        RTFResVec <- getTransientFunctionResult(t = xi,
+                                                rtfPar = par,
+                                                signum_TF = par[["signum_TF"]])
+        
+        RTFResDf <- data.frame(t = xi,
+                               y = RTFResVec,
+                               Component = "RTF")
+        
+        # Only Signal_sus: B = 0
+        # Only Signal_trans: A = 0
+        parSus <- par
+        parSus[names(parSus) == "B"] <- 0
+        
+        susOnlyResVec <- getTransientFunctionResult(
+            t = xi,
+            rtfPar = parSus,
+            signum_TF = parSus[["signum_TF"]])
+        
+        geom_line.df <- data.frame(t = xi,
+                                   Sustained = susOnlyResVec,
+                                   RTF = RTFResVec)
+        
+    } else if (modus == 'doseDependent') {
+        geom_line.lst <- list()
+        for (i in seq(length(doses))) {
+            RTFResVec <- NULL
+            dose <- doses[i]
+            xi <- seq(min(t[d == dose]), max(t[d == dose]), length.out = 1000)
+            
+            rtfPar <- getHillResults(d = dose, params = par)
+            
+            RTFResVec <- getTransientFunctionResult(
+                rtfPar = rtfPar,
+                t = xi,
+                signum_TF = par[["signum_TF"]], 
+                scale = TRUE, # TODO TRUE or FALSE?
+                calcGradient = FALSE)
+            
+            geom_line.lst <- append(geom_line.lst,
+                                    list(data.frame(
+                                        t = xi,
+                                        y = RTFResVec,
+                                        d = dose
+                                    )))
+        }
+        geom_line.df <- dplyr::bind_rows(geom_line.lst)
     }
-  }
-  
-  if (!is.null(d))
-    gg <- gg + ggplot2::labs(color = 'Dose')
-  if (nchar(title) > 0)
-    gg <- gg + ggplot2::ggtitle(title)
-  
-  gg
+    
+    if (length(doses) > 1) {
+        geom_line.df <- geom_line.df[order(geom_line.df$d),]
+        gg <- ggplot2::ggplot(data = geom_line.df,
+                              ggplot2::aes(
+                                  x = t,
+                                  y = y,
+                                  color = factor(d)
+                              )) +
+            ggplot2::theme_bw() + 
+            ggplot2::geom_line() +
+            ggplot2::theme(legend.position = "bottom",
+                           legend.title = ggplot2::element_blank()) +
+            ggplot2::scale_colour_viridis_d(direction = -1)
+        if (withData) {
+            gg <- gg + ggplot2::geom_point(
+                data = data.frame(t = t, y = y),
+                ggplot2::aes(
+                    x = t,
+                    y = y,
+                    color = factor(d)
+                ),
+                alpha = pointAlpha,
+                size = pointSize
+            )
+        }
+    } else {
+        if (par[["signum_TF"]] == 1) {
+            limit <- min(geom_line.df$RTF)
+        } else if (par[["signum_TF"]] == -1) {
+            limit <- max(geom_line.df$RTF)
+        }
+        
+        gg <- ggplot2::ggplot(geom_line.df, ggplot2::aes(x = t, y = RTF)) +
+            ggplot2::theme_bw() +
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = Sustained, ymax = RTF), 
+                                 fill = "#7F7F7F", alpha = .5) +
+            ggplot2::geom_ribbon(ggplot2::aes(ymin = limit, ymax = Sustained), 
+                                 fill = "#262626", alpha = .5) +
+            ggplot2::geom_line(
+                ggplot2::aes(y = RTF), size = 1, alpha = lineAlpha) +
+            ggplot2::ylab("y")
+        
+        if (withData) {
+            gg <- gg + ggplot2::geom_point(
+                data = data.frame(t = t, y = y),
+                ggplot2::aes(x = t, y = y),
+                alpha = pointAlpha,
+                size = pointSize
+            )
+        }
+    }
+    
+    if (!is.null(d))
+        gg <- gg + ggplot2::labs(color = 'Dose')
+    if (nchar(title) > 0)
+        gg <- gg + ggplot2::ggtitle(title)
+    
+    gg
 }

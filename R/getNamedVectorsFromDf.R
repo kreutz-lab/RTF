@@ -21,9 +21,9 @@
 #' lst
 
 getNamedVectorsFromDf <- function(df) {
-  lb.vec <- df$lb.vec
-  ub.vec <- df$ub.vec
-  initialGuess.vec <- df$initialGuess.vec
-  names(lb.vec) <- names(ub.vec) <- names(initialGuess.vec) <- row.names(df)
-  list(lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec)
+    lb.vec <- df$lb.vec
+    ub.vec <- df$ub.vec
+    initialGuess.vec <- df$initialGuess.vec
+    names(lb.vec) <- names(ub.vec) <- names(initialGuess.vec) <- row.names(df)
+    list(lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec)
 }

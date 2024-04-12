@@ -7,9 +7,8 @@
 RTFOnMultipleTimeSeries(df, modelReduction = FALSE, nInitialGuesses = 50)
 }
 \arguments{
-\item{df}{Data frame with the first column named 'time'
-defining the different time points and all the following columns 
-corresponding to the different time series.}
+\item{df}{Data frame with the first column corresponding to the time points 
+and all the following columns corresponding to the different time series.}
 
 \item{modelReduction}{Boolean indicating if model reduction should be 
 performed for RTF}
@@ -28,5 +27,5 @@ series.
 \examples{
 data(strasen)
 df <- strasen[, 1:3]
-res.lst <- RTFOnMultipleTimeSeries(df)
+RTFmodelLst <- RTFOnMultipleTimeSeries(df)
 }

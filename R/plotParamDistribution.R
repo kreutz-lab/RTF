@@ -27,19 +27,18 @@
 plotParamDistribution <- function(df.parameterValues.long, 
                                   xLabelSize = 5,
                                   yLabelSize = 5) {
-  ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
-    ggplot2::geom_histogram(alpha = 0.6) +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      legend.position = "none",
-      panel.spacing = ggplot2::unit(0.1, "lines"),
-      strip.text.x = ggplot2::element_text(size = 8),
-      axis.text.y = ggplot2::element_text(size = yLabelSize),
-      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, 
-                                          size = xLabelSize)
-    ) +
-    ggplot2::facet_wrap(~variable, scales = "free") +
-    ggplot2::xlab("Value") +
-    ggplot2::ylab("Count")
+    ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
+        ggplot2::geom_histogram(alpha = 0.6) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(
+            legend.position = "none",
+            panel.spacing = ggplot2::unit(0.1, "lines"),
+            strip.text.x = ggplot2::element_text(size = 8),
+            axis.text.y = ggplot2::element_text(size = yLabelSize),
+            axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, 
+                                                size = xLabelSize)
+        ) +
+        ggplot2::facet_wrap(~variable, scales = "free") +
+        ggplot2::xlab("Value") +
+        ggplot2::ylab("Count")
 }
-

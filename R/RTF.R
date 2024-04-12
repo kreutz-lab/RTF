@@ -44,67 +44,68 @@ RTF <- function(df,
                                factr = 1e7
                 ),
                 resOld = NULL) {
-  if (is.null(modus)) {
-    if (("d" %in% names(df)) & length(unique(df$d)) > 1) {
-      modus <- 'doseDependent'
+    if (is.null(modus)) {
+        if (("d" %in% names(df)) & length(unique(df$d)) > 1) {
+            modus <- 'doseDependent'
+        } else {
+            modus <- 'singleDose'
+        }
     } else {
-      modus <- 'singleDose'
+        if (modus == 'SD')
+            modus <- 'singleDose'
+        if (modus == 'DD')
+            modus <- 'doseDependent'
     }
-  } else {
-    if (modus == 'SD')
-      modus <- 'singleDose'
-    if (modus == 'DD')
-      modus <- 'doseDependent'
-  }
-  
-  if (modus != "doseDependent" &
-      !all(c("t", "y") %in% names(df))) {
-    stop("Input data frame needs to contain the columns 't' and 'y'.")
-  } else if (modus == "doseDependent" &
-             !all(c("t", "y", "d") %in% names(df))) {
-    stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
-  }
-  
-  optimObject.orig <- initializeOptimObject(df,
-                                            modus = modus,
-                                            optimFunction = optimFunction,
-                                            control = control)
-  
-  parsWithIdenticalBounds <- names(
-    optimObject.orig$lb.vec[optimObject.orig$lb.vec == optimObject.orig$ub.vec])
-  for (el in parsWithIdenticalBounds) {
-    optimObject.orig$fixed[[el]] <- optimObject.orig$lb.vec[[el]]
-  }
-  
-  res <- getInitialGuessResults(
-    optimObject.orig, nInitialGuesses = nInitialGuesses)
-  
-  if (!is.null(resOld)) {
-    # combine resOld[["finalModel"]][["optimResults"]] and 
-    # res[["finalModel"]][["optimResults"]] to optimResults
-    optimResults <- c(res$optimResults, 
-                      resOld$finalModel$optimResults)
     
-    optimResults <- sortListByValue(optimResults)
-    res$optimResults <- optimResults
-    res$bestOptimResult <- optimResults[[1]]
-    res$value <- res$bestOptimResult$value
-    res$fitted <- res$bestOptimResult$par
-  }
-  
-  finalParams <- res$fitted
-  
-  print("The parameters of the best fit are:")
-  print(paste(
-    names(finalParams),
-    signif(finalParams, 4),
-    sep = ": ",
-    collapse = ", "
-  ))
-  print("Likelihood value:")
-  print(res[["bestOptimResult"]][["value"]])
-  
-  return(
-    list(finalModel = res, finalParams = finalParams)
-  )
+    if (modus != "doseDependent" &
+        !all(c("t", "y") %in% names(df))) {
+        stop("Input data frame needs to contain the columns 't' and 'y'.")
+    } else if (modus == "doseDependent" &
+               !all(c("t", "y", "d") %in% names(df))) {
+        stop("Input data frame needs to contain the columns 't', 'y', and 'd'.")
+    }
+    
+    optimObject.orig <- initializeOptimObject(df,
+                                              modus = modus,
+                                              optimFunction = optimFunction,
+                                              control = control)
+    
+    parsWithIdenticalBounds <- names(
+        optimObject.orig$lb.vec[
+            optimObject.orig$lb.vec == optimObject.orig$ub.vec])
+    for (el in parsWithIdenticalBounds) {
+        optimObject.orig$fixed[[el]] <- optimObject.orig$lb.vec[[el]]
+    }
+    
+    res <- getInitialGuessResults(
+        optimObject.orig, nInitialGuesses = nInitialGuesses)
+    
+    if (!is.null(resOld)) {
+        # combine resOld[["finalModel"]][["optimResults"]] and 
+        # res[["finalModel"]][["optimResults"]] to optimResults
+        optimResults <- c(res$optimResults, 
+                          resOld$finalModel$optimResults)
+        
+        optimResults <- sortListByValue(optimResults)
+        res$optimResults <- optimResults
+        res$bestOptimResult <- optimResults[[1]]
+        res$value <- res$bestOptimResult$value
+        res$fitted <- res$bestOptimResult$par
+    }
+    
+    finalParams <- res$fitted
+    
+    print("The parameters of the best fit are:")
+    print(paste(
+        names(finalParams),
+        signif(finalParams, 4),
+        sep = ": ",
+        collapse = ", "
+    ))
+    print("Likelihood value:")
+    print(res[["bestOptimResult"]][["value"]])
+    
+    return(
+        list(finalModel = res, finalParams = finalParams)
+    )
 }

@@ -13,8 +13,8 @@
 #' lst.sorted <- sortListByValue(lst)
 
 sortListByValue <- function(lst) {
-  lst2 <- c(unlist(lapply(lst, function(x) x[["value"]])))
-  sortIdx <- sort(lst2, index.return = TRUE)$ix
-  lst <- lst[sortIdx]
-  lst
+    lst2 <- c(unlist(lapply(lst, function(x) x[["value"]])))
+    sortIdx <- sort(lst2, index.return = TRUE)$ix
+    lst <- lst[sortIdx]
+    lst
 }

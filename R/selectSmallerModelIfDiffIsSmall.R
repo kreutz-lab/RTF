@@ -31,13 +31,13 @@
 #' res <- selectSmallerModelIfDiffIsSmall(res.all, res.tauLB)
 
 selectSmallerModelIfDiffIsSmall <- function(res, res.smallerModel) {
-  # allg:
-  # chi2cdf(m2LLworseSmaller-m2LLdetterLarger,
-  #         df=WievieleGefixt_NpLarge-NpSmall, x=0.95)
-  difference <-  res.smallerModel$value - res$value
-  # number of fitted in large model - number of fitted in small model
-  df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.smallerModel[["fixed"]]))
-  if (stats::pchisq(difference, df = df, lower.tail = FALSE) >= 0.05)
-    res <- res.smallerModel
-  res
+    # allg:
+    # chi2cdf(m2LLworseSmaller-m2LLdetterLarger,
+    #         df=WievieleGefixt_NpLarge-NpSmall, x=0.95)
+    difference <-  res.smallerModel$value - res$value
+    # number of fitted in large model - number of fitted in small model
+    df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.smallerModel[["fixed"]]))
+    if (stats::pchisq(difference, df = df, lower.tail = FALSE) >= 0.05)
+        res <- res.smallerModel
+    res
 }

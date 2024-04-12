@@ -18,13 +18,12 @@ getParamsFromMultipleTimeSeries(
 )
 }
 \arguments{
-\item{df}{Data frame with the first column named 'time' defining the
-different time points and all the following columns corresponding to the
-different time series.}
+\item{df}{Data frame with the first column corresponding to the time points 
+and all the following columns corresponding to the different time series.}
 
 \item{doRTFPlots}{Boolean indicating if RTF plots should be generated.}
 
-\item{fileString}{String the name of the created .rds file of the RTF
+\item{fileString}{String the name of the created .rds file with the RTF
 parameters should contain. If this string has length 0 or if
 readInParamRdsFilePath is defined no .rds file will be created.}
 
@@ -43,8 +42,8 @@ performed for RTF}
 (in addition to the default initial guess) used both for a signum_TF of -1 
 and 1 (Default: 50).}
 
-\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned as a
-single file.}
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned 
+as a single file.}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
@@ -54,9 +53,10 @@ plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
-Data frame containing the RTF parameters for each time
+List of data frame containing the RTF parameters for each time
 series, where the rows correspond to the different time series and
-the columns to the RTF parameters.
+the columns to the RTF parameters ('param.df'), and list with the RTF result 
+for each time series ('RTFmodelLst').
 }
 \description{
 Get RTF parameters for multiple time series specified in

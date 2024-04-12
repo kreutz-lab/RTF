@@ -26,26 +26,26 @@
 #'                           initialGuess.vec, lb.vec, ub.vec, takeLog10)
 
 getInitialGuessVecLst <- function(initialGuess.vec,
-                               lb.vec,
-                               ub.vec,
-                               takeLog10,
-                               nInitialGuesses = 50) {
-  # For 50 different random initial guesses between bounds
-  initialGuess.vec.lst <- list()
-  initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- initialGuess.vec
-  
-  lb.vec <- applyLog10ForTakeLog10(lb.vec, takeLog10, reverse = FALSE) 
-  ub.vec <- applyLog10ForTakeLog10(ub.vec, takeLog10, reverse = FALSE)   
-  
-  for (i in 1:nInitialGuesses) {
-    randomPortions <- stats::runif(length(initialGuess.vec))
-    randomInitialGuess.vec <- 
-      (randomPortions * lb.vec) + ((1 - randomPortions) * ub.vec)
-    randomInitialGuess.vec <- applyLog10ForTakeLog10(randomInitialGuess.vec, 
-                                                     takeLog10, reverse = TRUE)   
-    initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- 
-      randomInitialGuess.vec
-  }
-
-  initialGuess.vec.lst
+                                  lb.vec,
+                                  ub.vec,
+                                  takeLog10,
+                                  nInitialGuesses = 50) {
+    # For 50 different random initial guesses between bounds
+    initialGuess.vec.lst <- list()
+    initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- initialGuess.vec
+    
+    lb.vec <- applyLog10ForTakeLog10(lb.vec, takeLog10, reverse = FALSE) 
+    ub.vec <- applyLog10ForTakeLog10(ub.vec, takeLog10, reverse = FALSE)   
+    
+    for (i in 1:nInitialGuesses) {
+        randomPortions <- stats::runif(length(initialGuess.vec))
+        randomInitialGuess.vec <- 
+            (randomPortions * lb.vec) + ((1 - randomPortions) * ub.vec)
+        randomInitialGuess.vec <- applyLog10ForTakeLog10(
+            randomInitialGuess.vec, takeLog10, reverse = TRUE)   
+        initialGuess.vec.lst[[length(initialGuess.vec.lst) + 1]] <- 
+            randomInitialGuess.vec
+    }
+    
+    initialGuess.vec.lst
 }

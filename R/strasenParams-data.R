@@ -6,8 +6,8 @@
 #' (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
 #' It has been generated as follows:
 #' data(strasen)
-#' res.lst <- RTFOnMultipleTimeSeries(strasen)
-#' strasenParams <- getParamDf(res.lst)
+#' RTFmodelLst <- RTFOnMultipleTimeSeries(strasen)
+#' strasenParams <- getParamDf(RTFmodelLst)
 #'
 #' @docType data
 #'

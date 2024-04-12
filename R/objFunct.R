@@ -164,168 +164,179 @@
 #'                             control = optimObject.doseDependent$control)
     
 objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
-
-  retval <- NULL
-  parOrder <- names(par)
-
-  data <- data[stats::complete.cases(data), ] 
-  
-  fixed <- optimObject[["fixed"]]
-  signum_TF <- fixed[["signum_TF"]]
-  if ("sigmaExp" %in% colnames(data)) {
-    sigma <- data$sigmaExp
-  } else {
-    if (!is.na(fixed[["sigma"]])) {
-      sigma <- fixed[["sigma"]]
+    
+    retval <- NULL
+    parOrder <- names(par)
+    
+    data <- data[stats::complete.cases(data), ] 
+    
+    fixed <- optimObject[["fixed"]]
+    signum_TF <- fixed[["signum_TF"]]
+    if ("sigmaExp" %in% colnames(data)) {
+        sigma <- data$sigmaExp
     } else {
-      sigma <- par[["sigma"]]
-    }
-  }
-  
-  allParamNames <- setdiff(names(fixed), c("signum_TF"))
-  fixed <- fixed[allParamNames]
-  
-  if ("d" %in% colnames(data)) {
-    d <- data$d
-  } else {
-    d <- rep(1, nrow(data))
-  }
-  
-  parAfterFix <- par
-  # Fixed parameters will overwrite the values in par
-  for (v in 1:length(fixed)) {
-    if (!is.na(fixed[[v]])) {
-      parAfterFix[names(fixed)[v]] <- fixed[[v]]
-    }
-  }
-  
-  if (calcGradient) {
-    dparAfterFix_dpar <- 
-      matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
-    rownames(dparAfterFix_dpar) <- names(parAfterFix)
-    colnames(dparAfterFix_dpar) <- parOrder
-    for (name in parOrder) dparAfterFix_dpar[name, name] <- 1
-    
-    dpar_dpar <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
-                                        reverse = TRUE, calcGradient = TRUE)
-  }
-  
-  parAfterFix <- applyLog10ForTakeLog10(parAfterFix, optimObject[["takeLog10"]], 
-                                        reverse = TRUE, calcGradient = FALSE)
-  
-  ds <- unique(d)
-  res <- array(NA, dim = length(d))
-  sigmaRes <- array(NA, dim = length(d))
-  hillHasNaNs <- FALSE
-  
-  if (calcGradient) {
-    dres_dpar <- matrix(nrow = length(d), ncol = length(parAfterFix))
-    colnames(dres_dpar) <- names(parAfterFix)
-    
-    dsigmaRes_dpar <- matrix(0, nrow = length(d), ncol = length(parAfterFix))
-    colnames(dsigmaRes_dpar) <- names(parAfterFix)
-    
-    dretval_dres <- matrix(nrow = length(d), ncol = 1)
-  }
-  
-  for (id in 1:length(ds)) { # loop over all doses
-    ind <- which(d == ds[id]) # indices where dose matches
-    
-    if (optimObject$modus == "doseDependent") {
-        hillF <- getHillResults(d = ds[id], params = parAfterFix)
-        if (sum(is.nan(hillF)) > 0) {
-          hillHasNaNs <- TRUE
+        if (!is.na(fixed[["sigma"]])) {
+            sigma <- fixed[["sigma"]]
+        } else {
+            sigma <- par[["sigma"]]
         }
-        
-        rtfPar <- hillF
-        
-        if (calcGradient) {
-          dhillF_dpar <- getHillResults(d = ds[id],
-                                        params = parAfterFix,
-                                        calcGradient = TRUE) # length(rtfPara) x length(par),  length(par) something like 15
-          drtfPar_dpar <- dhillF_dpar # drtfPar_dhillF %*% dhillF_dpar # TODO: drtfPar_dhillF
-        }
+    }
+    
+    allParamNames <- setdiff(names(fixed), c("signum_TF"))
+    fixed <- fixed[allParamNames]
+    
+    if ("d" %in% colnames(data)) {
+        d <- data$d
     } else {
-      rtfPar <- parAfterFix
-      
-      if (calcGradient) {
-        drtfPar_dpar <- matrix(0, nrow = length(rtfPar), ncol = length(rtfPar))
-        diag(drtfPar_dpar) <- 1 # length(rtfPara) x length(par), length(par) something like 7 
-      }
+        d <- rep(1, nrow(data))
     }
     
-    yRtf <- getTransientFunctionResult(
-      rtfPar = rtfPar,
-      t = data$t[ind],
-      signum_TF = signum_TF, 
-      scale = TRUE, 
-      calcGradient = FALSE)
+    parAfterFix <- par
+    # Fixed parameters will overwrite the values in par
+    for (v in 1:length(fixed)) {
+        if (!is.na(fixed[[v]])) {
+            parAfterFix[names(fixed)[v]] <- fixed[[v]]
+        }
+    }
     
     if (calcGradient) {
-      dyRtf_drtfPar <- getTransientFunctionResult(
-        rtfPar = rtfPar,
-        t = data$t[ind],
-        signum_TF = signum_TF,
-        scale = TRUE, 
-        calcGradient = TRUE)
-      
-      dyRtf_drtfPar <- cbind(dyRtf_drtfPar, sigma = rep(0, nrow(dyRtf_drtfPar)))
-      dyRtf_drtfPar <- dyRtf_drtfPar[, names(rtfPar)]
-      
-      # set derivates of fixed parameters to zero
-      dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar # length(data$y) x length(par)
-      dres_dpar[ind,] <- -dyRtf_dpar 
+        dparAfterFix_dpar <- 
+            matrix(0, nrow = length(parAfterFix), ncol = length(parOrder))
+        rownames(dparAfterFix_dpar) <- names(parAfterFix)
+        colnames(dparAfterFix_dpar) <- parOrder
+        for (name in parOrder) dparAfterFix_dpar[name, name] <- 1
+        
+        dpar_dpar <- applyLog10ForTakeLog10(
+            parAfterFix, optimObject[["takeLog10"]], 
+            reverse = TRUE, calcGradient = TRUE)
     }
     
-    res[ind] <- data$y[ind] - yRtf
+    parAfterFix <- applyLog10ForTakeLog10(
+        parAfterFix, optimObject[["takeLog10"]], 
+        reverse = TRUE, calcGradient = FALSE)
     
-    if (("sigmaExp" %in% colnames(data))) {
-      sigmaRes[ind] <- sigma[ind] 
-    } else{
-      sigmaRes[ind] <- sigma
-      if (calcGradient) dsigmaRes_dpar[ind, names(parAfterFix) == "sigma"] <- 1
+    ds <- unique(d)
+    res <- array(NA, dim = length(d))
+    sigmaRes <- array(NA, dim = length(d))
+    hillHasNaNs <- FALSE
+    
+    if (calcGradient) {
+        dres_dpar <- matrix(nrow = length(d), ncol = length(parAfterFix))
+        colnames(dres_dpar) <- names(parAfterFix)
+        
+        dsigmaRes_dpar <- 
+            matrix(0, nrow = length(d), ncol = length(parAfterFix))
+        colnames(dsigmaRes_dpar) <- names(parAfterFix)
+        
+        dretval_dres <- matrix(nrow = length(d), ncol = 1)
     }
-  }
-  
-  # retval <- sum(-2 * log(
-  #  (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
-  # )) 
-  
-  retval <- 
-     sum(-2 * (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)))) 
-  
-  if (calcGradient) {
-    if (("sigmaExp" %in% colnames(data))) {
-      dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
-      dretval_dres <- (2 * res) / sigmaRes^2
+    
+    for (id in 1:length(ds)) { # loop over all doses
+        ind <- which(d == ds[id]) # indices where dose matches
+        
+        if (optimObject$modus == "doseDependent") {
+            hillF <- getHillResults(d = ds[id], params = parAfterFix)
+            if (sum(is.nan(hillF)) > 0) {
+                hillHasNaNs <- TRUE
+            }
+            
+            rtfPar <- hillF
+            
+            if (calcGradient) {
+                # length(rtfPara) x length(par),  length(par) something like 15
+                dhillF_dpar <- getHillResults(d = ds[id],
+                                              params = parAfterFix,
+                                              calcGradient = TRUE)
+                drtfPar_dpar <- dhillF_dpar # drtfPar_dhillF %*% dhillF_dpar
+            }
+        } else {
+            rtfPar <- parAfterFix
+            
+            if (calcGradient) {
+                drtfPar_dpar <- matrix(0, nrow = length(rtfPar), 
+                                       ncol = length(rtfPar))
+                # length(rtfPara) x length(par), length(par) something like 7 
+                diag(drtfPar_dpar) <- 1
+            }
+        }
+        
+        yRtf <- getTransientFunctionResult(
+            rtfPar = rtfPar,
+            t = data$t[ind],
+            signum_TF = signum_TF, 
+            scale = TRUE, 
+            calcGradient = FALSE)
+        
+        if (calcGradient) {
+            dyRtf_drtfPar <- getTransientFunctionResult(
+                rtfPar = rtfPar,
+                t = data$t[ind],
+                signum_TF = signum_TF,
+                scale = TRUE, 
+                calcGradient = TRUE)
+            
+            dyRtf_drtfPar <- cbind(dyRtf_drtfPar, 
+                                   sigma = rep(0, nrow(dyRtf_drtfPar)))
+            dyRtf_drtfPar <- dyRtf_drtfPar[, names(rtfPar)]
+            
+            # set derivates of fixed parameters to zero
+            # length(data$y) x length(par)
+            dyRtf_dpar <- dyRtf_drtfPar %*% drtfPar_dpar
+            dres_dpar[ind,] <- -dyRtf_dpar 
+        }
+        
+        res[ind] <- data$y[ind] - yRtf
+        
+        if (("sigmaExp" %in% colnames(data))) {
+            sigmaRes[ind] <- sigma[ind] 
+        } else{
+            sigmaRes[ind] <- sigma
+            if (calcGradient) 
+                dsigmaRes_dpar[ind, names(parAfterFix) == "sigma"] <- 1
+        }
+    }
+    
+    # retval <- sum(-2 * log(
+    #  (exp((-0.5 * (res / sigmaRes)^2))) / (sigmaRes * (2 * pi)^(0.5))
+    # )) 
+    
+    retval <- 
+        sum(-2 * (-0.5 * (res / sigmaRes)^2) - log((sigmaRes * (2 * pi)^(0.5)))) 
+    
+    if (calcGradient) {
+        if (("sigmaExp" %in% colnames(data))) {
+            dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
+            dretval_dres <- (2 * res) / sigmaRes^2
+        } else {
+            # exp_res <- exp(res^2 / (2 * sigmaRes^2))
+            # exp_res[exp_res > 10^20] <- 10^20
+            # 
+            # dretval_dsigmaRes <- 
+            #   2 * sigmaRes * exp_res * 
+            #   (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
+            #      (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
+            #      (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
+            
+            dretval_dsigmaRes <- -(2 * res^2) / sigmaRes^3 - 1 / sigmaRes
+            
+            dretval_dres <- (2 * res) / sigmaRes^2 
+        }
+        
+        dretval_dpar <- 
+            dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
+        # Because of log
+        dretval_dpar <- dretval_dpar %*% dpar_dpar
+        # Because of fixing params
+        dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar
+        
+        dretval_dpar <- dretval_dpar[1,]
+    }
+    
+    if (calcGradient) {
+        dretval_dpar
     } else {
-      # exp_res <- exp(res^2 / (2 * sigmaRes^2))
-      # exp_res[exp_res > 10^20] <- 10^20
-      # 
-      # dretval_dsigmaRes <- 
-      #   2 * sigmaRes * exp_res * 
-      #   (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
-      #      (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
-      #      (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
-      
-      dretval_dsigmaRes <- -(2 * res^2) / sigmaRes^3 - 1 / sigmaRes
-      
-      dretval_dres <- (2 * res) / sigmaRes^2 
+        if (is.infinite(retval)) retval <- 10^20
+        retval
     }
-    
-    dretval_dpar <- 
-      dretval_dres %*% dres_dpar + dretval_dsigmaRes %*% dsigmaRes_dpar 
-    dretval_dpar <- dretval_dpar %*% dpar_dpar # because of log
-    dretval_dpar <- dretval_dpar %*% dparAfterFix_dpar # because of fixing params
-    
-    dretval_dpar <- dretval_dpar[1,]
-  }
-  
-  if (calcGradient) {
-    dretval_dpar
-  } else {
-    if (is.infinite(retval)) retval <- 10^20
-    retval
-  }
 }
 

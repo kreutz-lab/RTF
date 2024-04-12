@@ -20,28 +20,27 @@
 
 applyLog10ForTakeLog10 <- function(x = c(), takeLog10 = c(), reverse = FALSE, 
                                    calcGradient = FALSE) {
-  
-  y <- x
-  dy_dx <- matrix(0, nrow = length(y), ncol = length(x))
-  diag(dy_dx) <- 1
-  diagAll <- diag(dy_dx)
-  
-  bol <- names(x) %in% names(which(takeLog10))
-  
-  if (reverse) {
-    y[bol] <- 10^x[bol]
-    if (calcGradient) diagAll[bol] <- 10^x[bol] * log(10)
-  } else {
-    y[bol] <- log10(x[bol])
-    if (calcGradient) diagAll[bol] <- 1 / (x[bol] * log(10))
-  }
-  
-  if (calcGradient) {
-    diag(dy_dx) <- diagAll
-    colnames(dy_dx) <- names(x)
-    dy_dx
-  } else {
-    names(y) <- names(x)
-    y
-  }
+    y <- x
+    dy_dx <- matrix(0, nrow = length(y), ncol = length(x))
+    diag(dy_dx) <- 1
+    diagAll <- diag(dy_dx)
+    
+    bol <- names(x) %in% names(which(takeLog10))
+    
+    if (reverse) {
+        y[bol] <- 10^x[bol]
+        if (calcGradient) diagAll[bol] <- 10^x[bol] * log(10)
+    } else {
+        y[bol] <- log10(x[bol])
+        if (calcGradient) diagAll[bol] <- 1 / (x[bol] * log(10))
+    }
+    
+    if (calcGradient) {
+        diag(dy_dx) <- diagAll
+        colnames(dy_dx) <- names(x)
+        dy_dx
+    } else {
+        names(y) <- names(x)
+        y
+    }
 }

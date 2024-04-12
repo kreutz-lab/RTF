@@ -30,9 +30,9 @@ can be highlighted using the argument 'idxCurrentFit'.
 \examples{
 data <- getSimData()
 optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
-res.lst.wFinal <- getInitialGuessResults(optimObject.orig,
-                                         nInitialGuesses = 50)
-optimResults <- res.lst.wFinal$optimResults
+RTFmodelLst.wFinal <- getInitialGuessResults(optimObject.orig,
+                                             nInitialGuesses = 50)
+optimResults <- RTFmodelLst.wFinal$optimResults
 optimResTmpLstValuesAll <- unlist(lapply(optimResults, function(x) {
   unlist(x[grep("value", names(x))])
 }))

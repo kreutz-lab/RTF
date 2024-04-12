@@ -18,9 +18,10 @@ based on the NFkB model of Almaden et al.
  (\href{https://doi.org/10.1016/j.celrep.2014.11.024}).
 It has been generated from a rds file returned from:
 data(almaden)
-getParamsFromMultipleTimeSeries(almaden, 
-                               fileString = "test",
-                               nInitialGuesses = 100)
+params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+                                              fileString = "test",
+                                              nInitialGuesses = 100)
+almadenParams <- params.lst[["param.df"]]
 }
 \examples{
 data(almadenParams)

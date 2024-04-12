@@ -22,25 +22,25 @@
 #'   gradientNames = c("tau", "alpha"))
 
 multiplyTimeParamsByFactor <- function(timeParam, factorVal = NULL, 
-                                      gradientNames = c()) {
-  if (is.null(factorVal)) {
-    message("Please enter factorVal as arguments")
-  }
-  
-  if (length(gradientNames) > 0) {
-    dtimeParam_dgradNames <- matrix(0, 
-                                    nrow = length(timeParam), 
-                                    ncol = length(gradientNames))
-    colnames(dtimeParam_dgradNames) <- gradientNames
-    rownames(dtimeParam_dgradNames) <- names(timeParam)
-    dtimeParam_dgradNames[, names(timeParam)] <- factorVal
-  } else {
-    timeParam <- timeParam  * factorVal
-  }
-
-  if (length(gradientNames) > 0) {
-    list(timeParam = dtimeParam_dgradNames, factorVal = factorVal)
-  } else {
-    list(timeParam = timeParam, factorVal = factorVal)
-  }
+                                       gradientNames = c()) {
+    if (is.null(factorVal)) {
+        message("Please enter factorVal as arguments")
+    }
+    
+    if (length(gradientNames) > 0) {
+        dtimeParam_dgradNames <- matrix(0, 
+                                        nrow = length(timeParam), 
+                                        ncol = length(gradientNames))
+        colnames(dtimeParam_dgradNames) <- gradientNames
+        rownames(dtimeParam_dgradNames) <- names(timeParam)
+        dtimeParam_dgradNames[, names(timeParam)] <- factorVal
+    } else {
+        timeParam <- timeParam  * factorVal
+    }
+    
+    if (length(gradientNames) > 0) {
+        list(timeParam = dtimeParam_dgradNames, factorVal = factorVal)
+    } else {
+        list(timeParam = timeParam, factorVal = factorVal)
+    }
 }

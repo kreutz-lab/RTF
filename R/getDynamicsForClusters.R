@@ -36,34 +36,35 @@
 #' dynamics <- getDynamicsForClusters(df, maxTime = 10) 
 
 getDynamicsForClusters <- function(df, maxTime = 10) {
-  df.byCluster <- split(df, df$clustID)
-  
-  xi <- seq(0, maxTime, length.out = 1000)
-  geom_line.lst <- list()
-  for (cluster in df.byCluster) {
-    for (rowId in seq(nrow(cluster))) {
-      row <- cluster[rowId,]
-      id <- rownames(cluster)[rowId]
-      functionResVec <- getTransientFunctionResult(
-        rtfPar = row[colnames(row) != "signum_TF"],
-        t = xi,
-        signum_TF = row[["signum_TF"]])
-      
-      geom_line.lst <- append(
-        geom_line.lst, 
-        list(data.frame(t = xi,
-                        y = functionResVec,
-                        id = rep(id, times = length(xi)),
-                        cluster = rep(cluster$clustID, times = length(xi)))))
+    df.byCluster <- split(df, df$clustID)
+    
+    xi <- seq(0, maxTime, length.out = 1000)
+    geom_line.lst <- list()
+    for (cluster in df.byCluster) {
+        for (rowId in seq(nrow(cluster))) {
+            row <- cluster[rowId,]
+            id <- rownames(cluster)[rowId]
+            functionResVec <- getTransientFunctionResult(
+                rtfPar = row[colnames(row) != "signum_TF"],
+                t = xi,
+                signum_TF = row[["signum_TF"]])
+            
+            geom_line.lst <- append(
+                geom_line.lst, 
+                list(data.frame(t = xi,
+                                y = functionResVec,
+                                id = rep(id, times = length(xi)),
+                                cluster = rep(
+                                    cluster$clustID, times = length(xi)))))
+        }
     }
-  }
-  
-  geom_line.df <- dplyr::bind_rows(geom_line.lst)
-
-  plot.scaled <- plotDynamicsForClusters(geom_line.df, scaled = TRUE)
-  plot.notscaled <- plotDynamicsForClusters(geom_line.df, scaled = FALSE)
-
-  list(df = geom_line.df, 
-       plot.scaled = plot.scaled,
-       plot.notscaled = plot.notscaled)
+    
+    geom_line.df <- dplyr::bind_rows(geom_line.lst)
+    
+    plot.scaled <- plotDynamicsForClusters(geom_line.df, scaled = TRUE)
+    plot.notscaled <- plotDynamicsForClusters(geom_line.df, scaled = FALSE)
+    
+    list(df = geom_line.df, 
+         plot.scaled = plot.scaled,
+         plot.notscaled = plot.notscaled)
 }

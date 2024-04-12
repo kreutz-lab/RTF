@@ -11,8 +11,9 @@
 #' the vector of initial guesses ('initialGuess.vec'), of lower bounds 
 #' ('lb.vec'), of upper bounds ('ub.vec'), vector of fixed parameters ('fixed'),
 #' if log10 is applied to bounds ('takeLog10'), the parameters having no
-#' negative values in initialGuess.vec, lb.vec, and ub.vec ('positive.par.names'),
-#' modus ('modus'), and a list of values of fitted parameters ('fitted').
+#' negative values in initialGuess.vec, lb.vec, and ub.vec 
+#' ('positive.par.names'), modus ('modus'), and a list of values of fitted 
+#' parameters ('fitted').
 #' @param objFunct Name of the objective function.
 #' @export runOptimization
 #' @examples
@@ -29,159 +30,164 @@
 #' res <- runOptimization(initialGuess.vec.lst, optimObject.orig, objFunct)
 
 runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
-  currentBestResValue <- NULL
-  res.lst <- list()
-  optimObject.tmp <- optimObject
-  
-  ##############################################################################
-  # Bring y data to range 0-10 and scale parameters accordingly, 
-  # as optimization works better on higher values
-  yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
-  scaleFactor <- 10/max(optimObject.tmp$data$y, na.rm = TRUE)
-  optimObject.tmp$data$y <- optimObject.tmp$data$y * scaleFactor
-  
-  if ("sigmaExp" %in% colnames(optimObject.tmp$data)) {
-    optimObject.tmp$data$sigmaExp <- optimObject.tmp$data$sigmaExp * scaleFactor
-  }
-
-  optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) %in% yDependentPars] <-
-    optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) 
-                           %in% yDependentPars] * scaleFactor
-  
-  optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) %in% yDependentPars] <-
-    optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) 
-                           %in% yDependentPars] * scaleFactor
-  
-  optimObject.tmp$fixed[names(optimObject.tmp$fixed) %in% yDependentPars] <-
-    optimObject.tmp$fixed[names(optimObject.tmp$fixed) 
-                          %in% yDependentPars] * scaleFactor
-  
-  for (i in seq(length(initialGuess.vec.lst))) {
-    initialGuess.vec.lst[[i]][
-      names(initialGuess.vec.lst[[i]]) %in% yDependentPars] <- 
-      initialGuess.vec.lst[[i]][
-        names(initialGuess.vec.lst[[i]]) %in% yDependentPars] * scaleFactor
-  }
-  ##############################################################################
-
-  paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
-  pars.tmp <- c()
-  # Remove each fixedParam from vec, optimObject$lb.vec, and optimObject$ub.vec
-  for (el in paramsToBeFitted) {
-#       c("alpha", "gamma", "A", "B", "b", "tau", "sigma")) {
-    if (!is.na(optimObject.tmp$fixed[[el]])) {
-      nam <- names(pars.tmp)
-      pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
-      names(pars.tmp) <- c(nam, el)
-      optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[
-        -which(names(optimObject.tmp$lb.vec) == el)]
-      optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[
-        -which(names(optimObject.tmp$ub.vec) == el)]
-
-      # remove from each sublist in initialGuess.vec.lst
-      initialGuess.vec.lst <- lapply(initialGuess.vec.lst,
-                                     function(x) x[-which(names(x) == el)])
-    }
-  }
-
-  takeLog10 <- optimObject.tmp$takeLog10 
-  
-  lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
-  upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
-  
-  # Take logarithm of fixed parameters for which takeLog10 = TRUE
-  fixed <- optimObject.tmp$fixed
-  intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), 
-                                          names(which(takeLog10)))
-  fixedAndTakeLog10 <- rep(NA, length(takeLog10))
-  names(fixedAndTakeLog10) <- names(takeLog10)
-  fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE
-  optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
-  
-  
-  if (optimObject.tmp$modus == "doseDependent") {
-    ds <- sort(unique(optimObject.tmp$data$d))
-    if (length(ds) == 1) {
-      warning("Please provide at least two different doses.")
-    } else {
-      secondHighestD <- ds[2]
-      optimObject.tmp$data$d[optimObject.tmp$data$d == 0] <- 
-        secondHighestD / 1000
-    }
-  }
-  
-  for (vec in initialGuess.vec.lst) {
-    print(vec)
-    vec <- applyLog10ForTakeLog10(vec, takeLog10)
+    currentBestResValue <- NULL
+    RTFmodelLst <- list()
+    optimObject.tmp <- optimObject
     
     ############################################################################
-    # Replace 0 because for gradient calculation log(K) is calculated
-    if (optimObject.tmp$modus == "doseDependent") {
-      if (length(ds) > 1) {
-        RTFparams <- c("alpha", "gamma", "A", "B", "tau")
-        
-        for (RTFparam in RTFparams) {
-          KRTFparam <- paste0("K_", RTFparam)
-          if (KRTFparam %in% names(vec)) {
-            if (vec[KRTFparam] == 0) {
-              vec[KRTFparam] <- secondHighestD / 100000
-            } 
-          }
-          
-          if (KRTFparam %in% 
-              names(optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)])) {
-            if (optimObject.tmp$fixed[
-              !is.na(optimObject.tmp$fixed)][KRTFparam] == 0) {
-              optimObject.tmp$fixed[!is.na(optimObject.tmp$fixed)][KRTFparam] <- 
-                secondHighestD / 100000
-            } 
-          }
+    # Bring y data to range 0-10 and scale parameters accordingly, 
+    # as optimization works better on higher values
+    yDependentPars <- c("A", "B", "b", "sigma", "M_A", "M_B")
+    scaleFactor <- 10/max(optimObject.tmp$data$y, na.rm = TRUE)
+    optimObject.tmp$data$y <- optimObject.tmp$data$y * scaleFactor
+    
+    if ("sigmaExp" %in% colnames(optimObject.tmp$data)) {
+        optimObject.tmp$data$sigmaExp <- 
+            optimObject.tmp$data$sigmaExp * scaleFactor
+    }
+    
+    optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) %in% yDependentPars] <-
+        optimObject.tmp$lb.vec[names(optimObject.tmp$lb.vec) 
+                               %in% yDependentPars] * scaleFactor
+    
+    optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) %in% yDependentPars] <-
+        optimObject.tmp$ub.vec[names(optimObject.tmp$ub.vec) 
+                               %in% yDependentPars] * scaleFactor
+    
+    optimObject.tmp$fixed[names(optimObject.tmp$fixed) %in% yDependentPars] <-
+        optimObject.tmp$fixed[names(optimObject.tmp$fixed) 
+                              %in% yDependentPars] * scaleFactor
+    
+    for (i in seq(length(initialGuess.vec.lst))) {
+        initialGuess.vec.lst[[i]][
+            names(initialGuess.vec.lst[[i]]) %in% yDependentPars] <- 
+            initialGuess.vec.lst[[i]][
+                names(initialGuess.vec.lst[[i]]) %in% yDependentPars] * 
+            scaleFactor
+    }
+    ############################################################################
+    
+    paramsToBeFitted <- names(initialGuess.vec.lst[[1]])
+    pars.tmp <- c()
+    # Remove each fixedParam from vec, optimObject$lb.vec, 
+    # and optimObject$ub.vec
+    for (el in paramsToBeFitted) {
+        #       c("alpha", "gamma", "A", "B", "b", "tau", "sigma")) {
+        if (!is.na(optimObject.tmp$fixed[[el]])) {
+            nam <- names(pars.tmp)
+            pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
+            names(pars.tmp) <- c(nam, el)
+            optimObject.tmp$lb.vec <- optimObject.tmp$lb.vec[
+                -which(names(optimObject.tmp$lb.vec) == el)]
+            optimObject.tmp$ub.vec <- optimObject.tmp$ub.vec[
+                -which(names(optimObject.tmp$ub.vec) == el)]
+            
+            # remove from each sublist in initialGuess.vec.lst
+            initialGuess.vec.lst <- lapply(
+                initialGuess.vec.lst, function(x) x[-which(names(x) == el)])
         }
-      }
     }
-    ############################################################################
     
-    for (signumTF in c(-1, 1)) {
-      optimObject.tmp$fixed[["signum_TF"]] <- signumTF
-      optimResTmp <- stats::optim(par = vec,
-                                  fn = objFunct,
-                                  gr = objFunctGradient,
-                                  method = "L-BFGS-B",
-                                  lower = lower,
-                                  upper = upper,
-                                  data = optimObject.tmp$data,
-                                  optimObject = optimObject.tmp,
-                                  calcGradient = FALSE,
-                                  control = optimObject.tmp$control)
-      
-      optimResTmp$par <- applyLog10ForTakeLog10(c(optimResTmp$par), 
-                                                takeLog10, reverse = TRUE)
-      
-      vecOrder <- names(optimObject$fixed)
-      parsFinal <- c(fixed[!is.na(fixed) & names(fixed) != "signum_TF"], 
-                     signum_TF = signumTF,
-                     optimResTmp$par)[vecOrder]
-      parsFinal[names(parsFinal) %in% yDependentPars] <-  
-        parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
-      optimResTmp$par <- parsFinal
-      
-      value <- c(optimResTmp$value)
-  
-      res.lst <- append(res.lst, list(optimResTmp))
-  
-      if (is.null(currentBestResValue)) {
-        currentBestResValue <- value
-        optimRes <- optimResTmp
-      }
-  
-      if (value < currentBestResValue) {
-        currentBestResValue <- value
-        optimRes <- optimResTmp
-      }
+    takeLog10 <- optimObject.tmp$takeLog10 
+    
+    lower <- applyLog10ForTakeLog10(optimObject.tmp$lb.vec, takeLog10)
+    upper <- applyLog10ForTakeLog10(optimObject.tmp$ub.vec, takeLog10)
+    
+    # Take logarithm of fixed parameters for which takeLog10 = TRUE
+    fixed <- optimObject.tmp$fixed
+    intersectFixedAndTakeLog10 <- intersect(names(fixed[!is.na(fixed)]), 
+                                            names(which(takeLog10)))
+    fixedAndTakeLog10 <- rep(NA, length(takeLog10))
+    names(fixedAndTakeLog10) <- names(takeLog10)
+    fixedAndTakeLog10[intersectFixedAndTakeLog10] <- TRUE
+    optimObject.tmp$fixed <- applyLog10ForTakeLog10(fixed, fixedAndTakeLog10)
+    
+    
+    if (optimObject.tmp$modus == "doseDependent") {
+        ds <- sort(unique(optimObject.tmp$data$d))
+        if (length(ds) == 1) {
+            warning("Please provide at least two different doses.")
+        } else {
+            secondHighestD <- ds[2]
+            optimObject.tmp$data$d[optimObject.tmp$data$d == 0] <- 
+                secondHighestD / 1000
+        }
     }
-  }
-
-  res.lst <- sortListByValue(res.lst)
-
-  list(optimResults = res.lst, bestOptimResult = optimRes)
+    
+    for (vec in initialGuess.vec.lst) {
+        print(vec)
+        vec <- applyLog10ForTakeLog10(vec, takeLog10)
+        
+        ########################################################################
+        # Replace 0 because for gradient calculation log(K) is calculated
+        if (optimObject.tmp$modus == "doseDependent") {
+            if (length(ds) > 1) {
+                RTFparams <- c("alpha", "gamma", "A", "B", "tau")
+                
+                for (RTFparam in RTFparams) {
+                    KRTFparam <- paste0("K_", RTFparam)
+                    if (KRTFparam %in% names(vec)) {
+                        if (vec[KRTFparam] == 0) {
+                            vec[KRTFparam] <- secondHighestD / 100000
+                        } 
+                    }
+                    
+                    if (KRTFparam %in% 
+                        names(optimObject.tmp$fixed[
+                            !is.na(optimObject.tmp$fixed)])) {
+                        if (optimObject.tmp$fixed[
+                            !is.na(optimObject.tmp$fixed)][KRTFparam] == 0) {
+                            optimObject.tmp$fixed[
+                                !is.na(optimObject.tmp$fixed)][KRTFparam] <- 
+                                secondHighestD / 100000
+                        } 
+                    }
+                }
+            }
+        }
+        ########################################################################
+        
+        for (signumTF in c(-1, 1)) {
+            optimObject.tmp$fixed[["signum_TF"]] <- signumTF
+            optimResTmp <- stats::optim(par = vec,
+                                        fn = objFunct,
+                                        gr = objFunctGradient,
+                                        method = "L-BFGS-B",
+                                        lower = lower,
+                                        upper = upper,
+                                        data = optimObject.tmp$data,
+                                        optimObject = optimObject.tmp,
+                                        calcGradient = FALSE,
+                                        control = optimObject.tmp$control)
+            
+            optimResTmp$par <- applyLog10ForTakeLog10(c(optimResTmp$par), 
+                                                      takeLog10, reverse = TRUE)
+            
+            vecOrder <- names(optimObject$fixed)
+            parsFinal <- c(fixed[!is.na(fixed) & names(fixed) != "signum_TF"], 
+                           signum_TF = signumTF,
+                           optimResTmp$par)[vecOrder]
+            parsFinal[names(parsFinal) %in% yDependentPars] <-  
+                parsFinal[names(parsFinal) %in% yDependentPars] / scaleFactor
+            optimResTmp$par <- parsFinal
+            
+            value <- c(optimResTmp$value)
+            
+            RTFmodelLst <- append(RTFmodelLst, list(optimResTmp))
+            
+            if (is.null(currentBestResValue)) {
+                currentBestResValue <- value
+                optimRes <- optimResTmp
+            }
+            
+            if (value < currentBestResValue) {
+                currentBestResValue <- value
+                optimRes <- optimResTmp
+            }
+        }
+    }
+    
+    RTFmodelLst <- sortListByValue(RTFmodelLst)
+    
+    list(optimResults = RTFmodelLst, bestOptimResult = optimRes)
 }

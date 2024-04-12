@@ -13,11 +13,11 @@ almadenParams <-
 write.csv(almadenParams, "almadenParams.csv", row.names = FALSE)
 save(almadenParams, file = "almadenParams.rda", version = 2)
 
-almadenResLst <- readRDS(file = paste0(fileString, ".RDS"))
-save(almadenResLst, file = "almadenResLst.rda", version = 2)
+almadenModelLst <- readRDS(file = paste0(fileString, ".RDS"))
+save(almadenModelLst, file = "almadenModelLst.rda", version = 2)
 
 RTF::plotRTFForAllTimeSeries( # later called plotRTFOnMultipleTimeSeries
-  almadenResLst,
+  almadenModelLst,
   fileString = fileString,
   plotFitsToSingleFile = FALSE,
   plotFitsToSingleFileExtension = "jpeg",

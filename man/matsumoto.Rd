@@ -13,7 +13,7 @@ data(matsumoto)
 \description{
 Time series data of amino acids showing dose dependencies for the 
 ingestion of branched-chain amino acids, taken from the publication of 
-Matsumoto et a. 2014. (\href{https://doi.org/10.1186/2193-1801-3-35}).
+Matsumoto et al. 2014. (\href{https://doi.org/10.1186/2193-1801-3-35}).
 }
 \examples{
 data(matsumoto)

@@ -19,10 +19,10 @@
 #' getPositiveParNames(lb.vec, ub.vec, initialGuess.vec)
 
 getPositiveParNames <- function(lb.vec, ub.vec, initialGuess.vec) {
-  boundsDefault.df <- data.frame(
-    lb.vec, ub.vec, initialGuess.vec)
-  par.names <- row.names(boundsDefault.df)
-  positive.par.names <- par.names[
-    which(apply(boundsDefault.df, 1, function(x) !any(x <= 0)))]
-  positive.par.names
+    boundsDefault.df <- data.frame(
+        lb.vec, ub.vec, initialGuess.vec)
+    par.names <- row.names(boundsDefault.df)
+    positive.par.names <- par.names[
+        which(apply(boundsDefault.df, 1, function(x) !any(x <= 0)))]
+    positive.par.names
 }
