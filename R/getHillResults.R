@@ -50,7 +50,8 @@ getHillResults <- function(d = NULL,
     if (calcGradient) {
         drtfParams_dparams <- matrix(0, 
                                      nrow = length(rtfParams) + 1, 
-                                     ncol = length(params)) # +1 because of b, ugly 
+                                     # +1 because of b, ugly 
+                                     ncol = length(params)) 
         rownames(drtfParams_dparams) <- c(rtfParams, "b") # ugly 
         colnames(drtfParams_dparams) <- names(params)
         
@@ -66,7 +67,7 @@ getHillResults <- function(d = NULL,
                                      reciprocal = reciprocal, 
                                      gradientNames = c("M","h","K"))
             
-            drtfParams_dparams[el, paste0("M_", el)] <- del_dmhk[,"M"] # TODO: Bug: multiple rows corresponding to multiple doses
+            drtfParams_dparams[el, paste0("M_", el)] <- del_dmhk[,"M"] 
             drtfParams_dparams[el, paste0("h_", el)] <- del_dmhk[,"h"]
             drtfParams_dparams[el, paste0("K_", el)] <- del_dmhk[,"K"]
         }

@@ -25,7 +25,8 @@ should be used (Default: "logLikelihood").}
 \item{control}{List of control arguments passed to the function stats::optim 
 (Default: list(trace = 1, maxit = 1000, factr = 1e7)).}
 
-\item{takeLog10}{Boolean value indicating if log10 of bounds should be applied}
+\item{takeLog10}{Boolean value indicating if log10 of bounds should be 
+applied.}
 }
 \value{
 Initialized OptimObject, which is a list containing input data frame

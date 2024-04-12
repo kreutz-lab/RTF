@@ -14,7 +14,8 @@ the row names are the names of the model parameters.}
 }
 \value{
 List of named vectors of lower bounds ('lb.vec'), upper bounds 
-('ub.vec'), and initial guesses ('initialGuess.vec') for each model parameter.
+('ub.vec'), and initial guesses ('initialGuess.vec') for each model 
+parameter.
 }
 \description{
 Transforms data frame of lower bounds, upper bounds,

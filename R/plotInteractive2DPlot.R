@@ -33,10 +33,8 @@
 #' species <- sub("_[^_]+$", "", colNames)
 #' conditionID <- gsub(".*_", "", colNames)
 #' 
-#' # # Besides returning the fitted parameters, this function also generates 
-#' # # a RDS with the final models, which is needed later on.
-#' # # We don't run the following lines as the required object almadenModelLst is 
-#' # # available as an example (data(almadenModelLst)).
+#' # # We don't run the following lines as the required object almadenModelLst 
+#' # # is available as an example (data(almadenModelLst)).
 #' # fileString <- "almadenExampleFile"
 #' # params.lst <- getParamsFromMultipleTimeSeries(
 #' #   df = almaden,

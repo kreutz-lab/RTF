@@ -47,8 +47,8 @@
 #' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 #' represent the different RTF parameters. The rows correspond to the different
 #' time series. 
-#' @param RTFmodelLst (Optional) If a list with the RTF result for each time series 
-#' calculated, e.g. using the function getParamsFromMultipleTimeSeries() 
+#' @param RTFmodelLst (Optional) If a list with the RTF result for each time 
+#' series calculated, e.g. using the function getParamsFromMultipleTimeSeries() 
 #' or lowDimensionalRTF() is already available, you can provide it here for 
 #' saving time.
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned 

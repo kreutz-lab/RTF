@@ -25,8 +25,9 @@
 
 getInitialGuessResults <- function(optimObject, nInitialGuesses = 50) {
     for (pname in names(optimObject$initialGuess.vec)) {
-        # for(pname in names(optimObject$fixed)){ # was replaced because signum_TF
-        # is fixed but is not listed in lb.vec, ub.vec, and initialGuess.vec
+        # for(pname in names(optimObject$fixed)){ # was replaced because
+        # signum_TF is fixed but is not listed in lb.vec, ub.vec, and 
+        # initialGuess.vec
         if (!is.na(optimObject$fixed[pname]))
             optimObject$initialGuess.vec[pname] <-
                 optimObject$lb.vec[pname] <-

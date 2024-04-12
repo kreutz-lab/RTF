@@ -308,15 +308,6 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
             dretval_dsigmaRes <- matrix(0, nrow = 1, ncol = length(sigmaRes))
             dretval_dres <- (2 * res) / sigmaRes^2
         } else {
-            # exp_res <- exp(res^2 / (2 * sigmaRes^2))
-            # exp_res[exp_res > 10^20] <- 10^20
-            # 
-            # dretval_dsigmaRes <- 
-            #   2 * sigmaRes * exp_res * 
-            #   (exp(-res^2 / (2 * sigmaRes^2)) / (sigmaRes^2 * (2 * pi)^(1 / 2)) - 
-            #      (res^2 * exp(-res^2 / (2 * sigmaRes^2))) / 
-            #      (sigmaRes^4 * (2 * pi)^(1 / 2))) * (2 * pi)^(1 / 2)
-            
             dretval_dsigmaRes <- -(2 * res^2) / sigmaRes^3 - 1 / sigmaRes
             
             dretval_dres <- (2 * res) / sigmaRes^2 

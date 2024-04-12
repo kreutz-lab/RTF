@@ -18,7 +18,8 @@
 #' should be used (Default: "logLikelihood").
 #' @param control List of control arguments passed to the function stats::optim 
 #' (Default: list(trace = 1, maxit = 1000, factr = 1e7)).
-#' @param takeLog10 Boolean value indicating if log10 of bounds should be applied
+#' @param takeLog10 Boolean value indicating if log10 of bounds should be 
+#' applied.
 #' @export initializeOptimObject
 #' @examples
 #' # Modus: Single-dose RTF

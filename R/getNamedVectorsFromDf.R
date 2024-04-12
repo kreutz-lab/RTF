@@ -4,7 +4,8 @@
 #' @description Transforms data frame of lower bounds, upper bounds,
 #' and initial guesses for each model parameter to list of named vectors.
 #' @return List of named vectors of lower bounds ('lb.vec'), upper bounds 
-#' ('ub.vec'), and initial guesses ('initialGuess.vec') for each model parameter.
+#' ('ub.vec'), and initial guesses ('initialGuess.vec') for each model 
+#' parameter.
 #' @param df Data frame containing columns named 'lb.vec' (lower bounds),
 #' 'ub.vec' (upper bounds), 'initialGuess.vec' (initial guesses), and of which
 #' the row names are the names of the model parameters.

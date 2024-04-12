@@ -33,7 +33,8 @@ plotRTF <- function(optimObject,
     bestOptimResult <- optimObject$bestOptimResult
     
     if (is.null(optimResults) | is.null(bestOptimResult)) {
-        stop("optimResults and bestOptimResult needs to be available in the optimObject.")
+        stop("optimResults and bestOptimResult needs to be available in 
+             the optimObject.")
     }
     
     par <- bestOptimResult$par

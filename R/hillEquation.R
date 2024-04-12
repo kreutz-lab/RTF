@@ -46,7 +46,8 @@ hillEquation <- function(d, M, h, K, reciprocal = FALSE,
             if (!is.null(minval)) {
                 result[result < minval] <- minval
                 if (length(gradientNames) > 0) 
-                    warning("result[result < minval] <- minval cannot be considered in gradients.")
+                    warning("result[result < minval] <- minval cannot be 
+                            considered in gradients.")
             }
         }
     } else {

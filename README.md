@@ -98,18 +98,17 @@ colNames <- colnames(timeSeries[2:ncol(timeSeries)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
 
-# # Besides returning the fitted parameters, this function also generates 
-# # a RDS with the final models, which is needed later on. 
 # # We don't run the following lines as the required object almadenModelLst is 
 # # available as an example (data(almadenModelLst)).
 # fileString <- "almadenExampleFile"
-# param.df <- getParamsFromMultipleTimeSeries(
+# params.lst <- getParamsFromMultipleTimeSeries(
 #   almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
 #   nInitialGuesses = 50
 # )
-# almadenModelLst <- readRDS(file = paste0(tempdir(), "/", fileString, ".RDS"))
+# param.df <- params.lst[["param.df"]]
+# RTFmodelLst <- params.lst[["RTFmodelLst"]]
 
 colNames <- colnames(timeSeries[2:ncol(timeSeries)])
 species <- sub("_[^_]+$", "", colNames)

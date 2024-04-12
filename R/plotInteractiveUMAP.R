@@ -76,8 +76,6 @@ plotInteractiveUMAP <- function(df,
                                 param.df = NULL) {
     
     if (is.null(RTFmodelLst) | is.null(param.df)) {
-        # Besides returning the fitted parameters, this function also generates
-        # a RDS with the final models, which is needed later on.
         params.lst <- getParamsFromMultipleTimeSeries(
             df = df,
             fileString = fileString,

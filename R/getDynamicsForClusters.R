@@ -4,8 +4,8 @@
 #' cluster, where each line represents one time series.
 #' @return List with ggplot2 objects with 
 #' scaled dynamics ('plot.scaled') and unscaled dynamics ('plot.notscaled) and 
-#' data frame 'df' of the unscaled dynamics (with columns 't' (time), 'y' (value),
-#' 'id' (time series name), 'cluster' (cluster ID)).
+#' data frame 'df' of the unscaled dynamics (with columns 't' (time), 
+#' 'y' (value), 'id' (time series name), 'cluster' (cluster ID)).
 #' @param df Data frame with column for cluster ID ("clustID") and columns
 #' named "alpha", "gamma", "A", "B", "b", "tau", and "signum_TF" corresponding 
 #' to the parameter names of the RTF.
