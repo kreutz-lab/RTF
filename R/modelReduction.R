@@ -99,21 +99,7 @@ modelReduction <- function(res,
                 optimObjectTmp, nInitialGuesses = nInitialGuesses)
             
             res <- selectSmallerModelIfDiffIsSmall(res, res.fixed)
-            
-            # difference <-  res.fixed$value - res$value
-            # df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
-            # pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
-            # statLst <- append(statLst,
-            #                   list(list(
-            #                       RTFparam = RTFparam,
-            #                       df = df,
-            #                       LRTstat = difference,
-            #                       pVal = pVal
-            #                   )))
-            # statObjLst <- append(statObjLst, list(res.fixed))
         }
-        # names(statLst) <- names(statObjLst) <- RTFparams
-        # reductionResults <- do.call(rbind, lapply(statLst, data.frame))
     }
     
     finalParams <- res$fitted
@@ -134,7 +120,4 @@ modelReduction <- function(res,
         warning("No model reduction indicated. Full model is retained.")
     } 
     reductionResults
-    
-    # Data frame print
-    # output of minimal model
 }

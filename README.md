@@ -68,7 +68,7 @@ plotFit(par = res.doseDependent[["finalParams"]],
 res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 ```
 
-### Low-dimensional representation of RTF parameters of 20 or more time series 
+### Low-dimensional representation of multiple (at least 20) fitted RTFs
 (Currently only possible for single-dose RTF parameters)
 ```
 data(strasen)
@@ -86,11 +86,11 @@ ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
 
 ```
 
-To generates a dynamic 2D plot based on the RTF parameters for multiple time 
-series, where each point corresponds to a single time series, 
-the plotInteractive2DPlot can be used. 
-By hovering over a point the corresponding time-resolved behavior is 
-displayed in an additional smaller subplot.
+To generates an interactive UMAP plot based on the RTF parameters for 
+multiple time series plotInteractiveUMAP() can be used, where each point 
+corresponds to a single time series. 
+By hovering over a point the corresponding time-resolved behavior is displayed 
+in an additional smaller subplot.
 ```
 data(almaden)
 timeSeries <- almaden # first column needs to be "time"

@@ -14,7 +14,7 @@ data(strasenParams)
 \description{
 This example data frame containing the estimated RTF parameters for the 
 'strasen' dataset, which is based on Strasen et al. 
-(\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
+(https://doi.org/10.15252/msb.20177733).
 It has been generated as follows:
 data(strasen)
 RTFmodelLst <- RTFOnMultipleTimeSeries(strasen)
@@ -27,6 +27,6 @@ data(strasenParams)
 Strasen, Jette, et al. "Cell‐specific responses to the cytokine 
 TGF β are determined by variability in protein levels." 
 Molecular systems biology 14.1 (2018): e7733.
-(\href{https://doi.org/10.15252/msb.20177733}{EMBOpress})
+(https://doi.org/10.15252/msb.20177733)
 }
 \keyword{datasets}

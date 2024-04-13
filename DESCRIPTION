@@ -1,7 +1,7 @@
 Package: RTF
 Type: Package
 Title: Retarded Transient Function
-Version: 0.1.88
+Version: 0.1.89
 Authors@R: 
   person("Clemens","Kreutz",
   email = "clemens.kreutz@uniklinik-freiburg.de",
@@ -23,3 +23,5 @@ RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown
+Depends: 
+    R (>= 3.5.0)
