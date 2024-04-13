@@ -1,9 +1,8 @@
 #' Run model reduction on full RTF model
 #'
 #' @description Run model reduction on full RTF model
-#' @return RTF model after model reduction for single-dose RTF, and a data
-#' frame indicating dose-dependency of each RTF parameter for dose-dependent 
-#' RTF.
+#' @return List of RTF model after model reduction ('finalModel') and 
+#' corresponding model parameters ('finalParams').
 #' @param res Full RTF model, i.e., generated without fixed parameters
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
@@ -26,7 +25,7 @@
 #' data.dose <- getSimData(modus = modus)
 #' plotData(data.dose)
 #' res.dose <- RTF(data.dose, modus = modus)
-#' df.dose <- modelReduction(res.dose$finalModel)
+#' res.reduced.dose <- modelReduction(res.dose$finalModel)
 #' }
 
 modelReduction <- function(res, 
@@ -76,32 +75,18 @@ modelReduction <- function(res,
             optimObjectTmp3, nInitialGuesses = nInitialGuesses)
         res <- selectSmallerModelIfDiffIsSmall(res, res.bZero)
         
-        finalParams <- res$fitted
         
-        print("The parameters of the best fit after model reduction are:")
-        print(paste(
-            names(finalParams),
-            signif(finalParams, 4),
-            sep = ": ",
-            collapse = ", "
-        ))
-        print("Likelihood value:")
-        print(res[["bestOptimResult"]][["value"]])
-        
-        reductionResults <- list(finalModel = res, finalParams = finalParams)
-        
-        if (all(res.orig$finalParams == reductionResults$finalParams)) {
-            warning("No model reduction indicated. Full model is retained.")
-        }
     } else {
         # This order is most plausible based on our experience
         RTFparams <- c("gamma", "alpha", "tau", "A", "B")
-        statLst <- list()
-        statObjLst <- list()
+        # statLst <- list()
+        # statObjLst <- list()
+        
+        res <- res.orig
         
         for (RTFparam in RTFparams) {
             print(RTFparam)
-            optimObjectTmp <- res.orig
+            optimObjectTmp <- res
             
             optimObjectTmp$fixed[[paste0("h_", RTFparam)]] <- 1
             
@@ -113,22 +98,41 @@ modelReduction <- function(res,
             res.fixed <- getInitialGuessResults(
                 optimObjectTmp, nInitialGuesses = nInitialGuesses)
             
-            difference <-  res.fixed$value - res$value
-            df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
-            pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
-            statLst <- append(statLst,
-                              list(list(
-                                  RTFparam = RTFparam,
-                                  df = df,
-                                  LRTstat = difference,
-                                  pVal = pVal
-                              )))
-            statObjLst <- append(statObjLst, list(res.fixed))
+            res <- selectSmallerModelIfDiffIsSmall(res, res.fixed)
+            
+            # difference <-  res.fixed$value - res$value
+            # df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.fixed[["fixed"]]))
+            # pVal <- stats::pchisq(difference, df = df, lower.tail = FALSE)
+            # statLst <- append(statLst,
+            #                   list(list(
+            #                       RTFparam = RTFparam,
+            #                       df = df,
+            #                       LRTstat = difference,
+            #                       pVal = pVal
+            #                   )))
+            # statObjLst <- append(statObjLst, list(res.fixed))
         }
-        names(statLst) <- names(statObjLst) <- RTFparams
-        
-        reductionResults <- do.call(rbind, lapply(statLst, data.frame))
+        # names(statLst) <- names(statObjLst) <- RTFparams
+        # reductionResults <- do.call(rbind, lapply(statLst, data.frame))
     }
+    
+    finalParams <- res$fitted
+    
+    print("The parameters of the best fit after model reduction are:")
+    print(paste(
+        names(finalParams),
+        signif(finalParams, 4),
+        sep = ": ",
+        collapse = ", "
+    ))
+    print("Likelihood value:")
+    print(res[["bestOptimResult"]][["value"]])
+    
+    reductionResults <- list(finalModel = res, finalParams = finalParams)
+    
+    if (all(res.orig$fitted == reductionResults$finalParams)) {
+        warning("No model reduction indicated. Full model is retained.")
+    } 
     reductionResults
     
     # Data frame print

@@ -37,7 +37,7 @@ selectSmallerModelIfDiffIsSmall <- function(res, res.smallerModel) {
     difference <-  res.smallerModel$value - res$value
     # number of fitted in large model - number of fitted in small model
     df <- sum(is.na(res[["fixed"]])) - sum(is.na(res.smallerModel[["fixed"]]))
-    if (stats::pchisq(difference, df = df, lower.tail = FALSE) >= 0.05)
+    if (stats::pchisq(difference, df = df, lower.tail = FALSE) >= 0.1) #0.05
         res <- res.smallerModel
     res
 }

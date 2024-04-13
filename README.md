@@ -110,35 +110,20 @@ conditionID <- gsub(".*_", "", colNames)
 # param.df <- params.lst[["param.df"]]
 # RTFmodelLst <- params.lst[["RTFmodelLst"]]
 
-colNames <- colnames(timeSeries[2:ncol(timeSeries)])
-species <- sub("_[^_]+$", "", colNames)
-
 data(almadenParams)
 data(almadenModelLst)
-
 param.df <- almadenParams
 RTFmodelLst <- almadenModelLst
 
-plots <- plotLowDimensionalRTF(
-  df = param.df,
-  metaInfo = species, 
-  metaInfoName = "Species",
-  maxTime = max(timeSeries$time),
-  numClust = NULL
-)
-    
-df.umapData <- plots[["umap.data"]]
-clustID <- df.umapData$clustID
-ID <- row.names(df.umapData)
-plt <- plotInteractive2DPlot(dim1Vec = df.umapData$UMAP1,
-                             dim2Vec = df.umapData$UMAP2,
-                             ID = ID,
-                             species = species,
-                             RTFmodelLst = RTFmodelLst,
-                             metaInfo = conditionID, # alternatively: clustID
-                             hRatio = 0.4, 
-                             vRatio = 0)
-
+colNames <- colnames(timeSeries[2:ncol(timeSeries)])
+plt <- plotInteractiveUMAP(df = timeSeries,
+                           fileString = "almadenInteractiveUMAP",
+                           conditions = gsub(".*_", "", colNames),
+                           species = sub("_[^_]+$", "", colNames),
+                           hRatio = 0.4,
+                           RTFmodelLst = RTFmodelLst,
+                           param.df = param.df)                             
+                             
 # Save to html file
 htmlwidgets::saveWidget(plt, "interactiveUMAP.html")
 ```

@@ -18,9 +18,8 @@ plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
-RTF model after model reduction for single-dose RTF, and a data
-frame indicating dose-dependency of each RTF parameter for dose-dependent 
-RTF.
+List of RTF model after model reduction ('finalModel') and 
+corresponding model parameters ('finalParams').
 }
 \description{
 Run model reduction on full RTF model
@@ -39,6 +38,6 @@ modus <- "doseDependent"
 data.dose <- getSimData(modus = modus)
 plotData(data.dose)
 res.dose <- RTF(data.dose, modus = modus)
-df.dose <- modelReduction(res.dose$finalModel)
+res.reduced.dose <- modelReduction(res.dose$finalModel)
 }
 }
