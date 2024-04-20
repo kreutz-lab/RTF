@@ -1,7 +1,7 @@
-#' Generates UMAP plot based on the RTF parameters for multiple time series
+#' Generates UMAP plot based on the RTF parameters for multiple time courses
 #'
 #' @description Generates UMAP plot based on the RTF parameters for multiple 
-#' time series
+#' time courses.
 #' @return ggplot2 object of UMAP plot ('plot')
 #' @param df Data frame containing columns corresponding to the values for each
 #' RTF parameter as well as a column indicating how the data points in the UMAP
@@ -11,7 +11,7 @@
 #' @param takeRank Boolean indicating if rank should be used for UMAP instead 
 #' of absolute value (Default: FALSE).
 #' @param scaled Boolean indicating if values used for UMAP should be scaled 
-#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' for the time courses in a cluster (Default: TRUE). Only relevant if 
 #' takeRank = FALSE.
 #' @param dimX Integer from 1 to 3 indicating the UMAP dimension plotted on 
 #' the x axis (Default: 1).
@@ -81,7 +81,7 @@ plotUMAP <- function(df,
     }
     , error = function(e) {
         stop(paste0(
-            e, " Too few time series to run Low dimensional RTF analysis."))
+            e, " Too few time courses to run Low dimensional RTF analysis."))
     })
     
     groupVec <- df[[groupColName]]

@@ -1,5 +1,5 @@
-#' Example RTF parameter data frame to simulated time series data of 
-#' NFkB pathway components
+#' Example RTF parameter data frame to simulated time courses of NFkB pathway 
+#' components
 #'
 #' This example data frame containing the estimated RTF parameters for the 
 #' 'almaden' dataset, which is modelled using Data2Dynamics and is 
@@ -7,7 +7,7 @@
 #'  (https://doi.org/10.1016/j.celrep.2014.11.024).
 #' It has been generated from a rds file returned from:
 #' data(almaden)
-#' params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+#' params.lst <- getParamsFromMultipleTimeCourses(almaden, 
 #'                                               fileString = "test",
 #'                                               nInitialGuesses = 100)
 #' almadenParams <- params.lst[["param.df"]]                                              

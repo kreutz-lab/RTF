@@ -2,23 +2,23 @@
 % Please edit documentation in R/plotDynamicsForClusters.R
 \name{plotDynamicsForClusters}
 \alias{plotDynamicsForClusters}
-\title{Plot the scaled or unscaled dynamics of multiple time series separated by 
+\title{Plot the scaled or unscaled dynamics of multiple time courses separated by 
 cluster}
 \usage{
 plotDynamicsForClusters(df, scaled = TRUE)
 }
 \arguments{
 \item{df}{Data frame 'df' of the dynamics with columns 't' (time),
-'y' (value), 'id' (time series name), 'cluster' (cluster ID).}
+'y' (value), 'id' (time course name), 'cluster' (cluster ID).}
 
 \item{scaled}{Boolean indicating if values should be scaled for the time 
-series in a cluster.}
+courses in a cluster.}
 }
 \value{
 ggplot2 object with the dynamics plots separated by cluster.
 }
 \description{
-Plots the scaled or unscaled dynamics of multiple time series 
+Plots the scaled or unscaled dynamics of multiple time courses 
 separated by cluster
 }
 \examples{

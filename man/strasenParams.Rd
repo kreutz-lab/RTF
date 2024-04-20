@@ -3,7 +3,7 @@
 \docType{data}
 \name{strasenParams}
 \alias{strasenParams}
-\title{Example RTF parameter data frame to simulated time series data of cell 
+\title{Example RTF parameter data frame to simulated time course data of cell 
 classes}
 \format{
 An object of class \code{data.frame} with 138 rows and 7 columns.
@@ -17,7 +17,7 @@ This example data frame containing the estimated RTF parameters for the
 (https://doi.org/10.15252/msb.20177733).
 It has been generated as follows:
 data(strasen)
-RTFmodelLst <- RTFOnMultipleTimeSeries(strasen)
+RTFmodelLst <- RTFOnMultipleTimeCourses(strasen)
 strasenParams <- getParamDf(RTFmodelLst)
 }
 \examples{

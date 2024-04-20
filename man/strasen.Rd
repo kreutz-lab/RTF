@@ -3,7 +3,7 @@
 \docType{data}
 \name{strasen}
 \alias{strasen}
-\title{Simulated time series data of cell classes}
+\title{Simulated time course data of cell classes}
 \format{
 An object of class \code{data.frame} with 101 rows and 139 columns.
 }
@@ -15,16 +15,16 @@ JWS Online (https://jjj.bio.vu.nl/models/experiments/strasen2018_fig5a/).
 data(strasen)
 }
 \description{
-Simulated time series data based on cell class model introduced in
+Simulated time course data based on cell class model introduced in
 Strasen et al. (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
-Data frame containing the time series data simulated by JWS Online 
+Data frame containing the time course data simulated by JWS Online 
 (https://jjj.bio.vu.nl/models/experiments/strasen2018_fig5a/) for cell lines 
 1-6.
 }
 \details{
 The function used to generate the data frame from the .csv files generated 
 by JWS Online:
-getMultipleTimeSeriesExampleDf <- function() {
+getMultipleTimeCoursesExampleDf <- function() {
   modelName <- "strasen"
   df.lst <- list()
   for (i in 6:11) {
@@ -33,11 +33,11 @@ getMultipleTimeSeriesExampleDf <- function() {
     colnames(sub.df) <- paste0(colnames(sub.df), "_", i)
     df.lst <- append(df.lst, sub.df)
   }
-  df.multipleTimeSeries <- as.data.frame(df.lst)
-  time <- df.multipleTimeSeries$time_11
-  df.multipleTimeSeries <- df.multipleTimeSeries[, !grepl("time",
-                                           colnames(df.multipleTimeSeries))]
-  df.multipleTimeSeries <- cbind(time, df.multipleTimeSeries)
+  df.multipleTimeCourses <- as.data.frame(df.lst)
+  time <- df.multipleTimeCourses$time_11
+  df.multipleTimeCourses <- df.multipleTimeCourses[, !grepl("time",
+                                           colnames(df.multipleTimeCourses))]
+  df.multipleTimeCourses <- cbind(time, df.multipleTimeCourses)
 }
 }
 \examples{

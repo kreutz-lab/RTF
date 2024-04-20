@@ -1,22 +1,22 @@
-#' Generate low-dimensional representation of multiple time series based on 
+#' Generate low-dimensional representation of multiple time courses based on 
 #' their RTF parameters
-#' @description Generates low-dimensional representation of multiple time series
-#'  based on their RTF parameters.
-#' @return List with data frame of RTF parameters for each time series
-#' ('param.data'), a list with the RTF result for each time series 
+#' @description Generates low-dimensional representation of multiple time 
+#' courses based on their RTF parameters.
+#' @return List with data frame of RTF parameters for each time course
+#' ('param.data'), a list with the RTF result for each time course 
 #' ('RTFmodelLst'), data frame of UMAP results ('umap.data'), data frame of
 #' dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
 #' ('plots'). Function also saves those objects to files if 
 #' saveToFile=TRUE.
 #' @param df Data frame with the first column corresponding to the time points 
-#' and all the following columns corresponding to the different time series.
+#' and all the following columns corresponding to the different time courses.
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
 #' @param takeRank Boolean indicating if rank should be used for UMAP instead 
 #' of absolute value (Default: FALSE)
 #' @param scaled Boolean indicating if values used for UMAP should be scaled 
-#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' for the time courses in a cluster (Default: TRUE). Only relevant if 
 #' takeRank = FALSE.
 #' @param dimX Integer from 1 to 3 indicating the UMAP dimension plotted on 
 #' the x axis (Default: 1).
@@ -28,7 +28,7 @@
 #' @param plotItemHeight Integer indicating height of each plot type in the
 #' output plot.
 #' @param plotWidth Integer indicating width of output plot.
-#' @param readInParamRdsFilePath if the RTF parameters to time series have
+#' @param readInParamRdsFilePath If the RTF parameters to time courses have
 #' already been determined previously, the path of the resulting .rds file can
 #' be specified  using readInParamRdsFilePath, so that the time-intensive
 #' calculation of the RTF parameter does not have to be repreated a second time.
@@ -45,9 +45,9 @@
 #' is already available, you can provide it here for saving time.
 #' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 #' represent the different RTF parameters. The rows correspond to the different
-#' time series. 
+#' time courses. 
 #' @param RTFmodelLst (Optional) If a list with the RTF result for each time 
-#' series calculated, e.g. using the function getParamsFromMultipleTimeSeries() 
+#' course calculated, e.g. using the function getParamsFromMultipleTimeCourses() 
 #' or lowDimensionalRTF() is already available, you can provide it here for 
 #' saving time.
 #' @param plotFitsToSingleFile Boolean indicating if plots should be returned 
@@ -114,7 +114,7 @@ lowDimensionalRTF <- function(df,
     }
     
     if (is.null(param.data)) {
-        params.lst <- getParamsFromMultipleTimeSeries(
+        params.lst <- getParamsFromMultipleTimeCourses(
             df = df,
             fileString = fileString,
             readInParamRdsFilePath = readInParamRdsFilePath,

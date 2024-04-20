@@ -2,7 +2,7 @@
 % Please edit documentation in R/lowDimensionalRTF.R
 \name{lowDimensionalRTF}
 \alias{lowDimensionalRTF}
-\title{Generate low-dimensional representation of multiple time series based on 
+\title{Generate low-dimensional representation of multiple time courses based on 
 their RTF parameters}
 \usage{
 lowDimensionalRTF(
@@ -34,7 +34,7 @@ lowDimensionalRTF(
 }
 \arguments{
 \item{df}{Data frame with the first column corresponding to the time points 
-and all the following columns corresponding to the different time series.}
+and all the following columns corresponding to the different time courses.}
 
 \item{metaInfo}{String of the column name with meta information (.e.g.
 groups.}
@@ -45,7 +45,7 @@ groups.}
 of absolute value (Default: FALSE)}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time series in a cluster (Default: TRUE). Only relevant if 
+for the time courses in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
 
 \item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
@@ -64,7 +64,7 @@ output plot.}
 
 \item{plotWidth}{Integer indicating width of output plot.}
 
-\item{readInParamRdsFilePath}{if the RTF parameters to time series have
+\item{readInParamRdsFilePath}{If the RTF parameters to time courses have
 already been determined previously, the path of the resulting .rds file can
 be specified  using readInParamRdsFilePath, so that the time-intensive
 calculation of the RTF parameter does not have to be repreated a second time.}
@@ -86,10 +86,10 @@ NbClust::NbClust().}
 is already available, you can provide it here for saving time.
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
-time series.}
+time courses.}
 
 \item{RTFmodelLst}{(Optional) If a list with the RTF result for each time 
-series calculated, e.g. using the function getParamsFromMultipleTimeSeries() 
+course calculated, e.g. using the function getParamsFromMultipleTimeCourses() 
 or lowDimensionalRTF() is already available, you can provide it here for 
 saving time.}
 
@@ -112,16 +112,16 @@ static UMAP plot (Default: 1).}
 (Default: 1.5).}
 }
 \value{
-List with data frame of RTF parameters for each time series
-('param.data'), a list with the RTF result for each time series 
+List with data frame of RTF parameters for each time course
+('param.data'), a list with the RTF result for each time course 
 ('RTFmodelLst'), data frame of UMAP results ('umap.data'), data frame of
 dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
 ('plots'). Function also saves those objects to files if 
 saveToFile=TRUE.
 }
 \description{
-Generates low-dimensional representation of multiple time series
- based on their RTF parameters.
+Generates low-dimensional representation of multiple time 
+courses based on their RTF parameters.
 }
 \examples{
 \dontrun{

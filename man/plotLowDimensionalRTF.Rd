@@ -2,8 +2,8 @@
 % Please edit documentation in R/plotLowDimensionalRTF.R
 \name{plotLowDimensionalRTF}
 \alias{plotLowDimensionalRTF}
-\title{Generate plots of low-dimensional representation of multiple time series, 
-which is based on the RTF parameters of those time series.}
+\title{Generate plots of low-dimensional representation of multiple time courses, 
+which is based on the RTF parameters of those time courses}
 \usage{
 plotLowDimensionalRTF(
   df,
@@ -24,7 +24,7 @@ plotLowDimensionalRTF(
 \item{df}{Data frame with the RTF parameter values. 
 Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 represent the different RTF parameters. The rows correspond to the different
-time series.}
+time courses.}
 
 \item{metaInfo}{String of the column name with meta information (.e.g.
 groups.}
@@ -35,7 +35,7 @@ groups.}
 of absolute value (Default: FALSE)}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time series in a cluster (Default: TRUE). Only relevant if 
+for the time courses in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
 
 \item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
@@ -68,7 +68,7 @@ UMAP result data frame ('umap.data'), and data frame with the dynamics values
 }
 \description{
 Generates plots of low-dimensional representation of multiple 
-time series, which is based on the RTF parameters of those time series.
+time courses, which is based on the RTF parameters of those time courses.
 }
 \examples{
 data(strasenParams)

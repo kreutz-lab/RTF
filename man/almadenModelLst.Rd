@@ -3,8 +3,7 @@
 \docType{data}
 \name{almadenModelLst}
 \alias{almadenModelLst}
-\title{List of RTF results of each simulated time series data of NFkB 
-pathway components}
+\title{List of RTF results of each simulated time course of NFkB pathway components}
 \format{
 An object of class \code{list} of length 182.
 }
@@ -12,11 +11,11 @@ An object of class \code{list} of length 182.
 data(almadenModelLst)
 }
 \description{
-List of the RTF result for each time series of the  NFkB model of 
+List of the RTF result for each time course of the  NFkB model of 
 Almaden et al. (https://doi.org/10.1016/j.celrep.2014.11.024).
 It has been generated as follows:
 data(almaden)
-params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+params.lst <- getParamsFromMultipleTimeCourses(almaden, 
                                               nInitialGuesses = 100)
 almadenModelLst <- params.lst[["RTFmodelLst"]]
 }

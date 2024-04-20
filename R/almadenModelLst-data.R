@@ -1,11 +1,10 @@
-#' List of RTF results of each simulated time series data of NFkB 
-#' pathway components
+#' List of RTF results of each simulated time course of NFkB pathway components
 #'
-#' List of the RTF result for each time series of the  NFkB model of 
+#' List of the RTF result for each time course of the  NFkB model of 
 #' Almaden et al. (https://doi.org/10.1016/j.celrep.2014.11.024).
 #' It has been generated as follows:
 #' data(almaden)
-#' params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+#' params.lst <- getParamsFromMultipleTimeCourses(almaden, 
 #'                                               nInitialGuesses = 100)
 #' almadenModelLst <- params.lst[["RTFmodelLst"]]
 #'

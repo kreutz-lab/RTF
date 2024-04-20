@@ -3,8 +3,8 @@
 \docType{data}
 \name{almadenParams}
 \alias{almadenParams}
-\title{Example RTF parameter data frame to simulated time series data of 
-NFkB pathway components}
+\title{Example RTF parameter data frame to simulated time courses of NFkB pathway 
+components}
 \format{
 An object of class \code{data.frame} with 182 rows and 7 columns.
 }
@@ -18,7 +18,7 @@ based on the NFkB model of Almaden et al.
  (https://doi.org/10.1016/j.celrep.2014.11.024).
 It has been generated from a rds file returned from:
 data(almaden)
-params.lst <- getParamsFromMultipleTimeSeries(almaden, 
+params.lst <- getParamsFromMultipleTimeCourses(almaden, 
                                               fileString = "test",
                                               nInitialGuesses = 100)
 almadenParams <- params.lst[["param.df"]]

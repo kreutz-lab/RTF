@@ -2,7 +2,7 @@
 % Please edit documentation in R/getDynamicsForClusters.R
 \name{getDynamicsForClusters}
 \alias{getDynamicsForClusters}
-\title{Get time series dynamics plots separated by cluster}
+\title{Get time course dynamics plots separated by cluster}
 \usage{
 getDynamicsForClusters(df, maxTime = 10)
 }
@@ -17,11 +17,11 @@ to the parameter names of the RTF.}
 List with ggplot2 objects with 
 scaled dynamics ('plot.scaled') and unscaled dynamics ('plot.notscaled) and 
 data frame 'df' of the unscaled dynamics (with columns 't' (time), 
-'y' (value), 'id' (time series name), 'cluster' (cluster ID)).
+'y' (value), 'id' (time course name), 'cluster' (cluster ID)).
 }
 \description{
-Generates line plots of the dynamics of time series separated by
-cluster, where each line represents one time series.
+Generates line plots of the dynamics of time courses separated 
+by cluster, where each line represents one time course.
 }
 \examples{
 data(strasenParams)

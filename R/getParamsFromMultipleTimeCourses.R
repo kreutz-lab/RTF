@@ -1,18 +1,18 @@
-#' Get RTF parameters for multiple time series
+#' Get RTF parameters for multiple time courses
 #'
-#' @description Get RTF parameters for multiple time series specified in
+#' @description Get RTF parameters for multiple time courses specified in
 #' data frame.
 #' @return List of data frame containing the RTF parameters for each time
-#' series, where the rows correspond to the different time series and
+#' course, where the rows correspond to the different time courses and
 #' the columns to the RTF parameters ('param.df'), and list with the RTF result 
-#' for each time series ('RTFmodelLst').
+#' for each time course ('RTFmodelLst').
 #' @param df Data frame with the first column corresponding to the time points 
-#' and all the following columns corresponding to the different time series.
+#' and all the following columns corresponding to the different time courses.
 #' @param doRTFPlots Boolean indicating if RTF plots should be generated.
 #' @param fileString String the name of the created .rds file with the RTF
 #' parameters should contain. If this string has length 0 or if
 #' readInParamRdsFilePath is defined no .rds file will be created.
-#' @param readInParamRdsFilePath if the RTF parameters to time series have
+#' @param readInParamRdsFilePath If the RTF parameters to time courses have
 #' already been determined previously, the path of the resulting .rds file can
 #' be specified  using readInParamRdsFilePath, so that the time-intensive
 #' calculation of the RTF parameter does not have to be repreated a second time.
@@ -30,22 +30,22 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
-#' @export getParamsFromMultipleTimeSeries
+#' @export getParamsFromMultipleTimeCourses
 #' @examples
 #' data(strasen)
 #' df <- strasen[, 1:3]
-#' param.df <- getParamsFromMultipleTimeSeries(df)
+#' param.df <- getParamsFromMultipleTimeCourses(df)
 
-getParamsFromMultipleTimeSeries <- function(df,
-                                            doRTFPlots = TRUE,
-                                            fileString = "lowDimRTF",
-                                            readInParamRdsFilePath = "",
-                                            saveFolderPath = "",
-                                            modelReduction = FALSE,
-                                            nInitialGuesses = 50,
-                                            plotFitsToSingleFile = TRUE,
-                                            plotFitOnly = FALSE,
-                                            plotAllPointsWaterfall = FALSE) {
+getParamsFromMultipleTimeCourses <- function(df,
+                                             doRTFPlots = TRUE,
+                                             fileString = "lowDimRTF",
+                                             readInParamRdsFilePath = "",
+                                             saveFolderPath = "",
+                                             modelReduction = FALSE,
+                                             nInitialGuesses = 50,
+                                             plotFitsToSingleFile = TRUE,
+                                             plotFitOnly = FALSE,
+                                             plotAllPointsWaterfall = FALSE) {
     
     if (nchar(saveFolderPath) > 0 & !grepl("/$", saveFolderPath))
         saveFolderPath <- paste0(saveFolderPath, "/")
@@ -53,7 +53,7 @@ getParamsFromMultipleTimeSeries <- function(df,
     if (nchar(readInParamRdsFilePath) > 0) {
         RTFmodelLst <- readRDS(file = readInParamRdsFilePath)
     } else {
-        RTFmodelLst <- RTFOnMultipleTimeSeries(
+        RTFmodelLst <- RTFOnMultipleTimeCourses(
             df = df,
             modelReduction = modelReduction,
             nInitialGuesses = nInitialGuesses
@@ -66,7 +66,7 @@ getParamsFromMultipleTimeSeries <- function(df,
                     file = paste0(saveFolderPath, fileString, ".RDS"))
         
         if (doRTFPlots)
-            plotRTFOnMultipleTimeSeries(
+            plotRTFOnMultipleTimeCourses(
                 RTFmodelLst,
                 fileString = fileString,
                 saveFolderPath = saveFolderPath,

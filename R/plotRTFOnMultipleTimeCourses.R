@@ -1,10 +1,10 @@
-#' Generate plots based on the list of RTF parameters to multiple time series
+#' Generate plots based on the list of RTF parameters to multiple time courses
 #'
 #' @description Generates plots using plotRTF based on the RTF parameters 
-#' derived for each of multiple time series. 
-#' @return pdf file, where each page corresponds to one time series.
-#' @param RTFmodelLst List with the RTF result for each time series
-#' @param fileString String that should be added to file name
+#' derived for each of multiple time courses. 
+#' @return pdf file, where each page corresponds to one time course.
+#' @param RTFmodelLst List with the RTF result for each time course.
+#' @param fileString String that should be added to file name.
 #' @param saveFolderPath Path of folder to where plots and rds files should be 
 #' saved. Default: current folder.
 #' @param height Integer indicating page height
@@ -18,21 +18,21 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be 
 #' plotted in waterfall plot (Default: FALSE). 
 #' If FALSE, all values up to the median of those values are plotted.
-#' @export plotRTFOnMultipleTimeSeries
+#' @export plotRTFOnMultipleTimeCourses
 #' @examples
 #' data(strasen)
-#' df.multipleTimeSeries <- strasen[, 1:3]
-#' RTFmodelLst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
-#' plotRTFOnMultipleTimeSeries(RTFmodelLst)
+#' df.multipleTimeCourses <- strasen[, 1:3]
+#' RTFmodelLst <- RTFOnMultipleTimeCourses(df.multipleTimeCourses)
+#' plotRTFOnMultipleTimeCourses(RTFmodelLst)
 
-plotRTFOnMultipleTimeSeries <- function(RTFmodelLst, 
-                                        fileString = "", 
-                                        saveFolderPath = "",
-                                        height = 12, width = 10,
-                                        plotFitsToSingleFile = TRUE,
-                                        plotFitsToSingleFileExtension = "jpeg", 
-                                        plotFitOnly = FALSE,
-                                        plotAllPointsWaterfall = FALSE) {
+plotRTFOnMultipleTimeCourses <- function(RTFmodelLst, 
+                                         fileString = "", 
+                                         saveFolderPath = "",
+                                         height = 12, width = 10,
+                                         plotFitsToSingleFile = TRUE,
+                                         plotFitsToSingleFileExtension = "jpeg", 
+                                         plotFitOnly = FALSE,
+                                         plotAllPointsWaterfall = FALSE) {
     
     if (nchar(saveFolderPath) > 0 & !grepl("/$", saveFolderPath))
         saveFolderPath <- paste0(saveFolderPath, "/")

@@ -72,10 +72,10 @@ res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 (Currently only possible for single-dose RTF parameters)
 ```
 data(strasen)
-df.multipleTimeSeries <- strasen[, 1:20]
-colNames <- colnames(df.multipleTimeSeries[2:ncol(df.multipleTimeSeries)])
+df.multipleTimeCourses <- strasen[, 1:20]
+colNames <- colnames(df.multipleTimeCourses[2:ncol(df.multipleTimeCourses)])
 metaInfo <- sub("_[^_]+$", "", colNames)
-res <- lowDimensionalRTF(df.multipleTimeSeries,
+res <- lowDimensionalRTF(df.multipleTimeCourses,
                          metaInfo = metaInfo, 
                          metaInfoName = "Species",
                          fileString = "strasen_subset")
@@ -87,21 +87,21 @@ ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
 ```
 
 To generates an interactive UMAP plot based on the RTF parameters for 
-multiple time series plotInteractiveUMAP() can be used, where each point 
-corresponds to a single time series. 
+multiple time courses plotInteractiveUMAP() can be used, where each point 
+corresponds to a single time course. 
 By hovering over a point the corresponding time-resolved behavior is displayed 
 in an additional smaller subplot.
 ```
 data(almaden)
-timeSeries <- almaden # first column needs to be "time"
-colNames <- colnames(timeSeries[2:ncol(timeSeries)])
+timeCourses <- almaden # first column needs to be "time"
+colNames <- colnames(timeCourses[2:ncol(timeCourses)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
 
 # # We don't run the following lines as the required object almadenModelLst is 
 # # available as an example (data(almadenModelLst)).
 # fileString <- "almadenExampleFile"
-# params.lst <- getParamsFromMultipleTimeSeries(
+# params.lst <- getParamsFromMultipleTimeCourses(
 #   almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
@@ -115,8 +115,8 @@ data(almadenModelLst)
 param.df <- almadenParams
 RTFmodelLst <- almadenModelLst
 
-colNames <- colnames(timeSeries[2:ncol(timeSeries)])
-plt <- plotInteractiveUMAP(df = timeSeries,
+colNames <- colnames(timeCourses[2:ncol(timeCourses)])
+plt <- plotInteractiveUMAP(df = timeCourses,
                            fileString = "almadenInteractiveUMAP",
                            conditions = gsub(".*_", "", colNames),
                            species = sub("_[^_]+$", "", colNames),

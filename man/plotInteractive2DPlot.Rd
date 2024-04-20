@@ -3,7 +3,7 @@
 \name{plotInteractive2DPlot}
 \alias{plotInteractive2DPlot}
 \title{Generates dynamic 2D plot based on the RTF parameters for multiple time 
-series}
+courses}
 \usage{
 plotInteractive2DPlot(
   dim1Vec,
@@ -29,15 +29,15 @@ dim2Vec.}
 \item{species}{Vector with names of molecular species with same length as 
 dim1Vec and dim2Vec.}
 
-\item{RTFmodelLst}{List with the RTF result for each time series}
+\item{RTFmodelLst}{List with the RTF result for each time course.}
 
 \item{metaInfo}{(Optional) Vector specifying  meta information for
-each time series. Needs to have the same length as the number of rows of 
+each time course. Needs to have the same length as the number of rows of 
 param.df.}
 
 \item{plotLines}{Boolean indicating if lines should be plotted between 
 species of the same name (Default: TRUE). Can only be plotted if there are 
-two time series per species.}
+two time courses per species.}
 
 \item{hRatio}{Float between 0 and 1 indicating where subplot should be placed
 horizontally in relation to plot width (Default: 0).}
@@ -50,22 +50,22 @@ Plotly object of the dynamic 2D plot.
 }
 \description{
 Generates dynamic 2D plot based on the RTF parameters for 
-multiple time series, where each point corresponds to a single time series. 
+multiple time courses, where each point corresponds to a single time course. 
 By hovering over a point the corresponding time-resolved behavior is 
 displayed in an additional smaller subplot.
 }
 \examples{
 \dontrun{
 data(almaden)
-timeSeries <- almaden # first column needs to be "time"
-colNames <- colnames(timeSeries[2:ncol(timeSeries)])
+timeCourses <- almaden # first column needs to be "time"
+colNames <- colnames(timeCourses[2:ncol(timeCourses)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
 
 # # We don't run the following lines as the required object almadenModelLst 
 # # is available as an example (data(almadenModelLst)).
 # fileString <- "almadenExampleFile"
-# params.lst <- getParamsFromMultipleTimeSeries(
+# params.lst <- getParamsFromMultipleTimeCourses(
 #   df = almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
@@ -82,7 +82,7 @@ plots <- plotLowDimensionalRTF(
   df = param.df,
   metaInfo = species, 
   metaInfoName = "Species",
-  maxTime = max(timeSeries$time),
+  maxTime = max(timeCourses$time),
   numClust = NULL
 )
     

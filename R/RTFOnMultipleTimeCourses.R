@@ -1,22 +1,22 @@
-#' Run RTF on multiple times series
+#' Run RTF on multiple time courses
 #'
 #' @description Runs RTF on multiple columns corresponding to different time 
-#' series.
-#' @return List with the RTF result for each time series.
+#' courses.
+#' @return List with the RTF result for each time course.
 #' @param df Data frame with the first column corresponding to the time points 
-#' and all the following columns corresponding to the different time series.
+#' and all the following columns corresponding to the different time courses.
 #' @param modelReduction Boolean indicating if model reduction should be 
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating number of initial guesses 
 #' (in addition to the default initial guess) used both for a signum_TF of -1 
 #' and 1 (Default: 50).
-#' @export RTFOnMultipleTimeSeries
+#' @export RTFOnMultipleTimeCourses
 #' @examples
 #' data(strasen)
 #' df <- strasen[, 1:3]
-#' RTFmodelLst <- RTFOnMultipleTimeSeries(df)
+#' RTFmodelLst <- RTFOnMultipleTimeCourses(df)
 
-RTFOnMultipleTimeSeries <- function(df,
+RTFOnMultipleTimeCourses <- function(df,
                                     modelReduction = FALSE,
                                     nInitialGuesses = 50) {
     colNames <- colnames(df[2:ncol(df)])

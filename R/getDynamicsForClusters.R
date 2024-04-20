@@ -1,11 +1,11 @@
-#' Get time series dynamics plots separated by cluster
+#' Get time course dynamics plots separated by cluster
 #'
-#' @description Generates line plots of the dynamics of time series separated by
-#' cluster, where each line represents one time series.
+#' @description Generates line plots of the dynamics of time courses separated 
+#' by cluster, where each line represents one time course.
 #' @return List with ggplot2 objects with 
 #' scaled dynamics ('plot.scaled') and unscaled dynamics ('plot.notscaled) and 
 #' data frame 'df' of the unscaled dynamics (with columns 't' (time), 
-#' 'y' (value), 'id' (time series name), 'cluster' (cluster ID)).
+#' 'y' (value), 'id' (time course name), 'cluster' (cluster ID)).
 #' @param df Data frame with column for cluster ID ("clustID") and columns
 #' named "alpha", "gamma", "A", "B", "b", "tau", and "signum_TF" corresponding 
 #' to the parameter names of the RTF.

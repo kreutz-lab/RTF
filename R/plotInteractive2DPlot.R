@@ -1,8 +1,8 @@
 #' Generates dynamic 2D plot based on the RTF parameters for multiple time 
-#' series
+#' courses
 #'
 #' @description Generates dynamic 2D plot based on the RTF parameters for 
-#' multiple time series, where each point corresponds to a single time series. 
+#' multiple time courses, where each point corresponds to a single time course. 
 #' By hovering over a point the corresponding time-resolved behavior is 
 #' displayed in an additional smaller subplot.
 #' @return Plotly object of the dynamic 2D plot.
@@ -13,13 +13,13 @@
 #' dim2Vec.
 #' @param species Vector with names of molecular species with same length as 
 #' dim1Vec and dim2Vec.
-#' @param RTFmodelLst List with the RTF result for each time series
+#' @param RTFmodelLst List with the RTF result for each time course.
 #' @param metaInfo (Optional) Vector specifying  meta information for
-#' each time series. Needs to have the same length as the number of rows of 
+#' each time course. Needs to have the same length as the number of rows of 
 #' param.df.
 #' @param plotLines Boolean indicating if lines should be plotted between 
 #' species of the same name (Default: TRUE). Can only be plotted if there are 
-#' two time series per species.
+#' two time courses per species.
 #' @param hRatio Float between 0 and 1 indicating where subplot should be placed
 #' horizontally in relation to plot width (Default: 0).
 #' @param vRatio Float between 0 and 1 indicating where subplot should be placed
@@ -28,15 +28,15 @@
 #' @examples
 #' \dontrun{
 #' data(almaden)
-#' timeSeries <- almaden # first column needs to be "time"
-#' colNames <- colnames(timeSeries[2:ncol(timeSeries)])
+#' timeCourses <- almaden # first column needs to be "time"
+#' colNames <- colnames(timeCourses[2:ncol(timeCourses)])
 #' species <- sub("_[^_]+$", "", colNames)
 #' conditionID <- gsub(".*_", "", colNames)
 #' 
 #' # # We don't run the following lines as the required object almadenModelLst 
 #' # # is available as an example (data(almadenModelLst)).
 #' # fileString <- "almadenExampleFile"
-#' # params.lst <- getParamsFromMultipleTimeSeries(
+#' # params.lst <- getParamsFromMultipleTimeCourses(
 #' #   df = almaden,
 #' #   fileString = fileString,
 #' #   saveFolderPath = tempdir(),
@@ -53,7 +53,7 @@
 #'   df = param.df,
 #'   metaInfo = species, 
 #'   metaInfoName = "Species",
-#'   maxTime = max(timeSeries$time),
+#'   maxTime = max(timeCourses$time),
 #'   numClust = NULL
 #' )
 #'     
@@ -83,7 +83,7 @@ plotInteractive2DPlot <- function(dim1Vec,
     
     if (plotLines & max(table(species)) > 2) {
         warning("For plotting lines between species, not more two time 
-                series per species need to be present.")
+                courses per species need to be present.")
         plotLines <- FALSE
     }
     
@@ -93,7 +93,7 @@ plotInteractive2DPlot <- function(dim1Vec,
     df <- data.frame(Dim1 = dim1Vec, Dim2 = dim2Vec, ID = ID, species = species)
     tmpDir <- tempdir()
     
-    plotRTFOnMultipleTimeSeries(
+    plotRTFOnMultipleTimeCourses(
         RTFmodelLst,
         fileString = "",
         saveFolderPath = tmpDir,

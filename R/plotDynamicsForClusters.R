@@ -1,13 +1,13 @@
-#' Plot the scaled or unscaled dynamics of multiple time series separated by 
+#' Plot the scaled or unscaled dynamics of multiple time courses separated by 
 #' cluster
 #'
-#' @description Plots the scaled or unscaled dynamics of multiple time series 
+#' @description Plots the scaled or unscaled dynamics of multiple time courses 
 #' separated by cluster
 #' @return ggplot2 object with the dynamics plots separated by cluster.
 #' @param df Data frame 'df' of the dynamics with columns 't' (time),
-#'  'y' (value), 'id' (time series name), 'cluster' (cluster ID). 
+#'  'y' (value), 'id' (time course name), 'cluster' (cluster ID). 
 #' @param scaled Boolean indicating if values should be scaled for the time 
-#' series in a cluster.
+#' courses in a cluster.
 #' @export plotDynamicsForClusters
 #' @importFrom dplyr %>%
 #' @examples

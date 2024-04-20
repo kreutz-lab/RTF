@@ -1,4 +1,4 @@
-#' Example RTF parameter data frame to simulated time series data of cell 
+#' Example RTF parameter data frame to simulated time course data of cell 
 #' classes
 #'
 #' This example data frame containing the estimated RTF parameters for the 
@@ -6,7 +6,7 @@
 #' (https://doi.org/10.15252/msb.20177733).
 #' It has been generated as follows:
 #' data(strasen)
-#' RTFmodelLst <- RTFOnMultipleTimeSeries(strasen)
+#' RTFmodelLst <- RTFOnMultipleTimeCourses(strasen)
 #' strasenParams <- getParamDf(RTFmodelLst)
 #'
 #' @docType data

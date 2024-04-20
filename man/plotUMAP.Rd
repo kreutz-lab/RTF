@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotUMAP.R
 \name{plotUMAP}
 \alias{plotUMAP}
-\title{Generates UMAP plot based on the RTF parameters for multiple time series}
+\title{Generates UMAP plot based on the RTF parameters for multiple time courses}
 \usage{
 plotUMAP(
   df,
@@ -30,7 +30,7 @@ the data points of the UMAP plot should be colored.}
 of absolute value (Default: FALSE).}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time series in a cluster (Default: TRUE). Only relevant if 
+for the time courses in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
 
 \item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
@@ -55,7 +55,7 @@ ggplot2 object of UMAP plot ('plot')
 }
 \description{
 Generates UMAP plot based on the RTF parameters for multiple 
-time series
+time courses.
 }
 \examples{
 data(strasenParams)

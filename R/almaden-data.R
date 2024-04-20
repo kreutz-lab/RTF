@@ -1,6 +1,6 @@
-#' Simulated time series data of NFkB pathway components
+#' Simulated time course data of NFkB pathway components
 #'
-#' Time series data is modelled using Data2Dynamics and is based on the 
+#' Time course data is modelled using Data2Dynamics and is based on the 
 #' NFkB model of Almaden et al. (https://doi.org/10.1016/j.celrep.2014.11.024).
 #'
 #' @docType data

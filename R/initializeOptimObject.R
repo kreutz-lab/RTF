@@ -42,7 +42,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
     mintVal <- min(data$t)
     if (mintVal > 0) {
         warning("Minimum time point of dataset is larger than 0.
-            To make the time series start at 0, minimum time point will be 
+            To make the time course start at 0, minimum time point will be 
             subtracted from all time points of dataset.")
         data$t <- data$t - mintVal
     }

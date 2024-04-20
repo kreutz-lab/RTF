@@ -1,8 +1,8 @@
-#' Generate plots of low-dimensional representation of multiple time series, 
-#' which is based on the RTF parameters of those time series.
+#' Generate plots of low-dimensional representation of multiple time courses, 
+#' which is based on the RTF parameters of those time courses
 #'
 #' @description Generates plots of low-dimensional representation of multiple 
-#' time series, which is based on the RTF parameters of those time series.
+#' time courses, which is based on the RTF parameters of those time courses.
 #' @return List containing UMAP plot colored by meta info ('umap.metaInfo'), 
 #' UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter 
 #' distribution ('parDistribution'), unscaled dynamics plots 
@@ -12,14 +12,14 @@
 #' @param df Data frame with the RTF parameter values. 
 #' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
 #' represent the different RTF parameters. The rows correspond to the different
-#' time series. 
+#' time courses. 
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.
 #' @param metaInfoName String of the name of the meta information.
 #' @param takeRank Boolean indicating if rank should be used for UMAP instead 
 #' of absolute value (Default: FALSE)
 #' @param scaled Boolean indicating if values used for UMAP should be scaled 
-#' for the time series in a cluster (Default: TRUE). Only relevant if 
+#' for the time courses in a cluster (Default: TRUE). Only relevant if 
 #' takeRank = FALSE.
 #' @param dimX Integer from 1 to 3 indicating the UMAP dimension plotted on 
 #' the x axis (Default: 1).

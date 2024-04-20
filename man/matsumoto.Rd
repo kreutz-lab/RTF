@@ -3,7 +3,7 @@
 \docType{data}
 \name{matsumoto}
 \alias{matsumoto}
-\title{Experimental time series data with dose dependencies}
+\title{Experimental time course data with dose dependencies}
 \format{
 An object of class \code{data.frame} with 5280 rows and 6 columns.
 }
@@ -11,7 +11,7 @@ An object of class \code{data.frame} with 5280 rows and 6 columns.
 data(matsumoto)
 }
 \description{
-Time series data of amino acids showing dose dependencies for the 
+Time course data of amino acids showing dose dependencies for the 
 ingestion of branched-chain amino acids, taken from the publication of 
 Matsumoto et al. 2014. (https://doi.org/10.1186/2193-1801-3-35).
 }

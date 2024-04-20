@@ -1,16 +1,16 @@
-#' Generate data frame containing the RTF parameters for multiple time series.
+#' Generate data frame containing the RTF parameters for multiple time courses.
 #'
 #' @description Generate data frame containing the RTF parameters for multiple 
-#' time series from list of RTF results.
-#' @return Data frame containing the RTF parameters for each time 
-#' series, where the rows correspond to the different time series and 
+#' time courses from list of RTF results.
+#' @return Data frame containing the RTF parameters for each time course,
+#' where the rows correspond to the different time courses and 
 #' the columns to the RTF parameters.
-#' @param RTFmodelLst List with the RTF result for each time series 
+#' @param RTFmodelLst List with the RTF result for each time course.
 #' @export getParamDf
 #' @examples
 #' data(strasen)
-#' df.multipleTimeSeries <- strasen[, 1:3]
-#' RTFmodelLst <- RTFOnMultipleTimeSeries(df.multipleTimeSeries)
+#' df.multipleTimeCourses <- strasen[, 1:3]
+#' RTFmodelLst <- RTFOnMultipleTimeCourses(df.multipleTimeCourses)
 #' param.df <- getParamDf(RTFmodelLst)
 
 getParamDf <- function(RTFmodelLst) {

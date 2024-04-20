@@ -3,7 +3,7 @@
 \name{plotInteractiveUMAP}
 \alias{plotInteractiveUMAP}
 \title{Generates dynamic UMAP plot based on the RTF parameters for multiple time 
-series}
+courses}
 \usage{
 plotInteractiveUMAP(
   df,
@@ -25,12 +25,12 @@ plotInteractiveUMAP(
 }
 \arguments{
 \item{df}{Data frame with the first column corresponding to the time points 
-and all the following columns corresponding to the different time series.}
+and all the following columns corresponding to the different time courses.}
 
 \item{fileString}{String of the name of the created .rds file with the RTF 
 results.}
 
-\item{conditions}{Vector specifying the condition for each time series. 
+\item{conditions}{Vector specifying the condition for each time course. 
 Needs to have the same length as the number of rows of df.}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses 
@@ -41,7 +41,7 @@ and 1 (Default: 50).}
 of absolute value (Default: FALSE).}
 
 \item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time series in a cluster (Default: TRUE). Only relevant if 
+for the time courses in a cluster (Default: TRUE). Only relevant if 
 takeRank = FALSE.}
 
 \item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
@@ -54,9 +54,9 @@ on the y axis (Default: 2).}
 
 \item{plotLines}{Boolean indicating if lines should be plotted between 
 species of the same name (Default: TRUE). Can only be plotted if there are at
-most two time series per species.}
+most two time courses per species.}
 
-\item{species}{Vector with names of molecular species for each time series. 
+\item{species}{Vector with names of molecular species for each time course. 
 Needs to have the same length as the number of rows of df. 
 Needs to be provided in plotLines = TRUE.}
 
@@ -66,16 +66,16 @@ horizontally in relation to plot width (Default: 0).}
 \item{vRatio}{Float between 0 and 1 indicating where subplot should be placed
 vertically in relation to plot height (Default: 0).}
 
-\item{RTFmodelLst}{(Optional) List with the RTF result for each time series. 
+\item{RTFmodelLst}{(Optional) List with the RTF result for each time course. 
 If this has already been calculated using the function 
-getParamsFromMultipleTimeSeries() it can be provided here to save time, if 
+getParamsFromMultipleTimeCourses() it can be provided here to save time, if 
 param.df is provided as well.}
 
 \item{param.df}{(Optional) data frame containing the RTF parameters for 
-each time series, where the rows correspond to the different time series and
-the columns to the RTF parameters.
+each time course, where the rows correspond to the different time courses 
+and the columns to the RTF parameters.
 If this has already been calculated using the function 
-getParamsFromMultipleTimeSeries() it can be provided here to save time, if 
+getParamsFromMultipleTimeCourses() it can be provided here to save time, if 
 RTFmodelLst is provided as well.}
 }
 \value{
@@ -83,16 +83,16 @@ Plotly object of the interactive UMAP plot.
 }
 \description{
 Generates dynamic UMAP plot based on the RTF parameters for 
-multiple time series, where each point corresponds to a single time series. 
+multiple time courses, where each point corresponds to a single time course. 
 By hovering over a point the corresponding time-resolved behavior is 
 displayed in an additional smaller subplot.
 }
 \examples{
-timeSeries <- almaden
+timeCourses <- almaden
 RTFmodelLst <- almadenModelLst
 param.df <- almadenParams
-colNames <- colnames(timeSeries[2:ncol(timeSeries)])
-plt <- plotInteractiveUMAP(df = timeSeries, 
+colNames <- colnames(timeCourses[2:ncol(timeCourses)])
+plt <- plotInteractiveUMAP(df = timeCourses, 
                            fileString = "almadenInteractiveUMAP", 
                            conditions = gsub(".*_", "", colNames), 
                            species = sub("_[^_]+$", "", colNames),
