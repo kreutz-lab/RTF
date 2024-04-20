@@ -92,7 +92,7 @@ plotUMAP <- function(df,
                       UMAP3 = "V3") %>%
         dplyr::mutate(!!groupColName := !!groupVec)
     row.names(umap_df) <- row.names(df)
-
+    
     gg <- ggplot2::ggplot(umap_df, ggplot2::aes(
         x = get(paste0("UMAP", dimX)), y = get(paste0("UMAP", dimY)),
         color = get(groupColName))) +

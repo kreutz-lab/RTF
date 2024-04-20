@@ -4,8 +4,7 @@
 #' @description Generates plots of low-dimensional representation of multiple 
 #' time series, which is based on the RTF parameters of those time series.
 #' @return List containing UMAP plot colored by meta info ('umap.metaInfo'), 
-#' UMAP plot colored by cluster ID ('umap.cluster'), interactive UMAP plot 
-#' colored by condition ('umap.interactive'), plot of parameter 
+#' UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter 
 #' distribution ('parDistribution'), unscaled dynamics plots 
 #' ('dynamics.notscaled'), scaled dynamics plots ('dynamics.scaled'), 
 #' UMAP result data frame ('umap.data'), and data frame with the dynamics values 
@@ -35,30 +34,6 @@
 #' static UMAP plot (Default: 1).
 #' @param sizeUMAP Size of the data points in the static UMAP plot 
 #' (Default: 1.5).
-#' @param doPlotInteractiveUMAP Boolean indicating if interactive UMAP should be
-#' generated (Default: FALSE).
-#' @param timeSeriesDf (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Data frame with the first column corresponding to the time points 
-#' and all the following columns corresponding to the different time series.
-#' @param RTFmodelLst (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' List with the RTF result for each time series calculated using the function 
-#' getParamsFromMultipleTimeSeries().
-#' @param conditions (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Vector specifying the condition for each time series. If plotLines = TRUE,
-#' number of different conditions may not exceed 2.
-#' @param species (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Vector with names of molecular species for each time series. Needs to be 
-#' provided in plotLines = TRUE.
-#' @param plotLines (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Boolean indicating if lines should be plotted between species of the same 
-#' name (Default: TRUE). Can only be plotted if there are at most two time 
-#' series per molecular species.
-#' @param hRatio (Only relevant if doPlotInteractiveUMAP = TRUE)
-#' Float between 0 and 1 indicating where subplot should be placed
-#' horizontally in relation to plot width (Default: 0).
-#' @param vRatio (Only relevant if doPlotInteractiveUMAP = TRUE)
-#' Float between 0 and 1 indicating where subplot should be placed
-#' vertically in relation to plot height (Default: 0).
 #' @export plotLowDimensionalRTF
 #' @importFrom dplyr %>%
 #' @examples
@@ -68,8 +43,7 @@
 #' res <- plotLowDimensionalRTF(df = strasenParams,
 #'                              metaInfo = metaInfo,
 #'                              metaInfoName = metaInfoName,
-#'                              maxTime = 10,
-#'                              doPlotInteractiveUMAP = FALSE)
+#'                              maxTime = 10)
 
 plotLowDimensionalRTF <- function(df, 
                                   metaInfo, 
@@ -82,15 +56,7 @@ plotLowDimensionalRTF <- function(df,
                                   numClust = NULL,
                                   seed = 111,
                                   alphaUMAP = 1,
-                                  sizeUMAP = 1.5,
-                                  doPlotInteractiveUMAP = FALSE,
-                                  timeSeriesDf = NULL,
-                                  RTFmodelLst = NULL,
-                                  conditions = c(),
-                                  species = c(),
-                                  plotLines = TRUE,
-                                  hRatio = 0,
-                                  vRatio = 0
+                                  sizeUMAP = 1.5
                                   ) {
     params <- colnames(df)
     df.wMetaInfo <- data.frame(df, metaInfo)
@@ -153,28 +119,8 @@ plotLowDimensionalRTF <- function(df,
         ggplot2::ggtitle("Parameters") + 
         ggplot2::theme(plot.title = ggplot2::element_text(face = "bold"))
     
-    umap.interactive <- NULL
-    if (doPlotInteractiveUMAP) {
-        umap.interactive <- plotInteractiveUMAP(
-            df = timeSeriesDf, 
-            conditions = conditions, 
-            takeRank = takeRank, 
-            scaled = scaled,
-            dimX = dimX,
-            dimY = dimY,
-            seed = seed,
-            plotLines = plotLines,
-            species = species,
-            hRatio = hRatio,
-            vRatio = vRatio,
-            RTFmodelLst = RTFmodelLst,
-            param.df = df)
-        RTFmodelLst <- NULL
-    }
-    
     list(umap.metaInfo = umap.metaInfo, 
          umap.cluster = umap.cluster, 
-         umap.interactive = umap.interactive,
          parDistribution = parDistribution,
          dynamics.notscaled = dynamics.notscaled,
          dynamics.scaled = dynamics.scaled,

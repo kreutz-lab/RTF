@@ -17,15 +17,7 @@ plotLowDimensionalRTF(
   numClust = NULL,
   seed = 111,
   alphaUMAP = 1,
-  sizeUMAP = 1.5,
-  doPlotInteractiveUMAP = FALSE,
-  timeSeriesDf = NULL,
-  RTFmodelLst = NULL,
-  conditions = c(),
-  species = c(),
-  plotLines = TRUE,
-  hRatio = 0,
-  vRatio = 0
+  sizeUMAP = 1.5
 )
 }
 \arguments{
@@ -65,43 +57,10 @@ static UMAP plot (Default: 1).}
 
 \item{sizeUMAP}{Size of the data points in the static UMAP plot 
 (Default: 1.5).}
-
-\item{doPlotInteractiveUMAP}{Boolean indicating if interactive UMAP should be
-generated (Default: FALSE).}
-
-\item{timeSeriesDf}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Data frame with the first column corresponding to the time points 
-and all the following columns corresponding to the different time series.}
-
-\item{RTFmodelLst}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-List with the RTF result for each time series calculated using the function 
-getParamsFromMultipleTimeSeries().}
-
-\item{conditions}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Vector specifying the condition for each time series. If plotLines = TRUE,
-number of different conditions may not exceed 2.}
-
-\item{species}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Vector with names of molecular species for each time series. Needs to be 
-provided in plotLines = TRUE.}
-
-\item{plotLines}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Boolean indicating if lines should be plotted between species of the same 
-name (Default: TRUE). Can only be plotted if there are at most two time 
-series per molecular species.}
-
-\item{hRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
-Float between 0 and 1 indicating where subplot should be placed
-horizontally in relation to plot width (Default: 0).}
-
-\item{vRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
-Float between 0 and 1 indicating where subplot should be placed
-vertically in relation to plot height (Default: 0).}
 }
 \value{
 List containing UMAP plot colored by meta info ('umap.metaInfo'), 
-UMAP plot colored by cluster ID ('umap.cluster'), interactive UMAP plot 
-colored by condition ('umap.interactive'), plot of parameter 
+UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter 
 distribution ('parDistribution'), unscaled dynamics plots 
 ('dynamics.notscaled'), scaled dynamics plots ('dynamics.scaled'), 
 UMAP result data frame ('umap.data'), and data frame with the dynamics values 
@@ -118,6 +77,5 @@ metaInfoName <- "Species"
 res <- plotLowDimensionalRTF(df = strasenParams,
                              metaInfo = metaInfo,
                              metaInfoName = metaInfoName,
-                             maxTime = 10,
-                             doPlotInteractiveUMAP = FALSE)
+                             maxTime = 10)
 }

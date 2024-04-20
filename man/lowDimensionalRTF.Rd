@@ -29,13 +29,7 @@ lowDimensionalRTF(
   plotAllPointsWaterfall = FALSE,
   seed = 111,
   alphaUMAP = 1,
-  sizeUMAP = 1.5,
-  doPlotInteractiveUMAP = FALSE,
-  conditions = c(),
-  species = c(),
-  plotLines = TRUE,
-  hRatio = 0,
-  vRatio = 0
+  sizeUMAP = 1.5
 )
 }
 \arguments{
@@ -116,38 +110,13 @@ static UMAP plot (Default: 1).}
 
 \item{sizeUMAP}{Size of the data points in the static UMAP plot 
 (Default: 1.5).}
-
-\item{doPlotInteractiveUMAP}{Boolean indicating if interactive UMAP should be
-generated (Default: FALSE).}
-
-\item{conditions}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Vector specifying the condition for each time series. If plotLines = TRUE,
-number of different conditions may not exceed 2.}
-
-\item{species}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Vector with names of molecular species for each time series. Needs to be 
-provided in plotLines = TRUE.}
-
-\item{plotLines}{(Only relevant if doPlotInteractiveUMAP = TRUE) 
-Boolean indicating if lines should be plotted between species of the same 
-name (Default: TRUE). Can only be plotted if there are at most two time 
-series per molecular species.}
-
-\item{hRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
-Float between 0 and 1 indicating where subplot should be placed
-horizontally in relation to plot width (Default: 0).}
-
-\item{vRatio}{(Only relevant if doPlotInteractiveUMAP = TRUE)
-Float between 0 and 1 indicating where subplot should be placed
-vertically in relation to plot height (Default: 0).}
 }
 \value{
 List with data frame of RTF parameters for each time series
 ('param.data'), a list with the RTF result for each time series 
 ('RTFmodelLst'), data frame of UMAP results ('umap.data'), data frame of
-dynamics per cluster ('dynamics.data'), ggplot2 plots of the results 
-('staticPlots'), and a plotly object of the interactive UMAP plot 
-('interactiveUMAP'). Function also saves those objects to files if 
+dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
+('plots'). Function also saves those objects to files if 
 saveToFile=TRUE.
 }
 \description{
@@ -164,9 +133,8 @@ res <- lowDimensionalRTF(df = df,
                          metaInfo = metaInfo,
                          fileString = "strasen_subset",
                          metaInfoName = "Species", 
-                         saveToFile = FALSE,
-                         doPlotInteractiveUMAP = FALSE)
-ggplot2::ggsave(filename = "test.pdf", plot = res[["staticPlots"]],
+                         saveToFile = FALSE)
+ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
                width = 10, height = 30)
 }
 }

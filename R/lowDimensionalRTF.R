@@ -5,9 +5,8 @@
 #' @return List with data frame of RTF parameters for each time series
 #' ('param.data'), a list with the RTF result for each time series 
 #' ('RTFmodelLst'), data frame of UMAP results ('umap.data'), data frame of
-#' dynamics per cluster ('dynamics.data'), ggplot2 plots of the results 
-#' ('staticPlots'), and a plotly object of the interactive UMAP plot 
-#' ('interactiveUMAP'). Function also saves those objects to files if 
+#' dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results 
+#' ('plots'). Function also saves those objects to files if 
 #' saveToFile=TRUE.
 #' @param df Data frame with the first column corresponding to the time points 
 #' and all the following columns corresponding to the different time series.
@@ -63,24 +62,6 @@
 #' static UMAP plot (Default: 1).
 #' @param sizeUMAP Size of the data points in the static UMAP plot 
 #' (Default: 1.5).
-#' @param doPlotInteractiveUMAP Boolean indicating if interactive UMAP should be
-#' generated (Default: FALSE).
-#' @param conditions (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Vector specifying the condition for each time series. If plotLines = TRUE,
-#' number of different conditions may not exceed 2.
-#' @param species (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Vector with names of molecular species for each time series. Needs to be 
-#' provided in plotLines = TRUE.
-#' @param plotLines (Only relevant if doPlotInteractiveUMAP = TRUE) 
-#' Boolean indicating if lines should be plotted between species of the same 
-#' name (Default: TRUE). Can only be plotted if there are at most two time 
-#' series per molecular species.
-#' @param hRatio (Only relevant if doPlotInteractiveUMAP = TRUE)
-#' Float between 0 and 1 indicating where subplot should be placed
-#' horizontally in relation to plot width (Default: 0).
-#' @param vRatio (Only relevant if doPlotInteractiveUMAP = TRUE)
-#' Float between 0 and 1 indicating where subplot should be placed
-#' vertically in relation to plot height (Default: 0).
 #' @export lowDimensionalRTF
 #' @examples
 #' \dontrun{
@@ -92,9 +73,8 @@
 #'                          metaInfo = metaInfo,
 #'                          fileString = "strasen_subset",
 #'                          metaInfoName = "Species", 
-#'                          saveToFile = FALSE,
-#'                          doPlotInteractiveUMAP = FALSE)
-#' ggplot2::ggsave(filename = "test.pdf", plot = res[["staticPlots"]],
+#'                          saveToFile = FALSE)
+#' ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
 #'                width = 10, height = 30)
 #' }
 
@@ -121,13 +101,7 @@ lowDimensionalRTF <- function(df,
                               plotAllPointsWaterfall = FALSE,
                               seed = 111,
                               alphaUMAP = 1,
-                              sizeUMAP = 1.5,
-                              doPlotInteractiveUMAP = FALSE,
-                              conditions = c(),
-                              species = c(),
-                              plotLines = TRUE,
-                              hRatio = 0,
-                              vRatio = 0) {
+                              sizeUMAP = 1.5) {
     if (metaInfoSecondRow & length(metaInfo) == 0) {
         metaInfo <- as.character(unlist(df[1, 2:ncol(df)]))
         df <- df[-1,]
@@ -139,9 +113,7 @@ lowDimensionalRTF <- function(df,
         warning("Please provide meta information of size #columns-1 .")
     }
     
-    if (is.null(param.data) |
-        (doPlotInteractiveUMAP == TRUE & 
-         is.null(param.data) & is.null(RTFmodelLst))) {
+    if (is.null(param.data)) {
         params.lst <- getParamsFromMultipleTimeSeries(
             df = df,
             fileString = fileString,
@@ -153,10 +125,6 @@ lowDimensionalRTF <- function(df,
             plotAllPointsWaterfall = plotAllPointsWaterfall
         )
         param.data <- params.lst[["param.df"]]
-        if (doPlotInteractiveUMAP == TRUE & is.null(RTFmodelLst)) {
-            RTFmodelLst <- params.lst[["RTFmodelLst"]]
-        }
-        
         params.lst <- NULL
     }
     
@@ -172,15 +140,7 @@ lowDimensionalRTF <- function(df,
         numClust = numClust,
         seed = seed,
         alphaUMAP = alphaUMAP,
-        sizeUMAP = sizeUMAP,
-        doPlotInteractiveUMAP = doPlotInteractiveUMAP,
-        timeSeriesDf = df,
-        RTFmodelLst = RTFmodelLst,
-        conditions = conditions,
-        species = species,
-        plotLines = plotLines,
-        hRatio = hRatio,
-        vRatio = vRatio
+        sizeUMAP = sizeUMAP
     )
     
     numCluster <- length(unique(plotsLst[["dynamics.data"]]$cluster))
@@ -213,14 +173,11 @@ lowDimensionalRTF <- function(df,
                     ) /
                         sumHeights, 2))
     )
-    
-    interactiveUMAP <- NULL
-    if (doPlotInteractiveUMAP)
-        interactiveUMAP <- plotsLst[["umap.interactive"]]
+
     
     if (saveToFile) {
         ggplot2::ggsave(
-            paste0("staticPlots_", fileString, ".pdf"),
+            paste0("plots_", fileString, ".pdf"),
             plot = plotsCombined,
             width = plotWidth,
             height = sumHeights,
@@ -238,11 +195,6 @@ lowDimensionalRTF <- function(df,
             file = paste0("dynamics_", fileString, ".csv"),
             row.names = FALSE
         )
-        
-        if (doPlotInteractiveUMAP)
-            htmlwidgets::saveWidget(
-                interactiveUMAP, 
-                 paste0("interactiveUMAP_", fileString, ".html"))
     }
     
     list(
@@ -250,7 +202,6 @@ lowDimensionalRTF <- function(df,
         RTFmodelLst = RTFmodelLst,
         umap.data = plotsLst[["umap.data"]],
         dynamics.data = plotsLst[["dynamics.data"]],
-        staticPlots = plotsCombined,
-        interactiveUMAP = interactiveUMAP
+        plots = plotsCombined
     )
 }
