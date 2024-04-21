@@ -45,5 +45,5 @@ quantity ('K').
 \examples{
 hillEquation(d = 20, M = 5, h = 3, K = 4)
 hillEquation(d = 1:20, M = 5, h = 3, K = 4, 
-             gradientNames = c("A", "B", "M", "h", "K", "alpha"))
+             gradientNames = c("A", "B", "M", "h", "K", "alpha", "beta"))
 }

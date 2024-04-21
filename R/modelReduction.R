@@ -78,7 +78,7 @@ modelReduction <- function(res,
         
     } else {
         # This order is most plausible based on our experience
-        RTFparams <- c("gamma", "alpha", "tau", "A", "B")
+        RTFparams <- c("gamma", "alpha", "beta", "tau", "A", "B")
         # statLst <- list()
         # statObjLst <- list()
         

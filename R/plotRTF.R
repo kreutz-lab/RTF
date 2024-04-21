@@ -199,7 +199,7 @@ plotRTF <- function(optimObject,
         # df <- getHillResults(d = d, params = par)
         
         # Group1: A, B, b
-        # Group2: alpha, gamma, tau
+        # Group2: alpha, beta, gamma, tau
         
         hillsResLst.df.long <- reshape2::melt(hillsResLst.df, id.vars = c("d"))
         
@@ -235,11 +235,13 @@ plotRTF <- function(optimObject,
             ggplot2::theme(legend.position = "bottom",
                            legend.title = ggplot2::element_blank()) +
             ggplot2::scale_colour_manual(
-                values = c(alpha = "#490092", gamma = "#ff6db6", 
+                values = c(alpha = "#490092", 
+                           beta = "#009E73", 
+                           gamma = "#ff6db6", 
                            tau = "#006ddb")) +
             ggplot2::scale_linetype_manual(
-                values = c(alpha = "twodash", gamma = "dotted", 
-                           tau = "longdash"))
+                values = c(alpha = "twodash", beta = "dotted", 
+                           gamma = "longdash", tau = "dashed"))
         
         bestFit.plot <- patchwork::wrap_plots(
             bestFitWDataPlot,

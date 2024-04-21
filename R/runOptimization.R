@@ -72,7 +72,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
     # Remove each fixedParam from vec, optimObject$lb.vec, 
     # and optimObject$ub.vec
     for (el in paramsToBeFitted) {
-        #       c("alpha", "gamma", "A", "B", "b", "tau", "sigma")) {
+        #       c("alpha", "beta", "gamma", "A", "B", "b", "tau", "sigma")) {
         if (!is.na(optimObject.tmp$fixed[[el]])) {
             nam <- names(pars.tmp)
             pars.tmp <- c(pars.tmp, optimObject.tmp$fixed[[el]])
@@ -122,7 +122,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
         # Replace 0 because for gradient calculation log(K) is calculated
         if (optimObject.tmp$modus == "doseDependent") {
             if (length(ds) > 1) {
-                RTFparams <- c("alpha", "gamma", "A", "B", "tau")
+                RTFparams <- c("alpha", "beta", "gamma", "A", "B", "tau")
                 
                 for (RTFparam in RTFparams) {
                     KRTFparam <- paste0("K_", RTFparam)

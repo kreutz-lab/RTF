@@ -29,7 +29,8 @@ getSimData <- function(modus = "singleDose", noise = NULL, numDoses = 7) {
         
         y <- getTransientFunctionResult(
             t = t,
-            rtfPar = c(alpha = 0.4, gamma = 0.1, A = 5, B = 20, b = 2,
+            rtfPar = c(alpha = 0.4, beta = 0.4, gamma = 0.1, A = 5, B = 20, 
+                       b = 2,
                        tau = 3, signum_TF = 1)) 
         
         data.frame(t = t, y = y + stats::rnorm(length(t), 0, noise))
@@ -47,6 +48,9 @@ getSimData <- function(modus = "singleDose", noise = NULL, numDoses = 7) {
             par <- c(M_alpha = 1,
                      h_alpha = 0.1,
                      K_alpha = 0.03,
+                     M_beta = 1,
+                     h_beta = 0.1,
+                     K_beta = 0.03,
                      M_gamma = 0.5,
                      h_gamma = 0.2,
                      K_gamma = 0.01,

@@ -52,15 +52,11 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
     
     t <- sort(t[!is.na(t)])
     y <- y[!is.na(y)]
-    # New variables: 
-    # d, M_A, h_A, K_A, M_B, h_B, K_B, M_alpha, h_alpha, K_alpha, 
-    # M_gamma, h_gamma, K_gamma, M_tau, h_tau, K_tau
     
     # d Dose
     # M Maximum value
     # h Hill coefficient
     # K Half-maximum quantity
-    
     if (modus == "doseDependent") {
         if (!("d" %in% names(data))) {
             stop("Please provide data frame with data column d.")
@@ -75,6 +71,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
             M_alpha = 1 / (100 * (max(t) - min(t))),
             h_alpha = hillCoef.lb,
             K_alpha = K.lb,
+            M_beta = 1 / (100 * (max(t) - min(t))),
+            h_beta = hillCoef.lb,
+            K_beta = K.lb,
             M_gamma = 1 / (100 * (max(t) - min(t))),
             h_gamma = hillCoef.lb,
             K_gamma = K.lb,
@@ -96,6 +95,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
             M_alpha = 2 / (min(diff(unique(t)))),
             h_alpha = hillCoef.ub,
             K_alpha = K.ub,
+            M_beta = 2 / (min(diff(unique(t)))),
+            h_beta = hillCoef.ub,
+            K_beta = K.ub,
             M_gamma = 2 / (min(diff(unique(t)))),
             h_gamma = hillCoef.ub,
             K_gamma = K.ub,
@@ -116,6 +118,9 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
             M_alpha = sqrt(lb.vec[["M_alpha"]] * ub.vec[["M_alpha"]]),
             h_alpha = sqrt(lb.vec[["h_alpha"]] * ub.vec[["h_alpha"]]),
             K_alpha = sqrt(lb.vec[["K_alpha"]] * ub.vec[["K_alpha"]]),
+            M_beta = sqrt(lb.vec[["M_beta"]] * ub.vec[["M_beta"]]),
+            h_beta = sqrt(lb.vec[["h_beta"]] * ub.vec[["h_beta"]]),
+            K_beta = sqrt(lb.vec[["K_beta"]] * ub.vec[["K_beta"]]),
             M_gamma = sqrt(lb.vec[["M_gamma"]] * ub.vec[["M_gamma"]]),
             h_gamma = sqrt(lb.vec[["h_gamma"]] * ub.vec[["h_gamma"]]),
             K_gamma = sqrt(lb.vec[["K_gamma"]] * ub.vec[["K_gamma"]]),
@@ -135,6 +140,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
         # Define Lower and Upper bounds, and Default initial guess
         lb.vec <- c(
             alpha = 1 / (100 * (max(t) - min(t))),
+            beta = 1 / (100 * (max(t) - min(t))),
             gamma = 1 / (100 * (max(t) - min(t))),
             A = 0,
             B = 0,
@@ -146,6 +152,7 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
         
         ub.vec <- c(
             alpha = 2 / (min(diff(unique(t)))),
+            beta = 2 / (min(diff(unique(t)))),
             gamma = 2 / (min(diff(unique(t)))),
             A = 2 * (max(y) - min(y)),
             B = 2 * (max(y) - min(y)),
@@ -157,6 +164,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
         initialGuess.vec <- c(
             alpha = sqrt(lb.vec[["alpha"]] *
                              ub.vec[["alpha"]]),
+            beta = sqrt(lb.vec[["beta"]] *
+                             ub.vec[["beta"]]),
             gamma = sqrt(lb.vec[["gamma"]] *
                              ub.vec[["gamma"]]),
             A = 0.1 * lb.vec[["A"]] +
