@@ -6,7 +6,7 @@
 \title{Example RTF parameter data frame to simulated time course data of cell 
 classes}
 \format{
-An object of class \code{data.frame} with 138 rows and 7 columns.
+An object of class \code{data.frame} with 138 rows and 8 columns.
 }
 \usage{
 data(strasenParams)
@@ -17,8 +17,9 @@ This example data frame containing the estimated RTF parameters for the
 (https://doi.org/10.15252/msb.20177733).
 It has been generated as follows:
 data(strasen)
-RTFmodelLst <- RTFOnMultipleTimeCourses(strasen)
-strasenParams <- getParamDf(RTFmodelLst)
+params.lst <- getParamsFromMultipleTimeCourses(strasen, 
+                                               nInitialGuesses = 200)
+strasenParams <- params.lst[["param.df"]]
 }
 \examples{
 data(strasenParams)

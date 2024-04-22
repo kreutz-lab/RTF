@@ -6,8 +6,9 @@
 #' (https://doi.org/10.15252/msb.20177733).
 #' It has been generated as follows:
 #' data(strasen)
-#' RTFmodelLst <- RTFOnMultipleTimeCourses(strasen)
-#' strasenParams <- getParamDf(RTFmodelLst)
+#' params.lst <- getParamsFromMultipleTimeCourses(strasen, 
+#'                                                nInitialGuesses = 200)
+#' strasenParams <- params.lst[["param.df"]]    
 #'
 #' @docType data
 #'

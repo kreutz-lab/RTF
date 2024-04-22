@@ -5,7 +5,7 @@
 #' It has been generated as follows:
 #' data(almaden)
 #' params.lst <- getParamsFromMultipleTimeCourses(almaden, 
-#'                                               nInitialGuesses = 100)
+#'                                                nInitialGuesses = 200)
 #' almadenModelLst <- params.lst[["RTFmodelLst"]]
 #'
 #' @docType data

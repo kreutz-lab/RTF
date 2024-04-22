@@ -8,8 +8,7 @@
 #' It has been generated from a rds file returned from:
 #' data(almaden)
 #' params.lst <- getParamsFromMultipleTimeCourses(almaden, 
-#'                                               fileString = "test",
-#'                                               nInitialGuesses = 100)
+#'                                                nInitialGuesses = 200)
 #' almadenParams <- params.lst[["param.df"]]                                              
 #'
 #' @docType data

@@ -16,7 +16,7 @@ Almaden et al. (https://doi.org/10.1016/j.celrep.2014.11.024).
 It has been generated as follows:
 data(almaden)
 params.lst <- getParamsFromMultipleTimeCourses(almaden, 
-                                              nInitialGuesses = 100)
+                                               nInitialGuesses = 200)
 almadenModelLst <- params.lst[["RTFmodelLst"]]
 }
 \examples{

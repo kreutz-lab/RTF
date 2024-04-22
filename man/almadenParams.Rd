@@ -6,7 +6,7 @@
 \title{Example RTF parameter data frame to simulated time courses of NFkB pathway 
 components}
 \format{
-An object of class \code{data.frame} with 182 rows and 7 columns.
+An object of class \code{data.frame} with 182 rows and 8 columns.
 }
 \usage{
 data(almadenParams)
@@ -19,8 +19,7 @@ based on the NFkB model of Almaden et al.
 It has been generated from a rds file returned from:
 data(almaden)
 params.lst <- getParamsFromMultipleTimeCourses(almaden, 
-                                              fileString = "test",
-                                              nInitialGuesses = 100)
+                                               nInitialGuesses = 200)
 almadenParams <- params.lst[["param.df"]]
 }
 \examples{
