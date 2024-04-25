@@ -2,9 +2,13 @@
 #'
 #' Simulated time course data based on cell class model introduced in
 #' Strasen et al. (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}).
-#' Data frame containing the time course data simulated by JWS Online 
-#' (https://jjj.bio.vu.nl/models/experiments/strasen2018_fig5a/) for cell lines 
-#' 1-6.
+#' Data frame containing the time course data simulated based on 
+#' models strasen6-strasen11 by JWS Online 
+#' (https://jjj.bio.vu.nl/models/experiments/strasen2018_fig5a/), corresponding
+#' to the cell lines 1-6 in Strasen et al. 
+#' (\href{https://doi.org/10.15252/msb.20177733}{EMBOpress}). 
+#' The identity of the cell line the respective time course is based on is
+#' indicated by the last digit of the column names of this data frame.
 #' 
 #' The function used to generate the data frame from the .csv files generated 
 #' by JWS Online:
@@ -23,6 +27,9 @@
 #'                                            colnames(df.multipleTimeCourses))]
 #'   df.multipleTimeCourses <- cbind(time, df.multipleTimeCourses)
 #' }
+#' # As the JWS models strasen6-strasen11 correspond to cell lines 1-6, the 
+#' # column names were relabelled such that the last digit corresponds to the 
+#' # cell line. 
 #'
 #' @docType data
 #'
