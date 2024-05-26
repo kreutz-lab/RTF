@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotInteractive2DPlot.R
 \name{plotInteractive2DPlot}
 \alias{plotInteractive2DPlot}
-\title{Generates dynamic 2D plot based on the RTF parameters for multiple time 
+\title{Generates dynamic 2D plot based on the RTF parameters for multiple time
 courses}
 \usage{
 plotInteractive2DPlot(
@@ -20,23 +20,23 @@ plotInteractive2DPlot(
 \arguments{
 \item{dim1Vec}{Vector with values of first dimension.}
 
-\item{dim2Vec}{Vector with values of second dimension. Has same length of 
+\item{dim2Vec}{Vector with values of second dimension. Has same length of
 dim1Vec}
 
-\item{ID}{Vector with unique identifiers with same length as dim1Vec and 
+\item{ID}{Vector with unique identifiers with same length as dim1Vec and
 dim2Vec.}
 
-\item{species}{Vector with names of molecular species with same length as 
+\item{species}{Vector with names of molecular species with same length as
 dim1Vec and dim2Vec.}
 
 \item{RTFmodelLst}{List with the RTF result for each time course.}
 
 \item{metaInfo}{(Optional) Vector specifying  meta information for
-each time course. Needs to have the same length as the number of rows of 
+each time course. Needs to have the same length as the number of rows of
 param.df.}
 
-\item{plotLines}{Boolean indicating if lines should be plotted between 
-species of the same name (Default: TRUE). Can only be plotted if there are 
+\item{plotLines}{Boolean indicating if lines should be plotted between
+species of the same name (Default: TRUE). Can only be plotted if there are
 two time courses per species.}
 
 \item{hRatio}{Float between 0 and 1 indicating where subplot should be placed
@@ -49,9 +49,9 @@ vertically in relation to plot height (Default: 0).}
 Plotly object of the dynamic 2D plot.
 }
 \description{
-Generates dynamic 2D plot based on the RTF parameters for 
-multiple time courses, where each point corresponds to a single time course. 
-By hovering over a point the corresponding time-resolved behavior is 
+Generates dynamic 2D plot based on the RTF parameters for
+multiple time courses, where each point corresponds to a single time course.
+By hovering over a point the corresponding time-resolved behavior is
 displayed in an additional smaller subplot.
 }
 \examples{
@@ -62,7 +62,7 @@ colNames <- colnames(timeCourses[2:ncol(timeCourses)])
 species <- sub("_[^_]+$", "", colNames)
 conditionID <- gsub(".*_", "", colNames)
 
-# # We don't run the following lines as the required object almadenModelLst 
+# # We don't run the following lines as the required object almadenModelLst
 # # is available as an example (data(almadenModelLst)).
 # fileString <- "almadenExampleFile"
 # params.lst <- getParamsFromMultipleTimeCourses(
@@ -79,24 +79,25 @@ data(almadenModelLst)
 param.df <- almadenParams
 RTFmodelLst <- almadenModelLst
 plots <- plotLowDimensionalRTF(
-  df = param.df,
-  metaInfo = species, 
-  metaInfoName = "Species",
-  maxTime = max(timeCourses$time),
-  numClust = NULL
+    df = param.df,
+    metaInfo = species,
+    metaInfoName = "Species",
+    maxTime = max(timeCourses$time),
+    numClust = NULL
 )
-    
+
 df.umapData <- plots[["umap.data"]]
 clustID <- df.umapData$clustID
 ID <- row.names(df.umapData)
-plt <- plotInteractive2DPlot(dim1Vec = df.umapData$UMAP1,
-                        dim2Vec = df.umapData$UMAP2,
-                        ID = ID,
-                        species = species,
-                        RTFmodelLst = RTFmodelLst,
-                        metaInfo = conditionID, # alternatively: clustID
-                        hRatio = 0, 
-                        vRatio = 0
+plt <- plotInteractive2DPlot(
+    dim1Vec = df.umapData$UMAP1,
+    dim2Vec = df.umapData$UMAP2,
+    ID = ID,
+    species = species,
+    RTFmodelLst = RTFmodelLst,
+    metaInfo = conditionID, # alternatively: clustID
+    hRatio = 0,
+    vRatio = 0
 )
 }
 }

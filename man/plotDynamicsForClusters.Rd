@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotDynamicsForClusters.R
 \name{plotDynamicsForClusters}
 \alias{plotDynamicsForClusters}
-\title{Plot the scaled or unscaled dynamics of multiple time courses separated by 
+\title{Plot the scaled or unscaled dynamics of multiple time courses separated by
 cluster}
 \usage{
 plotDynamicsForClusters(df, scaled = TRUE)
@@ -11,14 +11,14 @@ plotDynamicsForClusters(df, scaled = TRUE)
 \item{df}{Data frame 'df' of the dynamics with columns 't' (time),
 'y' (value), 'id' (time course name), 'cluster' (cluster ID).}
 
-\item{scaled}{Boolean indicating if values should be scaled for the time 
+\item{scaled}{Boolean indicating if values should be scaled for the time
 courses in a cluster.}
 }
 \value{
 ggplot2 object with the dynamics plots separated by cluster.
 }
 \description{
-Plots the scaled or unscaled dynamics of multiple time courses 
+Plots the scaled or unscaled dynamics of multiple time courses
 separated by cluster
 }
 \examples{
@@ -28,40 +28,54 @@ metaInfoName <- "Species"
 param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
 gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
-                             groupColName = metaInfoName,
-                             alpha = 1, size = 1.5)
+    groupColName = metaInfoName,
+    alpha = 1, size = 1.5
+)
 df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 clustID <- as.factor(
-                 NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
-                 method = 'complete', index = 'all')$Best.partition)
+    NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
+        method = "complete", index = "all"
+    )$Best.partition
+)
 gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
-                            groupColName = "clustID", alpha = 1, size = 1.5)
+    groupColName = "clustID", alpha = 1, size = 1.5
+)
 df.umap.cluster <- gg.umap.cluster[["data"]]
 df <- data.frame(cbind(
-  df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
-  metaInfo, strasenParams))
-colnames(df) <- c("UMAP1", "UMAP2", "clustID",
-                   metaInfoName, colnames(strasenParams))
+    df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
+    metaInfo, strasenParams
+))
+colnames(df) <- c(
+    "UMAP1", "UMAP2", "clustID",
+    metaInfoName, colnames(strasenParams)
+)
 df.byCluster <- split(df, df$clustID)
 xi <- seq(0, 10, length.out = 1000)
 geom_line.lst <- list()
 for (cluster in df.byCluster) {
-  for (rowId in seq(nrow(cluster))) {
-    row <- cluster[rowId,]
-    id <- rownames(cluster)[rowId]
-    functionResVec <- getTransientFunctionResult(
-      rtfPar = row[colnames(row) != "signum_TF"],
-      t = xi,
-      signum_TF = row[["signum_TF"]]
-     )
-    
-    geom_line.lst <- append(
-      geom_line.lst, 
-      list(data.frame(t = xi,
-                      y = functionResVec,
-                      id = rep(id, times = length(xi)),
-                      cluster = rep(cluster$clustID, times = length(xi)))))
-  }
+    for (rowId in seq(nrow(cluster))) {
+        row <- cluster[rowId, ]
+        id <- rownames(cluster)[rowId]
+        functionResVec <- getTransientFunctionResult(
+            rtfPar = row[!(colnames(row) \%in\% c(
+                "signumTF_sus",
+                "signumTF_trans"
+            ))],
+            t = xi,
+            signumTF_sus = row[["signumTF_sus"]],
+            signumTF_trans = row[["signumTF_trans"]]
+        )
+
+        geom_line.lst <- append(
+            geom_line.lst,
+            list(data.frame(
+                t = xi,
+                y = functionResVec,
+                id = rep(id, times = length(xi)),
+                cluster = rep(cluster$clustID, times = length(xi))
+            ))
+        )
+    }
 }
 df <- dplyr::bind_rows(geom_line.lst)
 plot.scaled <- plotDynamicsForClusters(df, scaled = TRUE)

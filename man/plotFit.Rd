@@ -19,9 +19,10 @@ plotFit(
 }
 \arguments{
 \item{par}{Vector containing
-alpha, beta, gamma, A, B, b, tau, and signum_TF (modus 'singleDose') or
-M_alpha, h_alpha,  K_alpha, M_gamma, h_gamma, K_gamma,
-M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau (modus 'doseDependent').}
+alpha, beta, gamma, A, B, b, tau, signumTF_sus, and signumTF_trans
+(modus 'singleDose') or M_alpha, h_alpha, K_alpha, M_gamma, h_gamma,
+K_gamma, M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau, signumTF_sus,
+and signumTF_trans (modus 'doseDependent').}
 
 \item{withData}{Boolean indicating if data should be added to fit line}
 
@@ -43,19 +44,24 @@ experimental data frame)}
 \item{pointSize}{Point size}
 }
 \value{
-ggplot object showing RTF, if withData = TRUE together with 
+ggplot object showing RTF, if withData = TRUE together with
 experimental data points
 }
 \description{
-Plot RTF, optionally together with experimental data points. 
+Plot RTF, optionally together with experimental data points.
 In addition, the sustained and transient part of the RTF are plotted.
 }
 \examples{
 gg <- plotFit(
-       par = c(alpha = 1.00, beta = 1.00, gamma = 1.00,
-       A = 1.05, B = 3.05,
-       b = -0.28, tau = -1, signum_TF = 1),
-       withData = TRUE,
-       y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
-       t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10))
+    par = c(
+        alpha = 1.00, beta = 1.00, gamma = 1.00,
+        A = 1.05, B = 3.05,
+        b = -0.28, tau = -1,
+        signumTF_sus = 1,
+        signumTF_trans = 1
+    ),
+    withData = TRUE,
+    y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
+    t = c(0, 0.7, 1.2, 1.55, 2.3, 7.45, 10)
+)
 }

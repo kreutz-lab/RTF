@@ -9,35 +9,41 @@ initializeOptimObject(
   modus,
   optimFunction = "logLikelihood",
   control = list(trace = 1, maxit = 1000, factr = 1e+07),
-  takeLog10 = TRUE
+  takeLog10 = TRUE,
+  sameSign = TRUE
 )
 }
 \arguments{
 \item{data}{Data frame containing columns named 't' (time) and 'y'
 (quantitative value).}
 
-\item{modus}{String indicating if modus 'singleDose' or 'doseDependent' 
+\item{modus}{String indicating if modus 'singleDose' or 'doseDependent'
 should be used.}
 
-\item{optimFunction}{String indicating the optimization function which 
+\item{optimFunction}{String indicating the optimization function which
 should be used (Default: "logLikelihood").}
 
-\item{control}{List of control arguments passed to the function stats::optim 
+\item{control}{List of control arguments passed to the function stats::optim
 (Default: list(trace = 1, maxit = 1000, factr = 1e7)).}
 
-\item{takeLog10}{Boolean value indicating if log10 of bounds should be 
+\item{takeLog10}{Boolean value indicating if log10 of bounds should be
 applied.}
+
+\item{sameSign}{Boolean indicating if sign of sustained RTF part
+(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(Default: TRUE).}
 }
 \value{
 Initialized OptimObject, which is a list containing input data frame
-with time resolved data ('data'), the vector of initial guesses 
+with time-resolved data ('data'), the vector of initial guesses
 ('initialGuess.vec'), of lower bounds ('lb.vec'), of upper bounds ('ub.vec'),
-vector of fixed parameters ('fixed'), if log10 is applied to bounds 
-('takeLog10'), the parameters having no negative values in initialGuess.vec, 
-lb.vec, and ub.vec ('positive.par.names'), modus ('modus'), 
-likelihood function for the parameter optimization ('optimFunction'), 
-list of control parameters passed to stats::optim ('control'),
-and a list of values of fitted parameters ('fitted').
+vector of fixed parameters ('fixed'), if log10 is applied to bounds
+('takeLog10'), the parameters having no negative values in initialGuess.vec,
+lb.vec, and ub.vec ('positive.par.names'), modus ('modus'),
+log-likelihood function for the parameter optimization ('optimFunction'),
+if the sign of the sustained and transient RTF part should be equal
+('sameSign'), list of control parameters passed to stats::optim ('control'),
+and a list of values of fitted parameters ('fitted', can be empty).
 }
 \description{
 Initializes OptimObject
@@ -45,10 +51,11 @@ Initializes OptimObject
 \examples{
 # Modus: Single-dose RTF
 data <- getSimData()
-optimObject.singleDose <- initializeOptimObject(data, modus = 'singleDose')
+optimObject.singleDose <- initializeOptimObject(data, modus = "singleDose")
 
 # Modus: Dose-dependent RTF
 data.doseResponse <- getSimData("doseDependent")
-optimObject.doseDep <- initializeOptimObject(data.doseResponse, 
-                                             modus = 'doseDependent')
+optimObject.doseDep <- initializeOptimObject(data.doseResponse,
+    modus = "doseDependent"
+)
 }

@@ -1,6 +1,6 @@
-#' Gradient of log likelihood optimization function
+#' Gradient of log-likelihood optimization function
 #'
-#' @description Gradient of log likelihood optimization function
+#' @description Gradient of log-likelihood optimization function
 #' @return Named vector with optimization value for each parameter
 #' @param par Initial values for the parameters to be optimized over.
 #' @param data Data frame containing columns named 't' (time), 'y' (quantitative
@@ -11,5 +11,5 @@
 #' @export objFunctGradient
 
 objFunctGradient <- function(par, data, optimObject, calcGradient) {
-  objFunct(par, data, optimObject, calcGradient = TRUE) 
+    objFunct(par, data, optimObject, calcGradient = TRUE)
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/plotLowDimensionalRTF.R
 \name{plotLowDimensionalRTF}
 \alias{plotLowDimensionalRTF}
-\title{Generate plots of low-dimensional representation of multiple time courses, 
+\title{Generate plots of low-dimensional representation of multiple time courses,
 which is based on the RTF parameters of those time courses}
 \usage{
 plotLowDimensionalRTF(
   df,
   metaInfo,
   metaInfoName,
-  takeRank = FALSE,
+  takeRank = TRUE,
   scaled = TRUE,
   dimX = 1,
   dimY = 2,
@@ -21,61 +21,63 @@ plotLowDimensionalRTF(
 )
 }
 \arguments{
-\item{df}{Data frame with the RTF parameter values. 
-Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', and 'signum_TF'
-represent the different RTF parameters. The rows correspond to the different
-time courses.}
+\item{df}{Data frame with the RTF parameter values.
+Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', 'signumTF_sus', and
+'signumTF_trans' represent the different RTF parameters. The rows correspond
+to the different time courses.}
 
 \item{metaInfo}{String of the column name with meta information (.e.g.
 groups.}
 
 \item{metaInfoName}{String of the name of the meta information.}
 
-\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
-of absolute value (Default: FALSE)}
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead
+of absolute value (Default: TRUE)}
 
-\item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time courses in a cluster (Default: TRUE). Only relevant if 
+\item{scaled}{Boolean indicating if values used for UMAP should be scaled
+for the time courses in a cluster (Default: TRUE). Only relevant if
 takeRank = FALSE.}
 
-\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
+\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on
 the x axis (Default: 1).}
 
-\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted 
+\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted
 on the y axis (Default: 2).}
 
 \item{maxTime}{Time point up to which the dynamics should be plotted.}
 
-\item{numClust}{(Optional) Integer indicating the number of clusters used 
-for k-means clustering. If not specified, number of clusters will be 
+\item{numClust}{(Optional) Integer indicating the number of clusters used
+for k-means clustering. If not specified, number of clusters will be
 determined automatically using the function NbClust::NbClust().}
 
 \item{seed}{Seed for UMAP.}
 
-\item{alphaUMAP}{Alpha value (between 0 and 1) of the data points in the 
+\item{alphaUMAP}{Alpha value (between 0 and 1) of the data points in the
 static UMAP plot (Default: 1).}
 
-\item{sizeUMAP}{Size of the data points in the static UMAP plot 
+\item{sizeUMAP}{Size of the data points in the static UMAP plot
 (Default: 1.5).}
 }
 \value{
-List containing UMAP plot colored by meta info ('umap.metaInfo'), 
-UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter 
-distribution ('parDistribution'), unscaled dynamics plots 
-('dynamics.notscaled'), scaled dynamics plots ('dynamics.scaled'), 
-UMAP result data frame ('umap.data'), and data frame with the dynamics values 
+List containing UMAP plot colored by meta info ('umap.metaInfo'),
+UMAP plot colored by cluster ID ('umap.cluster'), plot of parameter
+distribution ('parDistribution'), unscaled dynamics plots
+('dynamics.notscaled'), scaled dynamics plots ('dynamics.scaled'),
+UMAP result data frame ('umap.data'), and data frame with the dynamics values
 ('dynamics.data')
 }
 \description{
-Generates plots of low-dimensional representation of multiple 
+Generates plots of low-dimensional representation of multiple
 time courses, which is based on the RTF parameters of those time courses.
 }
 \examples{
 data(strasenParams)
 metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
 metaInfoName <- "Species"
-res <- plotLowDimensionalRTF(df = strasenParams,
-                             metaInfo = metaInfo,
-                             metaInfoName = metaInfoName,
-                             maxTime = 10)
+res <- plotLowDimensionalRTF(
+    df = strasenParams,
+    metaInfo = metaInfo,
+    metaInfoName = metaInfoName,
+    maxTime = 10
+)
 }

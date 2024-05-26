@@ -9,16 +9,16 @@ modelReduction(res, nInitialGuesses = 50, plotAllPointsWaterfall = FALSE)
 \arguments{
 \item{res}{Full RTF model, i.e., generated without fixed parameters}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
-(in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 50).}
+\item{nInitialGuesses}{Integer indicating number of initial guesses
+(in addition to the default initial guess) used for all four combinations
+of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
 
-\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
-plotted in waterfall plot (Default: FALSE). 
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be
+plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
-List of RTF model after model reduction ('finalModel') and 
+List of RTF model after model reduction ('finalModel') and
 corresponding model parameters ('finalParams').
 }
 \description{

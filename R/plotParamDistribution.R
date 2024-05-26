@@ -16,15 +16,15 @@
 #' nFits <- 50
 #' values <- c()
 #' for (i in 1:length(parameters)) {
-#'  parameter <- parameters[i]
-#'  values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
+#'     parameter <- parameters[i]
+#'     values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
 #' }
 #' df.parameterValues.long <- data.frame(
-#'   variable = rep(parameters, each = nFits), 
-#'   value = values)
+#'     variable = rep(parameters, each = nFits),
+#'     value = values
+#' )
 #' gg.paramDistr <- plotParamDistribution(df.parameterValues.long)
-
-plotParamDistribution <- function(df.parameterValues.long, 
+plotParamDistribution <- function(df.parameterValues.long,
                                   xLabelSize = 5,
                                   yLabelSize = 5) {
     ggplot2::ggplot(df.parameterValues.long, ggplot2::aes(x = value)) +
@@ -35,8 +35,10 @@ plotParamDistribution <- function(df.parameterValues.long,
             panel.spacing = ggplot2::unit(0.1, "lines"),
             strip.text.x = ggplot2::element_text(size = 8),
             axis.text.y = ggplot2::element_text(size = yLabelSize),
-            axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, 
-                                                size = xLabelSize)
+            axis.text.x = ggplot2::element_text(
+                angle = 45, hjust = 1,
+                size = xLabelSize
+            )
         ) +
         ggplot2::facet_wrap(~variable, scales = "free") +
         ggplot2::xlab("Value") +

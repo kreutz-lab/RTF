@@ -7,8 +7,8 @@
 plotParamDistributionForClusters(clust.df, clusterColName = "")
 }
 \arguments{
-\item{clust.df}{Data frame with the cluster ID (defined by clusterColName), 
-parameters ('variable'), and value for the parameter of a specific cluster 
+\item{clust.df}{Data frame with the cluster ID (defined by clusterColName),
+parameters ('variable'), and value for the parameter of a specific cluster
 ('value') as columns.}
 
 \item{clusterColName}{Name of the column containing the cluster IDs.}
@@ -17,8 +17,8 @@ parameters ('variable'), and value for the parameter of a specific cluster
 ggplot2 object of the parameter distribution for the clusters
 }
 \description{
-Plots the parameters for all clusters, where the colored area 
-around the median of a cluster (indicated by point) for a specific parameter 
+Plots the parameters for all clusters, where the colored area
+around the median of a cluster (indicated by point) for a specific parameter
 is bounded by 25th and 75th quantile.
 }
 \examples{
@@ -29,25 +29,33 @@ metaInfoName <- "Species"
 param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
 gg.umap.metaInfo <- plotUMAP(param.df.wMetaInfo,
-                             groupColName = metaInfoName,
-                             alpha = 1, size = 1.5)
+    groupColName = metaInfoName,
+    alpha = 1, size = 1.5
+)
 df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 clustID <- as.factor(
-NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
-                 method = 'complete', index = 'all')$Best.partition)
+    NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
+        method = "complete", index = "all"
+    )$Best.partition
+)
 gg.umap.cluster <- plotUMAP(data.frame(cbind(strasenParams, clustID)),
-                            groupColName = "clustID", alpha = 1, 
-                            size = 1.5)
+    groupColName = "clustID", alpha = 1,
+    size = 1.5
+)
 df.umap.cluster <- gg.umap.cluster[["data"]]
 umap.data <- data.frame(cbind(
-  df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
-  metaInfo, strasenParams))
-colnames(umap.data) <- c("UMAP1", "UMAP2", "clustID",
-                         metaInfoName, colnames(strasenParams))
+    df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
+    metaInfo, strasenParams
+))
+colnames(umap.data) <- c(
+    "UMAP1", "UMAP2", "clustID",
+    metaInfoName, colnames(strasenParams)
+)
 library(dplyr)
 umap.data.selected <- umap.data \%>\%
-  dplyr::select(clustID, !!params) \%>\%
-  reshape2::melt(id.vars = c("clustID"))
+    dplyr::select(clustID, !!params) \%>\%
+    reshape2::melt(id.vars = c("clustID"))
 parDistribution <- plotParamDistributionForClusters(umap.data.selected,
-                                                  clusterColName = "clustID")
+    clusterColName = "clustID"
+)
 }

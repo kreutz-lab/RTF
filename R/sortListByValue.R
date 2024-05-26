@@ -1,4 +1,4 @@
-#' Sort sublists by likelihood value
+#' Sort sublists by log-likelihood value
 #'
 #' @description Sorts a list of sublists in ascending order according to
 #' parameter 'value'.
@@ -7,11 +7,12 @@
 #' parameter 'value', according to which the sublists will be sorted.
 #' @export sortListByValue
 #' @examples
-#' lst <- list(optimRes = list(str = "res1", value = -20),
-#'             optimRes = list(str = "res2", value = -45),
-#'             optimRes = list(str = "res3", value = 8))
+#' lst <- list(
+#'     optimRes = list(str = "res1", value = -20),
+#'     optimRes = list(str = "res2", value = -45),
+#'     optimRes = list(str = "res3", value = 8)
+#' )
 #' lst.sorted <- sortListByValue(lst)
-
 sortListByValue <- function(lst) {
     lst2 <- c(unlist(lapply(lst, function(x) x[["value"]])))
     sortIdx <- sort(lst2, index.return = TRUE)$ix

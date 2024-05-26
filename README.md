@@ -120,9 +120,12 @@ plt <- plotInteractiveUMAP(df = timeCourses,
                            fileString = "almadenInteractiveUMAP",
                            conditions = gsub(".*_", "", colNames),
                            species = sub("_[^_]+$", "", colNames),
-                           hRatio = 0.4,
+                           takeRank = TRUE,
+                           seed = 222,
+                           vRatio = 0.05,
+                           hRatio = 0.35,
                            RTFmodelLst = RTFmodelLst,
-                           param.df = param.df)                             
+                           param.df = param.df)                     
                              
 # Save to html file
 htmlwidgets::saveWidget(plt, "interactiveUMAP.html")

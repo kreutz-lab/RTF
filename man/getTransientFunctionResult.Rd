@@ -7,7 +7,8 @@
 getTransientFunctionResult(
   rtfPar = c(),
   t = NULL,
-  signum_TF = 1,
+  signumTF_sus = 1,
+  signumTF_trans = 1,
   scale = TRUE,
   calcGradient = FALSE
 )
@@ -17,7 +18,9 @@ getTransientFunctionResult(
 
 \item{t}{Vector of time points}
 
-\item{signum_TF}{Value of signum_TF (-1 or 1, Default: 1)}
+\item{signumTF_sus}{Value of signumTF_sus (-1 or 1, Default: 1)}
+
+\item{signumTF_trans}{Value of signumTF_trans (-1 or 1, Default: 1)}
 
 \item{scale}{Boolean, indicates if time-dependent parameters t, tau,
 alpha, beta, and gamma should be scaled}
@@ -33,10 +36,17 @@ with the specified parameters to time points given in t.
 Apply RTF with defined parameters for defined time points
 }
 \examples{
-rtfPar <- c(alpha = 1.00, beta = 1.00, gamma = 1.00, A = 1.05,
-         B = 3.05, b = -0.28, tau = -1)
-t <- c(0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
-             7.14, 7.85, 8.57, 9.28, 10)
-y <- getTransientFunctionResult(rtfPar = rtfPar, t = t, signum_TF = 1)
+rtfPar <- c(
+    alpha = 1.00, beta = 1.00, gamma = 1.00, A = 1.05,
+    B = 3.05, b = -0.28, tau = -1
+)
+t <- c(
+    0, 0.71, 1.42, 2.14, 2.85, 3.57, 4.28, 5, 5.71, 6.42,
+    7.14, 7.85, 8.57, 9.28, 10
+)
+y <- getTransientFunctionResult(
+    rtfPar = rtfPar, t = t,
+    signumTF_sus = 1, signumTF_trans = 1
+)
 plot(t, y)
 }

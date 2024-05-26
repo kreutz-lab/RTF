@@ -12,13 +12,14 @@ getParamsFromMultipleTimeCourses(
   saveFolderPath = "",
   modelReduction = FALSE,
   nInitialGuesses = 50,
+  sameSign = TRUE,
   plotFitsToSingleFile = TRUE,
   plotFitOnly = FALSE,
   plotAllPointsWaterfall = FALSE
 )
 }
 \arguments{
-\item{df}{Data frame with the first column corresponding to the time points 
+\item{df}{Data frame with the first column corresponding to the time points
 and all the following columns corresponding to the different time courses.}
 
 \item{doRTFPlots}{Boolean indicating if RTF plots should be generated.}
@@ -32,30 +33,34 @@ already been determined previously, the path of the resulting .rds file can
 be specified  using readInParamRdsFilePath, so that the time-intensive
 calculation of the RTF parameter does not have to be repreated a second time.}
 
-\item{saveFolderPath}{Path of folder to where plots and rds files should be 
+\item{saveFolderPath}{Path of folder to where plots and rds files should be
 saved. Default: current folder.}
 
 \item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
-(in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 50).}
+\item{nInitialGuesses}{Integer indicating number of initial guesses
+(in addition to the default initial guess) used for all four combinations
+of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
 
-\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned 
+\item{sameSign}{Boolean indicating if sign of sustained RTF part
+(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(Default: TRUE) (Only relevant if readInParamRdsFilePath is not provided).}
+
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned
 as a single file.}
 
 \item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
 
-\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
-plotted in waterfall plot (Default: FALSE). 
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be
+plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
 List of data frame containing the RTF parameters for each time
 course, where the rows correspond to the different time courses and
-the columns to the RTF parameters ('param.df'), and list with the RTF result 
+the columns to the RTF parameters ('param.df'), and list with the RTF result
 for each time course ('RTFmodelLst').
 }
 \description{

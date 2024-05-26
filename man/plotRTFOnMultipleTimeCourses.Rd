@@ -21,31 +21,31 @@ plotRTFOnMultipleTimeCourses(
 
 \item{fileString}{String that should be added to file name.}
 
-\item{saveFolderPath}{Path of folder to where plots and rds files should be 
+\item{saveFolderPath}{Path of folder to where plots and rds files should be
 saved. Default: current folder.}
 
 \item{height}{Integer indicating page height}
 
 \item{width}{Integer indicating page width}
 
-\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned 
+\item{plotFitsToSingleFile}{Boolean indicating if plots should be returned
 as a single file.}
 
-\item{plotFitsToSingleFileExtension}{Image file extension, if 
+\item{plotFitsToSingleFileExtension}{Image file extension, if
 plotFitsToSingleFile=TRUE (Default: jpeg)}
 
-\item{plotFitOnly}{Plot fit only without additional information as provided 
+\item{plotFitOnly}{Plot fit only without additional information as provided
 using function plotRTF().}
 
-\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
-plotted in waterfall plot (Default: FALSE). 
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be
+plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{
 pdf file, where each page corresponds to one time course.
 }
 \description{
-Generates plots using plotRTF based on the RTF parameters 
+Generates plots using plotRTF based on the RTF parameters
 derived for each of multiple time courses.
 }
 \examples{

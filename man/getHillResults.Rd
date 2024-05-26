@@ -2,7 +2,7 @@
 % Please edit documentation in R/getHillResults.R
 \name{getHillResults}
 \alias{getHillResults}
-\title{Get RTF parameters (A, B, alpha, gamma, and tau) for a defined dose by 
+\title{Get RTF parameters (A, B, alpha, gamma, and tau) for a defined dose by
 applying Hill equations}
 \usage{
 getHillResults(d = NULL, params = c(), calcGradient = FALSE)
@@ -10,9 +10,9 @@ getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 \arguments{
 \item{d}{Numeric value corresponding to a dose}
 
-\item{params}{Named vector containing the parameters 
-'M_alpha', 'h_alpha', 'K_alpha', 'M_beta', 'h_beta', 'K_beta', 
-'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A', 
+\item{params}{Named vector containing the parameters
+'M_alpha', 'h_alpha', 'K_alpha', 'M_beta', 'h_beta', 'K_beta',
+'M_gamma', 'h_gamma', 'K_gamma', 'M_A', 'h_A', 'K_A',
 'M_B', 'h_B', 'K_B', 'M_tau', 'h_tau', 'K_tau', 'b'
 (but can also contain additional ones)}
 
@@ -23,15 +23,19 @@ getHillResults(d = NULL, params = c(), calcGradient = FALSE)
 Named vector of the calculated RTF parameters for the provided dose.
 }
 \description{
-Get RTF parameters (A, B, alpha, beta, gamma, and tau) for a 
+Get RTF parameters (A, B, alpha, beta, gamma, and tau) for a
 defined dose by applying Hill equations
 }
 \examples{
-df <- getHillResults(d = 2,
-                     params = c(M_alpha = 1, h_alpha = 2, K_alpha = 2,
-                                M_beta = 1, h_beta = 2, K_beta = 2,
-                                M_gamma = 1, h_gamma = 3, K_gamma = 2,
-                                M_A = 4, h_A = 2, K_A = 1,
-                                M_B = 2, h_B = 3, K_B = 1,
-                                M_tau = 2, h_tau = 3, K_tau = 2, b = 1))
+df <- getHillResults(
+    d = 2,
+    params = c(
+        M_alpha = 1, h_alpha = 2, K_alpha = 2,
+        M_beta = 1, h_beta = 2, K_beta = 2,
+        M_gamma = 1, h_gamma = 3, K_gamma = 2,
+        M_A = 4, h_A = 2, K_A = 1,
+        M_B = 2, h_B = 3, K_B = 1,
+        M_tau = 2, h_tau = 3, K_tau = 2, b = 1
+    )
+)
 }

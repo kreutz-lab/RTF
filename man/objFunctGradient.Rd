@@ -2,7 +2,7 @@
 % Please edit documentation in R/objFunctGradient.R
 \name{objFunctGradient}
 \alias{objFunctGradient}
-\title{Gradient of log likelihood optimization function}
+\title{Gradient of log-likelihood optimization function}
 \usage{
 objFunctGradient(par, data, optimObject, calcGradient)
 }
@@ -21,5 +21,5 @@ error 'Error in gr(par, ...) : unused argument (calcGradient = FALSE)'}
 Named vector with optimization value for each parameter
 }
 \description{
-Gradient of log likelihood optimization function
+Gradient of log-likelihood optimization function
 }

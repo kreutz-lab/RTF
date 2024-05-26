@@ -11,11 +11,11 @@ getParamDf(RTFmodelLst)
 }
 \value{
 Data frame containing the RTF parameters for each time course,
-where the rows correspond to the different time courses and 
+where the rows correspond to the different time courses and
 the columns to the RTF parameters.
 }
 \description{
-Generate data frame containing the RTF parameters for multiple 
+Generate data frame containing the RTF parameters for multiple
 time courses from list of RTF results.
 }
 \examples{

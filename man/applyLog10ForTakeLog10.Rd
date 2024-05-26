@@ -14,10 +14,10 @@ applyLog10ForTakeLog10(
 \arguments{
 \item{x}{Named vector with parameter values}
 
-\item{takeLog10}{Named vector of booleans indicating if log10 is/should be 
+\item{takeLog10}{Named vector of booleans indicating if log10 is/should be
 taken of the model parameters.}
 
-\item{reverse}{Boolean indicating if 10^ should be taken instead of log10() 
+\item{reverse}{Boolean indicating if 10^ should be taken instead of log10()
 (Default: FALSE).}
 
 \item{calcGradient}{Boolean indicating if gradient should be calculated
@@ -31,9 +31,9 @@ Take Log10(x) or 10^(x) for a vector x
 }
 \examples{
 x <- 1:3
-names(x) <- c("A","B","C")
+names(x) <- c("A", "B", "C")
 takeLog10 <- c(TRUE, TRUE, FALSE)
 names(takeLog10) <- names(x)
-applyLog10ForTakeLog10(x,takeLog10 = takeLog10)
-applyLog10ForTakeLog10(x,takeLog10 = takeLog10, calcGradient = TRUE)
+applyLog10ForTakeLog10(x, takeLog10 = takeLog10)
+applyLog10ForTakeLog10(x, takeLog10 = takeLog10, calcGradient = TRUE)
 }

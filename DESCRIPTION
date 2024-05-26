@@ -1,7 +1,7 @@
 Package: RTF
 Type: Package
 Title: Retarded Transient Function
-Version: 0.1.98
+Version: 0.1.99
 Authors@R: 
   person("Clemens","Kreutz",
   email = "clemens.kreutz@uniklinik-freiburg.de",
@@ -18,8 +18,9 @@ Imports:
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
+LazyDataCompression: xz
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     knitr,
     rmarkdown

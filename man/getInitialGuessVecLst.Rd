@@ -23,7 +23,7 @@ model parameter}
 \item{takeLog10}{Vector of booleans indicating if log10 is/should be taken
 of the model parameters.}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
+\item{nInitialGuesses}{Integer indicating number of initial guesses
 (in addition to the default initial guess) (Default: 50).}
 }
 \value{
@@ -32,17 +32,18 @@ a defined number of further initial guesses lying between the lower and
 upper bound of each model parameter
 }
 \description{
-Get list of the default initial guess for each model parameter 
-and a defined number of further initial guesses lying between the lower 
+Get list of the default initial guess for each model parameter
+and a defined number of further initial guesses lying between the lower
 and upper bound of each model parameter
 }
 \examples{
 data <- getSimData()
-optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
+optimObject.orig <- initializeOptimObject(data, modus = "singleDose")
 initialGuess.vec <- optimObject.orig[["initialGuess.vec"]]
 lb.vec <- optimObject.orig[["lb.vec"]]
 ub.vec <- optimObject.orig[["ub.vec"]]
 takeLog10 <- optimObject.orig[["takeLog10"]]
 initialGuess.vec.lst <- getInitialGuessVecLst(
-                          initialGuess.vec, lb.vec, ub.vec, takeLog10)
+    initialGuess.vec, lb.vec, ub.vec, takeLog10
+)
 }

@@ -11,7 +11,7 @@ getPositiveParNames(lb.vec, ub.vec, initialGuess.vec)
 
 \item{ub.vec}{Named vector of upper bound for each model parameter}
 
-\item{initialGuess.vec}{Named vector of initial guesses for each model 
+\item{initialGuess.vec}{Named vector of initial guesses for each model
 parameter}
 }
 \value{
@@ -28,6 +28,6 @@ lb.vec <- rnorm(len)
 ub.vec <- lb.vec + runif(len, 0, 2)
 initialGuess.vec <- runif(len, lb.vec, ub.vec)
 names(lb.vec) <- names(ub.vec) <- names(initialGuess.vec) <-
-                                                      paste0("param", 1:len)
+    paste0("param", 1:len)
 getPositiveParNames(lb.vec, ub.vec, initialGuess.vec)
 }

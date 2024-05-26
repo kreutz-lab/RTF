@@ -9,15 +9,15 @@ multiplyTimeParamsByFactor(timeParam, factorVal = NULL, gradientNames = c())
 \arguments{
 \item{timeParam}{Vector of time-dependent variables.}
 
-\item{factorVal}{Numeric value representing factor value the time-dependent 
+\item{factorVal}{Numeric value representing factor value the time-dependent
 variables should be multiplied with.}
 
-\item{gradientNames}{Names of parameters for which derivatives are 
+\item{gradientNames}{Names of parameters for which derivatives are
 calculated "M","h","K" should be part of it.}
 }
 \value{
-List with vector of transformed time-dependent variables (if 
-gradientNames are not provided) or matrix of derivatives (if gradientNames 
+List with vector of transformed time-dependent variables (if
+gradientNames are not provided) or matrix of derivatives (if gradientNames
 are provided)('timeParam') and factorVal.
 }
 \description{
@@ -31,6 +31,7 @@ multiplyTimeParamsByFactor(timeParam = t, factorVal = max(t))
 
 # With gradient
 multiplyTimeParamsByFactor(
-  timeParam = c(tau = 1), factorVal = max(t), 
-  gradientNames = c("tau", "alpha"))
+    timeParam = c(tau = 1), factorVal = max(t),
+    gradientNames = c("tau", "alpha")
+)
 }

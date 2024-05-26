@@ -7,7 +7,7 @@
 getSimData(modus = "singleDose", noise = NULL, numDoses = 7)
 }
 \arguments{
-\item{modus}{String indicating modus. Either "singleDose" or 
+\item{modus}{String indicating modus. Either "singleDose" or
 "doseDependent" (Default: "singleDose").}
 
 \item{noise}{Noise to be added. Default for modus = "singleDose" is 0.4,

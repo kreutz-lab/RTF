@@ -4,24 +4,33 @@
 \alias{RTFOnMultipleTimeCourses}
 \title{Run RTF on multiple time courses}
 \usage{
-RTFOnMultipleTimeCourses(df, modelReduction = FALSE, nInitialGuesses = 50)
+RTFOnMultipleTimeCourses(
+  df,
+  modelReduction = FALSE,
+  nInitialGuesses = 50,
+  sameSign = TRUE
+)
 }
 \arguments{
-\item{df}{Data frame with the first column corresponding to the time points 
+\item{df}{Data frame with the first column corresponding to the time points
 and all the following columns corresponding to the different time courses.}
 
-\item{modelReduction}{Boolean indicating if model reduction should be 
+\item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
-(in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 50).}
+\item{nInitialGuesses}{Integer indicating number of initial guesses
+(in addition to the default initial guess) used for all four combinations
+of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
+
+\item{sameSign}{Boolean indicating if sign of sustained RTF part
+(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(Default: TRUE).}
 }
 \value{
 List with the RTF result for each time course.
 }
 \description{
-Runs RTF on multiple columns corresponding to different time 
+Runs RTF on multiple columns corresponding to different time
 courses.
 }
 \examples{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sortListByValue.R
 \name{sortListByValue}
 \alias{sortListByValue}
-\title{Sort sublists by likelihood value}
+\title{Sort sublists by log-likelihood value}
 \usage{
 sortListByValue(lst)
 }
@@ -18,8 +18,10 @@ Sorts a list of sublists in ascending order according to
 parameter 'value'.
 }
 \examples{
-lst <- list(optimRes = list(str = "res1", value = -20),
-            optimRes = list(str = "res2", value = -45),
-            optimRes = list(str = "res3", value = 8))
+lst <- list(
+    optimRes = list(str = "res1", value = -20),
+    optimRes = list(str = "res2", value = -45),
+    optimRes = list(str = "res3", value = 8)
+)
 lst.sorted <- sortListByValue(lst)
 }

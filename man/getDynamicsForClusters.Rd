@@ -8,19 +8,19 @@ getDynamicsForClusters(df, maxTime = 10)
 }
 \arguments{
 \item{df}{Data frame with column for cluster ID ("clustID") and columns
-named "alpha", "gamma", "A", "B", "b", "tau", and "signum_TF" corresponding 
-to the parameter names of the RTF.}
+named "alpha", "gamma", "A", "B", "b", "tau", "signumTF_sus", and
+"signumTF_trans" corresponding to the parameter names of the RTF.}
 
 \item{maxTime}{Maximum time until dynamics should be plotted}
 }
 \value{
-List with ggplot2 objects with 
-scaled dynamics ('plot.scaled') and unscaled dynamics ('plot.notscaled) and 
-data frame 'df' of the unscaled dynamics (with columns 't' (time), 
+List with ggplot2 objects with
+scaled dynamics ('plot.scaled') and unscaled dynamics ('plot.notscaled) and
+data frame 'df' of the unscaled dynamics (with columns 't' (time),
 'y' (value), 'id' (time course name), 'cluster' (cluster ID)).
 }
 \description{
-Generates line plots of the dynamics of time courses separated 
+Generates line plots of the dynamics of time courses separated
 by cluster, where each line represents one time course.
 }
 \examples{
@@ -29,21 +29,30 @@ metaInfo <- sub("_[^_]+$", "", row.names(strasenParams))
 metaInfoName <- "Species"
 param.df.wMetaInfo <- data.frame(strasenParams, metaInfo)
 colnames(param.df.wMetaInfo) <- c(colnames(strasenParams), metaInfoName)
-gg.umap.metaInfo <- plotUMAP(df = param.df.wMetaInfo,
-                             groupColName = metaInfoName,
-                             alpha = 1, size = 1.5)
+gg.umap.metaInfo <- plotUMAP(
+    df = param.df.wMetaInfo,
+    groupColName = metaInfoName,
+    alpha = 1, size = 1.5
+)
 df.umap.metaInfo <- gg.umap.metaInfo[["data"]]
 clustID <- as.factor(
-NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
-                 method = 'complete', index = 'all')$Best.partition)
-gg.umap.cluster <- plotUMAP(df = data.frame(cbind(strasenParams, clustID)),
-                            groupColName = "clustID", alpha = 1, 
-                            size = 1.5)
+    NbClust::NbClust(df.umap.metaInfo[, c("UMAP1", "UMAP2")],
+        method = "complete", index = "all"
+    )$Best.partition
+)
+gg.umap.cluster <- plotUMAP(
+    df = data.frame(cbind(strasenParams, clustID)),
+    groupColName = "clustID", alpha = 1,
+    size = 1.5
+)
 df.umap.cluster <- gg.umap.cluster[["data"]]
 df <- data.frame(cbind(
-  df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
-  metaInfo, strasenParams))
-colnames(df) <- c("UMAP1", "UMAP2", "clustID",
-                         metaInfoName, colnames(strasenParams))
-dynamics <- getDynamicsForClusters(df, maxTime = 10) 
+    df.umap.cluster[, c("UMAP1", "UMAP2", "clustID")],
+    metaInfo, strasenParams
+))
+colnames(df) <- c(
+    "UMAP1", "UMAP2", "clustID",
+    metaInfoName, colnames(strasenParams)
+)
+dynamics <- getDynamicsForClusters(df, maxTime = 10)
 }

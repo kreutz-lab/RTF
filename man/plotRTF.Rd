@@ -24,8 +24,8 @@ file, otherwise they will be plotted directly. Default is empty string.}
 if fileNamePrefix is given. Only relevant for "singleDose"
 modus. (Default: TRUE)}
 
-\item{plotAllPointsWaterfall}{Boolean indicating if all points should be 
-plotted in waterfall plot (Default: FALSE). 
+\item{plotAllPointsWaterfall}{Boolean indicating if all points should be
+plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
 }
 \value{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/getNamedVectorsFromDf.R
 \name{getNamedVectorsFromDf}
 \alias{getNamedVectorsFromDf}
-\title{Get named vectors containing the lower bounds, upper bounds, and initial 
+\title{Get named vectors containing the lower bounds, upper bounds, and initial
 guesses from data frame of parameters}
 \usage{
 getNamedVectorsFromDf(df)
@@ -13,8 +13,8 @@ getNamedVectorsFromDf(df)
 the row names are the names of the model parameters.}
 }
 \value{
-List of named vectors of lower bounds ('lb.vec'), upper bounds 
-('ub.vec'), and initial guesses ('initialGuess.vec') for each model 
+List of named vectors of lower bounds ('lb.vec'), upper bounds
+('ub.vec'), and initial guesses ('initialGuess.vec') for each model
 parameter.
 }
 \description{
@@ -27,7 +27,8 @@ lb.vec <- rnorm(len)
 ub.vec <- lb.vec + runif(len, 0, 2)
 initialGuess.vec <- runif(len, lb.vec, ub.vec)
 df <- data.frame(
-       lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec)
+    lb.vec = lb.vec, ub.vec = ub.vec, initialGuess.vec = initialGuess.vec
+)
 row.names(df) <- paste0("param", 1:len)
 lst <- getNamedVectorsFromDf(df)
 lst

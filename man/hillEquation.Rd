@@ -26,12 +26,12 @@ hillEquation(
 \item{reciprocal}{Boolean indicating if Hill equation is calculated for
 reciprocal parameter}
 
-\item{gradientNames}{names of parameters for which derivatives are 
+\item{gradientNames}{names of parameters for which derivatives are
 calculated. "M","h","K" should be part of it.
-If provided, then derivatives are calculated instead of the hill equation 
+If provided, then derivatives are calculated instead of the hill equation
 itself.}
 
-\item{minval}{(Optional) Numeric, defines the lowest value the result can 
+\item{minval}{(Optional) Numeric, defines the lowest value the result can
 acquire. Only relevant if reciprocal = TRUE.}
 }
 \value{
@@ -39,11 +39,13 @@ Hill equation result
 }
 \description{
 Calculates Hill equation results for specified values of
-dose ('d'), maximum value ('M'), Hill coefficient ('h'), and half-maximum 
+dose ('d'), maximum value ('M'), Hill coefficient ('h'), and half-maximum
 quantity ('K').
 }
 \examples{
 hillEquation(d = 20, M = 5, h = 3, K = 4)
-hillEquation(d = 1:20, M = 5, h = 3, K = 4, 
-             gradientNames = c("A", "B", "M", "h", "K", "alpha", "beta"))
+hillEquation(
+    d = 1:20, M = 5, h = 3, K = 4,
+    gradientNames = c("A", "B", "M", "h", "K", "alpha", "beta")
+)
 }

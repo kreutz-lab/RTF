@@ -29,11 +29,12 @@ sds <- c(0.02, 1.2, 0.1, 0.8, 1.1)
 nFits <- 50
 values <- c()
 for (i in 1:length(parameters)) {
- parameter <- parameters[i]
- values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
+    parameter <- parameters[i]
+    values <- c(values, rnorm(n = nFits, mean = means[i], sd = sds[i]))
 }
 df.parameterValues.long <- data.frame(
-  variable = rep(parameters, each = nFits), 
-  value = values)
+    variable = rep(parameters, each = nFits),
+    value = values
+)
 gg.paramDistr <- plotParamDistribution(df.parameterValues.long)
 }

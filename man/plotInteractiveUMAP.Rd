@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotInteractiveUMAP.R
 \name{plotInteractiveUMAP}
 \alias{plotInteractiveUMAP}
-\title{Generates dynamic UMAP plot based on the RTF parameters for multiple time 
+\title{Generates dynamic UMAP plot based on the RTF parameters for multiple time
 courses}
 \usage{
 plotInteractiveUMAP(
@@ -10,7 +10,8 @@ plotInteractiveUMAP(
   fileString = "interactiveUMAP",
   conditions = c(),
   nInitialGuesses = 50,
-  takeRank = FALSE,
+  sameSign = TRUE,
+  takeRank = TRUE,
   scaled = TRUE,
   dimX = 1,
   dimY = 2,
@@ -24,40 +25,44 @@ plotInteractiveUMAP(
 )
 }
 \arguments{
-\item{df}{Data frame with the first column corresponding to the time points 
+\item{df}{Data frame with the first column corresponding to the time points
 and all the following columns corresponding to the different time courses.}
 
-\item{fileString}{String of the name of the created .rds file with the RTF 
+\item{fileString}{String of the name of the created .rds file with the RTF
 results.}
 
-\item{conditions}{Vector specifying the condition for each time course. 
+\item{conditions}{Vector specifying the condition for each time course.
 Needs to have the same length as the number of rows of df.}
 
-\item{nInitialGuesses}{Integer indicating number of initial guesses 
-(in addition to the default initial guess) used both for a signum_TF of -1 
-and 1 (Default: 50).}
+\item{nInitialGuesses}{Integer indicating number of initial guesses
+(in addition to the default initial guess) used for all four combinations
+of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
 
-\item{takeRank}{Boolean indicating if rank should be used for UMAP instead 
-of absolute value (Default: FALSE).}
+\item{sameSign}{Boolean indicating if sign of sustained RTF part
+(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(Default: TRUE) (Only relevant if RTFmodelLst or param.df is not provided).}
 
-\item{scaled}{Boolean indicating if values used for UMAP should be scaled 
-for the time courses in a cluster (Default: TRUE). Only relevant if 
+\item{takeRank}{Boolean indicating if rank should be used for UMAP instead
+of absolute value (Default: TRUE).}
+
+\item{scaled}{Boolean indicating if values used for UMAP should be scaled
+for the time courses in a cluster (Default: TRUE). Only relevant if
 takeRank = FALSE.}
 
-\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on 
+\item{dimX}{Integer from 1 to 3 indicating the UMAP dimension plotted on
 the x axis (Default: 1).}
 
-\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted 
+\item{dimY}{Integer from 1 to 3 indicating the UMAP dimension plotted
 on the y axis (Default: 2).}
 
 \item{seed}{Seed for UMAP.}
 
-\item{plotLines}{Boolean indicating if lines should be plotted between 
+\item{plotLines}{Boolean indicating if lines should be plotted between
 species of the same name (Default: TRUE). Can only be plotted if there are at
 most two time courses per species.}
 
-\item{species}{Vector with names of molecular species for each time course. 
-Needs to have the same length as the number of rows of df. 
+\item{species}{Vector with names of molecular species for each time course.
+Needs to have the same length as the number of rows of df.
 Needs to be provided in plotLines = TRUE.}
 
 \item{hRatio}{Float between 0 and 1 indicating where subplot should be placed
@@ -66,25 +71,25 @@ horizontally in relation to plot width (Default: 0).}
 \item{vRatio}{Float between 0 and 1 indicating where subplot should be placed
 vertically in relation to plot height (Default: 0).}
 
-\item{RTFmodelLst}{(Optional) List with the RTF result for each time course. 
-If this has already been calculated using the function 
-getParamsFromMultipleTimeCourses() it can be provided here to save time, if 
+\item{RTFmodelLst}{(Optional) List with the RTF result for each time course.
+If this has already been calculated using the function
+getParamsFromMultipleTimeCourses() it can be provided here to save time, if
 param.df is provided as well.}
 
-\item{param.df}{(Optional) data frame containing the RTF parameters for 
-each time course, where the rows correspond to the different time courses 
+\item{param.df}{(Optional) data frame containing the RTF parameters for
+each time course, where the rows correspond to the different time courses
 and the columns to the RTF parameters.
-If this has already been calculated using the function 
-getParamsFromMultipleTimeCourses() it can be provided here to save time, if 
+If this has already been calculated using the function
+getParamsFromMultipleTimeCourses() it can be provided here to save time, if
 RTFmodelLst is provided as well.}
 }
 \value{
 Plotly object of the interactive UMAP plot.
 }
 \description{
-Generates dynamic UMAP plot based on the RTF parameters for 
-multiple time courses, where each point corresponds to a single time course. 
-By hovering over a point the corresponding time-resolved behavior is 
+Generates dynamic UMAP plot based on the RTF parameters for
+multiple time courses, where each point corresponds to a single time course.
+By hovering over a point the corresponding time-resolved behavior is
 displayed in an additional smaller subplot.
 }
 \examples{
@@ -92,11 +97,16 @@ timeCourses <- almaden
 RTFmodelLst <- almadenModelLst
 param.df <- almadenParams
 colNames <- colnames(timeCourses[2:ncol(timeCourses)])
-plt <- plotInteractiveUMAP(df = timeCourses, 
-                           fileString = "almadenInteractiveUMAP", 
-                           conditions = gsub(".*_", "", colNames), 
-                           species = sub("_[^_]+$", "", colNames),
-                           hRatio = 0.4,
-                           RTFmodelLst = RTFmodelLst,
-                           param.df = param.df)
+plt <- plotInteractiveUMAP(
+    df = timeCourses,
+    fileString = "almadenInteractiveUMAP",
+    conditions = gsub(".*_", "", colNames),
+    species = sub("_[^_]+$", "", colNames),
+    takeRank = TRUE,
+    seed = 222,
+    vRatio = 0.05,
+    hRatio = 0.35,
+    RTFmodelLst = RTFmodelLst,
+    param.df = param.df
+)
 }

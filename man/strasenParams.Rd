@@ -3,31 +3,37 @@
 \docType{data}
 \name{strasenParams}
 \alias{strasenParams}
-\title{Example RTF parameter data frame to simulated time course data of cell 
+\title{Example RTF parameter data frame to simulated time course data of cell
 classes}
 \format{
-An object of class \code{data.frame} with 138 rows and 8 columns.
+An object of class \code{data.frame} with 138 rows and 9 columns.
 }
 \usage{
 data(strasenParams)
 }
 \description{
-This example data frame containing the estimated RTF parameters for the 
-'strasen' dataset, which is based on Strasen et al. 
-(https://doi.org/10.15252/msb.20177733).
+This example data frame containing the estimated RTF parameters for the
+'strasen' dataset, which is based on the publication
+\href{https://doi.org/10.15252/msb.20177733}{https://doi.org/10.15252/msb.20177733} 
+by Strasen et al., which was distributed under the terms of the 
+Creative Commons Attribution 4.0 License
+(\href{https://creativecommons.org/licenses/by/4.0/}{https://creativecommons.org/licenses/by/4.0/}).
 It has been generated as follows:
+\preformatted{
 data(strasen)
-params.lst <- getParamsFromMultipleTimeCourses(strasen, 
-                                               nInitialGuesses = 200)
+params.lst <- getParamsFromMultipleTimeCourses(strasen,
+                                               nInitialGuesses = 200,
+                                               sameSign = FALSE)
 strasenParams <- params.lst[["param.df"]]
+}
 }
 \examples{
 data(strasenParams)
 }
 \references{
-Strasen, Jette, et al. "Cell‐specific responses to the cytokine 
-TGF β are determined by variability in protein levels." 
+Strasen, Jette, et al. "Cell‐specific responses to the cytokine
+TGF β are determined by variability in protein levels."
 Molecular systems biology 14.1 (2018): e7733.
-(https://doi.org/10.15252/msb.20177733)
+(\href{https://doi.org/10.15252/msb.20177733}{https://doi.org/10.15252/msb.20177733})
 }
 \keyword{datasets}

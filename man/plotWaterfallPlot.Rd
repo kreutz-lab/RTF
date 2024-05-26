@@ -7,17 +7,17 @@
 plotWaterfallPlot(waterfallValues, idxCurrentFit = NULL, plotAllPoints = FALSE)
 }
 \arguments{
-\item{waterfallValues}{List of likelihood values or, if idxCurrentFit is
- given, data frame with columns indicating for each fit "value" 
- (likelihood value), "idx" (position of a fit in the sequence
+\item{waterfallValues}{List of log-likelihood values or, if idxCurrentFit is
+ given, data frame with columns indicating for each fit "value"
+ (log-likelihood value), "idx" (position of a fit in the sequence
 of ordered values), "col" (HEX values for color that should be given to each
  fit)}
 
 \item{idxCurrentFit}{Index indicating the position of the fit in the
 waterfall plot that should be highlighted.}
 
-\item{plotAllPoints}{Boolean indicating if all points should be plotted 
-(Default: FALSE). If FALSE, all values up to the median of those values 
+\item{plotAllPoints}{Boolean indicating if all points should be plotted
+(Default: FALSE). If FALSE, all values up to the median of those values
 are plotted.}
 }
 \value{
@@ -29,12 +29,13 @@ can be highlighted using the argument 'idxCurrentFit'.
 }
 \examples{
 data <- getSimData()
-optimObject.orig <- initializeOptimObject(data, modus = 'singleDose')
+optimObject.orig <- initializeOptimObject(data, modus = "singleDose")
 RTFmodelLst.wFinal <- getInitialGuessResults(optimObject.orig,
-                                             nInitialGuesses = 50)
+    nInitialGuesses = 50
+)
 optimResults <- RTFmodelLst.wFinal$optimResults
 optimResTmpLstValuesAll <- unlist(lapply(optimResults, function(x) {
-  unlist(x[grep("value", names(x))])
+    unlist(x[grep("value", names(x))])
 }))
 gg <- plotWaterfallPlot(optimResTmpLstValuesAll)
 }
