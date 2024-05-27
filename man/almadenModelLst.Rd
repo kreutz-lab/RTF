@@ -12,7 +12,7 @@ data(almadenModelLst)
 }
 \description{
 List of the RTF result for each time course of the  NFkB model of
-Almaden et al. 
+Almaden et al.
 (\href{https://doi.org/10.1016/j.celrep.2014.11.024}{https://doi.org/10.1016/j.celrep.2014.11.024}).
 It has been generated as follows:
 \preformatted{

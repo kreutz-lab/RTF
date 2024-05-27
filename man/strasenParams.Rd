@@ -14,8 +14,8 @@ data(strasenParams)
 \description{
 This example data frame containing the estimated RTF parameters for the
 'strasen' dataset, which is based on the publication
-\href{https://doi.org/10.15252/msb.20177733}{https://doi.org/10.15252/msb.20177733} 
-by Strasen et al., which was distributed under the terms of the 
+\href{https://doi.org/10.15252/msb.20177733}{https://doi.org/10.15252/msb.20177733}
+by Strasen et al., which was distributed under the terms of the
 Creative Commons Attribution 4.0 License
 (\href{https://creativecommons.org/licenses/by/4.0/}{https://creativecommons.org/licenses/by/4.0/}).
 It has been generated as follows:

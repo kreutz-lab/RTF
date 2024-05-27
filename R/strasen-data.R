@@ -20,7 +20,7 @@
 #'   modelName <- "strasen"
 #'   df.lst <- list()
 #'   for (i in 6:11) {
-#'     sub.df <- read.csv(paste0("data_", modelName, i, ".csv"), 
+#'     sub.df <- read.csv(paste0("data_", modelName, i, ".csv"),
 #'                        check.names = FALSE)
 #'     colnames(sub.df) <- paste0(colnames(sub.df), "_", i)
 #'     df.lst <- append(df.lst, sub.df)

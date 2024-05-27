@@ -101,9 +101,11 @@ plotParamDistributionForClusters <- function(clust.df, clusterColName = "") {
             axis.title.x = ggplot2::element_blank(),
             axis.title.y = ggplot2::element_blank(),
             legend.title = ggplot2::element_blank(),
-            axis.text.x = ggplot2::element_text(size = 10,
-                                                angle = 45, 
-                                                hjust = 1),
+            axis.text.x = ggplot2::element_text(
+                size = 10,
+                angle = 45,
+                hjust = 1
+            ),
             axis.text.y = ggplot2::element_text(size = 12),
             legend.direction = "horizontal",
             legend.position = "bottom"
