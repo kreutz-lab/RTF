@@ -19,10 +19,10 @@ plotFit(
 }
 \arguments{
 \item{par}{Vector containing
-alpha, beta, gamma, A, B, b, tau, signumTF_sus, and signumTF_trans
+alpha, beta, gamma, A, B, b, tau, signSus, and signTrans
 (modus 'singleDose') or M_alpha, h_alpha, K_alpha, M_gamma, h_gamma,
-K_gamma, M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau, signumTF_sus,
-and signumTF_trans (modus 'doseDependent').}
+K_gamma, M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau, signSus,
+and signTrans (modus 'doseDependent').}
 
 \item{withData}{Boolean indicating if data should be added to fit line}
 
@@ -57,8 +57,8 @@ gg <- plotFit(
         alpha = 1.00, beta = 1.00, gamma = 1.00,
         A = 1.05, B = 3.05,
         b = -0.28, tau = -1,
-        signumTF_sus = 1,
-        signumTF_trans = 1
+        signSus = 1,
+        signTrans = 1
     ),
     withData = TRUE,
     y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),

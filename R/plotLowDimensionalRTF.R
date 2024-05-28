@@ -10,8 +10,8 @@
 #' UMAP result data frame ('umap.data'), and data frame with the dynamics values
 #' ('dynamics.data')
 #' @param df Data frame with the RTF parameter values.
-#' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', 'signumTF_sus', and
-#' 'signumTF_trans' represent the different RTF parameters. The rows correspond
+#' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', 'signSus', and
+#' 'signTrans' represent the different RTF parameters. The rows correspond
 #' to the different time courses.
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.

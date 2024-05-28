@@ -5,8 +5,8 @@
 #' with the specified parameters to time points given in t.
 #' @param rtfPar Named vector of the parameter values used for RTF.
 #' @param t Vector of time points
-#' @param signumTF_sus Value of signumTF_sus (-1 or 1, Default: 1)
-#' @param signumTF_trans Value of signumTF_trans (-1 or 1, Default: 1)
+#' @param signSus Value of signSus (-1 or 1, Default: 1)
+#' @param signTrans Value of signTrans (-1 or 1, Default: 1)
 #' @param scale Boolean, indicates if time-dependent parameters t, tau,
 #' alpha, beta, and gamma should be scaled
 #' @param calcGradient Boolean indicating if gradient should be calculated
@@ -23,13 +23,13 @@
 #' )
 #' y <- getTransientFunctionResult(
 #'     rtfPar = rtfPar, t = t,
-#'     signumTF_sus = 1, signumTF_trans = 1
+#'     signSus = 1, signTrans = 1
 #' )
 #' plot(t, y)
 getTransientFunctionResult <- function(rtfPar = c(),
                                        t = NULL,
-                                       signumTF_sus = 1,
-                                       signumTF_trans = 1,
+                                       signSus = 1,
+                                       signTrans = 1,
                                        scale = TRUE,
                                        calcGradient = FALSE) {
     rtfParamNames <- names(rtfPar)
@@ -134,8 +134,8 @@ getTransientFunctionResult <- function(rtfPar = c(),
     }
 
     transientFunctionRes <-
-        signumTF_sus * A * (1 - exp(-alpha * nonLinTransformation)) +
-        signumTF_trans * B * (1 - exp(-beta * nonLinTransformation)) *
+        signSus * A * (1 - exp(-alpha * nonLinTransformation)) +
+        signTrans * B * (1 - exp(-beta * nonLinTransformation)) *
             exp(-gamma * nonLinTransformation) + b
 
     if (calcGradient) {
@@ -144,10 +144,10 @@ getTransientFunctionResult <- function(rtfPar = c(),
             ncol = length(nonLinTransformation)
         )
         diag(dtransFunRes_dnonLinTrans) <-
-            A * alpha * signumTF_sus * exp(-alpha * nonLinTransformation) +
-            B * gamma * signumTF_trans * exp(-gamma * nonLinTransformation) *
+            A * alpha * signSus * exp(-alpha * nonLinTransformation) +
+            B * gamma * signTrans * exp(-gamma * nonLinTransformation) *
                 (exp(-beta * nonLinTransformation) - 1) +
-            B * beta * signumTF_trans * exp(-beta * nonLinTransformation) *
+            B * beta * signTrans * exp(-beta * nonLinTransformation) *
                 exp(-gamma * nonLinTransformation)
 
         dtransFunRes_dparScaledRtf <-
@@ -158,26 +158,26 @@ getTransientFunctionResult <- function(rtfPar = c(),
         colnames(dtransFunRes_dparScaledRtf) <- rtfParamNames
 
         dtransFunRes_dparScaledRtf[, "alpha"] <-
-            A * nonLinTransformation * signumTF_sus *
+            A * nonLinTransformation * signSus *
                 exp(-alpha * nonLinTransformation)
 
         dtransFunRes_dparScaledRtf[, "beta"] <-
-            B * nonLinTransformation * signumTF_trans *
+            B * nonLinTransformation * signTrans *
                 exp(-beta * nonLinTransformation) *
                 exp(-gamma * nonLinTransformation)
 
         dtransFunRes_dparScaledRtf[, "gamma"] <-
-            B * nonLinTransformation * signumTF_trans *
+            B * nonLinTransformation * signTrans *
                 exp(-gamma * nonLinTransformation) *
                 (exp(-beta * nonLinTransformation) - 1)
 
         dtransFunRes_dparScaledRtf[, "b"] <- 1
 
         dtransFunRes_dparScaledRtf[, "A"] <-
-            -signumTF_sus * (exp(-alpha * nonLinTransformation) - 1)
+            -signSus * (exp(-alpha * nonLinTransformation) - 1)
 
         dtransFunRes_dparScaledRtf[, "B"] <-
-            -signumTF_trans * exp(-gamma * nonLinTransformation) *
+            -signTrans * exp(-gamma * nonLinTransformation) *
                 (exp(-beta * nonLinTransformation) - 1)
 
         dtransFunRes_dparRtf <- dtransFunRes_dparScaledRtf %*% dparScaled_dpar +

@@ -30,7 +30,7 @@ should be used (Default: "logLikelihood").}
 applied.}
 
 \item{sameSign}{Boolean indicating if sign of sustained RTF part
-(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(signSus) and transient RTF part (signTrans) should be equal
 (Default: TRUE).}
 }
 \value{

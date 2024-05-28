@@ -11,7 +11,7 @@ modelReduction(res, nInitialGuesses = 50, plotAllPointsWaterfall = FALSE)
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses
 (in addition to the default initial guess) used for all four combinations
-of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
+of signSus and signTrans, which both can be -1 or 1 (Default: 50).}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be
 plotted in waterfall plot (Default: FALSE).

@@ -5,10 +5,10 @@
 #' @return ggplot object showing RTF, if withData = TRUE together with
 #' experimental data points
 #' @param par Vector containing
-#' alpha, beta, gamma, A, B, b, tau, signumTF_sus, and signumTF_trans
+#' alpha, beta, gamma, A, B, b, tau, signSus, and signTrans
 #' (modus 'singleDose') or M_alpha, h_alpha, K_alpha, M_gamma, h_gamma,
-#' K_gamma, M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau, signumTF_sus,
-#' and signumTF_trans (modus 'doseDependent').
+#' K_gamma, M_A, h_A, K_A, M_B, h_B, K_B, M_tau, h_tau, K_tau, signSus,
+#' and signTrans (modus 'doseDependent').
 #' @param withData Boolean indicating if data should be added to fit line
 #' @param modus Modus ('singleDose' or 'doseDependent')
 #' @param y Experimental outcome for time points (corresponds to y column in
@@ -26,8 +26,8 @@
 #'         alpha = 1.00, beta = 1.00, gamma = 1.00,
 #'         A = 1.05, B = 3.05,
 #'         b = -0.28, tau = -1,
-#'         signumTF_sus = 1,
-#'         signumTF_trans = 1
+#'         signSus = 1,
+#'         signTrans = 1
 #'     ),
 #'     withData = TRUE,
 #'     y = c(0.45, 0.96, 1.13, 1.1, 0.9, 0.76, 0.78),
@@ -58,8 +58,8 @@ plotFit <- function(par,
         RTFResVec <- getTransientFunctionResult(
             t = xi,
             rtfPar = par,
-            signumTF_sus = par[["signumTF_sus"]],
-            signumTF_trans = par[["signumTF_trans"]]
+            signSus = par[["signSus"]],
+            signTrans = par[["signTrans"]]
         )
 
         RTFResDf <- data.frame(
@@ -77,15 +77,15 @@ plotFit <- function(par,
         susOnlyResVec <- getTransientFunctionResult(
             t = xi,
             rtfPar = parSus,
-            signumTF_sus = parSus[["signumTF_sus"]],
-            signumTF_trans = parSus[["signumTF_trans"]]
+            signSus = parSus[["signSus"]],
+            signTrans = parSus[["signTrans"]]
         )
 
         transOnlyResVec <- getTransientFunctionResult(
             t = xi,
             rtfPar = parTrans,
-            signumTF_sus = parTrans[["signumTF_sus"]],
-            signumTF_trans = parTrans[["signumTF_trans"]]
+            signSus = parTrans[["signSus"]],
+            signTrans = parTrans[["signTrans"]]
         )
 
         geom_line.df <- data.frame(
@@ -106,8 +106,8 @@ plotFit <- function(par,
             RTFResVec <- getTransientFunctionResult(
                 rtfPar = rtfPar,
                 t = xi,
-                signumTF_sus = par[["signumTF_sus"]],
-                signumTF_trans = par[["signumTF_trans"]],
+                signSus = par[["signSus"]],
+                signTrans = par[["signTrans"]],
                 scale = TRUE, # TODO TRUE or FALSE?
                 calcGradient = FALSE
             )
@@ -154,11 +154,11 @@ plotFit <- function(par,
             )
         }
     } else {
-        if (((par[["signumTF_sus"]] == 1) & (par[["signumTF_trans"]] == 1)) |
-            ((par[["signumTF_sus"]] == -1) & (par[["signumTF_trans"]] == -1))) {
-            if ((par[["signumTF_trans"]] == 1)) {
+        if (((par[["signSus"]] == 1) & (par[["signTrans"]] == 1)) |
+            ((par[["signSus"]] == -1) & (par[["signTrans"]] == -1))) {
+            if ((par[["signTrans"]] == 1)) {
                 limit <- min(geom_line.df$RTF)
-            } else if (par[["signumTF_trans"]] == -1) {
+            } else if (par[["signTrans"]] == -1) {
                 limit <- max(geom_line.df$RTF)
             }
 
@@ -182,8 +182,8 @@ plotFit <- function(par,
         } else {
             limit <- geom_line.df$RTF[1]
 
-            if ((par[["signumTF_sus"]] == 1) &
-                (par[["signumTF_trans"]] == -1)) {
+            if ((par[["signSus"]] == 1) &
+                (par[["signTrans"]] == -1)) {
                 ribbonTransYmin <-
                     abs(geom_line.df$Transient - min(geom_line.df$Transient)) -
                     max(abs(geom_line.df$Transient -
@@ -193,8 +193,8 @@ plotFit <- function(par,
                 ribbonSusYmax <-
                     abs(geom_line.df$Sustained -
                         min(geom_line.df$Sustained)) + limit
-            } else if ((par[["signumTF_sus"]] == -1) &
-                (par[["signumTF_trans"]] == 1)) {
+            } else if ((par[["signSus"]] == -1) &
+                (par[["signTrans"]] == 1)) {
                 ribbonTransYmin <- limit
                 ribbonTransYmax <-
                     abs(geom_line.df$Transient -

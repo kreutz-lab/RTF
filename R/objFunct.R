@@ -61,7 +61,7 @@
 #'     fixed = c(
 #'         alpha = NA, beta = NA,
 #'         gamma = 0.301029995663981, A = NA, B = NA, b = NA, tau = NA,
-#'         sigma = NA, signumTF_sus = 1, signumTF_trans = 1
+#'         sigma = NA, signSus = 1, signTrans = 1
 #'     ),
 #'     takeLog10 = c(
 #'         alpha = TRUE, beta = TRUE, gamma = TRUE,
@@ -220,7 +220,7 @@
 #'         h_gamma = NA, K_gamma = NA, M_A = NA, h_A = NA, K_A = NA,
 #'         M_B = NA,
 #'         h_B = NA, K_B = NA, M_tau = NA, h_tau = NA, K_tau = NA, b = NA,
-#'         sigma = NA, signumTF_sus = 1, signumTF_trans = 1
+#'         sigma = NA, signSus = 1, signTrans = 1
 #'     ),
 #'     takeLog10 = c(
 #'         M_alpha = TRUE, h_alpha = TRUE, K_alpha = TRUE,
@@ -275,8 +275,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
     data <- data[stats::complete.cases(data), ]
 
     fixed <- optimObject[["fixed"]]
-    signumTF_sus <- fixed[["signumTF_sus"]]
-    signumTF_trans <- fixed[["signumTF_trans"]]
+    signSus <- fixed[["signSus"]]
+    signTrans <- fixed[["signTrans"]]
     if ("sigmaExp" %in% colnames(data)) {
         sigma <- data$sigmaExp
     } else {
@@ -287,7 +287,7 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         }
     }
 
-    allParamNames <- setdiff(names(fixed), c("signumTF_sus", "signumTF_trans"))
+    allParamNames <- setdiff(names(fixed), c("signSus", "signTrans"))
     fixed <- fixed[allParamNames]
 
     if ("d" %in% colnames(data)) {
@@ -374,8 +374,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
         yRtf <- getTransientFunctionResult(
             rtfPar = rtfPar,
             t = data$t[ind],
-            signumTF_sus = signumTF_sus,
-            signumTF_trans = signumTF_trans,
+            signSus = signSus,
+            signTrans = signTrans,
             scale = TRUE,
             calcGradient = FALSE
         )
@@ -384,8 +384,8 @@ objFunct <- function(par, data, optimObject, calcGradient = FALSE) {
             dyRtf_drtfPar <- getTransientFunctionResult(
                 rtfPar = rtfPar,
                 t = data$t[ind],
-                signumTF_sus = signumTF_sus,
-                signumTF_trans = signumTF_trans,
+                signSus = signSus,
+                signTrans = signTrans,
                 scale = TRUE,
                 calcGradient = TRUE
             )

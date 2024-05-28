@@ -75,7 +75,7 @@ optimObject.singleDose <- list(
     fixed = c(
         alpha = NA, beta = NA,
         gamma = 0.301029995663981, A = NA, B = NA, b = NA, tau = NA,
-        sigma = NA, signumTF_sus = 1, signumTF_trans = 1
+        sigma = NA, signSus = 1, signTrans = 1
     ),
     takeLog10 = c(
         alpha = TRUE, beta = TRUE, gamma = TRUE,
@@ -234,7 +234,7 @@ optimObject.doseDependent <- list(
         h_gamma = NA, K_gamma = NA, M_A = NA, h_A = NA, K_A = NA,
         M_B = NA,
         h_B = NA, K_B = NA, M_tau = NA, h_tau = NA, K_tau = NA, b = NA,
-        sigma = NA, signumTF_sus = 1, signumTF_trans = 1
+        sigma = NA, signSus = 1, signTrans = 1
     ),
     takeLog10 = c(
         M_alpha = TRUE, h_alpha = TRUE, K_alpha = TRUE,

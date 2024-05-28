@@ -22,7 +22,7 @@
 #' @param takeLog10 Boolean value indicating if log10 of bounds should be
 #' applied.
 #' @param sameSign Boolean indicating if sign of sustained RTF part
-#' (signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+#' (signSus) and transient RTF part (signTrans) should be equal
 #' (Default: TRUE).
 #' @export initializeOptimObject
 #' @examples
@@ -205,8 +205,8 @@ initializeOptimObject <- function(data, modus, optimFunction = "logLikelihood",
             stats::setNames(
                 rep(NA, length(lb.vec)), names(lb.vec)
             ),
-            signumTF_sus = 1,
-            signumTF_trans = 1
+            signSus = 1,
+            signTrans = 1
         ),
         takeLog10 = stats::setNames(
             rep(FALSE, length(lb.vec)), names(lb.vec)

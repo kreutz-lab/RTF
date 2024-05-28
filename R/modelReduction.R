@@ -6,7 +6,7 @@
 #' @param res Full RTF model, i.e., generated without fixed parameters
 #' @param nInitialGuesses Integer indicating number of initial guesses
 #' (in addition to the default initial guess) used for all four combinations
-#' of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).
+#' of signSus and signTrans, which both can be -1 or 1 (Default: 50).
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be
 #' plotted in waterfall plot (Default: FALSE).
 #' If FALSE, all values up to the median of those values are plotted.
@@ -37,8 +37,8 @@ modelReduction <- function(res,
 
     optimParamsFullModel <- optimParamsFullModel[
         !(names(optimParamsFullModel) %in% c(
-            "signumTF_sus",
-            "signumTF_trans"
+            "signSus",
+            "signTrans"
         ))
     ]
 

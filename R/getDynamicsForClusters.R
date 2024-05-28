@@ -7,8 +7,8 @@
 #' data frame 'df' of the unscaled dynamics (with columns 't' (time),
 #' 'y' (value), 'id' (time course name), 'cluster' (cluster ID)).
 #' @param df Data frame with column for cluster ID ("clustID") and columns
-#' named "alpha", "gamma", "A", "B", "b", "tau", "signumTF_sus", and
-#' "signumTF_trans" corresponding to the parameter names of the RTF.
+#' named "alpha", "gamma", "A", "B", "b", "tau", "signSus", and
+#' "signTrans" corresponding to the parameter names of the RTF.
 #' @param maxTime Maximum time until dynamics should be plotted
 #' @export getDynamicsForClusters
 #' @examples
@@ -54,12 +54,12 @@ getDynamicsForClusters <- function(df, maxTime = 10) {
             id <- rownames(cluster)[rowId]
             functionResVec <- getTransientFunctionResult(
                 rtfPar = row[!(colnames(row) %in% c(
-                    "signumTF_sus",
-                    "signumTF_trans"
+                    "signSus",
+                    "signTrans"
                 ))],
                 t = xi,
-                signumTF_sus = row[["signumTF_sus"]],
-                signumTF_trans = row[["signumTF_trans"]]
+                signSus = row[["signSus"]],
+                signTrans = row[["signTrans"]]
             )
 
             geom_line.lst <- append(

@@ -36,9 +36,9 @@
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating number of initial guesses
 #' (in addition to the default initial guess) used for all four combinations
-#' of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).
+#' of signSus and signTrans, which both can be -1 or 1 (Default: 50).
 #' @param sameSign Boolean indicating if sign of sustained RTF part
-#' (signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+#' (signSus) and transient RTF part (signTrans) should be equal
 #' (Default: TRUE) (Only relevant if param.data is not provided).
 #' @param saveToFile Boolean indicating if results should be saved to file
 #' @param numClust (Optional) Number of clusters. If not specified, number of
@@ -46,8 +46,8 @@
 #' NbClust::NbClust().
 #' @param param.data (Optional) If a data frame with the RTF parameter values
 #' is already available, you can provide it here for saving time.
-#' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', 'signumTF_sus',
-#' and 'signumTF_trans' represent the different RTF parameters. The rows
+#' Its columns 'alpha', 'gamma', 'A', 'B', 'b', 'tau', 'signSus',
+#' and 'signTrans' represent the different RTF parameters. The rows
 #' correspond to the different time courses.
 #' @param RTFmodelLst (Optional) If a list with the RTF result for each time
 #' course calculated, e.g. using the function getParamsFromMultipleTimeCourses()

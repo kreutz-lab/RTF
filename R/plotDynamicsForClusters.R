@@ -47,12 +47,12 @@
 #'         id <- rownames(cluster)[rowId]
 #'         functionResVec <- getTransientFunctionResult(
 #'             rtfPar = row[!(colnames(row) %in% c(
-#'                 "signumTF_sus",
-#'                 "signumTF_trans"
+#'                 "signSus",
+#'                 "signTrans"
 #'             ))],
 #'             t = xi,
-#'             signumTF_sus = row[["signumTF_sus"]],
-#'             signumTF_trans = row[["signumTF_trans"]]
+#'             signSus = row[["signSus"]],
+#'             signTrans = row[["signTrans"]]
 #'         )
 #'
 #'         geom_line.lst <- append(

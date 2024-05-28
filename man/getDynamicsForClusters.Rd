@@ -8,8 +8,8 @@ getDynamicsForClusters(df, maxTime = 10)
 }
 \arguments{
 \item{df}{Data frame with column for cluster ID ("clustID") and columns
-named "alpha", "gamma", "A", "B", "b", "tau", "signumTF_sus", and
-"signumTF_trans" corresponding to the parameter names of the RTF.}
+named "alpha", "gamma", "A", "B", "b", "tau", "signSus", and
+"signTrans" corresponding to the parameter names of the RTF.}
 
 \item{maxTime}{Maximum time until dynamics should be plotted}
 }

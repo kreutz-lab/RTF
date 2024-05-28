@@ -1,7 +1,7 @@
 Package: RTF
 Type: Package
 Title: Retarded Transient Function
-Version: 0.1.100
+Version: 0.1.101
 Authors@R: 
   person("Clemens","Kreutz",
   email = "clemens.kreutz@uniklinik-freiburg.de",
@@ -11,7 +11,7 @@ Authors@R:
   email = "eva.brombacher@uniklinik-freiburg.de",
   role = c("aut","ctb","cre"), 
   comment = c(ORCID = "0000-0002-5488-0985"))
-Description: Fitting of retarded transient function to time resolved data.
+Description: Fitting of retarded transient function to time course data.
 Imports: 
     stats, ggplot2, reshape2, patchwork, grDevices, dplyr, NbClust, 
     umap, tibble, plotly, base64enc, htmltools, htmlwidgets

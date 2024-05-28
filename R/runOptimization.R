@@ -160,26 +160,26 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
         if (optimObject$sameSign) {
             signCombs <- list(
-                c(signumTF_sus = -1, signumTF_trans = -1),
-                c(signumTF_sus = 1, signumTF_trans = 1)
+                c(signSus = -1, signTrans = -1),
+                c(signSus = 1, signTrans = 1)
             )
         } else {
             signCombs <- list(
-                c(signumTF_sus = -1, signumTF_trans = -1),
-                c(signumTF_sus = -1, signumTF_trans = 1),
-                c(signumTF_sus = 1, signumTF_trans = -1),
-                c(signumTF_sus = 1, signumTF_trans = 1)
+                c(signSus = -1, signTrans = -1),
+                c(signSus = -1, signTrans = 1),
+                c(signSus = 1, signTrans = -1),
+                c(signSus = 1, signTrans = 1)
             )
         }
 
-        # for (signumTF in c(-1, 1)) {
+        # for (signTF in c(-1, 1)) {
         for (signComb in signCombs) {
-            # for (signumTF_sus in c(-1, 1)) {
-            # for (signumTF_trans in c(-1, 1)) {
-            signumTF_sus <- signComb[["signumTF_sus"]]
-            signumTF_trans <- signComb[["signumTF_trans"]]
-            optimObject$fixed[["signumTF_sus"]] <- signumTF_sus
-            optimObject$fixed[["signumTF_trans"]] <- signumTF_trans
+            # for (signSus in c(-1, 1)) {
+            # for (signTrans in c(-1, 1)) {
+            signSus <- signComb[["signSus"]]
+            signTrans <- signComb[["signTrans"]]
+            optimObject$fixed[["signSus"]] <- signSus
+            optimObject$fixed[["signTrans"]] <- signTrans
             optimResTmp <- stats::optim(
                 par = vec,
                 fn = objFunct,
@@ -202,11 +202,11 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
             parsFinal <- c(
                 fixed[!is.na(fixed) &
                     !(names(fixed) %in% c(
-                        "signumTF_sus",
-                        "signumTF_trans"
+                        "signSus",
+                        "signTrans"
                     ))],
-                signumTF_sus = signumTF_sus,
-                signumTF_trans = signumTF_trans,
+                signSus = signSus,
+                signTrans = signTrans,
                 optimResTmp$par
             )[vecOrder]
             parsFinal[names(parsFinal) %in% yDependentPars] <-
@@ -216,7 +216,7 @@ runOptimization <- function(initialGuess.vec.lst, optimObject, objFunct) {
 
             # Punish if two different signs are used
             # 3.8 as result from stats::qchisq(0.1, df = 1, lower.tail = FALSE)
-            if (signumTF_sus != signumTF_trans) {
+            if (signSus != signTrans) {
                 optimResTmp$value <- optimResTmp$value + 2.7
             }
 

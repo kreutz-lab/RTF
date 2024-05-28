@@ -32,10 +32,10 @@ should be used (Default: 'logLikelihood')}
 
 \item{nInitialGuesses}{Integer indicating number of initial guesses
 (in addition to the default initial guess) used for all four combinations
-of signumTF_sus and signumTF_trans, which both can be -1 or 1 (Default: 50).}
+of signSus and signTrans, which both can be -1 or 1 (Default: 50).}
 
 \item{sameSign}{Boolean indicating if sign of sustained RTF part
-(signumTF_sus) and transient RTF part (signumTF_trans) should be equal
+(signSus) and transient RTF part (signTrans) should be equal
 (Default: TRUE).}
 
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be

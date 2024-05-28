@@ -31,8 +31,8 @@ getSimData <- function(modus = "singleDose", noise = NULL, numDoses = 7) {
                 alpha = 0.4, beta = 0.4, gamma = 0.1, A = 5, B = 20,
                 b = 2,
                 tau = 3,
-                signumTF_sus = 1,
-                signumTF_trans = 1
+                signSus = 1,
+                signTrans = 1
             )
         )
 
@@ -75,8 +75,8 @@ getSimData <- function(modus = "singleDose", noise = NULL, numDoses = 7) {
                 t = t,
                 rtfPar = rtfPar,
                 scale = FALSE,
-                signumTF_sus = 1,
-                signumTF_trans = 1
+                signSus = 1,
+                signTrans = 1
             )
             vec <- c(vec, y)
         }
