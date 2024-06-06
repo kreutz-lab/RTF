@@ -16,9 +16,14 @@
 #' @param t Time points
 #' @param d Dose (obligatory for 'doseDependent')
 #' @param title Plot title
-#' @param pointAlpha Transparency of points
-#' @param lineAlpha For modus 'singleDose': Transparency of line
-#' @param pointSize Point size
+#' @param pointAlpha Transparency of points (Default: 0.5).
+#' @param pointSize Point size (Default: 0.75)
+#' @param lineAlpha Transparency of line (Default: 0.5 for modus 'singleDose', 
+#' else 1).
+#' @param lineWidth Width of line (Default: 1.5 for modus 'singleDose', 
+#' else 1).
+#' @param color Only relevant if modus = 'singleDose': Color of line and points
+#' (Default: "#290AD8")
 #' @export plotFit
 #' @examples
 #' gg <- plotFit(
@@ -41,8 +46,19 @@ plotFit <- function(par,
                     d = NULL,
                     title = "",
                     pointAlpha = 0.5,
-                    lineAlpha = 0.5,
-                    pointSize = 0.75) {
+                    pointSize = 0.75,
+                    lineAlpha = NULL,
+                    lineWidth = NULL,
+                    color = "#290AD8") {
+    
+    if (modus == "singleDose") {
+        if (is.null(lineAlpha)) lineAlpha <- 0.5
+        if (is.null(lineWidth)) lineWidth <- 1.5
+    } else {
+        if (is.null(lineAlpha)) lineAlpha <- 1
+        if (is.null(lineWidth)) lineWidth <- 1
+    }
+    
     if (is.null(t)) {
         stop("Please provide vector of time points or maximum time point.")
     }
@@ -176,7 +192,8 @@ plotFit <- function(par,
                 ) +
                 ggplot2::geom_line(
                     ggplot2::aes(y = RTF),
-                    size = 1, alpha = lineAlpha
+                    size = lineWidth, alpha = lineAlpha,
+                    color = color
                 ) +
                 ggplot2::ylab("y")
         } else {
@@ -224,7 +241,8 @@ plotFit <- function(par,
                 ) +
                 ggplot2::geom_line(
                     ggplot2::aes(y = RTF),
-                    size = 1, alpha = lineAlpha
+                    size = lineWidth, alpha = lineAlpha,
+                    color = color
                 ) +
                 ggplot2::ylab("y")
         }
@@ -234,7 +252,8 @@ plotFit <- function(par,
                 data = data.frame(t = t, y = y),
                 ggplot2::aes(x = t, y = y),
                 alpha = pointAlpha,
-                size = pointSize
+                size = pointSize,
+                colour = color
             )
         }
     }

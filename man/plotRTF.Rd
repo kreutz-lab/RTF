@@ -9,7 +9,12 @@ plotRTF(
   fileNamePrefix = "",
   plotTitle = "",
   plotAllFits = TRUE,
-  plotAllPointsWaterfall = FALSE
+  plotAllPointsWaterfall = FALSE,
+  pointAlpha = 0.5,
+  pointSize = 0.75,
+  lineAlpha = NULL,
+  lineWidth = NULL,
+  color = "#290AD8"
 )
 }
 \arguments{
@@ -27,6 +32,19 @@ modus. (Default: TRUE)}
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be
 plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
+
+\item{pointAlpha}{Transparency of points in plot of fit (Default: 0.5).}
+
+\item{pointSize}{Point size for data points in plot of fit (Default: 0.75).}
+
+\item{lineAlpha}{Transparency of line in plot of fit (Default: 0.5 for 
+modus 'singleDose', else 1).}
+
+\item{lineWidth}{Width of line in plot of fit (Default: 1.5 for modus 
+'singleDose', else 1).}
+
+\item{color}{Only relevant if modus = 'singleDose': Color of line and points
+in plot of fit (Default: "#290AD8")}
 }
 \value{
 ggplot object

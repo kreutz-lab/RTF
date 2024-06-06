@@ -13,8 +13,10 @@ plotFit(
   d = NULL,
   title = "",
   pointAlpha = 0.5,
-  lineAlpha = 0.5,
-  pointSize = 0.75
+  pointSize = 0.75,
+  lineAlpha = NULL,
+  lineWidth = NULL,
+  color = "#290AD8"
 )
 }
 \arguments{
@@ -37,11 +39,18 @@ experimental data frame)}
 
 \item{title}{Plot title}
 
-\item{pointAlpha}{Transparency of points}
+\item{pointAlpha}{Transparency of points (Default: 0.5).}
 
-\item{lineAlpha}{For modus 'singleDose': Transparency of line}
+\item{pointSize}{Point size (Default: 0.75)}
 
-\item{pointSize}{Point size}
+\item{lineAlpha}{Transparency of line (Default: 0.5 for modus 'singleDose', 
+else 1).}
+
+\item{lineWidth}{Width of line (Default: 1.5 for modus 'singleDose', 
+else 1).}
+
+\item{color}{Only relevant if modus = 'singleDose': Color of line and points
+(Default: "#290AD8")}
 }
 \value{
 ggplot object showing RTF, if withData = TRUE together with

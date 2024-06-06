@@ -12,6 +12,18 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be
 #' plotted in waterfall plot (Default: FALSE).
 #' If FALSE, all values up to the median of those values are plotted.
+#' @param pointAlpha Transparency of points in plot of fit (Default: 0.5).
+#' @param pointSize Point size for data points in plot of fit (Default: 0.75).
+#' @param lineAlpha For modus 'singleDose': Transparency of line in plot of fit 
+#' (Default: 0.5).
+#' @param lineWidth For modus 'singleDose': Width of line in plot of fit 
+#' (Default: 1.5).
+#' @param lineAlpha Transparency of line in plot of fit (Default: 0.5 for 
+#' modus 'singleDose', else 1).
+#' @param lineWidth Width of line in plot of fit (Default: 1.5 for modus 
+#' 'singleDose', else 1).
+#' @param color Only relevant if modus = 'singleDose': Color of line and points
+#'  in plot of fit (Default: "#290AD8")
 #' @export plotRTF
 #' @examples
 #' data <- getSimData(modus = "singleDose")
@@ -21,7 +33,12 @@ plotRTF <- function(optimObject,
                     fileNamePrefix = "",
                     plotTitle = "",
                     plotAllFits = TRUE,
-                    plotAllPointsWaterfall = FALSE) {
+                    plotAllPointsWaterfall = FALSE,
+                    pointAlpha = 0.5,
+                    pointSize = 0.75,
+                    lineAlpha = NULL,
+                    lineWidth = NULL,
+                    color = "#290AD8") {
     optimObject <- optimObject$finalModel
 
     saveToFile <- nchar(fileNamePrefix) > 0
@@ -92,7 +109,12 @@ plotRTF <- function(optimObject,
                         par = pars,
                         y = data$y,
                         t = data$t,
-                        withData = TRUE
+                        withData = TRUE,
+                        pointAlpha = pointAlpha,
+                        pointSize = pointSize,
+                        lineAlpha = lineAlpha,
+                        lineWidth = lineWidth,
+                        color = color
                     ) +
                         ggplot2::ggtitle(title)
                 } else if (modus == "doseDependent") {
@@ -103,7 +125,11 @@ plotRTF <- function(optimObject,
                         y = data$y,
                         t = data$t,
                         d = data$d,
-                        title = title
+                        title = title,
+                        pointAlpha = pointAlpha,
+                        pointSize = pointSize,
+                        lineAlpha = lineAlpha,
+                        lineWidth = lineWidth
                     )
                 }
 
@@ -163,7 +189,12 @@ plotRTF <- function(optimObject,
             par = par,
             y = data$y,
             t = data$t,
-            withData = TRUE
+            withData = TRUE,
+            pointAlpha = pointAlpha,
+            pointSize = pointSize,
+            lineAlpha = lineAlpha,
+            lineWidth = lineWidth,
+            color = color
         ) # + ggplot2::ggtitle(title)
 
         bestFit.plot <-
@@ -179,7 +210,11 @@ plotRTF <- function(optimObject,
             modus = modus,
             y = data$y,
             t = data$t,
-            d = data$d
+            d = data$d,
+            pointAlpha = pointAlpha,
+            pointSize = pointSize,
+            lineAlpha = lineAlpha,
+            lineWidth = lineWidth
         )
 
         ##################################################
