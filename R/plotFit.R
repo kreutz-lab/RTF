@@ -192,7 +192,7 @@ plotFit <- function(par,
                 ) +
                 ggplot2::geom_line(
                     ggplot2::aes(y = RTF),
-                    size = lineWidth, alpha = lineAlpha,
+                    linewidth = lineWidth, alpha = lineAlpha,
                     color = color
                 ) +
                 ggplot2::ylab("y")
@@ -241,7 +241,7 @@ plotFit <- function(par,
                 ) +
                 ggplot2::geom_line(
                     ggplot2::aes(y = RTF),
-                    size = lineWidth, alpha = lineAlpha,
+                    linewidth = lineWidth, alpha = lineAlpha,
                     color = color
                 ) +
                 ggplot2::ylab("y")
