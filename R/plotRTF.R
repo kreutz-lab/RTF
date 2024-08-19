@@ -198,6 +198,11 @@ plotRTF <- function(optimObject,
             color = color
         ) # + ggplot2::ggtitle(title)
 
+        
+        print(RTFComponentsPlot)
+        print(waterfallPlot)
+        print(parDistributionPlot)
+        
         bestFit.plot <-
             patchwork::wrap_plots(
                 RTFComponentsPlot,
@@ -340,10 +345,5 @@ plotRTF <- function(optimObject,
             width = 8,
             height = height
         )
-        # bestFit.plot
     } 
-    
-    if (modus == "singleDose") {
-        print(bestFit.plot)
-    }
 }

@@ -9,11 +9,10 @@ saveFinalParams(optimObject, fileString = "fittedParams")
 \arguments{
 \item{optimObject}{optimObject, containing the fitted parameters}
 
-\item{saveParamsFileString}{(Optional, only relevant if saveParams = TRUE) 
+\item{fileString}{(Optional, only relevant if saveParams = TRUE) 
 String, which specifies how the output files with the fitted parameters 
-should be called ("[saveParamsFileString].tsv" and 
-"[saveParamsFileString].R"). If not specified it will be set to 
-"fittedParams".}
+should be called ("[fileString].tsv" and "[fileString].R"). 
+If not specified it will be set to "fittedParams".}
 }
 \value{
 Saves fitted parameters to files.
@@ -21,7 +20,7 @@ Saves fitted parameters to files.
 \description{
 Saves the fitted parameters to an R file which becomes sourced 
 to make the fitted parameters readily available. Furthermore, the fitted 
-paratmeters together with the respective parameter bounds become saved to a 
+parameters together with the respective parameter bounds become saved to a 
 .tsv file.
 }
 \examples{

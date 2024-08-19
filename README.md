@@ -1,8 +1,11 @@
 # Retarded Transient Function (RTF)
 
-This package is based on the Retarded Transient Function (RTF) introduced in the publication 
+This package is based on the Retarded Transient Function (RTF) introduced in the
+following publications
 
 [Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70.](https://doi.org/10.3389/fphy.2020.00070)
+
+[Rachel T et al. (2024) Dynamic modelling of signalling pathways when ODEs are not feasible. bioRxiv 2024.04.18.590024.](https://doi.org/10.1101/2024.04.18.590024)
 
 ## Installation
 ```
@@ -74,8 +77,13 @@ data.doseDependent <- getSimData(modus = "doseDependent")
 # data.doseDependent <- openxlsx::read.xlsx(
 #      system.file("extdata", "ExampleDataDoseDependent.xlsx", package = "RTF"))
 
+# Plot input data
 plotData(data.doseDependent)
+
+# Run RTF
 res.doseDependent <- RTF(data.doseDependent, modus = "doseDependent")
+
+# Plot fitted RTF
 plotRTF(res.doseDependent, fileNamePrefix = "doseDependentFinalModel")
 ```
 
