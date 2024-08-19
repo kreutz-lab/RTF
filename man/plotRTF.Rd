@@ -21,7 +21,7 @@ plotRTF(
 \item{optimObject}{optimObject containing elements "finalModel" and "modus"}
 
 \item{fileNamePrefix}{File name prefix. If length>0 plots will be written to
-file, otherwise they will be plotted directly. Default is empty string.}
+file, otherwise they will only be plotted directly. Default is empty string.}
 
 \item{plotTitle}{Title of the plot (Default is no title).}
 

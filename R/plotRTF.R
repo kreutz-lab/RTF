@@ -4,7 +4,7 @@
 #' @return ggplot object
 #' @param optimObject optimObject containing elements "finalModel" and "modus"
 #' @param fileNamePrefix File name prefix. If length>0 plots will be written to
-#' file, otherwise they will be plotted directly. Default is empty string.
+#' file, otherwise they will only be plotted directly. Default is empty string.
 #' @param plotTitle Title of the plot (Default is no title).
 #' @param plotAllFits Boolean indicating if all fits should be plotted. Only use
 #' if fileNamePrefix is given. Only relevant for "singleDose"
@@ -199,7 +199,8 @@ plotRTF <- function(optimObject,
         ) # + ggplot2::ggtitle(title)
 
         bestFit.plot <-
-            patchwork::wrap_plots(RTFComponentsPlot,
+            patchwork::wrap_plots(
+                RTFComponentsPlot,
                 waterfallPlot,
                 parDistributionPlot,
                 ncol = numCol
@@ -302,12 +303,19 @@ plotRTF <- function(optimObject,
                 )
             )
 
+        doseParamPlots <- patchwork::wrap_plots(
+            doseParamPlot1, doseParamPlot2,
+            nrow = 1
+        )
+         
+        print(bestFitWDataPlot)
+        print(doseParamPlots)
+        print(waterfallPlot)
+        print(parDistributionPlot)
+        
         bestFit.plot <- patchwork::wrap_plots(
             bestFitWDataPlot,
-            patchwork::wrap_plots(
-                doseParamPlot1, doseParamPlot2,
-                nrow = 1
-            ),
+            doseParamPlots,
             waterfallPlot,
             parDistributionPlot,
             ncol = numCol
@@ -332,8 +340,10 @@ plotRTF <- function(optimObject,
             width = 8,
             height = height
         )
-        bestFit.plot
-    } else {
-        bestFit.plot
+        # bestFit.plot
+    } 
+    
+    if (modus == "singleDose") {
+        print(bestFit.plot)
     }
 }

@@ -16,35 +16,56 @@ library(RTF)
 ```
 
 ### Single-dose RTF
-Input data frame should contain the columns 't' for time and 
-'y' for the quantitative value. 
+The input data frame for the single-dose RTF should contain the columns 
+'t' for time and 'y' for the quantitative value. 
+An example data frame can be generated via getSimData(modus = "singleDose").
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
 the experimental data.
 
 ```
-data.singleDose <- getSimData()
+data.singleDose <- getSimData(modus = "singleDose")
 # data.singleDose <- openxlsx::read.xlsx(
 #      system.file("extdata", "ExampleDataSingleDose.xlsx", package = "RTF"))
 
+# Plot input data
 plotData(data.singleDose)
+
+# Run RTF
 res.singleDose <- RTF(data.singleDose, modus = "singleDose")
+
+# Plot fitted RTF
 plotRTF(optimObject = res.singleDose, 
         fileNamePrefix = "finalModel", 
         plotAllFits = TRUE)
+
+# Parameters can also become modified manually and the resulting fit can be 
+# assessed in relation to the input data points using the function plotFit().
+modifiedParams <- res.singleDose[["finalParams"]]
+modifiedParams["A"] <- 2
+plotFit(par = modifiedParams,
+        y = data.singleDose$y, 
+        t = data.singleDose$t, 
+        modus = 'singleDose',
+        withData = TRUE,
+        title = " ")
         
-# Subsequently, you can perform model reduction
+# Subsequently, a model reduction can be performed using the function 
+# modelReduction()
 res.singleDose.reduced <- modelReduction(res.singleDose$finalModel)
 
-# A result of RTF() can be complemented with new results of RTF() on the same
-# dataset
+# If the RTF() function is applied for a second time on the same input, e.g.,
+# to improve the fit, the result of the first RTF() run can be complemented 
+# with the new results of the second RTF() run by means of the function argument 
+# 'resOld'. 
 resOld.singleDose <- res.singleDose
 resNew.singleDose <- RTF(data.singleDose, modus = "singleDose", 
           resOld = resOld.singleDose)
 ```
 
 ### Dose-dependent RTF
-Input data frame should contain the columns 't' for time, 
-'y' for the quantitative value, and 'd' for dose. 
+The input data frame for the dose-dependent RTF should contain the columns 
+'t' for time, 'y' for the quantitative value, and 'd' for dose. 
+An example data frame can be generated via getSimData(modus = "doseDependent").
 Optionally, a column 'sigmaExp' can be provided with the standard error of 
 the experimental data.
 
@@ -56,17 +77,13 @@ data.doseDependent <- getSimData(modus = "doseDependent")
 plotData(data.doseDependent)
 res.doseDependent <- RTF(data.doseDependent, modus = "doseDependent")
 plotRTF(res.doseDependent, fileNamePrefix = "doseDependentFinalModel")
-
-plotFit(par = res.doseDependent[["finalParams"]],
-        y = data.doseDependent$y, 
-        t = data.doseDependent$t, 
-        d = data.doseDependent$d, 
-        modus = 'doseDependent',
-        withData = TRUE,
-        title = " ")
-                 
-res.doseDependent.reduced <- modelReduction(res.doseDependent$finalModel)
 ```
+
+The functions plotFit() and modelReduction() can be applied for the 
+dose-dependent RTF results analogous to the single-dose RTF. However, 
+for applying plotFit() to the the dose-dependent RTF results, the dose vector 
+also has to be provided via d = data.doseDependent$d.
+
 
 ### Low-dimensional representation of multiple (at least 20) fitted RTFs
 (Currently only possible for single-dose RTF parameters)
