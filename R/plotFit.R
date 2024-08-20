@@ -78,12 +78,6 @@ plotFit <- function(par,
             signTrans = par[["signTrans"]]
         )
 
-        RTFResDf <- data.frame(
-            t = xi,
-            y = RTFResVec,
-            Component = "RTF"
-        )
-
         # Only Signal_sus: B = 0
         # Only Signal_trans: A = 0
         parSus <- parTrans <- par
