@@ -12,6 +12,8 @@
 #' @param plotAllPointsWaterfall Boolean indicating if all points should be
 #' plotted in waterfall plot (Default: FALSE).
 #' If FALSE, all values up to the median of those values are plotted.
+#' @param plotSeparately Boolean indicating whether plots should be provided 
+#' separately (Default: TRUE). Plots saved to a file will always be combined.
 #' @param pointAlpha Transparency of points in plot of fit (Default: 0.5).
 #' @param pointSize Point size for data points in plot of fit (Default: 0.75).
 #' @param lineAlpha For modus 'singleDose': Transparency of line in plot of fit 
@@ -34,6 +36,7 @@ plotRTF <- function(optimObject,
                     plotTitle = "",
                     plotAllFits = TRUE,
                     plotAllPointsWaterfall = FALSE,
+                    plotSeparately = TRUE,
                     pointAlpha = 0.5,
                     pointSize = 0.75,
                     lineAlpha = NULL,
@@ -197,11 +200,13 @@ plotRTF <- function(optimObject,
             lineWidth = lineWidth,
             color = color
         ) # + ggplot2::ggtitle(title)
-
         
-        print(RTFComponentsPlot)
-        print(waterfallPlot)
-        print(parDistributionPlot)
+        
+        if (plotSeparately) {
+            print(RTFComponentsPlot)
+            print(waterfallPlot)
+            print(parDistributionPlot)
+        }
         
         bestFit.plot <-
             patchwork::wrap_plots(
@@ -210,6 +215,7 @@ plotRTF <- function(optimObject,
                 parDistributionPlot,
                 ncol = numCol
             )
+        
     } else if (modus == "doseDependent") {
         bestFitWDataPlot <- plotFit(
             par,
@@ -312,11 +318,13 @@ plotRTF <- function(optimObject,
             doseParamPlot1, doseParamPlot2,
             nrow = 1
         )
-         
-        print(bestFitWDataPlot)
-        print(doseParamPlots)
-        print(waterfallPlot)
-        print(parDistributionPlot)
+        
+        if (plotSeparately) {
+            print(bestFitWDataPlot)
+            print(doseParamPlots)
+            print(waterfallPlot)
+            print(parDistributionPlot)
+        }
         
         bestFit.plot <- patchwork::wrap_plots(
             bestFitWDataPlot,
@@ -334,6 +342,8 @@ plotRTF <- function(optimObject,
             title = plotTitle,
             subtitle = title
         )
+
+    if (!plotSeparately) print(bestFit.plot)
 
     if (saveToFile) {
         ggplot2::ggsave(

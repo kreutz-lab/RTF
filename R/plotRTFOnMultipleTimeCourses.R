@@ -80,7 +80,8 @@ plotRTFOnMultipleTimeCourses <- function(RTFmodelLst,
         } else {
             plt <- plotRTF(el,
                 plotTitle = title,
-                plotAllPointsWaterfall = plotAllPointsWaterfall
+                plotAllPointsWaterfall = plotAllPointsWaterfall,
+                plotSeparately = FALSE
             )
         }
 

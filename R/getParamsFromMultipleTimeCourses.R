@@ -6,8 +6,9 @@
 #' course, where the rows correspond to the different time courses and
 #' the columns to the RTF parameters ('param.df'), and list with the RTF result
 #' for each time course ('RTFmodelLst').
-#' @param df Data frame with the first column corresponding to the time points
-#' and all the following columns corresponding to the different time courses.
+#' @param df Data frame in which the first column must contain the measurement 
+#' time points, while all subsequent columns correspond to the different time 
+#' courses.
 #' @param doRTFPlots Boolean indicating if RTF plots should be generated.
 #' @param fileString String the name of the created .rds file with the RTF
 #' parameters should contain. If this string has length 0 or if

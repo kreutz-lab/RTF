@@ -10,6 +10,7 @@ plotRTF(
   plotTitle = "",
   plotAllFits = TRUE,
   plotAllPointsWaterfall = FALSE,
+  plotSeparately = TRUE,
   pointAlpha = 0.5,
   pointSize = 0.75,
   lineAlpha = NULL,
@@ -32,6 +33,9 @@ modus. (Default: TRUE)}
 \item{plotAllPointsWaterfall}{Boolean indicating if all points should be
 plotted in waterfall plot (Default: FALSE).
 If FALSE, all values up to the median of those values are plotted.}
+
+\item{plotSeparately}{Boolean indicating whether plots should be provided 
+separately (Default: TRUE). Plots saved to a file will always be combined.}
 
 \item{pointAlpha}{Transparency of points in plot of fit (Default: 0.5).}
 

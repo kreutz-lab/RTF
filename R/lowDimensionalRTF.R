@@ -8,8 +8,9 @@
 #' dynamics per cluster ('dynamics.data'), and ggplot2 plots of the results
 #' ('plots'). Function also saves those objects to files if
 #' saveToFile=TRUE.
-#' @param df Data frame with the first column corresponding to the time points
-#' and all the following columns corresponding to the different time courses.
+#' @param df Data frame in which the first column must contain the measurement 
+#' time points, while all subsequent columns correspond to the different time 
+#' courses.
 #' @param metaInfo String of the column name with meta information (.e.g.
 #' groups.
 #' @param metaInfoName String of the name of the meta information.

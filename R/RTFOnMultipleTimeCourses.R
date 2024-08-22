@@ -3,8 +3,9 @@
 #' @description Runs RTF on multiple columns corresponding to different time
 #' courses.
 #' @return List with the RTF result for each time course.
-#' @param df Data frame with the first column corresponding to the time points
-#' and all the following columns corresponding to the different time courses.
+#' @param df Data frame in which the first column must contain the measurement 
+#' time points, while all subsequent columns correspond to the different time 
+#' courses.
 #' @param modelReduction Boolean indicating if model reduction should be
 #' performed for RTF
 #' @param nInitialGuesses Integer indicating number of initial guesses

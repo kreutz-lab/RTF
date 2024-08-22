@@ -25,8 +25,9 @@ plotInteractiveUMAP(
 )
 }
 \arguments{
-\item{df}{Data frame with the first column corresponding to the time points
-and all the following columns corresponding to the different time courses.}
+\item{df}{Data frame in which the first column must contain the measurement 
+time points, while all subsequent columns correspond to the different time 
+courses.}
 
 \item{fileString}{String of the name of the created .rds file with the RTF
 results.}

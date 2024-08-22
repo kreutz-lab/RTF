@@ -1,114 +1,147 @@
-# Retarded Transient Function (RTF)
 
-This package is based on the Retarded Transient Function (RTF) introduced in the
-following publications
+# RTF: Retarded Transient Function Modeling in R
 
-[Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70.](https://doi.org/10.3389/fphy.2020.00070)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-[Rachel T et al. (2024) Dynamic modelling of signalling pathways when ODEs are not feasible. bioRxiv 2024.04.18.590024.](https://doi.org/10.1101/2024.04.18.590024)
+## Table of Contents
+- [Overview](#overview)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+  - [Input Data Format](#input-data-format)
+  - [Example: Single-Dose RTF](#example-single-dose-rtf)
+  - [Example: Dose-Dependent RTF](#example-dose-dependent-rtf)
+  - [Example: Low-dimensional representation of multiple (at least 20) fitted RTFs](#example-low-dimensional-representation-of-multiple-at-least-20-fitted-rtfs)
+- [Functions](#functions)
+  - [RTF()](#rtf)
+  - [modelReduction()](#modelreduction)
+  - [lowDimensionalRTF()](#lowdimensionalrtf)
+  - [getSimData()](#getsimdata)
+  - [plotData()](#plotdata)
+  - [plotRTF()](#plotrtf)
+  - [plotInteractiveUMAP()](#plotinteractiveumap)
+- [Output Files of RTF() and modelReduction()](#output-files-of-rtf-and-modelreduction)
+- [Example Datasets](#example-datasets)
+- [References](#references)
+- [License](#license)
+
+## Overview
+The **RTF** R package implements the Retarded Transient Function (RTF) approach for modeling time- and dose-dependent responses typically observed in signaling pathways. The package simplifies the fitting of the RTF using nonlinear optimization and offers additional functionalities, such as model reduction and low-dimensional representation of signaling compound dynamics.
+
+## Features
+- **Nonlinear Optimization**: Efficiently fit the RTF to your experimental or simulated time course data.
+- **Dose-Dependent Modeling**: Handle datasets with varying doses using the dose-dependent RTF functionality.
+- **Model Reduction**: Minimize overfitting by reducing the number of parameters through a stepwise elimination process.
+- **Low-Dimensional Representation**: Generate UMAP-based visualizations of the dynamics across multiple signaling compounds.
 
 ## Installation
-```
+You can install the RTF package directly from GitHub using the following commands in R:
+
+```r
+# Install devtools if you haven't already
 install.packages("devtools")
+
+# Install RTF from GitHub
 devtools::install_github("kreutz-lab/RTF")
 ```
 
-## Examples
+## Getting Started
+
+### Input Data Format
+The input data must be provided in the form of a data frame containing the following columns:
+
+- **'t'** (time): The time points of the measurements.
+- **'y'** (quantitative value): The measured values at each time point.
+- **'d'** (dose): The dose corresponding to each measurement (Required only for dose-dependent RTF).
+- **'sigmaExp'** (standard error): The standard error of the experimental data (optional).
+
+```r
+# Example of the required data frame structure
+data <- data.frame(
+  t = c(0, 1.8, 3.6, 5.4, 7.2, 9, 10.8, 12.6, 14.4, 16.2, 0, 1.8, 3.6, 5.4, 7.2, 9, 10.8, 12.6, 14.4, 16.2, 0, 1.8, 3.6, 5.4, 7.2, 9, 10.8, 12.6, 14.4, 16.2),
+  y = c(0.296, 0.301, 0.393, 0.913, 1.2, 1.28, 1.29, 1.29, 1.3, 1.3, 0.314, 0.327, 0.435, 1.12, 1.35, 1.33, 1.33, 1.33, 1.3, 1.3, 0.28, 0.278, 0.482, 1.25, 1.43, 1.44, 1.37, 1.37, 1.34, 1.31),
+  d = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
+)
 ```
-library(RTF)
+
+The `sigmaExp` column can be included if the standard error is known. It represents the standard error for each measurement, which can be calculated, for instance, by averaging over multiple replicates. If 'sigmaExp' is not provided, the standard error will be estimated along with all other RTF parameters.
+
+### Example: Single-Dose RTF
+```r
+# Simulate example data
+sim_data <- getSimData(modus = "singleDose")
+
+# Fit the RTF model
+fit <- RTF(df = sim_data, modus = "singleDose")
+
+# Plot the results
+plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
 ```
 
-### Single-dose RTF
-The input data frame for the single-dose RTF should contain the columns 
-'t' for time and 'y' for the quantitative value. 
-An example data frame can be generated via getSimData(modus = "singleDose").
-Optionally, a column 'sigmaExp' can be provided with the standard error of 
-the experimental data.
+If a string is provided to the `fileNamePrefix` argument, `plotRTF()` saves the 
+generated plots to a single `.pdf` file. When `plotAllFits=TRUE`, an additional 
+`.pdf` file is created that includes the results for each initial guess, with 
+each initial guess displayed on a separate page.
 
-```
-data.singleDose <- getSimData(modus = "singleDose")
-# data.singleDose <- openxlsx::read.xlsx(
-#      system.file("extdata", "ExampleDataSingleDose.xlsx", package = "RTF"))
+All plots generated by this R package are `ggplot2` objects, which can also be 
+assigned to a variable for further customization or saving.
 
-# Plot input data
-plotData(data.singleDose)
-
-# Run RTF
-res.singleDose <- RTF(data.singleDose, modus = "singleDose")
-
-# Plot fitted RTF
-plotRTF(optimObject = res.singleDose, 
-        fileNamePrefix = "finalModel", 
-        plotAllFits = TRUE)
-
+**Additional options**:
+```r
 # Parameters can also become modified manually and the resulting fit can be 
-# assessed in relation to the input data points using the function plotFit().
-modifiedParams <- res.singleDose[["finalParams"]]
-modifiedParams["A"] <- 2
-plotFit(par = modifiedParams,
-        y = data.singleDose$y, 
-        t = data.singleDose$t, 
+# plotted rogether with the input data points using the function plotFit().
+modified_params <- fit[["finalParams"]]
+modified_params["A"] <- 2
+plotFit(par = modified_params,
+        y = sim_data$y, 
+        t = sim_data$t, 
         modus = 'singleDose',
         withData = TRUE,
         title = " ")
-        
-# Subsequently, a model reduction can be performed using the function 
-# modelReduction()
-res.singleDose.reduced <- modelReduction(res.singleDose$finalModel)
 
-# If the RTF() function is applied for a second time on the same input, e.g.,
-# to improve the fit, the result of the first RTF() run can be complemented 
-# with the new results of the second RTF() run by means of the function argument 
-# 'resOld'. 
-resOld.singleDose <- res.singleDose
-resNew.singleDose <- RTF(data.singleDose, modus = "singleDose", 
-          resOld = resOld.singleDose)
+# To improve upon a previous result, it can be provided to the function 
+# RTF() via the 'resOld' argument. The function then complements the previous 
+# result with additional optimization runs, and returns the best fit over 
+# both old and new initial guesses.
+fit_old <- fit
+fit_new <- RTF(df = sim_data, modus = "singleDose", resOld = fit_old)
+
+
 ```
 
-### Dose-dependent RTF
-The input data frame for the dose-dependent RTF should contain the columns 
-'t' for time, 'y' for the quantitative value, and 'd' for dose. 
-An example data frame can be generated via getSimData(modus = "doseDependent").
-Optionally, a column 'sigmaExp' can be provided with the standard error of 
-the experimental data.
+### Example: Dose-Dependent RTF
+```r
+# Simulate example data
+sim_data <- getSimData(modus = "doseDependent")
 
-```
-data.doseDependent <- getSimData(modus = "doseDependent")
-# data.doseDependent <- openxlsx::read.xlsx(
-#      system.file("extdata", "ExampleDataDoseDependent.xlsx", package = "RTF"))
+# Fit the RTF model
+fit <- RTF(df = sim_data, modus = "doseDependent")
 
-# Plot input data
-plotData(data.doseDependent)
-
-# Run RTF
-res.doseDependent <- RTF(data.doseDependent, modus = "doseDependent")
-
-# Plot fitted RTF
-plotRTF(res.doseDependent, fileNamePrefix = "doseDependentFinalModel")
+# Plot the results
+plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
 ```
 
-The functions plotFit() and modelReduction() can be applied for the 
-dose-dependent RTF results analogous to the single-dose RTF. However, 
-for applying plotFit() to the the dose-dependent RTF results, the dose vector 
-also has to be provided via d = data.doseDependent$d.
-
-
-### Low-dimensional representation of multiple (at least 20) fitted RTFs
+### Example: Low-dimensional representation of multiple (at least 20) fitted RTFs
 (Currently only possible for single-dose RTF parameters)
-```
+```r
 data(strasen)
+# For time reasons, in this example we only look at the first 20 time courses 
+# of the strasen dataset.
 df.multipleTimeCourses <- strasen[, 1:20]
 colNames <- colnames(df.multipleTimeCourses[2:ncol(df.multipleTimeCourses)])
 metaInfo <- sub("_[^_]+$", "", colNames)
-res <- lowDimensionalRTF(df.multipleTimeCourses,
+
+# The first column of "df" must contain the measurement time points, while all 
+# subsequent columns correspond to the different time courses.
+res <- lowDimensionalRTF(df = df.multipleTimeCourses,
                          metaInfo = metaInfo, 
                          metaInfoName = "Species",
                          fileString = "strasen_subset")
                          
-# Save plots
-ggplot2::ggsave(filename = "test.pdf", plot = res[["plots"]],
+# The dimensions of the plots can be adjusted by saving them with predefined 
+# width and height.
+ggplot2::ggsave(filename = "strasen_subset_figureSizeAdjusted.pdf", 
+                plot = res[["plots"]],
                 width = 10, height = 30)
-
 ```
 
 To generates an interactive UMAP plot based on the RTF parameters for 
@@ -116,7 +149,8 @@ multiple time courses plotInteractiveUMAP() can be used, where each point
 corresponds to a single time course. 
 By hovering over a point the corresponding time-resolved behavior is displayed 
 in an additional smaller subplot.
-```
+
+```r
 data(almaden)
 timeCourses <- almaden # first column needs to be "time"
 colNames <- colnames(timeCourses[2:ncol(timeCourses)])
@@ -126,8 +160,10 @@ conditionID <- gsub(".*_", "", colNames)
 # # We don't run the following lines as the required object almadenModelLst is 
 # # available as an example (data(almadenModelLst)).
 # fileString <- "almadenExampleFile"
+## The first column of "df" must contain the measurement time points, while all 
+## subsequent columns correspond to the different time courses.
 # params.lst <- getParamsFromMultipleTimeCourses(
-#   almaden,
+#   df = almaden,
 #   fileString = fileString,
 #   saveFolderPath = tempdir(),
 #   nInitialGuesses = 50
@@ -141,6 +177,9 @@ param.df <- almadenParams
 RTFmodelLst <- almadenModelLst
 
 colNames <- colnames(timeCourses[2:ncol(timeCourses)])
+
+# The first column of "df"" must contain the measurement time points, while all 
+# subsequent columns correspond to the different time courses.
 plt <- plotInteractiveUMAP(df = timeCourses,
                            fileString = "almadenInteractiveUMAP",
                            conditions = gsub(".*_", "", colNames),
@@ -155,3 +194,44 @@ plt <- plotInteractiveUMAP(df = timeCourses,
 # Save to html file
 htmlwidgets::saveWidget(plt, "interactiveUMAP.html")
 ```
+
+## Functions
+
+#### RTF()
+The `RTF()` function estimates the best-fit RTF parameters for the provided input data. It can be run in 'singleDose' or 'doseDependent' mode, depending on whether signaling data at multiple doses are available.
+
+#### modelReduction()
+The `modelReduction()` function applies a model reduction procedure to the `RTF()` result, iteratively eliminating parameters that are not necessary to explain the data, as determined by likelihood ratio tests.
+
+#### lowDimensionalRTF()
+The `lowDimensionalRTF()` function calculates a low-dimensional representation of multiple fitted RTFs using uniform manifold approximation and projection (UMAP). This function generates the following plots: (1) UMAP plots color-coded by metadata and cluster affiliation according to k-Means clustering; (2) a plot showing the 25th and 75th quantiles and the median of the fitted parameters for each cluster; and (3) plots illustrating the dynamics of the time courses, separated by cluster, where the time courses are displayed both unscaled and scaled (to enable qualitative comparisons of dynamics within each cluster).
+
+#### getSimData()
+The `getSimData()` function simulates example datasets for modes 'singleDose' or 'doseDependent'.
+
+#### plotData()
+The `plotData()` function plots the input data to be fitted.
+
+#### plotRTF()
+The `plotRTF()` function visualizes the results of the `RTF()` function. Specifically, the best RTF fit is displayed alongside the experimental data points, with the sustained and transient components of the RTF also depicted. Additionally, the sorted multi-start optimization results for the different initial guesses are visualized in a waterfall plot, where a plateau in the best likelihood value indicates the global optimum. Finally, histograms showing the distribution of parameter values across all initial guesses are generated. For the dose-dependent RTF, dose values are also plotted against the estimated parameter values.
+#### plotInteractiveUMAP()
+The `plotInteractiveUMAP()` function generates an interactive UMAP plot based on estimated RTF parameters for multiple time courses.
+
+## Output Files of RTF() and modelReduction()
+- **`.R` file**: The fitted RTF function with hard-coded parameters, saved for convenient prediction of specified time points and doses.
+- **`.tsv` file**: Contains the fitted parameter values, along with upper and lower bounds for these parameters.
+
+## Example Datasets
+The package includes several example datasets that can be used to explore the functionality of the RTF package:
+
+- **matsumoto**: Experimental dataset from Matsumoto et al. (2014) (https://doi.org/10.1186/2193-1801-3-35), where the plasma profiles of 21 amino acids were measured after ingesting 10–90 mg/kg body weight of branched-chain amino acids (leucine, isoleucine, or valine). Data is available for 11 different time points.
+- **strasen**: Simulated dataset based on the cell class model by Strasen et al. (2018) (https://doi.org/10.15252/msb.20177733), which reflects six signaling classes observed upon stimulation with 100 pM Transforming Growth Factor (TGF) β1. For six cell classes, the time courses of 23 signaling proteins were simulated using JWS Online. Data is available for 101 different time points.
+- **almaden**: Simulated protein dataset based on a model of NF-κB-signaling in B cells introduced by Almaden et al. (2014) (https://doi.org/10.1016/j.celrep.2014.11.024). The dataset includes simulated time course data for 91 molecular entities across two conditions: wild-type and a genetic perturbation. Data is available for 101 different time points.
+
+## References
+[Kreutz C (2020) A New Approximation Approach for Transient Differential Equation Models. Front. Phys. 8:70.](https://doi.org/10.3389/fphy.2020.00070)
+
+[Rachel T et al. (2024) Dynamic modelling of signalling pathways when ODEs are not feasible. bioRxiv 2024.04.18.590024.](https://doi.org/10.1101/2024.04.18.590024)
+
+## License
+This project is licensed under the MIT License.

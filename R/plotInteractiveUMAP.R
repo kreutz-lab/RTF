@@ -6,8 +6,9 @@
 #' By hovering over a point the corresponding time-resolved behavior is
 #' displayed in an additional smaller subplot.
 #' @return Plotly object of the interactive UMAP plot.
-#' @param df Data frame with the first column corresponding to the time points
-#' and all the following columns corresponding to the different time courses.
+#' @param df Data frame in which the first column must contain the measurement 
+#' time points, while all subsequent columns correspond to the different time 
+#' courses.
 #' @param fileString String of the name of the created .rds file with the RTF
 #' results.
 #' @param conditions Vector specifying the condition for each time course.

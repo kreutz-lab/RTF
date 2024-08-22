@@ -12,8 +12,9 @@ RTFOnMultipleTimeCourses(
 )
 }
 \arguments{
-\item{df}{Data frame with the first column corresponding to the time points
-and all the following columns corresponding to the different time courses.}
+\item{df}{Data frame in which the first column must contain the measurement 
+time points, while all subsequent columns correspond to the different time 
+courses.}
 
 \item{modelReduction}{Boolean indicating if model reduction should be
 performed for RTF}
