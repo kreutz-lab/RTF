@@ -75,6 +75,9 @@ fit <- RTF(df = sim_data, modus = "singleDose")
 
 # Plot the results
 plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
+
+# Make predictions for times
+prediction <- fittedRTF(times = c(0, 1, 3, 4, 6, 12, 22)) 
 ```
 
 If a string is provided to the `fileNamePrefix` argument, `plotRTF()` saves the 
@@ -118,6 +121,10 @@ fit <- RTF(df = sim_data, modus = "doseDependent")
 
 # Plot the results
 plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
+
+# Make predictions for times and doses
+prediction <- fittedRTF(times = c(0, 5, 10, 20),
+                        doses = c(2.5, 5.5, 10)) 
 ```
 
 ### Example: Low-dimensional representation of multiple (at least 20) fitted RTFs
@@ -198,10 +205,10 @@ htmlwidgets::saveWidget(plt, "interactiveUMAP.html")
 ## Functions
 
 #### RTF()
-The `RTF()` function estimates the best-fit RTF parameters for the provided input data. It can be run in 'singleDose' or 'doseDependent' mode, depending on whether signaling data at multiple doses are available.
+The `RTF()` function estimates the best-fit RTF parameters for the provided input data. It can be run in 'singleDose' or 'doseDependent' mode, depending on whether signaling data at multiple doses are available. By default, the fitted RTF function fittedRTF() is saved to an .R file, allowing users to conveniently make predictions for specified time points (and doses for the dose-dependent RTF)
 
 #### modelReduction()
-The `modelReduction()` function applies a model reduction procedure to the `RTF()` result, iteratively eliminating parameters that are not necessary to explain the data, as determined by likelihood ratio tests.
+The `modelReduction()` function applies a model reduction procedure to the `RTF()` result, iteratively eliminating parameters that are not necessary to explain the data, as determined by likelihood ratio tests. Like in the case of the `RTF()` function, this model is saved as a function in an .R file by default.
 
 #### lowDimensionalRTF()
 The `lowDimensionalRTF()` function calculates a low-dimensional representation of multiple fitted RTFs using uniform manifold approximation and projection (UMAP). This function generates the following plots: (1) UMAP plots color-coded by metadata and cluster affiliation according to k-Means clustering; (2) a plot showing the 25th and 75th quantiles and the median of the fitted parameters for each cluster; and (3) plots illustrating the dynamics of the time courses, separated by cluster, where the time courses are displayed both unscaled and scaled (to enable qualitative comparisons of dynamics within each cluster).
