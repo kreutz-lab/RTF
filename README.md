@@ -76,7 +76,7 @@ fit <- RTF(df = sim_data, modus = "singleDose")
 # Plot the results
 plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
 
-# Make predictions for times
+# Make predictions for specified time points
 prediction <- fittedRTF(times = c(0, 1, 3, 4, 6, 12, 22)) 
 ```
 
@@ -122,7 +122,7 @@ fit <- RTF(df = sim_data, modus = "doseDependent")
 # Plot the results
 plotRTF(optimObject = fit, fileNamePrefix = "finalModel", plotAllFits = FALSE)
 
-# Make predictions for times and doses
+# Make predictions for specified time points and doses
 prediction <- fittedRTF(times = c(0, 5, 10, 20),
                         doses = c(2.5, 5.5, 10)) 
 ```
