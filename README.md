@@ -205,7 +205,7 @@ htmlwidgets::saveWidget(plt, "interactiveUMAP.html")
 ## Functions
 
 #### RTF()
-The `RTF()` function estimates the best-fit RTF parameters for the provided input data. It can be run in 'singleDose' or 'doseDependent' mode, depending on whether signaling data at multiple doses are available. By default, the fitted RTF function fittedRTF() is saved to an .R file, allowing users to conveniently make predictions for specified time points (and doses for the dose-dependent RTF)
+The `RTF()` function estimates the best-fit RTF parameters for the provided input data. It can be run in 'singleDose' or 'doseDependent' mode, depending on whether signaling data at multiple doses are available. By default, the fitted RTF function `fittedRTF()` is saved to an .R file, allowing users to conveniently make predictions for specified time points (and doses for the dose-dependent RTF)
 
 #### modelReduction()
 The `modelReduction()` function applies a model reduction procedure to the `RTF()` result, iteratively eliminating parameters that are not necessary to explain the data, as determined by likelihood ratio tests. Like in the case of the `RTF()` function, this model is saved as a function in an .R file by default.
